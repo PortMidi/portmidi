@@ -1,0 +1,69 @@
+# MAKEFILE FOR PORTMIDI AND PORTTIME
+
+
+# For debugging, define PM_CHECK_ERRORS
+PMFLAGS = -DPM_CHECK_ERRORS
+# Otherwise do not define PM_CHECK_ERRORS
+# PMFLAGS = 
+
+pmlib = pm_mac/libportmidi.a
+
+ptlib = porttime/libporttime.a
+
+CC = gcc $(VFLAGS) $(PMFLAGS) -g -Ipm_common -Iporttime
+
+MACLIB = -framework CoreMIDI -framework CoreFoundation -framework CoreAudio
+
+pmobjects = pm_common/pmutil.o pm_mac/pmmac.o  \
+	pm_common/portmidi.o pm_mac/pmmacosxcm.o
+
+ptobjects = porttime/porttime.o porttime/ptmacosx_mach.o 
+
+current: all
+
+all: $(pmlib) $(ptlib) pm_test/test pm_test/sysex pm_test/midithread \
+	pm_test/latency pm_test/midithru
+
+$(pmlib): Makefile $(pmobjects)
+	ar -crs $(pmlib) $(pmobjects)
+
+$(ptlib): Makefile $(ptobjects)
+	ar -crs $(ptlib) $(ptobjects)
+
+pm_mac/pmmacosxcm.o: Makefile pm_mac/pmmacosxcm.c pm_mac/pmmacosxcm.h
+	$(CC) -c pm_mac/pmmacosxcm.c -o pm_mac/pmmacosxcm.o
+
+pm_test/test: Makefile pm_test/test.o $(pmlib) $(ptlib)
+	$(CC) pm_test/test.c -o pm_test/test $(pmlib) $(ptlib) $(MACLIB)
+
+pm_test/sysex: Makefile pm_test/sysex.o $(pmlib) $(ptlib)
+	$(CC) pm_test/sysex.c -o pm_test/sysex $(pmlib) $(ptlib) $(MACLIB)
+
+pm_test/midithread: Makefile pm_test/midithread.o $(pmlib) $(ptlib)
+	$(CC) pm_test/midithread.c -o pm_test/midithread \
+        $(pmlib) $(ptlib) $(MACLIB)
+
+pm_test/latency: Makefile $(ptlib) pm_test/latency.o 
+	$(CC) pm_test/latency.c -o pm_test/latency $(pmlib) $(ptlib) \
+        $(MACLIB) -lpthread -lm
+
+pm_test/midithru: Makefile $(ptlib) pm_test/midithru.o 
+	$(CC) pm_test/midithru.c -o pm_test/midithru $(pmlib) $(ptlib) \
+        $(MACLIB) -lpthread -lm
+
+porttime/ptlinux.o: Makefile porttime/ptlinux.c
+	$(CC) -c porttime/ptlinux.c -o porttime/ptlinux.o
+
+clean:
+	rm -f *.o *~ core* */*.o */*~ */core* pm_test/*/pm_dll.dll 
+	rm -f *.opt *.ncb *.plg pm_win/Debug/pm_dll.lib pm_win/Release/pm_dll.lib
+	rm -f pm_test/*.opt pm_test/*.ncb
+
+cleaner: clean
+
+cleanest: cleaner
+	rm -f $(pmlib) $(ptlib) pm_test/test pm_test/sysex pm_test/midithread
+	rm -f pm_test/latency pm_test/midithru
+
+backup: cleanest
+	cd ..; zip -r portmidi.zip portmidi

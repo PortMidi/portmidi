@@ -24,34 +24,34 @@ current: all
 all: $(pmlib) $(ptlib) pm_test/test pm_test/sysex pm_test/midithread \
 	pm_test/latency pm_test/midithru
 
-$(pmlib): Makefile $(pmobjects)
+$(pmlib): pm_mac/Makefile.osx $(pmobjects)
 	ar -crs $(pmlib) $(pmobjects)
 
-$(ptlib): Makefile $(ptobjects)
+$(ptlib): pm_mac/Makefile.osx $(ptobjects)
 	ar -crs $(ptlib) $(ptobjects)
 
-pm_mac/pmmacosxcm.o: Makefile pm_mac/pmmacosxcm.c pm_mac/pmmacosxcm.h
+pm_mac/pmmacosxcm.o: pm_mac/Makefile.osx pm_mac/pmmacosxcm.c pm_mac/pmmacosxcm.h
 	$(CC) -c pm_mac/pmmacosxcm.c -o pm_mac/pmmacosxcm.o
 
-pm_test/test: Makefile pm_test/test.o $(pmlib) $(ptlib)
+pm_test/test: pm_mac/Makefile.osx pm_test/test.o $(pmlib) $(ptlib)
 	$(CC) pm_test/test.c -o pm_test/test $(pmlib) $(ptlib) $(MACLIB)
 
-pm_test/sysex: Makefile pm_test/sysex.o $(pmlib) $(ptlib)
+pm_test/sysex: pm_mac/Makefile.osx pm_test/sysex.o $(pmlib) $(ptlib)
 	$(CC) pm_test/sysex.c -o pm_test/sysex $(pmlib) $(ptlib) $(MACLIB)
 
-pm_test/midithread: Makefile pm_test/midithread.o $(pmlib) $(ptlib)
+pm_test/midithread: pm_mac/Makefile.osx pm_test/midithread.o $(pmlib) $(ptlib)
 	$(CC) pm_test/midithread.c -o pm_test/midithread \
         $(pmlib) $(ptlib) $(MACLIB)
 
-pm_test/latency: Makefile $(ptlib) pm_test/latency.o 
+pm_test/latency: pm_mac/Makefile.osx $(ptlib) pm_test/latency.o 
 	$(CC) pm_test/latency.c -o pm_test/latency $(pmlib) $(ptlib) \
         $(MACLIB) -lpthread -lm
 
-pm_test/midithru: Makefile $(ptlib) pm_test/midithru.o 
+pm_test/midithru: pm_mac/Makefile.osx $(ptlib) pm_test/midithru.o 
 	$(CC) pm_test/midithru.c -o pm_test/midithru $(pmlib) $(ptlib) \
         $(MACLIB) -lpthread -lm
 
-porttime/ptlinux.o: Makefile porttime/ptlinux.c
+porttime/ptlinux.o: pm_mac/Makefile.osx porttime/ptlinux.c
 	$(CC) -c porttime/ptlinux.c -o porttime/ptlinux.o
 
 clean:

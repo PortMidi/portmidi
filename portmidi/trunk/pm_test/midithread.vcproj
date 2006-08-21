@@ -161,7 +161,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\Release\portmidi.lib ..\porttime\Release\porttime.lib winmm.lib"
+				AdditionalDependencies="..\pm_win\Release\portmidi.lib ..\porttime\Release\porttime.lib winmm.lib"
 				OutputFile=".\midithreadRelease/midithread.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"

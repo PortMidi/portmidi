@@ -161,7 +161,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib winmm.lib ..\Release\portmidi.lib ..\porttime\Release\porttime.lib ..\pm_win\Release\pm_dll.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib winmm.lib ..\pm_win\Release\portmidi.lib ..\porttime\Release\porttime.lib ..\pm_win\Release\pm_dll.lib"
 				OutputFile=".\sysexRelease/sysex.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"

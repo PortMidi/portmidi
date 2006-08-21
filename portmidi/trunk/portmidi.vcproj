@@ -90,8 +90,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory=".\Release"
-			IntermediateDirectory=".\Release"
+			OutputDirectory=".\pm_win\Release"
+			IntermediateDirectory=".\pm_win\Release"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -123,9 +123,9 @@
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				PrecompiledHeaderFile=".\Release/portmidi.pch"
-				AssemblerListingLocation=".\Release/"
-				ObjectFile=".\Release/"
-				ProgramDataBaseFileName=".\Release/"
+				AssemblerListingLocation=".\pm_win\Release/"
+				ObjectFile=".\pm_win\Release/"
+				ProgramDataBaseFileName=".\pm_win\Release/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -142,7 +142,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\Release\portmidi.lib"
+				OutputFile=".\pm_win\Release\portmidi.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -154,7 +154,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\Release/portmidi.bsc"
+				OutputFile=".\pm_win\Release/portmidi.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"

@@ -10,7 +10,7 @@ extern "C" {
  * Latest version available at: http://www.cs.cmu.edu/~music/portmidi/
  *
  * Copyright (c) 1999-2000 Ross Bencina and Phil Burk
- * Copyright (c) 2001 Roger B. Dannenberg
+ * Copyright (c) 2001-2006 Roger B. Dannenberg
  *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files
@@ -38,6 +38,11 @@ extern "C" {
  */
 
 /* CHANGELOG FOR PORTMIDI
+ *
+ * 23Aug06 RBD
+ *  - changes to OS X to properly retrieve string names for IAC bus ports
+ *  - cleaner termination of porttime thread under Linux
+ *  - various minor fixes
  *
  * 25May04 RBD
  *  - removed support for MIDI THRU

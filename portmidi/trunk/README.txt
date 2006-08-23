@@ -1,12 +1,16 @@
 README for PortMidi
 Roger Dannenberg
-6 April 2003
-revised May 2004
+
+VERSION: this is the 23-aug-06 version of PortMidi.
+
+Documentation for PortMidi is found in pm_common/portmidi.h.
 
 For Windows, please see also README_WIN.txt and debugging_dlls.txt
 in pm_win.
 
 For Linux, please see also README_LINUX.txt in pm_linux.
+
+---------- some notes on the design of PortMidi ----------
 
 POINTERS VS DEVICE NUMBERS
 

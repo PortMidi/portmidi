@@ -223,6 +223,7 @@ const char *Pm_GetErrorText( PmError errnum ) {
         break;
     case pmBadData:
         msg = "PortMidi: `Invalid MIDI message Data'";
+	break;
     default:                         
         msg = "PortMidi: `Illegal error number'"; 
         break;
@@ -277,6 +278,13 @@ PmError Pm_Initialize( void ) {
 PmError Pm_Terminate( void ) {
     if (pm_initialized) {
         pm_term();
+        // if there are no devices, descriptors might still be NULL
+        if (descriptors != NULL) {
+            free(descriptors);
+            descriptors = NULL;
+	}
+        pm_descriptor_index = 0;
+        pm_descriptor_max = 0;
         pm_initialized = FALSE;
     }
     return pmNoError;

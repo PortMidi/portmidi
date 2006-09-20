@@ -1,7 +1,7 @@
 README for PortMidi
 Roger Dannenberg
 
-VERSION: this is the 23-aug-06 version of PortMidi.
+VERSION: this is the 29-aug-06 version of PortMidi.
 
 Documentation for PortMidi is found in pm_common/portmidi.h.
 

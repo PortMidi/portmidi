@@ -771,70 +771,6 @@ static PmError winmm_out_abort(PmInternal *midi)
     return m->error ? pmHostError : pmNoError;
 }
 
-#ifdef GARBAGE
-static PmError winmm_write_sysex_byte(PmInternal *midi, unsigned char byte)
-{
-    midiwinmm_type m = (midiwinmm_type) midi->descriptor;
-    unsigned char *msg_buffer;
-
-    /* at the beginning of sysex, m->hdr is NULL */
-    if (!m->hdr) { /* allocate a buffer if none allocated yet */
-        m->hdr = get_free_output_buffer(midi);
-        if (!m->hdr) return pmInsufficientMemory;
-        m->sysex_byte_count = 0;
-    }
-    /* figure out where to write byte */
-    msg_buffer = (unsigned char *) (m->hdr->lpData);
-    assert(m->hdr->lpData == (char *) (m->hdr + 1));
-
-    /* check for overflow */
-    if (m->sysex_byte_count >= m->hdr->dwBufferLength) {
-        /* allocate a bigger message -- double it every time */
-        LPMIDIHDR big = allocate_buffer(m->sysex_byte_count * 2);
-        /* printf("expand to %d bytes\n", m->sysex_byte_count * 2); */
-        if (!big) return pmInsufficientMemory;
-        m->error = midiOutPrepareHeader(m->handle.out, big, 
-                                        sizeof(MIDIHDR));
-        if (m->error) {
-            m->hdr = NULL;
-            return pmHostError;
-        }
-        memcpy(big->lpData, msg_buffer, m->sysex_byte_count);
-        msg_buffer = (unsigned char *) (big->lpData);
-        if (m->buffers[0] == m->hdr) {
-            m->buffers[0] = big;
-            pm_free(m->hdr);
-            /* printf("freed m->hdr\n"); */
-        } else if (m->buffers[1] == m->hdr) {
-            m->buffers[1] = big;
-            pm_free(m->hdr);
-            /* printf("freed m->hdr\n"); */
-        }
-        m->hdr = big;
-    }
-
-    /* append byte to message */
-    msg_buffer[m->sysex_byte_count++] = byte;
-
-    /* see if we have a complete message */
-    if (byte == MIDI_EOX) {
-        m->hdr->dwBytesRecorded = m->sysex_byte_count;
-        /*
-        { int i; int len = m->hdr->dwBytesRecorded;
-          printf("OutLongMsg %d ", len);
-          for (i = 0; i < len; i++) {
-              printf("%2x ", msg_buffer[i]);
-          }
-        }
-        */
-        m->error = midiOutLongMsg(m->handle.out, m->hdr, sizeof(MIDIHDR));
-        m->hdr = NULL; /* stop using this message buffer */
-        if (m->error) return pmHostError;
-    }
-    return pmNoError;
-}
-#endif
-
 
 static PmError winmm_write_short(PmInternal *midi, PmEvent *event)
 {
@@ -899,7 +835,13 @@ static PmError winmm_end_sysex(PmInternal *midi, PmTimestamp timestamp)
         /* Not using the stream interface. The entire sysex message is
            in m->hdr, and we send it using midiOutLongMsg.
          */
-        m->hdr->dwBytesRecorded = m->sysex_byte_count;
+
+        // Change from Nigel Brown, 20Sep06:
+        // m->hdr->dwBytesRecorded = m->sysex_byte_count;
+        m->hdr->dwBytesRecorded = 0;
+        m->hdr->dwBufferLength = m->sysex_byte_count;
+        // End of change from Nigel Brown
+
         /*
         { int i; int len = m->hdr->dwBytesRecorded;
           printf("OutLongMsg %d ", len);
@@ -1070,172 +1012,6 @@ static PmTimestamp winmm_synchronize(PmInternal *midi)
 }
 
 
-#ifdef GARBAGE
-static PmError winmm_write(PmInternal *midi, 
-                           PmEvent *buffer, 
-                           long length) {
-    midiwinmm_type m = (midiwinmm_type) midi->descriptor;
-    unsigned long now;
-    int i;
-    long msg;
-    PmError rslt = pmNoError;
-
-    m->error = MMSYSERR_NOERROR;
-    if (midi->latency == 0) { /* use midiOut interface, ignore timestamps */
-        for (i = 0; (i < length) && (rslt == pmNoError); i++) {
-            int b = 0; /* count sysex bytes as they are handled */
-            msg = buffer[i].message;
-            if ((msg & 0xFF) == MIDI_SYSEX) {
-                /* start a sysex message */
-                m->sysex_mode = TRUE;
-                unsigned char midi_byte = (unsigned char) msg;
-                rslt = winmm_write_sysex_byte(midi, midi_byte);
-                b = 8;
-            } else if ((msg & 0x80) && ((msg & 0xFF) != MIDI_EOX)) {
-                /* a non-sysex message */
-                m->error = midiOutShortMsg(m->handle.out, msg);
-                if (m->error) rslt = pmHostError;
-                /* any non-real-time message will terminate sysex message */
-                if (!is_real_time(msg)) m->sysex_mode = FALSE;
-            }
-            /* transmit sysex bytes until we find EOX */
-            if (m->sysex_mode) {
-                while (b < 32 /*bits*/ && (rslt == pmNoError)) {
-                    unsigned char midi_byte = (unsigned char) (msg >> b);
-                    rslt = winmm_write_sysex_byte(midi, midi_byte);
-                    if (midi_byte == MIDI_EOX) {
-                        b = 24; /* end of message */
-                        m->sysex_mode = FALSE;
-                    }
-                    b += 8;
-                }
-            }
-        }
-    } else { /* use midiStream interface -- pass data through buffers */
-        LPMIDIHDR hdr = NULL;
-        now = (*midi->time_proc)(midi->time_info);
-        if (m->first_message || m->sync_time + 100 /*ms*/ < now) { 
-            /* time to resync */
-            now = synchronize(midi, m);
-            m->first_message = FALSE;
-        }
-        for (i = 0; i < length && rslt == pmNoError; i++) {
-            unsigned long when = buffer[i].timestamp;
-            unsigned long delta;
-            if (when == 0) when = now;
-            /* when is in real_time; translate to intended stream time */
-            when = when + m->delta + midi->latency;
-            /* make sure we don't go backward in time */
-            if (when < m->last_time) when = m->last_time;
-            delta = when - m->last_time;
-            m->last_time = when;
-            /* before we insert any data, we must have a buffer */
-            if (hdr == NULL) {
-                /* stream interface: buffers allocated when stream is opened */
-                hdr = get_free_output_buffer(midi);
-                assert(hdr);
-                if (m->sysex_mode) {
-                    /* we are in the middle of a sysex message */
-                    start_sysex_buffer(hdr, delta);
-                }
-            }
-            msg = buffer[i].message;
-            if ((msg & 0xFF) == MIDI_SYSEX) {
-                /* sysex expects an empty buffer */
-                if (hdr->dwBytesRecorded != 0) {
-                    m->error = midiStreamOut(m->handle.stream, hdr, sizeof(MIDIHDR));
-                    if (m->error) rslt = pmHostError;
-                    hdr = get_free_output_buffer(midi);
-                    assert(hdr);
-                }
-                /* when we see a MIDI_SYSEX, we always enter sysex mode and call
-                   start_sysex_buffer() */
-                start_sysex_buffer(hdr, delta);
-                m->sysex_mode = TRUE;
-            }
-            /* allow a non-real-time status byte to terminate sysex message */
-            if (m->sysex_mode && (msg & 0x80) && (msg & 0xFF) != MIDI_SYSEX &&
-                !is_real_time(msg)) {
-                /* I'm not sure what WinMM does if you send an incomplete sysex
-                   message, but the best way out of this mess seems to be to 
-                   recreate the code used when you encounter an EOX, so ...
-                 */
-                MIDIEVENT *evt = (MIDIEVENT) hdr->lpData;
-                evt->dwEvent += hdr->dwBytesRecorded - 3 * sizeof(long);
-                /* round up BytesRecorded to multiple of 4 */
-                hdr->dwBytesRecorded =  (hdr->dwBytesRecorded + 3) & ~3;
-                m->error = midiStreamOut(m->handle.stream, hdr, 
-                                            sizeof(MIDIHDR));
-                if (m->error) {
-                    rslt = pmHostError;
-                }
-                hdr = NULL; /* make sure we don't send it again */
-                m->sysex_mode = FALSE; /* skip to normal message send code */
-            }
-            if (m->sysex_mode) {
-                int b = 0; /* count bytes as they are handled */
-                while (b < 32 /* bits per word */ && (rslt == pmNoError)) {
-                    int full;
-                    unsigned char midi_byte = (unsigned char) (msg >> b);
-                    if (!hdr) {
-                        hdr = get_free_output_buffer(midi);
-                        assert(hdr);
-                        /* get ready to put sysex bytes in buffer */
-                        start_sysex_buffer(hdr, delta);
-                    }
-                    full = add_byte_to_buffer(m, hdr, midi_byte);
-                    if (midi_byte == MIDI_EOX) {
-                        b = 24; /* pretend this is last byte to exit loop */
-                        m->sysex_mode = FALSE;
-                    }
-                    /* see if it's time to send buffer, note that by always
-                       sending complete sysex message right away, we can use
-                       this code to set up the MIDIEVENT properly
-                     */
-                    if (full || midi_byte == MIDI_EOX) {
-                        /* add bytes recorded to MIDIEVENT length, but don't 
-                           count the MIDIEVENT data (3 longs) */
-                        MIDIEVENT *evt = (MIDIEVENT *) hdr->lpData;
-                        evt->dwEvent += hdr->dwBytesRecorded - 3 * sizeof(long);
-                        /* round up BytesRecorded to multiple of 4 */
-                        hdr->dwBytesRecorded =  (hdr->dwBytesRecorded + 3) & ~3;
-                        m->error = midiStreamOut(m->handle.stream, hdr, 
-                                                 sizeof(MIDIHDR));
-                        if (m->error) {
-                            rslt = pmHostError;
-                        }
-                        hdr = NULL; /* make sure we don't send it again */
-                    }
-                    b += 8; /* shift to next byte */
-                }
-            /* test rslt here in case it was set when we terminated a sysex early
-               (see above) */
-            } else if (rslt == pmNoError) {
-                int full = add_to_buffer(m, hdr, delta, msg);
-                if (full) {
-                    m->error = midiStreamOut(m->handle.stream, hdr, 
-                                             sizeof(MIDIHDR));
-                    if (m->error) rslt = pmHostError;
-                    hdr = NULL;
-                }                    
-            }
-        }
-        if (hdr && rslt == pmNoError) {
-            if (m->sysex_mode) {
-                MIDIEVENT *evt = (MIDIEVENT *) hdr->lpData;
-                evt->dwEvent += hdr->dwBytesRecorded - 3 * sizeof(long);
-                /* round up BytesRecorded to multiple of 4 */
-                hdr->dwBytesRecorded = (hdr->dwBytesRecorded + 3) & ~3;
-            }
-            m->error = midiStreamOut(m->handle.stream, hdr, sizeof(MIDIHDR));
-            if (m->error) rslt = pmHostError;
-        }
-    }
-    return rslt;
-}
-#endif
-
-
 /* winmm_out_callback -- recycle sysex buffers */
 static void CALLBACK winmm_out_callback(HMIDIOUT hmo, UINT wMsg,
     DWORD dwInstance, DWORD dwParam1, DWORD dwParam2)
@@ -1394,6 +1170,14 @@ void pm_winmm_term( void )
                 (*midi->dictionary->close)(midi);
             }
         }
+    }
+    if (midi_in_caps) {
+        pm_free(midi_in_caps);
+        midi_in_caps = NULL;
+    }
+    if (midi_out_caps) {
+        pm_free(midi_out_caps);
+        midi_out_caps = NULL;
     }
 #ifdef DEBUG
     if (doneAny) {

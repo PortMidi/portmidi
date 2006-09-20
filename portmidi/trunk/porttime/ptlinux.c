@@ -95,6 +95,7 @@ PtError Pt_Stop()
 {
     printf("Pt_Stop called\n");
     pt_callback_proc_id++;
+    pthread_join(pt_thread_pid, NULL);
     time_started_flag = FALSE;
     return ptNoError;
 }

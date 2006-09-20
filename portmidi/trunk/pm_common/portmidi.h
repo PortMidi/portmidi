@@ -39,10 +39,21 @@ extern "C" {
 
 /* CHANGELOG FOR PORTMIDI
  *
+ * 05Sep06 Sebastien Frippiat
+ *  - check if (ALSA) seq exists before closing it in pm_linuxalsa_term()
+ *
+ * 05Sep06 Andreas Micheler and Cecilio
+ *  - fixed memory leak by freeing someo objects in pm_winmm_term()
+ *  - and another leak by freeing descriptors in Pm_Terminate()
+ *
  * 23Aug06 RBD
- *  - changes to OS X to properly retrieve string names for IAC bus ports
- *  - cleaner termination of porttime thread under Linux
  *  - various minor fixes
+ *
+ * 04Nov05 Olivier Tristan
+ *  - changes to OS X to properly retrieve real device name on CoreMidi
+ *
+ * 23Mar05 Torgier Strand Henriksen
+ *  - cleaner termination of porttime thread under Linux
  *
  * 25May04 RBD
  *  - removed support for MIDI THRU

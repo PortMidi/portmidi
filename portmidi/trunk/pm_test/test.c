@@ -150,7 +150,10 @@ void main_test_output() {
        The source of timestamps should always correspond to the TIME_PROC
        and TIME_INFO parameters used in Pm_OpenOutput(). */
     buffer[0].timestamp = TIME_PROC(TIME_INFO);
-    buffer[0].message = Pm_Message(0xC0, 0, 0);
+    /* Send a program change to increase the chances we will hear notes */
+    /* Program 0 is usually a piano, but you can change it here: */
+#define PROGRAM 0
+    buffer[0].message = Pm_Message(0xC0, PROGRAM, 0);
     Pm_Write(midi, buffer, 1);
 
     printf("ready to note-on... (type RETURN):");

@@ -1,9 +1,14 @@
 README_LINUX.txt for PortMidi
 Roger Dannenberg
-8 June 2004
+29 Aug 2006
 
 To make PortMidi and PortTime, go back up to the portmidi
-directory and type make.
+directory and type 
+
+make -f pm_linux/Makefile
+
+(You can also copy pm_linux/Makefile to the portmidi
+directory and just type "make".)
 
 The Makefile will build all test programs and the portmidi
 library. You may want to modify the Makefile to remove the
@@ -21,6 +26,12 @@ all test programs in pm_test seem to run properly.
 
 CHANGELOG
 
+29-aug-2006 Roger B. Dannenberg
+   Fixed PortTime to join with time thread for clean exit.    
+
+28-aug-2006 Roger B. Dannenberg
+    Updated this documentation.
+ 
 08-Jun-2004 Roger B. Dannenberg
       Updated code to use new system abstraction.
 

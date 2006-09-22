@@ -257,6 +257,7 @@ static MIDIHDR *allocate_buffer(long data_size)
      */
     LPMIDIHDR hdr = (LPMIDIHDR) pm_alloc(MIDIHDR_SIZE(data_size));
     MIDIEVENT *evt;
+    /* printf("allocate_buffer %d\n", data_size); */
     if (!hdr) return NULL;
     evt = (MIDIEVENT *) (hdr + 1); /* place MIDIEVENT after header */
     hdr->lpData = (LPSTR) evt;
@@ -835,14 +836,23 @@ static PmError winmm_end_sysex(PmInternal *midi, PmTimestamp timestamp)
         /* Not using the stream interface. The entire sysex message is
            in m->hdr, and we send it using midiOutLongMsg.
          */
-
-        // Change from Nigel Brown, 20Sep06:
-        // m->hdr->dwBytesRecorded = m->sysex_byte_count;
-        m->hdr->dwBytesRecorded = 0;
+        /* save true buffer length and restore later */
+        long real_length = m->hdr->dwBufferLength;
+        /* 
+         *   Change based on patch from Nigel Brown, 20Sep06:
+         *   Nigel's patch set dwBytesRecorded to 0, but Win32
+         *   specs indicate this should be the length. RBD tests
+         *   indicate setting to length works, so set it: 
+         */
+        m->hdr->dwBytesRecorded = m->sysex_byte_count;
+        /*   
+         *   However, it appears that the driver may be using
+         *   dwBufferLength instead of dwBytesRecorded. 
+         *   Temporarily set dwBufferLength to the byte count:
+         */
         m->hdr->dwBufferLength = m->sysex_byte_count;
-        // End of change from Nigel Brown
 
-        /*
+        /* DEBUG CODE:
         { int i; int len = m->hdr->dwBytesRecorded;
           printf("OutLongMsg %d ", len);
           for (i = 0; i < len; i++) {
@@ -851,6 +861,7 @@ static PmError winmm_end_sysex(PmInternal *midi, PmTimestamp timestamp)
         }
         */
         m->error = midiOutLongMsg(m->handle.out, m->hdr, sizeof(MIDIHDR));
+        m->hdr->dwBufferLength = real_length; /* restore original value */
         if (m->error) rslt = pmHostError;
     } else if (m->hdr) {
         /* Using stream interface. There are accumulated bytes in m->hdr
@@ -862,6 +873,10 @@ static PmError winmm_end_sysex(PmInternal *midi, PmTimestamp timestamp)
         evt->dwEvent += m->hdr->dwBytesRecorded - 3 * sizeof(long);
         /* round up BytesRecorded to multiple of 4 */
         m->hdr->dwBytesRecorded =  (m->hdr->dwBytesRecorded + 3) & ~3;
+        /* NOTE: it seems odd that this field is rounded up, but if 
+           I comment this out, I get an error. Also, if I set it to
+           zero (which appears to work with midiOutLongMsg), nothing
+           is sent. -RBD */
         m->error = midiStreamOut(m->handle.stream, m->hdr, 
                                  sizeof(MIDIHDR));
         if (m->error) {

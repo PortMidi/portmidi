@@ -194,7 +194,11 @@ extern "C" {
 typedef enum {
     pmNoError = 0,
     pmHostError = -10000,
-    pmInvalidDeviceId, /* out of range or output device when input is requested or vice versa */
+    pmInvalidDeviceId, /* out of range or 
+                        * output device when input is requested or 
+                        * input device when output is requested or
+                        * device is already opened 
+                        */
     pmInsufficientMemory,
     pmBufferTooSmall,
     pmBufferOverflow,

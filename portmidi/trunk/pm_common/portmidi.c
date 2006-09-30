@@ -629,9 +629,9 @@ PmError Pm_OpenOutput(PortMidiStream** stream,
     if (outputDevice < 0 || outputDevice >= pm_descriptor_index)
         err = pmInvalidDeviceId;
     else if (!descriptors[outputDevice].pub.output) 
-        err = pmBadPtr;
+        err = pmInvalidDeviceId;
     else if (descriptors[outputDevice].pub.opened)
-        err = pmBadPtr;
+        err = pmInvalidDeviceId;
     if (err != pmNoError) 
         goto error_return;
 

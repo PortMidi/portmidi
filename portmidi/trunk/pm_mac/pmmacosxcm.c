@@ -659,6 +659,10 @@ char* cm_get_full_endpoint_name(MIDIEndpointRef endpoint)
 {
     MIDIEntityRef entity;
     MIDIDeviceRef device;
+#ifdef OLDCODE
+    CFStringRef endpointName = NULL;
+    CFStringRef deviceName = NULL;
+#endif
     CFStringRef fullName = NULL;
     CFStringEncoding defaultEncoding;
     char* newName;
@@ -668,12 +672,31 @@ char* cm_get_full_endpoint_name(MIDIEndpointRef endpoint)
 
     fullName = ConnectedEndpointName(endpoint);
     
+#ifdef OLDCODE
+    /* get the entity and device info */
+    MIDIEndpointGetEntity(endpoint, &entity);
+    MIDIEntityGetDevice(entity, &device);
+
+    /* create the nicely formated name */
+    MIDIObjectGetStringProperty(endpoint, kMIDIPropertyName, &endpointName);
+    MIDIObjectGetStringProperty(device, kMIDIPropertyName, &deviceName);
+    if (deviceName != NULL) {
+        fullName = CFStringCreateWithFormat(NULL, NULL, CFSTR("%@: %@"),
+                                            deviceName, endpointName);
+    } else {
+        fullName = endpointName;
+    }
+#endif    
     /* copy the string into our buffer */
-    newName = (char*)malloc(CFStringGetLength(fullName) + 1);
+    newName = (char *) malloc(CFStringGetLength(fullName) + 1);
     CFStringGetCString(fullName, newName, CFStringGetLength(fullName) + 1,
-                        defaultEncoding);
+                       defaultEncoding);
 
     /* clean up */
+#ifdef OLDCODE
+    if (endpointName) CFRelease(endpointName);
+    if (deviceName) CFRelease(deviceName);
+#endif
     if (fullName) CFRelease(fullName);
 
     return newName;

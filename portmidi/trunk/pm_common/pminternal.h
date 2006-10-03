@@ -110,7 +110,7 @@ typedef struct pm_internal_struct {
     
     long latency; /* time delay in ms between timestamps and actual output */
                   /* set to zero to get immediate, simple blocking output */
-                  /* if latency is zero, timestamps will be ignored;
+                  /* if latency is zero, timestamps will be ignored; */
                   /* if midi input device, this field ignored */
     
     int overflow; /* set to non-zero if input is dropped */
@@ -120,7 +120,7 @@ typedef struct pm_internal_struct {
     int sysex_message_count; /* how many bytes in sysex_message so far */
 
     long filters; /* flags that filter incoming message classes */
-    
+    int channel_mask; /* flter incoming messages based on channel */
     PmTimestamp last_msg_time; /* timestamp of last message */
     PmTimestamp sync_time; /* time of last synchronization */
     PmTimestamp now; /* set by PmWrite to current time */

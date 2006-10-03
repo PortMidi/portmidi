@@ -57,16 +57,17 @@ static void *Pt_CallbackProc(void *p)
     
     
     /* to kill a process, just increment the pt_callback_proc_id */
-    printf("pt_callback_proc_id %d, id %d\n", pt_callback_proc_id, parameters->id);
+    /* printf("pt_callback_proc_id %d, id %d\n", pt_callback_proc_id, parameters->id); */
     while (pt_callback_proc_id == parameters->id) {
         /* wait for a multiple of resolution ms */
         UInt64 wait_time;
         int delay = mytime++ * parameters->resolution - Pt_Time();
+	long timestamp;
         if (delay < 0) delay = 0;
         wait_time = AudioConvertNanosToHostTime((UInt64)delay * NSEC_PER_MSEC);
         wait_time += AudioGetCurrentHostTime();
         error = mach_wait_until(wait_time);
-	long timestamp = Pt_Time();
+	timestamp = Pt_Time();
         (*(parameters->callback))(timestamp, parameters->userData);
     }
     free(parameters);
@@ -100,7 +101,7 @@ PtError Pt_Start(int resolution, PtCallback *callback, void *userData)
 
 PtError Pt_Stop()
 {
-    printf("Pt_Stop called\n");
+    /* printf("Pt_Stop called\n"); */
     pt_callback_proc_id++;
     time_started_flag = FALSE;
     return ptNoError;

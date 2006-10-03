@@ -10,6 +10,23 @@
 #define MIDI_STATUS_MASK 0x80
 #define MIDI_SYSEX      0xf0
 #define MIDI_EOX        0xf7
+#define MIDI_START      0xFA
+#define MIDI_STOP       0xFC
+#define MIDI_CONTINUE   0xFB
+#define MIDI_F9         0xF9
+#define MIDI_FD         0xFD
+#define MIDI_RESET      0xFF
+#define MIDI_NOTE_ON    0x90
+#define MIDI_NOTE_OFF   0x80
+#define MIDI_CHANNEL_AT 0xD0
+#define MIDI_POLY_AT    0xA0
+#define MIDI_PROGRAM    0xC0
+#define MIDI_CONTROL    0xB0
+#define MIDI_PITCHBEND  0xE0
+#define MIDI_MTC        0xF1
+#define MIDI_SONGPOS    0xF2
+#define MIDI_SONGSEL    0xF3
+#define MIDI_TUNE       0xF6
 
 
 #define is_empty(midi) ((midi)->tail == (midi)->head)
@@ -223,6 +240,9 @@ const char *Pm_GetErrorText( PmError errnum ) {
         break;
     case pmBadData:
         msg = "PortMidi: `Invalid MIDI message Data'";
+	break;
+    case pmBufferMaxSize:
+        msg = "PortMidi: `Buffer cannot be made larger'";
 	break;
     default:                         
         msg = "PortMidi: `Illegal error number'"; 
@@ -592,6 +612,7 @@ PmError Pm_OpenInput(PortMidiStream** stream,
     midi->sysex_message = 0; 
     midi->sysex_message_count = 0; 
     midi->filters = PM_FILT_ACTIVE;
+    midi->channel_mask = 0xFFFF;
     midi->sync_time = 0;
     midi->first_message = TRUE;
     midi->dictionary = descriptors[inputDevice].dictionary; 
@@ -690,6 +711,20 @@ error_return:
 }
 
 
+PmError Pm_SetChannelMask(PortMidiStream *stream, int mask)
+{
+    PmInternal *midi = (PmInternal *) stream;
+    PmError err = pmNoError;
+
+    if (midi == NULL)
+        err = pmBadPtr;
+    else
+        midi->channel_mask = mask;
+
+    return pm_errmsg(err);
+}
+
+
 PmError Pm_SetFilter(PortMidiStream *stream, long filters) {
     PmInternal *midi = (PmInternal *) stream;
     PmError err = pmNoError;
@@ -759,6 +794,64 @@ long pm_next_time(PmInternal *midi) {
     return midi->buffer[midi->head].timestamp;
 }
 
+/* pm_channel_filtered returns non-zero if the channel mask is blocking the current channel */
+static int pm_channel_filtered(int status, int mask)
+{
+    if ((status & 0xF0) == 0xF0) /* 0xF? messages don't have a channel */
+        return 0;
+    return !(Pm_Channel(status & 0x0F) & mask);
+    /* it'd be easier to return 0 for filtered, 1 for allowed,
+       but it would different from the other filtering functions
+    */
+
+}
+
+
+/* The following two functions will checks to see if a MIDI message matches
+   the filtering criteria.  Since the sysex routines only want to filter realtime messages,
+   we need to have separate routines.
+ */
+
+
+/* pm_realtime_filtered returns non-zero if the filter will kill the current message.
+   Note that only realtime messages are checked here.
+ */
+static int pm_realtime_filtered(int status, long filters)
+{
+    return ((status == MIDI_ACTIVE) && (filters & PM_FILT_ACTIVE))
+            ||  ((status == MIDI_CLOCK) && (filters & PM_FILT_CLOCK))
+            ||  ((status == MIDI_START) && (filters & PM_FILT_PLAY))
+            ||  ((status == MIDI_STOP) && (filters & PM_FILT_PLAY))
+            ||  ((status == MIDI_CONTINUE) && (filters & PM_FILT_PLAY))
+            ||  ((status == MIDI_F9) && (filters & PM_FILT_F9))
+            ||  ((status == MIDI_FD) && (filters & PM_FILT_FD))
+            ||  ((status == MIDI_RESET) && (filters & PM_FILT_RESET))
+            ||  ((status == MIDI_MTC) && (filters & PM_FILT_MTC))
+            ||  ((status == MIDI_SONGPOS) && (filters & PM_FILT_SONG_POSITION))
+            ||  ((status == MIDI_SONGSEL) && (filters & PM_FILT_SONG_SELECT))
+            ||  ((status == MIDI_TUNE) && (filters & PM_FILT_TUNE));
+}
+
+
+/* pm_status_filtered returns non-zero if a filter will kill the current message, based on status.
+   Note that sysex and real time are not checked.  It is up to the subsystem (winmm, core midi, alsa)
+   to filter sysex, as it is handled more easily and efficiently at that level.
+   Realtime message are filtered in pm_realtime_filtered.
+ */
+static int pm_status_filtered(int status, long filters)
+{
+    status &= 0xF0; /* remove channel information */
+    return  ((status == MIDI_NOTE_ON) && (filters & PM_FILT_NOTE))
+            ||  ((status == MIDI_NOTE_OFF) && (filters & PM_FILT_NOTE))
+            ||  ((status == MIDI_CHANNEL_AT) && (filters & PM_FILT_CHANNEL_AFTERTOUCH))
+            ||  ((status == MIDI_POLY_AT) && (filters & PM_FILT_POLY_AFTERTOUCH))
+            ||  ((status == MIDI_PROGRAM) && (filters & PM_FILT_PROGRAM))
+            ||  ((status == MIDI_CONTROL) && (filters & PM_FILT_CONTROL))
+            ||  ((status == MIDI_PITCHBEND) && (filters & PM_FILT_PITCHBEND));
+
+}
+
+
 /* pm_read_short and pm_read_byte
    are the interface between system-dependent MIDI input handlers
    and the system-independent PortMIDI code.
@@ -793,13 +886,9 @@ void pm_read_short(PmInternal *midi, PmEvent *event)
     assert(!Pm_HasHostError(midi));
     /* midi filtering is applied here */
     status = Pm_MessageStatus(event->message);
-    if ((status == MIDI_ACTIVE) &&
-        (midi->filters & PM_FILT_ACTIVE)) {
-        /* MIDI active sensing filter: do nothing */
-    } else if ((status == MIDI_CLOCK) && 
-               (midi->filters & PM_FILT_CLOCK)) {
-        /* MIDI clock filter: do nothing */
-    } else {
+    if (!pm_status_filtered(status, midi->filters)
+        && !pm_realtime_filtered(status, midi->filters)
+        && !pm_channel_filtered(status, midi->channel_mask)) {
         /* if sysex is in progress and we get a status byte, it had
            better be a realtime message or the starting SYSEX byte;
            otherwise, we exit the sysex_in_progress state
@@ -870,6 +959,9 @@ void pm_read_byte(PmInternal *midi, unsigned char byte, PmTimestamp timestamp)
 #endif
         return;
     }
+
+    if (pm_realtime_filtered(byte, midi->filters))
+        return;
     /* this awkward expression places the bytes in increasingly higher-
        order bytes of the long message */
     midi->sysex_message |= (byte << (8 * midi->sysex_message_count++));

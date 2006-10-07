@@ -76,6 +76,9 @@ typedef struct midi_macosxcm_struct {
     MIDIPacket *packet;
     Byte sysex_buffer[SYSEX_BUFFER_SIZE]; /* temp storage for sysex data */
     MIDITimeStamp sysex_timestamp; /* timestamp to use with sysex data */
+    /* allow for running status (is running status possible here? -rbd): -cpr */
+    unsigned char last_command; 
+    long last_msg_length;
 } midi_macosxcm_node, *midi_macosxcm_type;
 
 /* private function declarations */
@@ -129,6 +132,96 @@ static PmTimestamp midi_synchronize(PmInternal *midi)
 }
 
 
+static void
+process_packet(MIDIPacket *packet, PmEvent *event, 
+	       PmInternal *midi, midi_macosxcm_type m)
+{
+    /* handle a packet of MIDI messages from CoreMIDI */
+    /* there may be multiple short messages in one packet (!) */
+    unsigned int remaining_length = packet->length;
+    unsigned char *cur_packet_data = packet->data;
+    while (remaining_length > 0) {
+        /* compute the length of the next (short) msg in packet */
+	if (cur_packet_data[0] & MIDI_STATUS_MASK) {
+	    unsigned int cur_message_length = midi_length(cur_packet_data[0]);
+            if (cur_message_length > remaining_length) {
+#ifdef DEBUG
+                printf("PortMidi debug msg: not enough data");
+#endif
+		/* since there's no more data, we're done */
+		return;
+	    }
+	    m->last_msg_length = cur_message_length;
+	    m->last_command = cur_packet_data[0];
+	    switch (cur_message_length) {
+	    case 1:
+	        event->message = Pm_Message(cur_packet_data[0], 0, 0);
+		break; 
+	    case 2:
+	        event->message = Pm_Message(cur_packet_data[0], 
+					    cur_packet_data[1], 0);
+		break;
+	    case 3:
+	        event->message = Pm_Message(cur_packet_data[0],
+					    cur_packet_data[1], 
+					    cur_packet_data[2]);
+		break;
+	    default:
+                /* PortMIDI internal error; should never happen */
+                assert(cur_message_length == 1);
+	        return; /* give up on packet if continued after assert */
+	    }
+	    pm_read_short(midi, event);
+	    remaining_length -= m->last_msg_length;
+	    cur_packet_data += m->last_msg_length;
+	} else if (m->last_command == 0) {
+            /* we have data with no status. My guess is CoreMIDI does not 
+	     * allow this to happen. If it does, we skip to the next
+	     * status byte in the packet and continue processing
+	     */
+#ifdef DEBUG
+	    printf("PortMidi debug msg: missing status byte");
+#endif
+	    while (remaining_length > 0 && 
+		   !cur_packet_data[0] & MIDI_STATUS_MASK) {
+	        cur_packet_data++;
+	        remaining_length--;
+	    }
+	    continue;
+	} else if (m->last_msg_length > remaining_length + 1) {
+	    /* we have running status, but not enough data */
+#ifdef DEBUG
+	    printf("PortMidi debug msg: not enough data in CoreMIDI packet");
+#endif
+	    /* since there's no more data, we're done */
+	    return;
+	} else { /* output message using running status */
+	    switch (m->last_msg_length) {
+	    case 1:
+	        event->message = Pm_Message(m->last_command, 0, 0);
+		break;
+	    case 2:
+	        event->message = Pm_Message(m->last_command, 
+					    cur_packet_data[0], 0);
+		break;
+	    case 3:
+	        event->message = Pm_Message(m->last_command, 
+					    cur_packet_data[0], 
+					    cur_packet_data[1]);
+		break;
+	    default:
+	        /* last_msg_length is invalid -- internal PortMIDI error */
+	        assert(m->last_msg_length == 1);
+	    }
+	    pm_read_short(midi, event);
+	    remaining_length -= (m->last_msg_length - 1);
+	    cur_packet_data += (m->last_msg_length - 1);
+	}
+    }
+}
+
+
+
 /* called when MIDI packets are received */
 static void
 readProc(const MIDIPacketList *newPackets, void *refCon, void *connRefCon)
@@ -155,7 +248,8 @@ readProc(const MIDIPacketList *newPackets, void *refCon, void *connRefCon)
     }
     
     packet = (MIDIPacket *) &newPackets->packet[0];
-    /* printf("readproc packet status %x length %d\n", packet->data[0], packet->length); */
+    /* printf("readproc packet status %x length %d\n", packet->data[0], 
+               packet->length); */
     for (packetIndex = 0; packetIndex < newPackets->numPackets; packetIndex++) {
         /* Set the timestamp and dispatch this message */
         event.timestamp = 
@@ -165,38 +259,24 @@ readProc(const MIDIPacketList *newPackets, void *refCon, void *connRefCon)
         /* process packet as sysex data if it begins with MIDI_SYSEX, or
            MIDI_EOX or non-status byte */
         if (status == MIDI_SYSEX || status == MIDI_EOX ||
-            !(status & MIDI_STATUS_MASK)) {
+	    /* previously was: !(status & MIDI_STATUS_MASK)) {
+             * but this could mistake running status for sysex data
+             */
+	    midi->sysex_in_progress) {
             int i = 0;
+            /* reset running status data -cpr */
+	    m->last_command = 0;
+	    m->last_msg_length = 0;
             while (i < packet->length) {
                 pm_read_byte(midi, packet->data[i], event.timestamp);
                 i++;
             }
         } else {
-            /* Build the PmMessage for the PmEvent structure */
-            switch (packet->length) {
-                case 1:
-                    event.message = Pm_Message(packet->data[0], 0, 0);
-                    break; 
-                case 2:
-                    event.message = Pm_Message(packet->data[0], 
-                                               packet->data[1], 0);
-                    break;
-                case 3:
-                    event.message = Pm_Message(packet->data[0],
-                                               packet->data[1], 
-                                               packet->data[2]);
-                    break;
-                default:
-                    /* Skip packets that are too large to fit in a PmMessage */
-#ifdef DEBUG
-                    printf("PortMidi debug msg: large packet skipped\n");
-#endif
-                    continue;
-            }
-            pm_read_short(midi, &event);
-        }
-        packet = MIDIPacketNext(packet);
+            process_packet(packet, &event, midi, m);
+	    packet = MIDIPacketNext(packet);
+	}
     }
+
 }
 
 static PmError
@@ -235,7 +315,9 @@ midi_in_open(PmInternal *midi, void *driverInfo)
     m->sysex_byte_count = 0;
     m->packetList = NULL;
     m->packet = NULL;
-    
+    m->last_command = 0;
+    m->last_msg_length = 0;
+
     macHostError = MIDIPortConnectSource(portIn, endpoint, midi);
     if (macHostError != noErr) {
         pm_hosterror = macHostError;
@@ -304,9 +386,12 @@ midi_out_open(PmInternal *midi, void *driverInfo)
     m->sysex_byte_count = 0;
     m->packetList = (MIDIPacketList *) m->packetBuffer;
     m->packet = NULL;
+    m->last_command = 0;
+    m->last_msg_length = 0;
 
     return pmNoError;
 }
+
 
 static PmError
 midi_out_close(PmInternal *midi)

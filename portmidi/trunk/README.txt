@@ -5,10 +5,11 @@ VERSION: this is the 29-aug-06 version of PortMidi.
 
 Documentation for PortMidi is found in pm_common/portmidi.h.
 
-For Windows, please see also README_WIN.txt and debugging_dlls.txt
-in pm_win.
-
-For Linux, please see also README_LINUX.txt in pm_linux.
+Additional documentation:
+  - Windows: see pm_win/README_WIN.txt and pm_win/debugging_dlls.txt
+  - Linux: see pm_linux/README_LINUX.txt
+  - Mac OSX: see pm_mac/README_MAC.txt
+  - Common Lisp: see pm_cl/README_CL.txt
 
 ---------- some notes on the design of PortMidi ----------
 

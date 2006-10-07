@@ -41,7 +41,8 @@
 extern pm_fns_node pm_linuxalsa_in_dictionary;
 extern pm_fns_node pm_linuxalsa_out_dictionary;
 
-static snd_seq_t *seq; // all input comes here, output queue allocated on seq
+static snd_seq_t *seq = NULL; // all input comes here, 
+                              // output queue allocated on seq
 static int queue, queue_used; /* one for all ports, reference counted */
 
 typedef struct alsa_descriptor_struct {
@@ -677,7 +678,13 @@ PmError pm_linuxalsa_init( void )
     snd_seq_port_info_t *pinfo;
     unsigned int caps;
 
-    err = snd_seq_open(&seq, "default", SND_SEQ_OPEN_DUPLEX, SND_SEQ_NONBLOCK);
+    /* previously, the last parameter was SND_SEQ_NONBLOCK, but this 
+     * would cause messages to be dropped if the ALSA buffer fills up.
+     * The correct behavior is for writes to block until there is 
+     * room to send all the data. The client should normally allocate
+     * a large enough buffer to avoid blocking
+     */
+    err = snd_seq_open(&seq, "default", SND_SEQ_OPEN_DUPLEX, 0);
     if (err < 0) return;
     
     snd_seq_client_info_alloca(&cinfo);

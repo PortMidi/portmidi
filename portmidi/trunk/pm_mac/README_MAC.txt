@@ -2,6 +2,10 @@ README_MAC.txt for PortMidi
 Roger Dannenberg
 29 Aug 2006
 
+There are two ways to build PortMidi for Mac OSX:
+
+=== METHOD 1 (make) ===
+
 To make PortMidi and PortTime, go back up to the portmidi
 directory and type 
 
@@ -24,8 +28,17 @@ check for errors yourself.
 This code has not been carefully tested; however, 
 all test programs in pm_test seem to run properly.
 
+=== METHOD 2 (xcodebuild) ===
+From this directory (pm_mac) run this command:
+
+sudo xcodebuild -project pm_mac.pbproj install DSTROOT=/
+
+[pm_mac.pbproj courtesy of Leigh Smith]
+
 CHANGELOG
 
+07-Oct-2006 Roger B. Dannenberg
+    Added directions for xcodebuild
 29-aug-2006 Roger B. Dannenberg
     Updated this documentation.
  

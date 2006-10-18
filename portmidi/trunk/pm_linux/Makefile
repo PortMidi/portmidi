@@ -30,7 +30,7 @@ ptobjects = porttime/porttime.o porttime/ptlinux.o
 current: all
 
 all: $(pmlib) $(ptlib) pm_test/test pm_test/sysex pm_test/midithread \
-	pm_test/latency pm_test/midithru
+	pm_test/latency pm_test/midithru pm_test/qtest
 
 $(pmlib): Makefile $(pmobjects)
 	ar -cr $(pmlib) $(pmobjects)
@@ -42,25 +42,28 @@ pm_linux/pmlinuxalsa.o: Makefile pm_linux/pmlinuxalsa.c pm_linux/pmlinuxalsa.h
 	$(CC) -c pm_linux/pmlinuxalsa.c -o pm_linux/pmlinuxalsa.o
 
 pm_test/test: Makefile pm_test/test.o $(pmlib) $(ptlib)
-	$(CC) pm_test/test.c -o pm_test/test $(pmlib) $(ptlib) $(ALSALIB)
+	$(CC) pm_test/test.o -o pm_test/test $(pmlib) $(ptlib) $(ALSALIB)
 
 pm_test/sysex: Makefile pm_test/sysex.o $(pmlib) $(ptlib)
-	$(CC) pm_test/sysex.c -o pm_test/sysex $(pmlib) $(ptlib) $(ALSALIB)
+	$(CC) pm_test/sysex.o -o pm_test/sysex $(pmlib) $(ptlib) $(ALSALIB)
 
 pm_test/midithread: Makefile pm_test/midithread.o $(pmlib) $(ptlib)
-	$(CC) pm_test/midithread.c -o pm_test/midithread \
+	$(CC) pm_test/midithread.o -o pm_test/midithread \
         $(pmlib) $(ptlib) $(ALSALIB)
 
 pm_test/latency: Makefile $(ptlib) pm_test/latency.o 
-	$(CC) pm_test/latency.c -o pm_test/latency $(pmlib) $(ptlib) \
+	$(CC) pm_test/latency.o -o pm_test/latency $(pmlib) $(ptlib) \
         $(ALSALIB) -lpthread -lm
 
 pm_test/midithru: Makefile $(ptlib) pm_test/midithru.o 
-	$(CC) pm_test/midithru.c -o pm_test/midithru $(pmlib) $(ptlib) \
+	$(CC) pm_test/midithru.o -o pm_test/midithru $(pmlib) $(ptlib) \
         $(ALSALIB) -lpthread -lm
 
 porttime/ptlinux.o: Makefile porttime/ptlinux.c
 	$(CC) -c porttime/ptlinux.c -o porttime/ptlinux.o
+
+pm_test/qtest: Makefile pm_test/qtest.o $(pmlib) $(ptlib)
+	$(CC) pm_test/qtest.o -o pm_test/qtest $(pmlib) $(ptlib) $(ALSALIB)
 
 clean:
 	rm -f *.o *~ core* */*.o */*~ */core* pm_test/*/pm_dll.dll 
@@ -71,7 +74,7 @@ cleaner: clean
 
 cleanest: cleaner
 	rm -f $(pmlib) $(ptlib) pm_test/test pm_test/sysex pm_test/midithread
-	rm -f pm_test/latency pm_test/midithru
+	rm -f pm_test/latency pm_test/midithru pm_test/qtest
 
 backup: cleanest
 	cd ..; zip -r portmidi.zip portmidi

@@ -1,5 +1,9 @@
 /* CHANGELOG FOR PORTMIDI
  *
+ * 18Oct06 Roger Dannenberg
+ *  - replace FIFO in pmutil with Light Pipe-based multiprocessor-safe alg.
+ *  - replace FIFO in portmidi.c with PmQueue from pmutil
+ *
  * 07Oct06 cpr & Roger Dannenberg
  *  - overhaul of CoreMIDI input to handle running status and multiple
  *  -    messages per packet, with additional error detection

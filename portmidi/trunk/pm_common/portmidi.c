@@ -2,6 +2,9 @@
 #include "string.h"
 #include "portmidi.h"
 #include "porttime.h"
+#ifdef NEWBUFFER
+#include "pmutil.h"
+#endif
 #include "pminternal.h"
 #include <assert.h>
 
@@ -351,6 +354,18 @@ PmError Pm_Read(PortMidiStream *stream, PmEvent *buffer, long length) {
         return pm_errmsg(err);
     }
 
+#ifdef NEWBUFFER
+    while (n < length) {
+        PmError err = Pm_Dequeue(midi->queue, buffer);
+        if (err == pmBufferOverflow) {
+            /* ignore the data we have retreived so far */
+            return pm_errmsg(pmBufferOverflow);
+        } else if (err == 0) { /* empty queue */
+            break;
+        }
+        n++;
+    }
+#else
     head = midi->head;
     while (head != midi->tail && n < length) {
         PmEvent event = midi->buffer[head++];
@@ -364,6 +379,7 @@ PmError Pm_Read(PortMidiStream *stream, PmEvent *buffer, long length) {
         midi->overflow = FALSE;
         return pm_errmsg(pmBufferOverflow);
     }
+#endif
     return n;
 }
 
@@ -386,8 +402,14 @@ PmError Pm_Poll( PortMidiStream *stream )
 
     if (err != pmNoError)
         return pm_errmsg(err);
-    else
+    else {
+#ifdef NEWBUFFER
+        PmEvent *event = (PmEvent *) Pm_QueuePeek(midi->queue);
+        return event != NULL;
+#else
         return midi->head != midi->tail;
+#endif
+    }
 }
 
 /* to facilitate correct error-handling, Pm_Write, Pm_WriteShort, and
@@ -593,18 +615,23 @@ PmError Pm_OpenInput(PortMidiStream** stream,
        system-specific midi_out_open() method.
      */
     if (bufferSize <= 0) bufferSize = 256; /* default buffer size */
+#ifdef NEWBUFFER
+    midi->queue = Pm_QueueCreate(bufferSize, sizeof(PmEvent));
+    if (!midi->queue) {
+#else
     else bufferSize++; /* buffer holds N-1 msgs, so increase request by 1 */
     midi->buffer_len = bufferSize; /* portMidi input storage */
     midi->buffer = (PmEvent *) pm_alloc(sizeof(PmEvent) * midi->buffer_len); 
+    midi->head = 0;
+    midi->tail = 0;
     if (!midi->buffer) { 
+#endif
         /* free portMidi data */
         *stream = NULL;
         pm_free(midi); 
         err = pmInsufficientMemory;
         goto error_return;
     }
-    midi->head = 0;
-    midi->tail = 0;
     midi->latency = 0; /* not used */
     midi->overflow = FALSE;
     midi->flush = FALSE;
@@ -623,7 +650,11 @@ PmError Pm_OpenInput(PortMidiStream** stream,
         *stream = NULL;
         descriptors[inputDevice].internalDescriptor = NULL;
         /* free portMidi data */
+#ifdef NEWBUFFER
+        Pm_QueueDestroy(midi->queue);
+#else
         pm_free(midi->buffer);  
+#endif
         pm_free(midi);
     } else {
         /* portMidi input open successful */
@@ -677,10 +708,14 @@ PmError Pm_OpenOutput(PortMidiStream** stream,
     midi->time_info = time_info;
     /* when stream used, this buffer allocated and used by 
         winmm_out_open; deleted by winmm_out_close */
+#ifdef NEWBUFFER
+    midi->queue = NULL; /* unused by output */
+#else
     midi->buffer_len = bufferSize;
     midi->buffer = NULL;
     midi->head = 0; /* unused by output */
     midi->tail = 0; /* unused by output */
+#endif
     /* if latency zero, output immediate (timestamps ignored) */
     /* if latency < 0, use 0 but don't return an error */
     if (latency < 0) latency = 0;
@@ -762,7 +797,11 @@ PmError Pm_Close( PortMidiStream *stream ) {
     /* even if an error occurred, continue with cleanup */
     descriptors[midi->device_id].internalDescriptor = NULL;
     descriptors[midi->device_id].pub.opened = FALSE;
-    pm_free(midi->buffer);       
+#ifdef NEWBUFFER
+    if (midi->queue) Pm_QueueDestroy(midi->queue);
+#else
+    if (midi->buffer) pm_free(midi->buffer);       
+#endif
     pm_free(midi); 
 error_return:
     return pm_errmsg(err);
@@ -784,6 +823,9 @@ PmError Pm_Abort( PortMidiStream* stream ) {
     return pm_errmsg(err);
 }
 
+#ifndef NEWBUFFER
+/* this is apparently an orphan routine -- I can find no reference to it now -RBD */
+
 /* in win32 multimedia API (via callbacks) some of these functions used; assume never fail */
 long pm_next_time(PmInternal *midi) {
 
@@ -793,6 +835,8 @@ long pm_next_time(PmInternal *midi) {
     
     return midi->buffer[midi->head].timestamp;
 }
+#endif
+
 
 /* pm_channel_filtered returns non-zero if the channel mask is blocking the current channel */
 static int pm_channel_filtered(int status, int mask)
@@ -898,7 +942,14 @@ void pm_read_short(PmInternal *midi, PmEvent *event)
             midi->sysex_in_progress = FALSE;
             midi->flush = FALSE;
         }
-
+#ifdef NEWBUFFER
+        if (Pm_Enqueue(midi->queue, event) == pmBufferOverflow) {
+            if (midi->sysex_in_progress) midi->flush = TRUE;
+            /* drop the rest of the message, this must be cleared 
+               by caller when EOX is received */
+               return;
+        }
+#else
         /* don't try to do anything more in an overflow state */
         if (midi->overflow || midi->flush) return;
 
@@ -907,13 +958,14 @@ void pm_read_short(PmInternal *midi, PmEvent *event)
         midi->buffer[tail++] = *event;
         if (tail == midi->buffer_len) tail = 0;
         if (tail == midi->head || midi->overflow) {
-             midi->overflow = TRUE;
+            midi->overflow = TRUE;
             if (midi->sysex_in_progress) midi->flush = TRUE; 
             /* drop the rest of the message, this must be cleared 
                by caller when EOX is received */
                return;
         }
         midi->tail = tail; /* complete the write */
+#endif
     }
 }
 
@@ -971,7 +1023,8 @@ void pm_read_byte(PmInternal *midi, unsigned char byte, PmTimestamp timestamp)
     }
 }
 
-
+#ifndef NEWBUFFER
+/* this code is apparently never called */
 int pm_queue_full(PmInternal *midi)
 {
     long tail;
@@ -984,4 +1037,4 @@ int pm_queue_full(PmInternal *midi)
     if (tail == midi->buffer_len) tail = 0;
     return tail == midi->head;
 }
-
+#endif

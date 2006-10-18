@@ -3,6 +3,9 @@
 #include "windows.h"
 #include "mmsystem.h"
 #include "portmidi.h"
+#ifdef NEWBUFFER
+#include "pmutil.h"
+#endif
 #include "pminternal.h"
 #include "pmwinmm.h"
 #include "string.h"

@@ -100,14 +100,16 @@ typedef struct pm_internal_struct {
     
     PmTimeProcPtr time_proc; /* where to get the time */
     void *time_info; /* pass this to get_time() */
-    
+#ifdef NEWBUFFER
+    PmQueue *queue;
+#else
     long buffer_len; /* how big is the buffer */
     PmEvent *buffer; /* storage for: 
                         - midi input 
                         - midi output w/latency != 0 */
     long head;
     long tail;
-    
+#endif
     long latency; /* time delay in ms between timestamps and actual output */
                   /* set to zero to get immediate, simple blocking output */
                   /* if latency is zero, timestamps will be ignored; */
@@ -130,14 +132,6 @@ typedef struct pm_internal_struct {
 
 } PmInternal;
 
-typedef struct {
-    long head;
-    long tail;
-    long len;
-    long msg_size;
-    long overflow;
-    char *buffer;
-} PmQueueRep;
 
 /* defined by system specific implementation, e.g. pmwinmm, used by PortMidi */
 void pm_init(void); 

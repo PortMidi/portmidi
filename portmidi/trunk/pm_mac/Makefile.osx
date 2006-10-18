@@ -4,7 +4,8 @@ VFLAGS = -g
 
 
 # For debugging, define PM_CHECK_ERRORS
-PMFLAGS = -DPM_CHECK_ERRORS
+# For new(er) multiprocessor-safe fifo implementation, define NEWBUFFER
+PMFLAGS = -DPM_CHECK_ERRORS -DNEWBUFFER
 # Otherwise do not define PM_CHECK_ERRORS
 # PMFLAGS = 
 
@@ -24,7 +25,7 @@ ptobjects = porttime/porttime.o porttime/ptmacosx_mach.o
 current: all
 
 all: $(pmlib) $(ptlib) pm_test/test pm_test/sysex pm_test/midithread \
-	pm_test/latency pm_test/midithru
+	pm_test/latency pm_test/midithru pm_test/qtest
 
 $(pmlib): pm_mac/Makefile.osx $(pmobjects)
 	ar -crs $(pmlib) $(pmobjects)
@@ -36,25 +37,28 @@ pm_mac/pmmacosxcm.o: pm_mac/Makefile.osx pm_mac/pmmacosxcm.c pm_mac/pmmacosxcm.h
 	$(CC) -c pm_mac/pmmacosxcm.c -o pm_mac/pmmacosxcm.o
 
 pm_test/test: pm_mac/Makefile.osx pm_test/test.o $(pmlib) $(ptlib)
-	$(CC) pm_test/test.c -o pm_test/test $(pmlib) $(ptlib) $(MACLIB)
+	$(CC) pm_test/test.o -o pm_test/test $(pmlib) $(ptlib) $(MACLIB)
 
 pm_test/sysex: pm_mac/Makefile.osx pm_test/sysex.o $(pmlib) $(ptlib)
-	$(CC) pm_test/sysex.c -o pm_test/sysex $(pmlib) $(ptlib) $(MACLIB)
+	$(CC) pm_test/sysex.o -o pm_test/sysex $(pmlib) $(ptlib) $(MACLIB)
 
 pm_test/midithread: pm_mac/Makefile.osx pm_test/midithread.o $(pmlib) $(ptlib)
-	$(CC) pm_test/midithread.c -o pm_test/midithread \
+	$(CC) pm_test/midithread.o -o pm_test/midithread \
         $(pmlib) $(ptlib) $(MACLIB)
 
 pm_test/latency: pm_mac/Makefile.osx $(ptlib) pm_test/latency.o 
-	$(CC) pm_test/latency.c -o pm_test/latency $(pmlib) $(ptlib) \
+	$(CC) pm_test/latency.o -o pm_test/latency $(pmlib) $(ptlib) \
         $(MACLIB) -lpthread -lm
 
 pm_test/midithru: pm_mac/Makefile.osx $(ptlib) pm_test/midithru.o 
-	$(CC) pm_test/midithru.c -o pm_test/midithru $(pmlib) $(ptlib) \
+	$(CC) pm_test/midithru.o -o pm_test/midithru $(pmlib) $(ptlib) \
         $(MACLIB) -lpthread -lm
 
 porttime/ptlinux.o: pm_mac/Makefile.osx porttime/ptlinux.c
 	$(CC) -c porttime/ptlinux.c -o porttime/ptlinux.o
+
+pm_test/qtest: pm_mac/Makefile.osx pm_test/qtest.o $(pmlib) $(ptlib)
+	$(CC) pm_test/qtest.o -o pm_test/qtest $(pmlib) $(ptlib) $(MACLIB)
 
 clean:
 	rm -f *.o *~ core* */*.o */*~ */core* pm_test/*/pm_dll.dll 
@@ -65,7 +69,7 @@ cleaner: clean
 
 cleanest: cleaner
 	rm -f $(pmlib) $(ptlib) pm_test/test pm_test/sysex pm_test/midithread
-	rm -f pm_test/latency pm_test/midithru
+	rm -f pm_test/latency pm_test/midithru pm_test/qtest
 
 backup: cleanest
 	cd ..; zip -r portmidi.zip portmidi

@@ -31,9 +31,9 @@ all test programs in pm_test seem to run properly.
 === METHOD 2 (xcodebuild) ===
 From this directory (pm_mac) run this command:
 
-sudo xcodebuild -project pm_mac.pbproj install DSTROOT=/
+sudo xcodebuild -project pm_mac.xcodeproj -configuration Deployment install DSTROOT=/
 
-[pm_mac.pbproj courtesy of Leigh Smith]
+[pm_mac.xcodeproj courtesy of Leigh Smith]
 
 CHANGELOG
 

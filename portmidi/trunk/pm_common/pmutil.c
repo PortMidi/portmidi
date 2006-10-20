@@ -2,10 +2,15 @@
                applications that use PortMidi
  */
 #include "stdlib.h"
+#include "assert.h"
 #include "memory.h"
 #include "portmidi.h"
 #include "pmutil.h"
 #include "pminternal.h"
+
+#ifdef WIN32
+#define bzero(addr, siz) memset(addr, 0, siz)
+#endif
 
 /* #define QUEUE_DEBUG 1 */
 
@@ -21,6 +26,7 @@ typedef struct {
     long len;
     long msg_size; /* number of int32 in a message including extra word */
     long overflow;
+    long peek_overflow;
     int32 *buffer;
     int32 *peek;
     int peek_flag;
@@ -31,10 +37,10 @@ PmQueue *Pm_QueueCreate(long num_msgs, long bytes_per_msg)
 {
     PmQueueRep *queue = (PmQueueRep *) pm_alloc(sizeof(PmQueueRep));
     int int32s_per_msg = ((bytes_per_msg + sizeof(int32) - 1) &
-			  ~(sizeof(int32) - 1)) / sizeof(int32);
+                          ~(sizeof(int32) - 1)) / sizeof(int32);
     /* arg checking */
     if (!queue) 
-	return NULL;
+        return NULL;
 
     /* need extra word per message for non-zero encoding */
     queue->len = num_msgs * (int32s_per_msg + 1);
@@ -45,11 +51,11 @@ PmQueue *Pm_QueueCreate(long num_msgs, long bytes_per_msg)
         return NULL;
     } else { /* allocate the "peek" buffer */
         queue->peek = (int32 *) pm_alloc(int32s_per_msg * sizeof(int32));
-	if (!queue->peek) {
+        if (!queue->peek) {
             /* free everything allocated so far and return */
-	    pm_free(queue->buffer);
-	    pm_free(queue);
-	    return NULL;
+            pm_free(queue->buffer);
+            pm_free(queue);
+            return NULL;
         }
     }
     bzero(queue->buffer, queue->len * sizeof(int32));
@@ -58,6 +64,7 @@ PmQueue *Pm_QueueCreate(long num_msgs, long bytes_per_msg)
     /* msg_size is in words */
     queue->msg_size = int32s_per_msg + 1; /* note extra word is counted */
     queue->overflow = FALSE;
+    queue->peek_overflow = FALSE;
     queue->peek_flag = FALSE;
     return queue;
 }
@@ -66,10 +73,10 @@ PmQueue *Pm_QueueCreate(long num_msgs, long bytes_per_msg)
 PmError Pm_QueueDestroy(PmQueue *q)
 {
     PmQueueRep *queue = (PmQueueRep *) q;
-	
-	/* arg checking */
+        
+        /* arg checking */
     if (!queue || !queue->buffer || !queue->peek) 
-		return pmBadPtr;
+                return pmBadPtr;
     
     pm_free(queue->peek);
     pm_free(queue->buffer);
@@ -88,18 +95,25 @@ PmError Pm_Dequeue(PmQueue *q, void *msg)
     /* arg checking */
     if (!queue)
         return pmBadPtr;
-
+    /* a previous peek operation encountered an overflow, but the overflow
+     * has not yet been reported to client, so do it now. No message is
+     * returned, but on the next call, we will return the peek buffer.
+     */
+    if (queue->peek_overflow) {
+        queue->peek_overflow = FALSE;
+        return pmBufferOverflow;
+    }
     if (queue->peek_flag) {
 #ifdef QUEUE_DEBUG
-	printf("Pm_Dequeue returns peek msg:");
-	for (i = 0; i < queue->msg_size - 1; i++) {
-	    printf(" %d", queue->peek[i]);
-	}
-	printf("\n");
+        printf("Pm_Dequeue returns peek msg:");
+        for (i = 0; i < queue->msg_size - 1; i++) {
+            printf(" %d", queue->peek[i]);
+        }
+        printf("\n");
 #endif
         memcpy(msg, queue->peek, (queue->msg_size - 1) * sizeof(int32));
-	queue->peek_flag = FALSE;
-	return 1;
+        queue->peek_flag = FALSE;
+        return 1;
     }
 
     head = queue->head;
@@ -121,7 +135,7 @@ PmError Pm_Dequeue(PmQueue *q, void *msg)
      * possible, but not that many.
      */
     if (queue->overflow == head + 1 && !queue->buffer[head]) {
-        queue->overflow = FALSE;
+        queue->overflow = 0; /* non-overflow condition */
         return pmBufferOverflow;
     }
 
@@ -132,7 +146,7 @@ PmError Pm_Dequeue(PmQueue *q, void *msg)
     for (i = queue->msg_size - 1; i >= 0; i--) {
         if (!queue->buffer[head + i]) {
             return 0;
-	}
+        }
     }
 #ifdef QUEUE_DEBUG
     printf("Pm_Dequeue:");
@@ -142,15 +156,15 @@ PmError Pm_Dequeue(PmQueue *q, void *msg)
     printf("\n");
 #endif
     memcpy(msg, (char *) &queue->buffer[head + 1], 
-	   sizeof(int32) * (queue->msg_size - 1));
+           sizeof(int32) * (queue->msg_size - 1));
     /* fix up zeros */
     i = queue->buffer[head];
     while (i < queue->msg_size) {
         int32 j;
-	i--; /* msg does not have extra word so shift down */
-	j = msg_as_int32[i];
-	msg_as_int32[i] = 0;
-	i = j;
+        i--; /* msg does not have extra word so shift down */
+        j = msg_as_int32[i];
+        msg_as_int32[i] = 0;
+        i = j;
     }
     /* signal that data has been removed by zeroing: */
     bzero((char *) &queue->buffer[head], sizeof(int32) * queue->msg_size);
@@ -183,21 +197,21 @@ PmError Pm_Enqueue(PmQueue *q, void *msg)
     tail = queue->tail;
     if (rslt) {
         queue->overflow = tail + 1;
-	return pmBufferOverflow;
+        return pmBufferOverflow;
     }
 
     /* queue is has room for message, and overflow flag is cleared */
     ptr = &queue->buffer[tail];
     dest = ptr + 1;
     for (i = 1; i < queue->msg_size; i++) {
-	int32 j = src[i - 1];
-	if (!j) {
+        int32 j = src[i - 1];
+        if (!j) {
             *ptr = i;
-	    ptr = dest;
-	} else {
-	    *dest = j;
-	}
-	dest++;
+            ptr = dest;
+        } else {
+            *dest = j;
+        }
+        dest++;
     }
     *ptr = i;
 #ifdef QUEUE_DEBUG
@@ -235,15 +249,15 @@ int Pm_QueueFull(PmQueue *q)
     for (i = 0; i < queue->msg_size; i++) {
         if (queue->buffer[tail + i]) {
             return TRUE;
-	}
+        }
     }
     return FALSE;
 }
 
 void *Pm_QueuePeek(PmQueue *q)
 {
-    long head;
     PmQueueRep *queue = (PmQueueRep *) q;
+    PmError rslt;
 
     /* arg checking */
     if (!queue)
@@ -251,8 +265,20 @@ void *Pm_QueuePeek(PmQueue *q)
 
     if (queue->peek_flag) {
         return queue->peek;
-    } else if (Pm_Dequeue(q, queue->peek) == 1) {
+    } 
+    rslt = Pm_Dequeue(q, queue->peek);
+    if (rslt == 1) {
         queue->peek_flag = TRUE;
+        return queue->peek;
+    } else if (rslt == pmBufferOverflow) {
+        /* peek should return pointer to valid data, but queue should
+         * remain in overflow state, i.e. Pm_Dequeue() will return error
+         */
+        rslt = Pm_Dequeue(q, queue->peek);
+        assert(rslt == 1); /* since we overflowed, there must be data */
+        queue->peek_flag = TRUE;  /* now queue->peek has valid message */
+        /* put queue in overflow state */
+        queue->peek_overflow = TRUE;
         return queue->peek;
     }
     return NULL;

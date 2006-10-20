@@ -1178,6 +1178,7 @@ static void CALLBACK winmm_out_callback(HMIDIOUT hmo, UINT wMsg,
     midiwinmm_type m = (midiwinmm_type) midi->descriptor;
     LPMIDIHDR hdr = (LPMIDIHDR) dwParam1;
     int err = 0;  /* set to 0 so that no buffer match will also be an error */
+    int i;
     static int entry = 0;
     if (++entry > 1) {
         assert(FALSE);
@@ -1201,6 +1202,8 @@ static void CALLBACK winmm_out_callback(HMIDIOUT hmo, UINT wMsg,
      */
 
     /* determine if this is an output buffer or a sysex buffer */
+    /* wouldn't it be better to use just one signal 
+       and eliminate this search? Optimize this later. -RBD */
 
     for (i = 0 ;i < m->num_buffers;i++) {
         if (hdr == m->buffers[i]) {

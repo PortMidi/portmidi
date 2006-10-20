@@ -130,12 +130,14 @@ void process_midi(PtTimestamp timestamp, void *userData)
     /* see if there is any midi input to process */
     if (!app_sysex_in_progress) {
         do {
-	    result = Pm_Poll(midi_in);
+            result = Pm_Poll(midi_in);
             if (result) {
                 long status;
-                if (Pm_Read(midi_in, &buffer, 1) == pmBufferOverflow) 
+                PmError rslt = Pm_Read(midi_in, &buffer, 1);
+                if (rslt == pmBufferOverflow) 
                     continue;
-            
+                assert(rslt == 1);
+
                 /* record timestamp of most recent data */
                 last_timestamp = current_timestamp;
 
@@ -187,7 +189,7 @@ void process_midi(PtTimestamp timestamp, void *userData)
         assert(next); /* must be non-null because queue is not empty */
         if (next->timestamp <= current_timestamp) {
             /* time to send a message, first make sure it's not blocked */
-            long status = Pm_MessageStatus(buffer.message);
+            long status = Pm_MessageStatus(next->message);
             if ((status & 0xF8) == 0xF8) {
                 ; /* real-time messages are not blocked */
             } else if (thru_sysex_in_progress) {

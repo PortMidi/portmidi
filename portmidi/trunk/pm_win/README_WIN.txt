@@ -45,9 +45,9 @@ TO INSTALL PORTMIDI:
 TO COMPILE PORTMIDI:
 =============================================================================
 
-3)  go to this directory
+3)  cd to or open the portmidi directory
 
-4)  click on the portmidi.dsw workspace
+4)  start or click on the portmidi.dsw workspace
 
 5)  the following projects exist within this workspace:
     - portmidi (the PortMidi library)
@@ -60,18 +60,16 @@ TO COMPILE PORTMIDI:
 	- latency (uses porttime to measure system latency)
 
 6)  verify that all project settings are for Win32 Debug release:
-	- hit Alt-F7
+	- type Alt-F7
 	- highlight all three projects in left part of Project Settings window; 
 	- "Settings For" should say "Win32 Debug"
 
-7)  set pm_dll as the active project (e.g. Project->Select Active Project)
+7)  use Build->Batch Build ... to build everything in the project
 
-8)  use Build->Batch Build ... to build everything in the project
-
-9)  The settings for these projects were distributed in the zip file, so
+8)  The settings for these projects were distributed in the zip file, so
     compile should just work.
 
-10) IMPORTANT! PortMidi uses a DLL, pm_dll.dll, but there is no simple way
+9)  IMPORTANT! PortMidi uses a DLL, pm_dll.dll, but there is no simple way
     to set up projects to use pm_dll. THEREFORE, you need to copy DLLs
     as follows (you can do this with <...>\portmidi\pm_win\copy-dll.bat):
         copy <...>\portmidi\pm_win\Debug\pm_dll.dll to:
@@ -94,13 +92,13 @@ TO COMPILE PORTMIDI:
     application using PortMidi. The release DLL is about 40KB. This will 
     ensure that the application uses the correct DLL.
 
-11) run test project; use the menu that shows up from the command prompt to
+10) run test project; use the menu that shows up from the command prompt to
     test that portMidi works on your system. tests include: 
 		- verify midi output works
 		- verify midi input works
 		- verify midi input w/midi thru works
 
-12) run other projects if you wish: sysex, latency, and midithread
+11) run other projects if you wish: sysex, latency, and midithread
 
 ============================================================================
 TO CREATE YOUR OWN PORTMIDI CLIENT APPLICATION:

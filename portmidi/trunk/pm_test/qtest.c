@@ -7,7 +7,7 @@
 /* make_msg -- make a psuedo-random message of length n whose content
  *    is purely a function of i 
  */
-int make_msg(long msg[], int n, int i)
+void make_msg(long msg[], int n, int i)
 {
     int j;
     for (j = 0; j < n; j++) {
@@ -34,7 +34,6 @@ int cmp_msg(long msg[], long msg2[], int n, int i)
     int j;
     for (j = 0; j < n; j++) {
         if (msg[j] != msg2[j]) {
-            int k;
             printf("Received message %d doesn't match sent message\n", i);
             printf("in: "); print_msg(msg, n); printf("\n");
             printf("out:"); print_msg(msg2, n); printf("\n");

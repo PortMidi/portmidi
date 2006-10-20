@@ -600,12 +600,21 @@ static void handle_event(snd_seq_event_t *ev)
     }
 }
 
+
 static PmError alsa_poll(PmInternal *midi)
 {
     snd_seq_event_t *ev;
-    while (snd_seq_event_input(seq, &ev) >= 0) {
-        if (ev) {
-            handle_event(ev);
+    /* expensive check for input data, gets data from device: */
+    while (snd_seq_event_input_pending(seq, TRUE) > 0) {
+        /* cheap check on local input buffer */
+        while (snd_seq_event_input_pending(seq, FALSE) > 0) {
+            /* check for and ignore errors, e.g. input overflow */
+            /* note: if there's overflow, this should be reported
+             * all the way through to client
+             */
+            if (snd_seq_event_input(seq, &ev) >= 0) {
+                handle_event(ev);
+            }
         }
     }
     return pmNoError;
@@ -681,11 +690,14 @@ PmError pm_linuxalsa_init( void )
     snd_seq_port_info_t *pinfo;
     unsigned int caps;
 
-    /* previously, the last parameter was SND_SEQ_NONBLOCK, but this 
+    /* Previously, the last parameter was SND_SEQ_NONBLOCK, but this 
      * would cause messages to be dropped if the ALSA buffer fills up.
      * The correct behavior is for writes to block until there is 
      * room to send all the data. The client should normally allocate
-     * a large enough buffer to avoid blocking
+     * a large enough buffer to avoid blocking on output. 
+     * Now that blocking is enabled, the seq_event_input() will block
+     * if there is no input data. This is not what we want, so must
+     * call seq_event_input_pending() to avoid blocking.
      */
     err = snd_seq_open(&seq, "default", SND_SEQ_OPEN_DUPLEX, 0);
     if (err < 0) return;

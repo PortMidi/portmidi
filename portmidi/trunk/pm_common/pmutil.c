@@ -177,8 +177,21 @@ PmError Pm_Dequeue(PmQueue *q, void *msg)
 }
 
 
-/* source should not enqueue data if overflow is set */
-/**/
+
+PmError Pm_SetOverflow(PmQueue *q)
+{
+    PmQueueRep *queue = (PmQueueRep *) q;
+    long tail;
+    /* no more enqueue until receiver acknowledges overflow */
+    if (queue->overflow) return pmBufferOverflow;
+    if (!queue)
+        return pmBadPtr;
+    tail = queue->tail;
+    queue->overflow = tail + 1;
+    return pmBufferOverflow;
+}
+
+
 PmError Pm_Enqueue(PmQueue *q, void *msg)
 {
     PmQueueRep *queue = (PmQueueRep *) q;

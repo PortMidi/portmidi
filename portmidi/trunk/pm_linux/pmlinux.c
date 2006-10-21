@@ -5,6 +5,9 @@
    be separate from the main portmidi.c file because it is system
    dependent, and it is separate from, pmlinuxalsa.c, because it
    might need to register non-alsa devices as well.
+
+   NOTE: if you add non-ALSA support, you need to fix :alsa_poll()
+   in pmlinuxalsa.c, which assumes all input devices are ALSA.
  */
 
 #include "stdlib.h"

@@ -256,6 +256,7 @@ static PmError alsa_out_close(PmInternal *midi)
     }
     if (midi->latency > 0) alsa_unuse_queue();
     snd_midi_event_free(desc->parser);
+    midi->descriptor = NULL; /* destroy the pointer to signify "closed" */
     pm_free(desc);
     if (pm_hosterror) {
         get_alsa_error_text(pm_hosterror_text, PM_HOST_ERROR_MSG_LEN, 
@@ -610,10 +611,23 @@ static PmError alsa_poll(PmInternal *midi)
         while (snd_seq_event_input_pending(seq, FALSE) > 0) {
             /* check for and ignore errors, e.g. input overflow */
             /* note: if there's overflow, this should be reported
-             * all the way through to client
+             * all the way through to client. Since input from all
+             * devices is merged, we need to find all input devices
+             * and set all to the overflow state.
+             * NOTE: this assumes every input is ALSA based.
              */
-            if (snd_seq_event_input(seq, &ev) >= 0) {
+            int rslt = snd_seq_event_input(seq, &ev);
+            if (rslt >= 0) {
                 handle_event(ev);
+            } else if (rslt == -ENOSPC) {
+                int i;
+                for (i = 0; i < pm_descriptor_index; i++) {
+                    if (descriptors[i].descriptor->write_flag == MIDI_IN) {
+                        PmInternal *midi = descriptors[i].internalDescriptor;
+                        /* careful, device may not be open! */
+                        if (midi) Pm_SetOverflow(midi->queue);
+                    }
+                }
             }
         }
     }

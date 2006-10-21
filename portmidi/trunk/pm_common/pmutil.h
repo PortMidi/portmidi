@@ -91,6 +91,15 @@ int Pm_QueueEmpty(PmQueue *queue);
  */
 void *Pm_QueuePeek(PmQueue *queue);
 
+/*
+    Pm_SetOverflow() allows the writer (enqueuer) to signal an overflow
+    condition to the reader (dequeuer). E.g. when transfering data from 
+    the OS to an application, if the OS indicates a buffer overrun,
+    Pm_SetOverflow() can be used to insure that the reader receives a
+    pmBufferOverflow result from Pm_Dequeue(). 
+ */
+void Pm_SetOverflow(PmQueue *q);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

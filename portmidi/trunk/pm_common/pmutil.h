@@ -98,7 +98,7 @@ void *Pm_QueuePeek(PmQueue *queue);
     Pm_SetOverflow() can be used to insure that the reader receives a
     pmBufferOverflow result from Pm_Dequeue(). 
  */
-void Pm_SetOverflow(PmQueue *q);
+PmError Pm_SetOverflow(PmQueue *queue);
 
 #ifdef __cplusplus
 }

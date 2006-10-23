@@ -622,8 +622,9 @@ static PmError alsa_poll(PmInternal *midi)
             } else if (rslt == -ENOSPC) {
                 int i;
                 for (i = 0; i < pm_descriptor_index; i++) {
-                    if (descriptors[i].descriptor->write_flag == MIDI_IN) {
-                        PmInternal *midi = descriptors[i].internalDescriptor;
+                    if (descriptors[i].pub.input) {
+                        PmInternal *midi = (PmInternal *) 
+                                descriptors[i].internalDescriptor;
                         /* careful, device may not be open! */
                         if (midi) Pm_SetOverflow(midi->queue);
                     }

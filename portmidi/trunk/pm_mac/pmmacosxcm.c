@@ -276,8 +276,8 @@ readProc(const MIDIPacketList *newPackets, void *refCon, void *connRefCon)
             }
         } else {
             process_packet(packet, &event, midi, m);
-	    packet = MIDIPacketNext(packet);
 	}
+        packet = MIDIPacketNext(packet);
     }
 
 }

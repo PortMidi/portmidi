@@ -25,7 +25,7 @@ ptobjects = porttime/porttime.o porttime/ptmacosx_mach.o
 current: all
 
 all: $(pmlib) $(ptlib) pm_test/test pm_test/sysex pm_test/midithread \
-	pm_test/latency pm_test/midithru pm_test/qtest
+	pm_test/latency pm_test/midithru pm_test/qtest pm_test/mm
 
 $(pmlib): pm_mac/Makefile.osx $(pmobjects)
 	ar -crs $(pmlib) $(pmobjects)
@@ -53,6 +53,9 @@ pm_test/latency: pm_mac/Makefile.osx $(ptlib) pm_test/latency.o
 pm_test/midithru: pm_mac/Makefile.osx $(ptlib) pm_test/midithru.o 
 	$(CC) pm_test/midithru.o -o pm_test/midithru $(pmlib) $(ptlib) \
         $(MACLIB) -lpthread -lm
+
+pm_test/mm: pm_mac/Makefile.osx pm_test/mm.o $(pmlib) $(ptlib)
+	$(CC) pm_test/mm.o -o pm_test/mm $(pmlib) $(ptlib) $(MACLIB)
 
 porttime/ptlinux.o: pm_mac/Makefile.osx porttime/ptlinux.c
 	$(CC) -c porttime/ptlinux.c -o porttime/ptlinux.o

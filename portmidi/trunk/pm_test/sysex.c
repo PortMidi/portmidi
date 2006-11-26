@@ -19,6 +19,11 @@
 
 #define STRING_MAX 80
 
+#ifndef true
+#define true 1
+#define false 0
+#endif
+
 int latency = 0;
 
 /* read a number from console */
@@ -64,6 +69,9 @@ void loopback_test()
        series of buffers. This is nicer than allocating a big buffer for the
        message, and it also seems to work better. Either way works.
      */
+    while ((latency = get_number(
+                     "Latency in milliseconds (0 to send data immediatedly,\n"
+                     "  >0 to send timestamped messages): ")) < 0);
     Pm_OpenOutput(&midi_out, outp, NULL, 0, NULL, NULL, latency);
     inp = get_number("Type input device number: ");
     /* since we are going to send and then receive, make sure the input buffer
@@ -152,6 +160,182 @@ cleanup:
 }
 
 
+/* send_multiple test -- send many sysex messages */
+/**/
+void send_multiple_test()
+{
+    int outp;
+    int length;
+    int num_msgs;
+    PmStream *midi_in;
+    PmStream *midi_out;
+    unsigned char msg[1024];
+    long len;
+    int i;
+    PtTimestamp start_time;
+    PtTimestamp stop_time;
+
+    Pt_Start(1, 0, 0);
+    
+    printf("This is for performance testing. You should be sending to this\n");
+    printf("program running the receive multiple test. Do NOT send to\n");
+    printf("a synthesizer or you risk reprogramming it\n");
+    outp = get_number("Type output device number: ");
+    while ((latency = get_number(
+                     "Latency in milliseconds (0 to send data immediatedly,\n"
+                     "  >0 to send timestamped messages): ")) < 0);
+    Pm_OpenOutput(&midi_out, outp, NULL, 0, NULL, NULL, latency);
+    while ((length = get_number("Message length (7 - 1024): ")) < 7 ||
+           length > 1024) ;
+    while ((num_msgs = get_number("Number of messages: ")) < 1);
+    /* latency, length, and num_msgs should now all be valid */
+    /* compose the message except for sequence number in first 5 bytes */
+    msg[0] = (char) MIDI_SYSEX;
+    for (i = 6; i < length - 1; i++) {
+        msg[i] = i % 128; /* this is just filler */
+    }
+    msg[length - 1] = (char) MIDI_EOX;
+
+    start_time = Pt_Time();
+    /* send the messages */
+    for (i = num_msgs; i > 0; i--) {
+        /* insert sequence number into first 5 data bytes */
+        /* sequence counts down to zero */
+        int j;
+        int count = i;
+        /* 7 bits of message count i goes into each data byte */
+        for (j = 1; j <= 5; j++) {
+            msg[j] = count & 127;
+            count >>= 7;
+        }
+        /* send the message */
+        Pm_WriteSysEx(midi_out, 0, msg);
+    }
+    stop_time = Pt_Time();
+    Pm_Close(midi_out);
+    return;
+}
+
+#define MAX_MSG_LEN 1024
+static unsigned char receive_msg[MAX_MSG_LEN];
+static long receive_msg_index;
+static long receive_msg_length;
+static long receive_msg_count;
+static long receive_msg_error;
+static long receive_msg_messages;
+static PmStream *receive_msg_midi_in;
+static int receive_poll_running;
+
+/* receive_poll -- callback function to check for midi input */
+/**/
+void receive_poll(PtTimestamp timestamp, void *userData)
+{
+    PmError count;
+    PmEvent event;
+    int shift;
+    int data = 0;
+    int i;
+    
+    if (!receive_poll_running) return; /* wait until midi device is opened */
+    shift = 0;
+    while (data != MIDI_EOX) {
+        count = Pm_Read(receive_msg_midi_in, &event, 1);
+        if (count == 0) return;
+
+        /* compare 4 bytes of data until you reach an eox */
+        for (shift = 0; shift < 32 && (data != MIDI_EOX); shift += 8) {
+            receive_msg[receive_msg_index++] = data = 
+                (event.message >> shift) & 0xFF;
+            if (receive_msg_index >= MAX_MSG_LEN) {
+                printf("error: incoming sysex too long\n");
+                goto error;
+            }
+        }
+    }
+    /* check the message */
+    if (receive_msg_length == 0) {
+        receive_msg_length = receive_msg_index;
+    }
+    if (receive_msg_length != receive_msg_index) {
+        printf("error: incoming sysex wrong length\n");
+        goto error;
+    }
+    if (receive_msg[0] != MIDI_SYSEX) {
+        printf("error: incoming sysex missing status byte\n");
+        goto error;
+    }
+    /* get and check the count */
+    count = 0;
+    for (i = 0; i < 5; i++) {
+        count += receive_msg[i + 1] << (7 * i);
+    }
+    if (receive_msg_count == -1) {
+        receive_msg_count = count;
+        receive_msg_messages = count;
+    }
+    if (receive_msg_count != count) {
+        printf("error: incoming sysex has wrong count\n");
+        goto error;
+    }
+    for (i = 6; i < receive_msg_index - 1; i++) {
+        if (receive_msg[i] != i % 128) {
+            printf("error: incoming sysex has bad data\n");
+            goto error;
+        }
+    }
+    if (receive_msg[receive_msg_length - 1] != MIDI_EOX) goto error;
+    receive_msg_index = 0; /* get ready for next message */
+    receive_msg_count--;
+    return;
+ error:
+    receive_msg_error = 1;
+    return;
+}
+
+
+/* receive_multiple_test -- send/rcv from 2 to 1000 bytes of random midi data */
+/**/
+void receive_multiple_test()
+{
+    PmError err;
+    int inp;
+    unsigned char msg[1024];
+    long len;
+    
+    printf("This test expects to receive data sent by the send_multiple test\n");
+    printf("The test will check that correct data is received.\n");
+
+    /* Important: start PortTime first -- if it is not started first, it will
+       be started by PortMidi, and then our attempt to open again will fail */
+    receive_poll_running = false;
+    if (err = Pt_Start(1, receive_poll, 0)) {
+        printf("PortTime error code: %d\n", err);
+        goto cleanup;
+    }
+    inp = get_number("Type input device number: ");
+    Pm_OpenInput(&receive_msg_midi_in, inp, NULL, 512, NULL, NULL);
+    receive_msg_index = 0;
+    receive_msg_length = 0;
+    receive_msg_count = -1;
+    receive_msg_error = 0;
+    receive_poll_running = true;
+    while ((!receive_msg_error) && (receive_msg_count != 0)) {
+        sleep(1); /* block and wait */
+    }
+    if (receive_msg_error) {
+        printf("Receive_multiple test encountered an error\n");
+    } else {
+        printf("Receive_multiple test successfully received %d sysex messages\n", 
+               receive_msg_messages);
+    }
+cleanup:
+    receive_poll_running = false;
+    Pm_Close(receive_msg_midi_in);
+    Pt_Stop();
+    return;
+}
+
+
 #define is_real_time_msg(msg) ((0xF0 & Pm_MessageStatus(msg)) == 0xF8)
 
 
@@ -211,7 +395,7 @@ void receive_sysex()
             }
         }
     }
-	fclose(f);
+    fclose(f);
     Pm_Close(midi);
 }
 
@@ -227,6 +411,9 @@ void send_sysex()
 
 	/* determine which output device to use */
     int i = get_number("Type output device number: ");
+    while ((latency = get_number(
+                     "Latency in milliseconds (0 to send data immediatedly,\n"
+                     "  >0 to send timestamped messages): ")) < 0);
 
     msg.timestamp = 0; /* no need for timestamp */
 
@@ -281,19 +468,18 @@ int main()
     int i;
     char line[80];
     
-	/* list device information */
-	for (i = 0; i < Pm_CountDevices(); i++) {
+    /* list device information */
+    for (i = 0; i < Pm_CountDevices(); i++) {
         const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
         printf("%d: %s, %s", i, info->interf, info->name);
         if (info->input) printf(" (input)");
         if (info->output) printf(" (output)");
         printf("\n");
     }
-	latency = get_number("Latency in milliseconds (0 to send data immediatedly,\n"
-		                 "  >0 to send timestamped messages): ");    
     while (1) {
         printf("Type r to receive sysex, s to send,"
-               " l for loopback test, q to quit: ");
+               " l for loopback test, m to send multiple,"
+               " n to receive multiple, q to quit: ");
         fgets(line, STRING_MAX, stdin);
         switch (line[0]) {
           case 'r':
@@ -304,6 +490,13 @@ int main()
             break;
           case 'l':
             loopback_test();
+            break;
+          case 'm':
+            send_multiple_test();
+            break;
+          case 'n':
+            receive_multiple_test();
+            break;
           case 'q':
             exit(0);
           default:
@@ -312,8 +505,3 @@ int main()
     }
     return 0;
 }
-
-
-     
-
-            

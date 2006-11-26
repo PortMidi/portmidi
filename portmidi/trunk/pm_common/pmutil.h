@@ -96,7 +96,9 @@ void *Pm_QueuePeek(PmQueue *queue);
     condition to the reader (dequeuer). E.g. when transfering data from 
     the OS to an application, if the OS indicates a buffer overrun,
     Pm_SetOverflow() can be used to insure that the reader receives a
-    pmBufferOverflow result from Pm_Dequeue(). 
+    pmBufferOverflow result from Pm_Dequeue(). Returns pmBadPtr if queue
+    is NULL, returns pmBufferOverflow if buffer is already in an overflow
+    state, returns pmNoError if successfully set overflow state.
  */
 PmError Pm_SetOverflow(PmQueue *queue);
 

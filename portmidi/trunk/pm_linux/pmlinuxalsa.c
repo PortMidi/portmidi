@@ -212,7 +212,7 @@ static PmError alsa_write_byte(PmInternal *midi, unsigned char byte,
             when = (when - now) + midi->latency;
             if (when < 0) when = 0;
             VERBOSE printf("timestamp %d now %d latency %d, ", 
-                           timestamp, now, midi->latency);
+                           (int) timestamp, (int) now, midi->latency);
             VERBOSE printf("scheduling event after %d\n", when);
             /* message is sent in relative ticks, where 1 tick = 1 ms */
             snd_seq_ev_schedule_tick(&ev, queue, 1, when);
@@ -242,7 +242,6 @@ static PmError alsa_write_byte(PmInternal *midi, unsigned char byte,
 
 static PmError alsa_out_close(PmInternal *midi)
 {
-    int err;
     alsa_descriptor_type desc = (alsa_descriptor_type) midi->descriptor;
     if (!desc) return pmBadPtr;
 
@@ -334,7 +333,6 @@ static PmError alsa_in_open(PmInternal *midi, void *driverInfo)
 
 static PmError alsa_in_close(PmInternal *midi)
 {
-    int err;
     alsa_descriptor_type desc = (alsa_descriptor_type) midi->descriptor;
     if (!desc) return pmBadPtr;
     if (pm_hosterror = snd_seq_disconnect_from(seq, desc->this_port, 
@@ -356,9 +354,23 @@ static PmError alsa_in_close(PmInternal *midi)
 
 static PmError alsa_abort(PmInternal *midi)
 {
+    /* NOTE: ALSA documentation is vague. This is supposed to 
+     * remove any pending output messages. If you can test and 
+     * confirm this code is correct, please update this comment. -RBD
+     */
     alsa_descriptor_type desc = (alsa_descriptor_type) midi->descriptor;
-    /* This is supposed to flush any pending output. */
-    printf("WARNING: alsa_abort not implemented\n");
+    snd_seq_remove_events_t info;
+    snd_seq_addr addr;
+    addr.client = desc->client;
+    addr.port = desc->port;
+    snd_seq_remove_events_set_dest(&info, &addr);
+    snd_seq_remove_events_set_condition(&info, SND_SEQ_REMOVE_DEST);
+    pm_hosterror = snd_seq_remove_events(seq, &info);
+    if (pm_hosterror) {
+        get_alsa_error_text(pm_hosterror_text, PM_HOST_ERROR_MSG_LEN, 
+                            pm_hosterror);
+        return pmHostError;
+    }
     return pmNoError;
 }
 
@@ -416,7 +428,7 @@ static PmError alsa_write(PmInternal *midi, PmEvent *buffer, long length)
 static PmError alsa_write_flush(PmInternal *midi)
 {
     alsa_descriptor_type desc = (alsa_descriptor_type) midi->descriptor;
-    VERBOSE printf("snd_seq_drain_output: 0x%x\n", seq);
+    VERBOSE printf("snd_seq_drain_output: 0x%x\n", (unsigned int) seq);
     desc->error = snd_seq_drain_output(seq);
     if (desc->error < 0) return pmHostError;
 
@@ -589,8 +601,6 @@ static void handle_event(snd_seq_event_t *ev)
     case SND_SEQ_EVENT_SYSEX: {
         const BYTE *ptr = (const BYTE *) ev->data.ext.ptr;
         int i;
-        long msg = 0;
-        int shift = 0;
         if (!(midi->filters & PM_FILT_SYSEX)) {
             for (i = 0; i < ev->data.ext.len; i++) {
                 pm_read_byte(midi, *ptr++, timestamp);
@@ -715,7 +725,7 @@ PmError pm_linuxalsa_init( void )
      * call seq_event_input_pending() to avoid blocking.
      */
     err = snd_seq_open(&seq, "default", SND_SEQ_OPEN_DUPLEX, 0);
-    if (err < 0) return;
+    if (err < 0) return err;
     
     snd_seq_client_info_alloca(&cinfo);
     snd_seq_port_info_alloca(&pinfo);
@@ -752,6 +762,7 @@ PmError pm_linuxalsa_init( void )
             }
         }
     }
+    return pmNoError;
 }
     
 
@@ -759,5 +770,9 @@ void pm_linuxalsa_term(void)
 {
     if (seq) {
         snd_seq_close(seq);
+        pm_free(descriptors);
+        descriptors = NULL;
+        pm_descriptor_index = 0;
+        pm_descriptor_max = 0;
     }
 }

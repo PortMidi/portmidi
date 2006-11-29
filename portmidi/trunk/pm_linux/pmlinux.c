@@ -22,12 +22,18 @@
 
 PmError pm_init()
 {
+    /* Note: it is not an error for PMALSA to fail to initialize. 
+     * It may be a design error that the client cannot query what subsystems
+     * are working properly other than by looking at the list of available
+     * devices.
+     */
     #ifdef PMALSA
 	pm_linuxalsa_init();
     #endif
     #ifdef PMNULL
         pm_linuxnull_init();
     #endif
+    return pmNoError;
 }
 
 void pm_term(void)

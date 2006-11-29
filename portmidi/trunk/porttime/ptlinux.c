@@ -21,7 +21,13 @@ CHANGE LOG
             thread. Simplified implementation notes. 
 
 */
-
+/* stdlib, stdio, unistd, and sys/types were added because they appeared
+ * in a Gentoo patch, but I'm not sure why they are needed. -RBD
+ */
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
 #include "porttime.h"
 #include "sys/time.h"
 #include "sys/resource.h"

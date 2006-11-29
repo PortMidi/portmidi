@@ -39,7 +39,7 @@ ptlib = porttime/libporttime.a
 CC = gcc $(VFLAGS) $(PMFLAGS) -g -Ipm_common -Iporttime
 
 pmobjects = pm_common/pmutil.o $(versions) pm_linux/pmlinux.o  \
-	pm_common/portmidi.o pm_linux/pmlinuxalsa.o
+	pm_common/portmidi.o
 
 ptobjects = porttime/porttime.o porttime/ptlinux.o 
 
@@ -82,7 +82,7 @@ pm_test/qtest: pm_linux/Makefile pm_test/qtest.o $(pmlib) $(ptlib)
 	$(CC) pm_test/qtest.o -o pm_test/qtest $(pmlib) $(ptlib) $(ALSALIB)
 
 clean:
-	rm -f *.o *~ core* */*.o */*~ */core* pm_test/*/pm_dll.dll 
+	rm -f *.o *~ core* */*.o */*.so */*~ */core* pm_test/*/pm_dll.dll 
 	rm -f *.opt *.ncb *.plg pm_win/Debug/pm_dll.lib pm_win/Release/pm_dll.lib
 	rm -f pm_test/*.opt pm_test/*.ncb
 

@@ -153,7 +153,7 @@ int main(int argc, char **argv)
     int i;
     if (argc > 1) { /* first arg can change defaults */
         argument = argv[1];
-	while (*argument) doascii(*argument++);
+        while (*argument) doascii(*argument++);
     }
     showhelp();
     /* use porttime callback to empty midi queue and print */
@@ -176,13 +176,15 @@ int main(int argc, char **argv)
     printf("Midi Monitor ready.\n");
     active = true;
     while (!done) {
-	char s[100];
+        char s[100];
         if (fgets(s, 100, stdin)) {
             doascii(s[0]);
         }
     }
     active = false;
+    Pm_Close(midi_in);
     Pt_Stop();
+    Pm_Terminate();
     exit(0);
 }
 
@@ -199,71 +201,71 @@ private void doascii(char c)
     if (isupper(c)) c = tolower(c);
     if (c == 'q') done = true;
     else if (c == 'b') {
-	bender = !bender;
+        bender = !bender;
         filter ^= PM_FILT_PITCHBEND;
-	if (inited)
-	    printf("Pitch Bend, etc. %s\n", (bender ? "ON" : "OFF"));
+        if (inited)
+            printf("Pitch Bend, etc. %s\n", (bender ? "ON" : "OFF"));
     } else if (c == 'c') {
-	controls = !controls;
+        controls = !controls;
         filter ^= PM_FILT_CONTROL;
-	if (inited)
-	    printf("Control Change %s\n", (controls ? "ON" : "OFF"));
+        if (inited)
+            printf("Control Change %s\n", (controls ? "ON" : "OFF"));
     } else if (c == 'h') {
-	pgchanges = !pgchanges;
+        pgchanges = !pgchanges;
         filter ^= PM_FILT_PROGRAM;
-	if (inited)
-	    printf("Program Changes %s\n", (pgchanges ? "ON" : "OFF"));
+        if (inited)
+            printf("Program Changes %s\n", (pgchanges ? "ON" : "OFF"));
     } else if (c == 'n') {
-	notes = !notes;
+        notes = !notes;
         filter ^= PM_FILT_NOTE;
-	if (inited)
-	    printf("Notes %s\n", (notes ? "ON" : "OFF"));
+        if (inited)
+            printf("Notes %s\n", (notes ? "ON" : "OFF"));
     } else if (c == 'x') {
-	excldata = !excldata;
+        excldata = !excldata;
         filter ^= PM_FILT_SYSEX;
-	if (inited)
-	    printf("System Exclusive data %s\n", (excldata ? "ON" : "OFF"));
+        if (inited)
+            printf("System Exclusive data %s\n", (excldata ? "ON" : "OFF"));
     } else if (c == 'r') {
-	realdata = !realdata;
-        filter ^= (PM_FILT_PLAY | PM_FILT_RESET | PM_FILT_UNDEFINED);
-	if (inited)
-	    printf("Real Time messages %s\n", (realdata ? "ON" : "OFF"));
+        realdata = !realdata;
+        filter ^= (PM_FILT_PLAY | PM_FILT_RESET | PM_FILT_TICK | PM_FILT_UNDEFINED);
+        if (inited)
+            printf("Real Time messages %s\n", (realdata ? "ON" : "OFF"));
     } else if (c == 'k') {
-	clksencnt = !clksencnt;
+        clksencnt = !clksencnt;
         filter ^= PM_FILT_CLOCK;
-	if (inited)
-	    printf("Clock and Active Sense Counting %s\n", (clksencnt ? "ON" : "OFF"));
-	if (!clksencnt) clockcount = actsensecount = 0;
+        if (inited)
+            printf("Clock and Active Sense Counting %s\n", (clksencnt ? "ON" : "OFF"));
+        if (!clksencnt) clockcount = actsensecount = 0;
     } else if (c == 's') {
-	if (clksencnt) {
-	    if (inited)
-		printf("Clock Count %ld\nActive Sense Count %ld\n", 
-			clockcount, actsensecount);
-	} else if (inited) {
-	    printf("Clock Counting not on\n");
-	}
+        if (clksencnt) {
+            if (inited)
+                printf("Clock Count %ld\nActive Sense Count %ld\n", 
+                        clockcount, actsensecount);
+        } else if (inited) {
+            printf("Clock Counting not on\n");
+        }
     } else if (c == 't') {
-	notestotal+=notescount;
-	if (inited)
-	    printf("This Note Count %ld\nTotal Note Count %ld\n",
-		    notescount, notestotal);
-	notescount=0;
+        notestotal+=notescount;
+        if (inited)
+            printf("This Note Count %ld\nTotal Note Count %ld\n",
+                    notescount, notestotal);
+        notescount=0;
     } else if (c == 'v') {
-	verbose = !verbose;
-	if (inited)
-	    printf("Verbose %s\n", (verbose ? "ON" : "OFF"));
+        verbose = !verbose;
+        if (inited)
+            printf("Verbose %s\n", (verbose ? "ON" : "OFF"));
     } else if (c == 'm') {
-	chmode = !chmode;
-	if (inited)
-	    printf("Channel Mode Messages %s", (chmode ? "ON" : "OFF"));
+        chmode = !chmode;
+        if (inited)
+            printf("Channel Mode Messages %s", (chmode ? "ON" : "OFF"));
     } else {
-	if (inited) {
-	    if (c == ' ') {
-		PmEvent event;
-		while (Pm_Read(midi_in, &event, 1)) ;	/* flush midi input */
-		printf("...FLUSHED MIDI INPUT\n\n");
-	    } else showhelp();
-	}
+        if (inited) {
+            if (c == ' ') {
+                PmEvent event;
+                while (Pm_Read(midi_in, &event, 1)) ;	/* flush midi input */
+                printf("...FLUSHED MIDI INPUT\n\n");
+            } else showhelp();
+        }
     }
     if (inited) Pm_SetFilter(midi_in, filter);
 }
@@ -294,7 +296,7 @@ private void output(PmMessage data)
     int chan;   /* the midi channel of the current event */
     int len;    /* used to get constant field width */
 
-    printf("output data %8x; ", data);
+    /* printf("output data %8x; ", data); */
 
     command = Pm_MessageStatus(data) & MIDI_CODE_MASK;
     chan = Pm_MessageStatus(data) & MIDI_CHN_MASK;
@@ -315,148 +317,148 @@ private void output(PmMessage data)
             i++; /* include the EOX byte in output */
         }
         showbytes(data, i, verbose);
-	if (verbose) printf("System Exclusive\n");
+        if (verbose) printf("System Exclusive\n");
     } else if (command == MIDI_ON_NOTE && Pm_MessageData2(data) != 0) {
-	notescount++;
-	if (notes) {
-	    showbytes(data, 3, verbose);
-	    if (verbose) {
-		printf("NoteOn  Chan %2d Key %3d ", chan, Pm_MessageData1(data));
-		len = put_pitch(Pm_MessageData1(data));
-		printf(vel_format + len, Pm_MessageData2(data));
-	    }
-	}
+        notescount++;
+        if (notes) {
+            showbytes(data, 3, verbose);
+            if (verbose) {
+                printf("NoteOn  Chan %2d Key %3d ", chan, Pm_MessageData1(data));
+                len = put_pitch(Pm_MessageData1(data));
+                printf(vel_format + len, Pm_MessageData2(data));
+            }
+        }
     } else if ((command == MIDI_ON_NOTE /* && Pm_MessageData2(data) == 0 */ ||
-	       command == MIDI_OFF_NOTE) && notes) {
-	showbytes(data, 3, verbose);
-	if (verbose) {
-	    printf("NoteOff Chan %2d Key %3d ", chan, Pm_MessageData1(data));
-	    len = put_pitch(Pm_MessageData1(data));
-	    printf(vel_format + len, Pm_MessageData2(data));
-	}
+               command == MIDI_OFF_NOTE) && notes) {
+        showbytes(data, 3, verbose);
+        if (verbose) {
+            printf("NoteOff Chan %2d Key %3d ", chan, Pm_MessageData1(data));
+            len = put_pitch(Pm_MessageData1(data));
+            printf(vel_format + len, Pm_MessageData2(data));
+        }
     } else if (command == MIDI_CH_PROGRAM && pgchanges) {
-	showbytes(data, 2, verbose);
-	if (verbose) {
-	    printf("  ProgChg Chan %2d Prog %2d\n", chan, Pm_MessageData1(data) + 1);
-	}
+        showbytes(data, 2, verbose);
+        if (verbose) {
+            printf("  ProgChg Chan %2d Prog %2d\n", chan, Pm_MessageData1(data) + 1);
+        }
     } else if (command == MIDI_CTRL) {
-	       /* controls 121 (MIDI_RESET_CONTROLLER) to 127 are channel
-		* mode messages. */
-	if (Pm_MessageData1(data) < MIDI_RESET_CONTROLLERS) {
+               /* controls 121 (MIDI_RESET_CONTROLLER) to 127 are channel
+                * mode messages. */
+        if (Pm_MessageData1(data) < MIDI_RESET_CONTROLLERS) {
             showbytes(data, 3, verbose);
             if (verbose) {
                 printf("CtrlChg Chan %2d Ctrl %2d Val %2d\n",
                        chan, Pm_MessageData1(data), Pm_MessageData2(data));
             }
-	} else /* channel mode */ if (chmode) {
-	    showbytes(data, 3, verbose);
-	    if (verbose) {
-		switch (Pm_MessageData1(data)) {
-		  case MIDI_RESET_CONTROLLERS:
-		    printf("Reset All Controllers\n");
-		    break;
-		  case MIDI_LOCAL:
-		    printf("LocCtrl Chan %2d %s\n",
-			    chan, Pm_MessageData2(data) ? "On" : "Off");
-		    break;
-		  case MIDI_ALL_OFF:
-		    printf("All Off Chan %2d\n", chan);
-		    break;
-		  case MIDI_OMNI_OFF:
-		    printf("OmniOff Chan %2d\n", chan);
-		    break;
-		  case MIDI_OMNI_ON:
-		    printf("Omni On Chan %2d\n", chan);
-		    break;
-		  case MIDI_MONO_ON:
-		    printf("Mono On Chan %2d\n", chan);
-		    if (Pm_MessageData2(data))
-			printf(" to %d received channels\n", Pm_MessageData2(data));
-		    else
-			printf(" to all received channels\n");
-		    break;
-		  case MIDI_POLY_ON:
-		    printf("Poly On Chan %2d\n", chan);
-		    break;
-		}
-	    }
-	}
+        } else /* channel mode */ if (chmode) {
+            showbytes(data, 3, verbose);
+            if (verbose) {
+                switch (Pm_MessageData1(data)) {
+                  case MIDI_RESET_CONTROLLERS:
+                    printf("Reset All Controllers\n");
+                    break;
+                  case MIDI_LOCAL:
+                    printf("LocCtrl Chan %2d %s\n",
+                            chan, Pm_MessageData2(data) ? "On" : "Off");
+                    break;
+                  case MIDI_ALL_OFF:
+                    printf("All Off Chan %2d\n", chan);
+                    break;
+                  case MIDI_OMNI_OFF:
+                    printf("OmniOff Chan %2d\n", chan);
+                    break;
+                  case MIDI_OMNI_ON:
+                    printf("Omni On Chan %2d\n", chan);
+                    break;
+                  case MIDI_MONO_ON:
+                    printf("Mono On Chan %2d\n", chan);
+                    if (Pm_MessageData2(data))
+                        printf(" to %d received channels\n", Pm_MessageData2(data));
+                    else
+                        printf(" to all received channels\n");
+                    break;
+                  case MIDI_POLY_ON:
+                    printf("Poly On Chan %2d\n", chan);
+                    break;
+                }
+            }
+        }
     } else if (command == MIDI_POLY_TOUCH && bender) {
-	showbytes(data, 3, verbose);
-	if (verbose) {
-	    printf("P.Touch Chan %2d Key %2d ", chan, Pm_MessageData1(data));
-	    len = put_pitch(Pm_MessageData1(data));
-	    printf(val_format + len, Pm_MessageData2(data));
-	}
+        showbytes(data, 3, verbose);
+        if (verbose) {
+            printf("P.Touch Chan %2d Key %2d ", chan, Pm_MessageData1(data));
+            len = put_pitch(Pm_MessageData1(data));
+            printf(val_format + len, Pm_MessageData2(data));
+        }
     } else if (command == MIDI_TOUCH && bender) {
-	showbytes(data, 2, verbose);
-	if (verbose) {
-	    printf("  A.Touch Chan %2d Val %2d\n", chan, Pm_MessageData1(data));
-	}
+        showbytes(data, 2, verbose);
+        if (verbose) {
+            printf("  A.Touch Chan %2d Val %2d\n", chan, Pm_MessageData1(data));
+        }
     } else if (command == MIDI_BEND && bender) {
-	showbytes(data, 3, verbose);
-	if (verbose) {
-	    printf("P.Bend  Chan %2d Val %2d\n", chan,
-		    (Pm_MessageData1(data) + (Pm_MessageData2(data)<<7)));
-	}
+        showbytes(data, 3, verbose);
+        if (verbose) {
+            printf("P.Bend  Chan %2d Val %2d\n", chan,
+                    (Pm_MessageData1(data) + (Pm_MessageData2(data)<<7)));
+        }
     } else if (Pm_MessageStatus(data) == MIDI_SONG_POINTER) {
-	showbytes(data, 3, verbose);
-	if (verbose) {
-	    printf("    Song Position %d\n",
-		    (Pm_MessageData1(data) + (Pm_MessageData2(data)<<7)));
-	}
+        showbytes(data, 3, verbose);
+        if (verbose) {
+            printf("    Song Position %d\n",
+                    (Pm_MessageData1(data) + (Pm_MessageData2(data)<<7)));
+        }
     } else if (Pm_MessageStatus(data) == MIDI_SONG_SELECT) {
-	showbytes(data, 2, verbose);
-	if (verbose) {
-	    printf("    Song Select %d\n", Pm_MessageData1(data));
-	}
+        showbytes(data, 2, verbose);
+        if (verbose) {
+            printf("    Song Select %d\n", Pm_MessageData1(data));
+        }
     } else if (Pm_MessageStatus(data) == MIDI_TUNE_REQ) {
-	showbytes(data, 1, verbose);
-	if (verbose) {
-	    printf("    Tune Request\n");
-	}
+        showbytes(data, 1, verbose);
+        if (verbose) {
+            printf("    Tune Request\n");
+        }
     } else if (Pm_MessageStatus(data) == MIDI_Q_FRAME && realdata) {
-	showbytes(data, 2, verbose);
-	if (verbose) {
-	    printf("    Time Code Quarter Frame Type %d Values %d\n",
-		    (Pm_MessageData1(data) & 0x70) >> 4, Pm_MessageData1(data) & 0xf);
-	}
+        showbytes(data, 2, verbose);
+        if (verbose) {
+            printf("    Time Code Quarter Frame Type %d Values %d\n",
+                    (Pm_MessageData1(data) & 0x70) >> 4, Pm_MessageData1(data) & 0xf);
+        }
     } else if (Pm_MessageStatus(data) == MIDI_START && realdata) {
-	showbytes(data, 1, verbose);
-	if (verbose) {
-	    printf("    Start\n");
-	}
+        showbytes(data, 1, verbose);
+        if (verbose) {
+            printf("    Start\n");
+        }
     } else if (Pm_MessageStatus(data) == MIDI_CONTINUE && realdata) {
-	showbytes(data, 1, verbose);
-	if (verbose) {
-	    printf("    Continue\n");
-	}
+        showbytes(data, 1, verbose);
+        if (verbose) {
+            printf("    Continue\n");
+        }
     } else if (Pm_MessageStatus(data) == MIDI_STOP && realdata) {
-	showbytes(data, 1, verbose);
-	if (verbose) {
-	    printf("    Stop\n");
-	}
+        showbytes(data, 1, verbose);
+        if (verbose) {
+            printf("    Stop\n");
+        }
     } else if (Pm_MessageStatus(data) == MIDI_SYS_RESET && realdata) {
-	showbytes(data, 1, verbose);
-	if (verbose) {
-	    printf("    System Reset\n");
-	}
+        showbytes(data, 1, verbose);
+        if (verbose) {
+            printf("    System Reset\n");
+        }
     } else if (Pm_MessageStatus(data) == MIDI_TIME_CLOCK) {
-	if (clksencnt) clockcount++;
-	else if (realdata) {
-	    showbytes(data, 1, verbose);
-	    if (verbose) {
-		printf("    Clock\n");
-	    }
-	}
+        if (clksencnt) clockcount++;
+        else if (realdata) {
+            showbytes(data, 1, verbose);
+            if (verbose) {
+                printf("    Clock\n");
+            }
+        }
     } else if (Pm_MessageStatus(data) == MIDI_ACTIVE_SENSING) {
-	if (clksencnt) actsensecount++;
-	else if (realdata) {
-	    showbytes(data, 1, verbose);
-	    if (verbose) {
-		printf("    Active Sensing\n");
-	    }
-	}
+        if (clksencnt) actsensecount++;
+        else if (realdata) {
+            showbytes(data, 1, verbose);
+            if (verbose) {
+                printf("    Active Sensing\n");
+            }
+        }
     } else showbytes(data, 3, verbose);
     fflush(stdout);
 }
@@ -473,8 +475,8 @@ private int put_pitch(int p)
 {
     char result[8];
     static char *ptos[] = {
-	"c", "cs", "d", "ef", "e", "f", "fs", "g",
-	"gs", "a", "bf", "b"    };
+        "c", "cs", "d", "ef", "e", "f", "fs", "g",
+        "gs", "a", "bf", "b"    };
     /* note octave correction below */
     sprintf(result, "%s%d", ptos[p % 12], (p / 12) - 1);
     printf(result);
@@ -500,14 +502,14 @@ private void showbytes(long data, int len, boolean newline)
     } */
     for (i = 0; i < len; i++) {
         putchar(nib_to_hex[(data >> 4) & 0xF]);
-	putchar(nib_to_hex[data & 0xF]);
-	count += 2;
+        putchar(nib_to_hex[data & 0xF]);
+        count += 2;
         if (count > 72) {
-	    putchar('.');
-	    putchar('.');
-	    putchar('.');
-	    break;
-	}
+            putchar('.');
+            putchar('.');
+            putchar('.');
+            break;
+        }
         data >>= 8;
     }
     putchar(' ');

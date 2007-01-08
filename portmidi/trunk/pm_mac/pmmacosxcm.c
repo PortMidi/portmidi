@@ -13,7 +13,7 @@
     values and almost no other state, we store the MIDIEndpointRef on
     descriptors[midi->device_id].descriptor. The only other state we need
     is for errors: we need to know if there is an error and if so, what is
-    the error text. As in pmwinmm.c, we use a structure with two kinds of
+    the error text. We use a structure with two kinds of
     host error: "error" and "callback_error". That way, asynchronous callbacks
     do not interfere with other error information.
     

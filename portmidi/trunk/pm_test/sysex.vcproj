@@ -77,6 +77,7 @@
 				ProgramDatabaseFile=".\sysexDebug/sysex.pdb"
 				SubSystem="1"
 				TargetMachine="1"
+				Profile="false"
 			/>
 			<Tool
 				Name="VCALinkTool"

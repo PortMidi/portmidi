@@ -12,7 +12,10 @@
 #define bzero(addr, siz) memset(addr, 0, siz)
 #endif
 
-/* #define QUEUE_DEBUG 1 */
+// #define QUEUE_DEBUG 1
+#ifdef QUEUE_DEBUG
+#include "stdio.h"
+#endif
 
 /* code is based on 4-byte words -- it should work on a 64-bit machine
    as long as a "long" has 4 bytes. This code could be generalized to

@@ -13,6 +13,10 @@
 #include "portmidi.h"
 #include "porttime.h"
 #include "string.h"
+#ifdef WIN32
+// need to get declaration for Sleep()
+#include "windows.h"
+#endif
 
 #define MIDI_SYSEX 0xf0
 #define MIDI_EOX 0xf7
@@ -83,19 +87,27 @@ void loopback_test()
     while (1) {
         PmError count;
         long start_time;
-        long error_position;
+        long error_position = -1; /* 0; -1; -1 for continuous */ 
         long expected = 0;
         long actual = 0;
-        printf("Type return to send message, q to quit: ");
-        fgets(line, STRING_MAX, stdin);
-        if (line[0] == 'q') goto cleanup;
+        /* this modification will run until an error is detected */
+        /* set error_position above to 0 for interactive, -1 for */
+        /* continuous */
+        if (error_position >= 0) {
+            printf("Type return to send message, q to quit: ");
+            fgets(line, STRING_MAX, stdin);
+            if (line[0] == 'q') goto cleanup;
+        }
 
         /* compose the message */
         len = rand() % 998 + 2; /* len only counts data bytes */
         msg[0] = (char) MIDI_SYSEX; /* start of SYSEX message */
         /* data bytes go from 1 to len */
         for (i = 0; i < len; i++) {
-            msg[i + 1] = rand() & 0x7f; /* MIDI data */
+/* pick whether data is sequential or random... (docs say random) */
+#define DATA_EXPR (i+1)
+// #define DATA_EXPR rand()
+            msg[i + 1] = DATA_EXPR & 0x7f; /* MIDI data */
         }
         /* final EOX goes in len+1, total of len+2 bytes in msg */
         msg[len + 1] = (char) MIDI_EOX;
@@ -104,9 +116,9 @@ void loopback_test()
         count = Pm_Read(midi_in, &event, 1);
 
         if (count != 0) {
-			printf("Before sending anything, a MIDI message was found in\n");
-			printf("the input buffer. Please try again.\n");
-			break;
+            printf("Before sending anything, a MIDI message was found in\n");
+            printf("the input buffer. Please try again.\n");
+            break;
 		}
 
         /* send the message */
@@ -122,13 +134,10 @@ void loopback_test()
         /* allow up to 2 seconds for transmission */
         while (data != MIDI_EOX && start_time + 2000 > Pt_Time()) {
             count = Pm_Read(midi_in, &event, 1);
-            /* CAUTION: this causes busy waiting. It would be better to 
-               be in a polling loop to avoid being compute bound. PortMidi
-               does not support a blocking read since this is so seldom
-               useful. There is no timeout, so if we don't receive a sysex
-               message, or at least an EOX, the program will hang here.
-             */
-            if (count == 0) continue;
+            if (count == 0) {
+                Sleep(1); /* be nice: give some CPU time to the system */
+                continue; /* continue polling for input */
+            }
             
             /* printf("read %lx ", event.message);
                fflush(stdout); */
@@ -145,7 +154,8 @@ void loopback_test()
             }
         }
         if (error_position >= 0) {
-            printf("Error at byte %ld: sent %lx recd %lx\n", error_position, expected, actual);
+            printf("Error at byte %ld: sent %lx recd %lx\n", error_position, 
+                   expected, actual);
         } else if (i != len + 2) {
             printf("Error: byte %d not received\n", i);
         } else {
@@ -167,10 +177,8 @@ void send_multiple_test()
     int outp;
     int length;
     int num_msgs;
-    PmStream *midi_in;
     PmStream *midi_out;
     unsigned char msg[1024];
-    long len;
     int i;
     PtTimestamp start_time;
     PtTimestamp stop_time;
@@ -299,8 +307,6 @@ void receive_multiple_test()
 {
     PmError err;
     int inp;
-    unsigned char msg[1024];
-    long len;
     
     printf("This test expects to receive data sent by the send_multiple test\n");
     printf("The test will check that correct data is received.\n");
@@ -320,7 +326,11 @@ void receive_multiple_test()
     receive_msg_error = 0;
     receive_poll_running = true;
     while ((!receive_msg_error) && (receive_msg_count != 0)) {
+#ifdef WIN32
+        Sleep(1000);
+#else
         sleep(1); /* block and wait */
+#endif
     }
     if (receive_msg_error) {
         printf("Receive_multiple test encountered an error\n");

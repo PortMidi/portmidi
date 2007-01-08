@@ -13,6 +13,7 @@
 
 #include "stdlib.h"
 #include "portmidi.h"
+#include "pmutil.h"
 #include "pminternal.h"
 #include "pmwinmm.h"
 #ifdef USE_DLL_FOR_CLEANUP

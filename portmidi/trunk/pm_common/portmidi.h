@@ -88,26 +88,10 @@ extern "C" {
  *      b) host error during callback
  *    These can occur w/midi input or output devices. (b) can only happen 
  *    asynchronously (during callback routines), whereas (a) only occurs while
- *    synchronously running PortMidi and any resulting system dependent calls
- *
- *    Host-error reporting relies on following assumptions:
- *      1) PortMidi routines won't allow system dependent routines to be 
- *         called when args are bogus.
- *         Thus, in pmwinmm.c it is safe to assume:
- *          - stream ptr valid 
- *          - currently not operating in "has host error" state 
- *      2) Host-error reporting relies on a staged delivery of error messages.
- *         When a host error occurs, the error code is saved with the stream.
- *         The error is reported as a return code from the next operation on
- *         the stream. This could be immediately if the error is synchronous,
- *         or delayed if the error is an asynchronous callback problem. In
- *         any case, when pmHostError is returned, the error is copied to 
- *         a global, pm_hosterror and the error code stored with the stream
- *         is cleared. If the user chooses to inquire about the error using
- *         Pm_GetHostErrorText(), the error will be reported as text. If the
- *         user ignores the error and makes another call on the stream, the
- *         call will proceed because the error code associated with the stream
- *         has been cleared.
+ *    synchronously running PortMidi and any resulting system dependent calls.
+ *    Both (a) and (b) are reported by the next read or write call. You can
+ *    also query for asynchronous errors (b) at any time by calling
+ *    Pm_HasHostError().
  *
  * NOTES ON COMPILE-TIME SWITCHES
  *
@@ -176,10 +160,13 @@ typedef void PortMidiStream;
     asynchronously where the client does not
     explicitly call a function, and therefore cannot receive an error code.
     The client can test for a pending error using Pm_HasHostError(). If true,
-    the error can be accessed and cleared by calling Pm_GetErrorText(). The
+    the error can be accessed and cleared by calling Pm_GetErrorText(). 
+    Errors are also cleared by calling other functions that can return
+    errors, e.g. Pm_OpenInput(), Pm_OpenOutput(), Pm_Read(), Pm_Write(). The
     client does not need to call Pm_HasHostError(). Any pending error will be
     reported the next time the client performs an explicit function call on 
-    the stream, e.g. an input or output operation.
+    the stream, e.g. an input or output operation. Until the error is cleared,
+    no new error codes will be obtained, even for a different stream.
 */
 int Pm_HasHostError( PortMidiStream * stream );
 
@@ -378,46 +365,46 @@ PmError Pm_OpenOutput( PortMidiStream** stream,
  */
 
 /* filter active sensing messages (0xFE): */
-#define PM_FILT_ACTIVE 0x1
+#define PM_FILT_ACTIVE (1 << 0x0E)
 /* filter system exclusive messages (0xF0): */
-#define PM_FILT_SYSEX 0x2
-/* filter clock messages (0xF8 only, does not filter clock start, etc.): */
-#define PM_FILT_CLOCK 0x4
+#define PM_FILT_SYSEX (1 << 0x00)
+/* filter clock messages (CLOCK 0xF8, START 0xFA, STOP 0xFC, and CONTINUE 0xFB) */
+#define PM_FILT_CLOCK ((1 << 0x08) | (1 << 0x0A) | (1 << 0x0C) | (1 << 0x0B))
 /* filter play messages (start 0xFA, stop 0xFC, continue 0xFB) */
-#define PM_FILT_PLAY 0x8
-/* filter undefined F9 messages (some equipment uses this as a 10ms 'tick') */
-#define PM_FILT_F9 0x10
-#define PM_FILT_TICK PM_FILT_F9
+#define PM_FILT_PLAY (1 << 0x0A)
+/* filter tick messages (0xF9) */
+#define PM_FILT_TICK (1 << 0x09)
 /* filter undefined FD messages */
-#define PM_FILT_FD 0x20
+#define PM_FILT_FD (1 << 0x0D)
 /* filter undefined real-time messages */
-#define PM_FILT_UNDEFINED (PM_FILT_F9 | PM_FILT_FD)
+#define PM_FILT_UNDEFINED PM_FILT_FD
 /* filter reset messages (0xFF) */
-#define PM_FILT_RESET 0x40
+#define PM_FILT_RESET (1 << 0x0F)
 /* filter all real-time messages */
-#define PM_FILT_REALTIME (PM_FILT_ACTIVE | PM_FILT_SYSEX | PM_FILT_CLOCK | PM_FILT_PLAY | PM_FILT_UNDEFINED | PM_FILT_RESET)
+#define PM_FILT_REALTIME (PM_FILT_ACTIVE | PM_FILT_SYSEX | PM_FILT_CLOCK | \
+    PM_FILT_PLAY | PM_FILT_UNDEFINED | PM_FILT_RESET | PM_FILT_TICK)
 /* filter note-on and note-off (0x90-0x9F and 0x80-0x8F */
-#define PM_FILT_NOTE 0x80
+#define PM_FILT_NOTE ((1 << 0x19) | (1 << 0x18))
 /* filter channel aftertouch (most midi controllers use this) (0xD0-0xDF)*/
-#define PM_FILT_CHANNEL_AFTERTOUCH 0x100
-/* per-note aftertouch (Ensoniq holds a patent on generating this on keyboards until June 2006) (0xA0-0xAF) */
-#define PM_FILT_POLY_AFTERTOUCH 0x200
+#define PM_FILT_CHANNEL_AFTERTOUCH (1 << 0x1D)
+/* per-note aftertouch (0xA0-0xAF) */
+#define PM_FILT_POLY_AFTERTOUCH (1 << 0x1A)
 /* filter both channel and poly aftertouch */
 #define PM_FILT_AFTERTOUCH (PM_FILT_CHANNEL_AFTERTOUCH | PM_FILT_POLY_AFTERTOUCH)
 /* Program changes (0xC0-0xCF) */
-#define PM_FILT_PROGRAM 0x400
+#define PM_FILT_PROGRAM (1 << 0x1C)
 /* Control Changes (CC's) (0xB0-0xBF)*/
-#define PM_FILT_CONTROL 0x800
+#define PM_FILT_CONTROL (1 << 0x1B)
 /* Pitch Bender (0xE0-0xEF*/
-#define PM_FILT_PITCHBEND 0x1000
+#define PM_FILT_PITCHBEND (1 << 0x1E)
 /* MIDI Time Code (0xF1)*/
-#define PM_FILT_MTC 0x2000
+#define PM_FILT_MTC (1 << 0x01)
 /* Song Position (0xF2) */
-#define PM_FILT_SONG_POSITION 0x4000
+#define PM_FILT_SONG_POSITION (1 << 0x02)
 /* Song Select (0xF3)*/
-#define PM_FILT_SONG_SELECT 0x8000
+#define PM_FILT_SONG_SELECT (1 << 0x03)
 /* Tuning request (0xF6)*/
-#define PM_FILT_TUNE 0x10000
+#define PM_FILT_TUNE (1 << 0x06)
 /* All System Common messages (mtc, song position, song select, tune request) */
 #define PM_FILT_SYSTEMCOMMON (PM_FILT_MTC | PM_FILT_SONG_POSITION | PM_FILT_SONG_SELECT | PM_FILT_TUNE)
 

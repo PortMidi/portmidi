@@ -4,6 +4,7 @@
 	Version="8.00"
 	Name="test"
 	ProjectGUID="{49FA3196-A8F8-4E22-98C3-F3A5197CD06D}"
+	RootNamespace="test"
 	>
 	<Platforms>
 		<Platform
@@ -162,10 +163,11 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/VERBOSE:LIB"
-				AdditionalDependencies="odbc32.lib odbccp32.lib winmm.lib ..\pm_win\Debug\portmidi.lib ..\porttime\Debug\porttime.lib ..\pm_win\Debug\pm_dll.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib winmm.lib ..\pm_win\Debug\portmidi.lib ..\porttime\Debug\porttime.lib ..\pm_win\Debug\pm_dll.lib $(NOINHERIT)"
 				OutputFile=".\testDebug/test.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\testDebug/test.pdb"
 				SubSystem="1"

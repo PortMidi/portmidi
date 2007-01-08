@@ -27,26 +27,38 @@ ERROR HANDLING
 
 Error handling turned out to be much more complicated than expected.
 PortMidi functions return error codes that the caller can check.
-In addition, errors may occur asynchronously due to MIDI input. In
-this case, the error code is transferred to the next call to
-Pm_Read or Pm_Write. Furthermore, an error can arise during a MIDI THRU
-operation that is also invoked as a side effect of polling for input.
+In addition, errors may occur asynchronously due to MIDI input. 
+However, for Windows, there are virtually no errors that can
+occur if the code is correct and not passing bogus values. One
+exception is an error that the system is out of memory, but my
+guess is that one is unlikely to recover gracefully from that.
+Therefore, all errors in callbacks are guarded by assert(), which
+means not guarded at all in release configurations.
 
 Ordinarily, the caller checks for an error code. If the error is
 system-dependent, pmHostError is returned and the caller can
 call Pm_GetHostErrorText to get a text description of the error.
 
-Host errors are recorded in the system-specific data allocated for
-each open MIDI port. However, if an error occurs on open or close,
+Host error codes are system-specific and are recorded in the 
+system-specific data allocated for each open MIDI port. 
+However, if an error occurs on open or close,
 we cannot store the error with the device because there will be
 no device data (assuming PortMidi cleans up after devices that
-are not open). For open and close, we will store the host error
-in a global variable. The PortMidi is smart enough to look here
-first when the user asks for ErrorText.
+are not open). For open and close, we will convert the error
+to text, copy it to a global string, and set pm_hosterror, a
+global flag.
 
-Because output to a MIDI Thru stream can be invoked as a side-effect
-of a MIDI read operation, some errors normally associated with
-writing MIDI can be returned from Pm_Read.
+Similarly, whenever a Read or Write operation returns pmHostError,
+the corresponding error string is copied to a global string
+and pm_hosterror is set. This makes getting error strings
+simple and uniform, although it does cost a string copy and some
+overhead even if the user does not want to look at the error data.
+
+The system-specific Read, Write, Poll, etc. implementations should
+check for asynchronous errors and return immediately if one is
+found so that these get reported. This happens in the Mac OS X 
+code, where lots of things are happening in callbacks, but again,
+in Windows, there are no error codes recorded in callbacks.
 
 DEBUGGING
 

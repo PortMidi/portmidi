@@ -4,6 +4,7 @@
 	Version="8.00"
 	Name="midithru"
 	ProjectGUID="{B4B4240D-7022-4C47-838F-913B4878E938}"
+	RootNamespace="midithru"
 	>
 	<Platforms>
 		<Platform

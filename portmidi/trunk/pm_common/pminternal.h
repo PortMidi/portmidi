@@ -42,7 +42,8 @@ typedef PmError (*pm_write_byte_fn)(struct pm_internal_struct *midi,
                                     unsigned char byte, PmTimestamp timestamp);
 typedef PmError (*pm_write_realtime_fn)(struct pm_internal_struct *midi,
                                         PmEvent *buffer);
-typedef PmError (*pm_write_flush_fn)(struct pm_internal_struct *midi);
+typedef PmError (*pm_write_flush_fn)(struct pm_internal_struct *midi,
+                                     PmTimestamp timestamp);
 typedef PmTimestamp (*pm_synchronize_fn)(struct pm_internal_struct *midi);
 /* pm_open_fn should clean up all memory and close the device if any part
    of the open fails */
@@ -100,10 +101,10 @@ typedef struct pm_internal_struct {
     
     PmTimeProcPtr time_proc; /* where to get the time */
     void *time_info; /* pass this to get_time() */
+    long buffer_len; /* how big is the buffer or queue? */
 #ifdef NEWBUFFER
     PmQueue *queue;
 #else
-    long buffer_len; /* how big is the buffer */
     PmEvent *buffer; /* storage for: 
                         - midi input 
                         - midi output w/latency != 0 */
@@ -129,7 +130,15 @@ typedef struct pm_internal_struct {
     int first_message; /* initially true, used to run first synchronization */
     pm_fns_type dictionary; /* implementation functions */
     void *descriptor; /* system-dependent state */
-
+    /* the following are used to expedite sysex data */
+    /* on windows, in debug mode, based on some profiling, these optimizations
+     * cut the time to process sysex bytes from about 7.5 to 0.26 usec/byte,
+     * but this does not count time in the driver, so I don't know if it is
+     * important
+     */
+    unsigned char *fill_base; /* addr of ptr to sysex data */
+    int *fill_offset_ptr; /* offset of next sysex byte */
+    int fill_length; /* how many sysex bytes to write */
 } PmInternal;
 
 
@@ -139,21 +148,20 @@ void pm_term(void);
 
 /* defined by portMidi, used by pmwinmm */
 PmError none_write_short(PmInternal *midi, PmEvent *buffer);
-PmError none_sysex(PmInternal *midi, PmTimestamp timestamp);
 PmError none_write_byte(PmInternal *midi, unsigned char byte, 
                         PmTimestamp timestamp);
 PmTimestamp none_synchronize(PmInternal *midi);
 
 PmError pm_fail_fn(PmInternal *midi);
+PmError pm_fail_timestamp_fn(PmInternal *midi, PmTimestamp timestamp);
 PmError pm_success_fn(PmInternal *midi);
 PmError pm_add_device(char *interf, char *name, int input, void *descriptor,
                       pm_fns_type dictionary);
 void pm_read_byte(PmInternal *midi, unsigned char byte, PmTimestamp timestamp);
-void pm_begin_sysex(PmInternal *midi);
-void pm_end_sysex(PmInternal *midi);
 void pm_read_short(PmInternal *midi, PmEvent *event);
 
-#define none_write_flush pm_fail_fn
+#define none_write_flush pm_fail_timestamp_fn
+#define none_sysex pm_fail_timestamp_fn
 #define none_poll pm_fail_fn
 #define success_poll pm_success_fn
 

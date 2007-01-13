@@ -207,9 +207,10 @@ PmError Pm_Enqueue(PmQueue *q, void *msg)
 
     int rslt;
     /* no more enqueue until receiver acknowledges overflow */
+    if (!queue) return pmBadPtr;
     if (queue->overflow) return pmBufferOverflow;
     rslt = Pm_QueueFull(q);
-    if (rslt == pmBadPtr) return rslt;
+    /* already checked above: if (rslt == pmBadPtr) return rslt; */
     tail = queue->tail;
     if (rslt) {
         queue->overflow = tail + 1;
@@ -274,6 +275,7 @@ void *Pm_QueuePeek(PmQueue *q)
 {
     PmQueueRep *queue = (PmQueueRep *) q;
     PmError rslt;
+    long temp;
 
     /* arg checking */
     if (!queue)
@@ -281,21 +283,28 @@ void *Pm_QueuePeek(PmQueue *q)
 
     if (queue->peek_flag) {
         return queue->peek;
-    } 
+    }
+    /* this is ugly: if peek_overflow is set, then Pm_Dequeue() 
+     * returns immediately with pmBufferOverflow, but here, we
+     * want Pm_Dequeue() to really check for data. If data is
+     * there, we can return it
+     */
+    temp = queue->peek_overflow;
+    queue->peek_overflow = FALSE;
     rslt = Pm_Dequeue(q, queue->peek);
+    queue->peek_overflow = temp;
+
     if (rslt == 1) {
         queue->peek_flag = TRUE;
         return queue->peek;
     } else if (rslt == pmBufferOverflow) {
-        /* peek should return pointer to valid data, but queue should
-         * remain in overflow state, i.e. Pm_Dequeue() will return error
+        /* when overflow is indicated, the queue is empty and the 
+         * first message that was dropped by Enqueue (signalling
+         * pmBufferOverflow to its caller) would have been the next
+         * message in the queue. Pm_QueuePeek will return NULL, but
+         * remember that an overflow occurred. (see Pm_Dequeue)
          */
-        rslt = Pm_Dequeue(q, queue->peek);
-        assert(rslt == 1); /* since we overflowed, there must be data */
-        queue->peek_flag = TRUE;  /* now queue->peek has valid message */
-        /* put queue in overflow state */
         queue->peek_overflow = TRUE;
-        return queue->peek;
     }
     return NULL;
 }

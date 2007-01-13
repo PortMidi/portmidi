@@ -16,6 +16,8 @@
 #ifdef WIN32
 // need to get declaration for Sleep()
 #include "windows.h"
+#else
+#define Sleep(n) usleep(n * 1000)
 #endif
 
 #define MIDI_SYSEX 0xf0

@@ -270,9 +270,32 @@ readProc(const MIDIPacketList *newPackets, void *refCon, void *connRefCon)
             /* reset running status data -cpr */
 	    m->last_command = 0;
 	    m->last_msg_length = 0;
+            printf("sysex packet length: %d\n", packet->length);
             while (i < packet->length) {
-                pm_read_byte(midi, packet->data[i], event.timestamp);
-                i++;
+                /* optimization: if message_count == 0, we are on an (output)
+                 * message boundary so we can transfer data directly to the 
+                 * queue
+                 */
+                unsigned char *data = &(packet->data[i]);
+                if (midi->sysex_message_count == 0 &&
+                    !midi->flush &&
+                    i <= packet->length - 4 &&
+                    ((event.message = (((long) data[0]) | 
+                     (((long) data[1]) << 8) | (((long) data[2]) << 16) |
+                     (((long) data[3]) << 24))) &
+                     0x80808080) == 0) { /* all data, no status */
+                    /* event.timestamp is already set */
+                    if (Pm_Enqueue(midi->queue, &event) == pmBufferOverflow) {
+                        midi->flush = TRUE;
+                    }
+                    i += 4;
+                    /* non-optimized: process one byte at a time. This is 
+                     * used to handle any embedded SYSEX or EOX bytes and
+                     * to finish */
+                } else {
+                    pm_read_byte(midi, packet->data[i], event.timestamp);
+                    i++;
+                }
             }
         } else {
             process_packet(packet, &event, midi, m);
@@ -416,7 +439,7 @@ midi_abort(PmInternal *midi)
 
 
 static PmError
-midi_write_flush(PmInternal *midi)
+midi_write_flush(PmInternal *midi, PmTimestamp timestamp)
 {
     OSStatus macHostError;
     midi_macosxcm_type m = (midi_macosxcm_type) midi->descriptor;
@@ -458,7 +481,7 @@ send_packet(PmInternal *midi, Byte *message, unsigned int messageLength,
         /* out of space, send the buffer and start refilling it */
         /* make midi->packet non-null to fool midi_write_flush into sending */
         m->packet = (MIDIPacket *) 4; 
-        if ((err = midi_write_flush(midi)) != pmNoError) return err;
+        if ((err = midi_write_flush(midi, timestamp)) != pmNoError) return err;
         m->packet = MIDIPacketListInit(m->packetList);
         assert(m->packet); /* if this fails, it's a programming error */
         m->packet = MIDIPacketListAdd(m->packetList, sizeof(m->packetBuffer),
@@ -674,9 +697,9 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal)
       // does the entity name already start with the device name?
       // (some drivers do this though they shouldn't)
       // if so, do not prepend
-      if (CFStringCompareWithOptions(str /* device name */,
-        result /* endpoint name */,
-        CFRangeMake(0, CFStringGetLength(str)), 0) != kCFCompareEqualTo) {
+        if (CFStringCompareWithOptions( result, /* endpoint name */
+             str /* device name */,
+             CFRangeMake(0, CFStringGetLength(str)), 0) != kCFCompareEqualTo) {
         // prepend the device name to the entity name
         if (CFStringGetLength(result) > 0)
           CFStringInsert(result, 0, CFSTR(" "));

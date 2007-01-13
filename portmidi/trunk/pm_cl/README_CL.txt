@@ -1,6 +1,6 @@
 README_CL.txt for PortMidi
 Roger B. Dannenberg
-18 Oct 2006
+13 Jan 2007
 
 This is a Common Lisp interface to PortMidi.
 
@@ -10,11 +10,19 @@ before you can use PortMidi from Common Lisp.
 You can build PortMidi as a dynamic link library by running this:
 
 cd portmidi
-cd pm_mac
+make -F pm_mac/Makefile.osx install-with-xcode
+
+This is just a shortcut for:
+
+cd portmidi/pm_mac
 sudo xcodebuild -project pm_mac.xcodeproj -configuration Deployment install DSTROOT=/
 
 You can check the file and the architecture for which it is built using:
     file /usr/local/lib/libportmidi.dylib
+
+If you've done this install of portmidi, then you should also have 
+   /usr/local/include/portmidi.h
+This will be necessary to successfully build the cffi interface below.
 
 To test PortMidi with Common Lisp, I (RBD) am using SBCL, which I 
 downloaded from http://prdownloads.sourceforge.net/sbcl. Currently, I use 
@@ -49,17 +57,17 @@ a new directory, portmidi.)
 % cvs checkout portmidi
 % cd portmidi
 % ./configure
-## NOTE: at this point, make will not work unless it can find portmidi.h
-## I added -I/Users/rbd/portmidi/pm_common to CFLAGS in Makefile,
-## but this is obviously just a workaround.
 % make
+% cd ..
 
 Now compile/load the portmidi module just like cffi. Again, change
 "/Lisp/cffi/" and "/Lisp/portmidi" to correspond to your local file system.
+(Note that /Lisp becomes your lisp directory, and "cffi" becomes your
+cffi folder name, e.g. "cffi-061012".
 
 % sbcl
 * (require 'asdf)
-* (push "/Lisp/cffi_0.9.1/" asdf:*central-registry*)
+* (push "/Lisp/cffi/" asdf:*central-registry*)
 * (asdf:oos 'asdf:load-op :cffi)
 * (push "/Lisp/portmidi/" asdf:*central-registry*)
 * (asdf:oos 'asdf:load-op :portmidi)

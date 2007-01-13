@@ -86,8 +86,25 @@ int Pm_QueueEmpty(PmQueue *queue);
 /*
     Pm_QueuePeek() returns a pointer to the item at the head of the queue,
     or NULL if the queue is empty. The item is not removed from the queue.
-    If queue is in an overflow state, a valid pointer is returned and the
-    queue remains in the overflow state.
+    Pm_QueuePeek() will not indicate when an overflow occurs. If you want
+    to get and check pmBufferOverflow messages, use the return value of
+    Pm_QueuePeek() *only* as an indication that you should call 
+    Pm_Dequeue(). At the point where a direct call to Pm_Dequeue() would
+    return pmBufferOverflow, Pm_QueuePeek() will return NULL but internally
+    clear the pmBufferOverflow flag, enabling Pm_Enqueue() to resume
+    enqueuing messages. A subsequent call to Pm_QueuePeek()
+    will return a pointer to the first message *after* the overflow. 
+    Using this as an indication to call Pm_Dequeue(), the first call
+    to Pm_Dequeue() will return pmBufferOverflow. The second call will
+    return success, copying the same message pointed to by the previous
+    Pm_QueuePeek().
+
+    When to use Pm_QueuePeek(): (1) when you need to look at the message
+    data to decide who should be called to receive it. (2) when you need
+    to know a message is ready but cannot accept the message.
+
+    Note that Pm_QueuePeek() is not a fast check, so if possible, you 
+    might as well just call Pm_Dequeue() and accept the data if it is there.
  */
 void *Pm_QueuePeek(PmQueue *queue);
 

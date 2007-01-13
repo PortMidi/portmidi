@@ -358,9 +358,15 @@ static PmError alsa_abort(PmInternal *midi)
      * remove any pending output messages. If you can test and 
      * confirm this code is correct, please update this comment. -RBD
      */
+    /* Unfortunately, I can't even compile it -- my ALSA version 
+     * does not implement snd_seq_remove_events_t, so this does
+     * not compile. I'll try again, but it looks like I'll need to
+     * upgrade my entire Linux OS -RBD
+     */
+    /*
     alsa_descriptor_type desc = (alsa_descriptor_type) midi->descriptor;
     snd_seq_remove_events_t info;
-    snd_seq_addr addr;
+    snd_seq_addr_t addr;
     addr.client = desc->client;
     addr.port = desc->port;
     snd_seq_remove_events_set_dest(&info, &addr);
@@ -371,6 +377,8 @@ static PmError alsa_abort(PmInternal *midi)
                             pm_hosterror);
         return pmHostError;
     }
+    */
+    printf("WARNING: alsa_abort not implemented\n");
     return pmNoError;
 }
 
@@ -601,8 +609,24 @@ static void handle_event(snd_seq_event_t *ev)
     case SND_SEQ_EVENT_SYSEX: {
         const BYTE *ptr = (const BYTE *) ev->data.ext.ptr;
         int i;
-        if (!(midi->filters & PM_FILT_SYSEX)) {
-            for (i = 0; i < ev->data.ext.len; i++) {
+        for (i = 0; i < ev->data.ext.len; i++) {
+            if (midi->sysex_message_count == 0 &&
+                !midi->flush &&
+                i <= lpMidiHdr->dwBytesRecorded - 4 &&
+                ((event.message = (((long) data[0]) | 
+                                   (((long) data[1]) << 8) | (((long) data[2]) << 16) |
+                                   (((long) data[3]) << 24))) &
+                 0x80808080) == 0) { /* all data, no status */
+                event.timestamp = dwParam2;
+                if (Pm_Enqueue(midi->queue, &event) == pmBufferOverflow) {
+                    midi->flush = TRUE;
+                }
+                i += 4;
+                data += 4;
+            } else {
+                /* non-optimized: process one byte at a time. 
+                 * This is used to handle any embedded SYSEX 
+                 * or EOX bytes and to finish */
                 pm_read_byte(midi, *ptr++, timestamp);
             }
         }

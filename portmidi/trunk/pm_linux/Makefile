@@ -46,7 +46,7 @@ ptobjects = porttime/porttime.o porttime/ptlinux.o
 current: all
 
 all: $(pmlib) $(ptlib) pm_test/test pm_test/sysex pm_test/midithread \
-	pm_test/latency pm_test/midithru pm_test/qtest
+	pm_test/latency pm_test/midithru pm_test/qtest pm_test/mm
 
 $(pmlib): pm_linux/Makefile $(pmobjects)
 	ar -cr $(pmlib) $(pmobjects)
@@ -75,6 +75,10 @@ pm_test/midithru: pm_linux/Makefile $(ptlib) pm_test/midithru.o
 	$(CC) pm_test/midithru.o -o pm_test/midithru $(pmlib) $(ptlib) \
         $(ALSALIB) -lpthread -lm
 
+pm_test/mm: pm_linux/Makefile $(ptlib) pm_test/mm.o 
+	$(CC) pm_test/mm.o -o pm_test/mm $(pmlib) $(ptlib) \
+        $(ALSALIB) -lpthread -lm
+
 porttime/ptlinux.o: pm_linux/Makefile porttime/ptlinux.c
 	$(CC) -c porttime/ptlinux.c -o porttime/ptlinux.o
 
@@ -90,7 +94,7 @@ cleaner: clean
 
 cleanest: cleaner
 	rm -f $(pmlib) $(ptlib) pm_test/test pm_test/sysex pm_test/midithread
-	rm -f pm_test/latency pm_test/midithru pm_test/qtest
+	rm -f pm_test/latency pm_test/midithru pm_test/qtest pm_test/mm
 
 backup: cleanest
 	cd ..; zip -r portmidi.zip portmidi

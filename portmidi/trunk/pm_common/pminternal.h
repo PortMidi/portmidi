@@ -110,15 +110,21 @@ typedef struct pm_internal_struct {
                         - midi output w/latency != 0 */
     long head;
     long tail;
+    int overflow; /* set to non-zero if input is dropped */
 #endif
     long latency; /* time delay in ms between timestamps and actual output */
                   /* set to zero to get immediate, simple blocking output */
                   /* if latency is zero, timestamps will be ignored; */
                   /* if midi input device, this field ignored */
     
-    int overflow; /* set to non-zero if input is dropped */
-    int flush; /* flag to drop incoming sysex data because of overflow */
-    int sysex_in_progress; /* use for overflow management */
+    int sysex_in_progress; /* when sysex status is seen, this flag becomes
+        * true until EOX is seen. When true, new data is appended to the
+        * stream of outgoing bytes. When overflow occurs, sysex data is 
+        * dropped (until an EOX or non-real-timei status byte is seen) so
+        * that, if the overflow condition is cleared, we don't start 
+        * sending data from the middle of a sysex message. If a sysex
+        * message is filtered, sysex_in_progress is false, causing the
+        * message to be dropped. */
     PmMessage sysex_message; /* buffer for 4 bytes of sysex data */
     int sysex_message_count; /* how many bytes in sysex_message so far */
 

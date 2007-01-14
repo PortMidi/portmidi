@@ -704,12 +704,23 @@ static void FAR PASCAL winmm_in_callback(
     case MIM_LONGDATA: {
         MIDIHDR *lpMidiHdr = (MIDIHDR *) dwParam1;
         unsigned char *data = lpMidiHdr->lpData;
-        unsigned int i = 0;
-        long size = sizeof(MIDIHDR) + lpMidiHdr->dwBufferLength;
+        unsigned int processed = 0;
+        int remaining = lpMidiHdr->dwBytesRecorded;
         /* printf("midi_in_callback -- lpMidiHdr %x, %d bytes, %2x...\n", 
                 lpMidiHdr, lpMidiHdr->dwBytesRecorded, *data); */
         if (midi->time_proc)
             dwParam2 = (*midi->time_proc)(midi->time_info);
+        /* can there be more than one message in one buffer? */
+        /* assume yes and iterate through them */
+        while (remaining > 0) {
+            unsigned int amt = pm_read_bytes(midi, data + processed, 
+                                             remaining, dwParam2);
+            remaining -= amt;
+            processed += amt;
+        }
+#ifdef DELETE_THIS
+        unsigned int i = 0;
+        long size = sizeof(MIDIHDR) + lpMidiHdr->dwBufferLength;
 
         while (i < lpMidiHdr->dwBytesRecorded) {
             /* optimization: if message_count == 0, we are on an (output)
@@ -738,6 +749,7 @@ static void FAR PASCAL winmm_in_callback(
                 i++;
             }
         }
+#endif
         /* when a device is closed, the pending MIM_LONGDATA buffers are
            returned to this callback with dwBytesRecorded == 0. In this
            case, we do not want to send them back to the interface (if

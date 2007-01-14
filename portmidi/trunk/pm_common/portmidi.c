@@ -314,17 +314,8 @@ PmError Pm_Terminate( void ) {
 
 /* Pm_Read -- read up to length longs from source into buffer */
 /*
-   returns number of longs actually read, or error code
- 
-   When the reader wants data:
-     if overflow_flag:
-         do not get anything
-         empty the buffer (read_ptr = write_ptr)
-         clear overflow_flag
-         return pmBufferOverflow
-     get data
-     return number of messages
-*/
+ * returns number of longs actually read, or error code
+ */
 PmError Pm_Read(PortMidiStream *stream, PmEvent *buffer, long length) {
     PmInternal *midi = (PmInternal *) stream;
     int n = 0;
@@ -711,6 +702,7 @@ PmError Pm_OpenInput(PortMidiStream** stream,
     midi->buffer = (PmEvent *) pm_alloc(sizeof(PmEvent) * midi->buffer_len); 
     midi->head = 0;
     midi->tail = 0;
+    midi->overflow = FALSE;
     if (!midi->buffer) { 
 #endif
         /* free portMidi data */
@@ -721,8 +713,6 @@ PmError Pm_OpenInput(PortMidiStream** stream,
     }
     midi->buffer_len = bufferSize; /* portMidi input storage */
     midi->latency = 0; /* not used */
-    midi->overflow = FALSE;
-    midi->flush = FALSE;
     midi->sysex_in_progress = FALSE;
     midi->sysex_message = 0; 
     midi->sysex_message_count = 0; 
@@ -808,13 +798,12 @@ PmError Pm_OpenOutput(PortMidiStream** stream,
     midi->buffer = NULL;
     midi->head = 0; /* unused by output */
     midi->tail = 0; /* unused by output */
+    midi->overflow = FALSE; /* not used */
 #endif
     /* if latency zero, output immediate (timestamps ignored) */
     /* if latency < 0, use 0 but don't return an error */
     if (latency < 0) latency = 0;
     midi->latency = latency;
-    midi->overflow = FALSE; /* not used */
-    midi->flush = FALSE; /* not used */
     midi->sysex_in_progress = FALSE;
     midi->sysex_message = 0; /* unused by output */
     midi->sysex_message_count = 0; /* unused by output */
@@ -1000,31 +989,39 @@ long pm_next_time(PmInternal *midi) {
 }
 */
 
-/* pm_read_short and pm_read_byte
+void pm_flush_sysex(PmInternal *midi, PmTimestamp timestamp)
+{
+    PmEvent event;
+    
+    /* there may be nothing in the buffer */
+    if (midi->sysex_message_count == 0) return; /* nothing to flush */
+    
+    event.message = midi->sysex_message;
+    event.timestamp = timestamp;
+    /* copied from pm_read_short, avoids filtering */
+    if (Pm_Enqueue(midi->queue, &event) == pmBufferOverflow) {
+        midi->sysex_in_progress = FALSE;
+    }
+    midi->sysex_message_count = 0;
+    midi->sysex_message = 0;
+}
+
+
+/* pm_read_short and pm_read_bytes
    are the interface between system-dependent MIDI input handlers
    and the system-independent PortMIDI code.
    The input handler MUST obey these rules:
    1) all short input messages must be sent to pm_read_short, which
       enqueues them to a FIFO for the application.
-   2) eash sysex byte should be reported by calling pm_read_byte
+   2) eash buffer of sysex bytes should be reported by calling pm_read_bytes
       (which sets midi->sysex_in_progress). After the eox byte, 
-      pm_read_byte will clear sysex_in_progress and midi->flush
-   (Note that the overflow flag is managed by pm_read_short
-    and Pm_Read, so the supplier should not read or write it.)
+      pm_read_bytes will clear sysex_in_progress
  */
 
 /* pm_read_short is the place where all input messages arrive from 
    system-dependent code such as pmwinmm.c. Here, the messages
    are entered into the PortMidi input buffer. 
  */
-
- /* Algorithnm:
-    if overflow or flush, return
-    ATOMIC:
-        enqueue data
-        if buffer overflow, set overflow
-        if buffer overflow and sysex_in_progress, set flush
-  */
 void pm_read_short(PmInternal *midi, PmEvent *event)
 { 
 #ifndef NEWBUFFER
@@ -1043,91 +1040,122 @@ void pm_read_short(PmInternal *midi, PmEvent *event)
            better be a realtime message or the starting SYSEX byte;
            otherwise, we exit the sysex_in_progress state
          */
-        if (midi->sysex_in_progress && (status & MIDI_STATUS_MASK) && 
-            !is_real_time(status) && status != MIDI_SYSEX ) {
-            midi->sysex_in_progress = FALSE;
-            midi->flush = FALSE;
-        }
+        if (midi->sysex_in_progress && (status & MIDI_STATUS_MASK)) {
+            /* two choices: real-time or not. If it's real-time, then
+             * this should be delivered as a sysex byte because it is
+             * embedded in a sysex message
+             */
+            if (is_real_time(status)) {
+                midi->sysex_message |= 
+                        (status << (8 * midi->sysex_message_count++));
+                if (midi->sysex_message_count == 4) {
+                    pm_flush_sysex(midi, event->timestamp);
+                }
+            } else { /* otherwise, it's not real-time. This interrupts
+                      * a sysex message in progress */
+                midi->sysex_in_progress = FALSE;
+            }
 #ifdef NEWBUFFER
-        if (Pm_Enqueue(midi->queue, event) == pmBufferOverflow) {
-            if (midi->sysex_in_progress) midi->flush = TRUE;
+        } else if (Pm_Enqueue(midi->queue, event) == pmBufferOverflow) {
+            midi->sysex_in_progress = FALSE;
         }
 #else
-        /* don't try to do anything more in an overflow state */
-        if (midi->overflow || midi->flush) return;
+        } else {
+            /* don't try to do anything more in an overflow state */
+            if (midi->overflow) return;
 
-        /* insert the message */
-        tail = midi->tail;
-        midi->buffer[tail++] = *event;
-        if (tail == midi->buffer_len) tail = 0;
-        if (tail == midi->head || midi->overflow) {
-            midi->overflow = TRUE;
-            if (midi->sysex_in_progress) midi->flush = TRUE; 
-            /* drop the rest of the message, this must be cleared 
-               by caller when EOX is received */
-               return;
+            /* insert the message */
+            tail = midi->tail;
+            midi->buffer[tail++] = *event;
+            if (tail == midi->buffer_len) tail = 0;
+            if (tail == midi->head || midi->overflow) {
+                midi->overflow = TRUE;
+                midi->sysex_in_progress = FALSE; 
+                /* drop the rest of the message, this must be cleared 
+                   by caller when EOX is received */
+                   return;
+            }
+            midi->tail = tail; /* complete the write */
         }
-        midi->tail = tail; /* complete the write */
 #endif
     }
 }
 
-
-void pm_flush_sysex(PmInternal *midi, PmTimestamp timestamp)
+/* pm_read_bytes -- read one (partial) sysex msg from MIDI data */
+/*
+ * returns how many bytes processed
+ */
+unsigned int pm_read_bytes(PmInternal *midi, unsigned char *data, 
+                    int len, PmTimestamp timestamp)
 {
+    unsigned int i = 0; /* index into data */
     PmEvent event;
-    
-    /* there may be nothing in the buffer */
-    if (midi->sysex_message_count == 0) return; /* nothing to flush */
-    
-    event.message = midi->sysex_message;
     event.timestamp = timestamp;
-    /* copied from pm_read_short, avoids filtering */
-    if (Pm_Enqueue(midi->queue, &event) == pmBufferOverflow) {
-        midi->flush = TRUE;
-    }
-    midi->sysex_message_count = 0;
-    midi->sysex_message = 0;
-}
-
-
-void pm_read_byte(PmInternal *midi, unsigned char byte, PmTimestamp timestamp)
-{
     assert(midi);
-    /* here is the logic for controlling sysex_in_progress */
-    if (midi->sysex_in_progress) {
-        if (byte == MIDI_EOX) midi->sysex_in_progress = FALSE;
-        else if (byte == MIDI_SYSEX) {
-            /* problem: need to terminate the current sysex and start
-               a new one 
-             */
-            pm_flush_sysex(midi, timestamp);
+    /* note that since buffers may not have multiples of 4 bytes,
+     * pm_read_bytes may be called in the middle of an outgoing
+     * 4-byte PortMidi message. sysex_in_progress indicates that
+     * a sysex has been sent but no eox.
+     */
+    if (len == 0) return; /* sanity check */
+    if (!midi->sysex_in_progress) {
+        while (i < len) { /* process all data */
+            unsigned char byte = data[i++];
+            if (byte == MIDI_SYSEX &&
+                !pm_realtime_filtered(byte, midi->filters)) {
+                midi->sysex_in_progress = TRUE;
+                break; /* continue looping below to process msg */
+            } else if (byte == MIDI_EOX) {
+                midi->sysex_in_progress = FALSE;
+                return i + 1; /* done with one message */
+            } else {
+                /* We're getting MIDI but no sysex in progress.
+                 * Either the SYSEX status byte was dropped or
+                 * the message was filtered. Drop the data, but
+                 * send any embedded realtime bytes.
+                 */
+                /* assume that this is a real-time message:
+                 * it is an error to pass non-real-time messages
+                 * to pm_read_bytes
+                 */
+                event.message = byte;
+                pm_read_short(midi, &event);
+            }
+        } /* all bytes in the buffer are processed */
+    }
+    /* Now, i<len implies sysex_in_progress. If sysex_in_progress
+     * becomes false in the loop, there must have been an overflow
+     * and we can just drop all remaining bytes 
+     */
+    while (i < len && midi->sysex_in_progress) {
+        if (midi->sysex_message_count == 0 && i <= len - 4 &&
+            ((event.message = (((long) data[i]) | 
+                             (((long) data[i+1]) << 8) |
+                             (((long) data[i+2]) << 16) |
+                             (((long) data[i+3]) << 24))) &
+             0x80808080) == 0) { /* all data, no status */ 
+            if (Pm_Enqueue(midi->queue, &event) == pmBufferOverflow) {
+                midi->sysex_in_progress = FALSE;
+            }
+        } else {
+            while (i < len && midi->sysex_message_count != 0) {
+                /* send one byte at a time */
+                unsigned char byte = data[i++];
+                midi->sysex_message |= 
+                    (byte << (8 * midi->sysex_message_count++));
+                if (byte == MIDI_EOX) {
+                    midi->sysex_in_progress = FALSE;
+                    pm_flush_sysex(midi, event.timestamp);
+                    return i;
+                } else if (midi->sysex_message_count == 4) {
+                    pm_flush_sysex(midi, event.timestamp);
+                }
+            }
         }
-    } else if (byte == MIDI_SYSEX && 
-               !pm_realtime_filtered(byte, midi->filters)) {
-        midi->sysex_in_progress = TRUE;
-    } else {
-        /* We're getting data bytes or EOX but no sysex is
-           in progress. Drop the data. This might indicate data
-           loss.
-           This condition could also be becaues sysex messages are
-           being filtered.
-           (Would it be better to report an error? Probably this 
-           can happen if the driver drops the buffer with the SYSEX 
-           start. I don't think there's a reliable way to find 
-           out when buffers are dropped.)
-         */
-        return;
     }
-
-    /* this awkward expression places the bytes in increasingly higher-
-       order bytes of the long message */
-    midi->sysex_message |= (byte << (8 * midi->sysex_message_count++));
-    if (midi->sysex_message_count == 4 || !midi->sysex_in_progress) {
-        pm_flush_sysex(midi, timestamp);
-        if (!midi->sysex_in_progress) midi->flush = FALSE;
-    }
+    return i;
 }
+
 
 #ifndef NEWBUFFER
 /* this code is apparently never called */

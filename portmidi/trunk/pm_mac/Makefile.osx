@@ -47,9 +47,10 @@ Installation path for dylibs is $(PF)\n\
 You might want to change these.\n\n\
 To build a static library and test applications,\n        \
 make -F pm_mac/Makefile.osx\n\
-To build a dynamic library, note you must "clean" to remove .o files,\n\
-especially if these libraries use different compiler flags:\n        \
-make -F pm_mac/Makefile.osx clean\n        \
+To build and install dynamic library, note you must use\n\
+"cleanest" to remove .o and dylibs, especially if these\n\
+libraries use different compiler flags:\n        \
+make -F pm_mac/Makefile.osx cleanest\n        \
 make -F pm_mac/Makefile.osx dylib\n\
 To install dynamic libraries to /usr/local,\n        \
 sudo make -F pm_mac/Makefile.osx install\n'
@@ -107,21 +108,21 @@ cleanest: cleaner
 backup: cleanest
 	cd ..; zip -r portmidi.zip portmidi
 
-dylib: pm_mac/portmidi.dylib porttime/porttime.dylib
+dylib: pm_mac/libportmidi.dylib porttime/libporttime.dylib
 
-pm_mac/portmidi.dylib: $(PMSRC)
+pm_mac/libportmidi.dylib: $(PMSRC)
 	cc -single_module -g $(PMDLFLAGS) -Iporttime -Ipm_common \
 	   -dynamiclib $(PMSRC) -o pm_mac/libportmidi.dylib \
 	  -flat_namespace -undefined suppress \
 	  -framework CoreMIDI -framework CoreFoundation -framework CoreAudio
 
-porttime/porttime.dylib: $(PTSRC)
+porttime/libporttime.dylib: $(PTSRC)
 	cc -dynamiclib $(PTSRC) \
 	  $(PMDLFLAGS) -g -Ipm_common -Iporttime -flat_namespace \
 	  -undefined suppress -o porttime/libporttime.dylib
 
 install: porttime/porttime.h pm_common/portmidi.h \
-	   pm_mac/portmidi.dylib porttime/porttime.dylib
+	   pm_mac/libportmidi.dylib porttime/libporttime.dylib
 	install porttime/porttime.h  $(PF)/include/
 	install pm_common/portmidi.h $(PF)/include
 	install pm_mac/libportmidi.dylib $(PF)/lib/

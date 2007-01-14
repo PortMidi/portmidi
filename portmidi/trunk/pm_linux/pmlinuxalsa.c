@@ -608,28 +608,8 @@ static void handle_event(snd_seq_event_t *ev)
         break;
     case SND_SEQ_EVENT_SYSEX: {
         const BYTE *ptr = (const BYTE *) ev->data.ext.ptr;
-        int i;
-        for (i = 0; i < ev->data.ext.len; i++) {
-            if (midi->sysex_message_count == 0 &&
-                !midi->flush &&
-                i <= lpMidiHdr->dwBytesRecorded - 4 &&
-                ((event.message = (((long) data[0]) | 
-                                   (((long) data[1]) << 8) | (((long) data[2]) << 16) |
-                                   (((long) data[3]) << 24))) &
-                 0x80808080) == 0) { /* all data, no status */
-                event.timestamp = dwParam2;
-                if (Pm_Enqueue(midi->queue, &event) == pmBufferOverflow) {
-                    midi->flush = TRUE;
-                }
-                i += 4;
-                data += 4;
-            } else {
-                /* non-optimized: process one byte at a time. 
-                 * This is used to handle any embedded SYSEX 
-                 * or EOX bytes and to finish */
-                pm_read_byte(midi, *ptr++, timestamp);
-            }
-        }
+        /* assume there is one sysex byte to process */
+        pm_read_bytes(midi, ptr, ev->data.ext.len, timestamp);
         break;
     }
     }

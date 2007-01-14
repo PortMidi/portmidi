@@ -144,8 +144,23 @@ process_packet(MIDIPacket *packet, PmEvent *event,
     unsigned int remaining_length = packet->length;
     unsigned char *cur_packet_data = packet->data;
     while (remaining_length > 0) {
-        /* compute the length of the next (short) msg in packet */
-	if (cur_packet_data[0] & MIDI_STATUS_MASK) {
+        if (cur_packet_data[0] == MIDI_SYSEX ||
+            /* are we in the middle of a sysex message? */
+            (m->last_command == 0 &&
+             !(cur_packet_data[0] & MIDI_STATUS_MASK))) {
+            m->last_command = 0; /* no running status */
+            unsigned int amt = pm_read_bytes(midi, cur_packet_data, 
+                                             remaining_length, 
+                                             event->timestamp);
+            remaining_length -= amt;
+            cur_packet_data += amt;
+        } else if (cur_packet_data[0] == MIDI_EOX) {
+            /* this should never happen, because pm_read_bytes should
+             * get and read all EOX bytes*/
+            midi->sysex_in_progress = FALSE;
+            m->last_command = 0;
+        } else if (cur_packet_data[0] & MIDI_STATUS_MASK) {
+            /* compute the length of the next (short) msg in packet */
 	    unsigned int cur_message_length = midi_length(cur_packet_data[0]);
             if (cur_message_length > remaining_length) {
 #ifdef DEBUG
@@ -177,20 +192,6 @@ process_packet(MIDIPacket *packet, PmEvent *event,
 	    pm_read_short(midi, event);
 	    remaining_length -= m->last_msg_length;
 	    cur_packet_data += m->last_msg_length;
-	} else if (m->last_command == 0) {
-            /* we have data with no status. My guess is CoreMIDI does not 
-	     * allow this to happen. If it does, we skip to the next
-	     * status byte in the packet and continue processing
-	     */
-#ifdef DEBUG
-	    printf("PortMidi debug msg: missing status byte");
-#endif
-	    while (remaining_length > 0 && 
-		   !cur_packet_data[0] & MIDI_STATUS_MASK) {
-	        cur_packet_data++;
-	        remaining_length--;
-	    }
-	    continue;
 	} else if (m->last_msg_length > remaining_length + 1) {
 	    /* we have running status, but not enough data */
 #ifdef DEBUG
@@ -260,43 +261,16 @@ readProc(const MIDIPacketList *newPackets, void *refCon, void *connRefCon)
                 (UInt64) 1000000;
         status = packet->data[0];
         /* process packet as sysex data if it begins with MIDI_SYSEX, or
-           MIDI_EOX or non-status byte */
-        if (status == MIDI_SYSEX || status == MIDI_EOX ||
+           MIDI_EOX or non-status byte with no running status */
+        if (status == MIDI_SYSEX || status == MIDI_EOX || !m->last_command) {
 	    /* previously was: !(status & MIDI_STATUS_MASK)) {
              * but this could mistake running status for sysex data
              */
-	    midi->sysex_in_progress) {
-            int i = 0;
             /* reset running status data -cpr */
 	    m->last_command = 0;
 	    m->last_msg_length = 0;
-            printf("sysex packet length: %d\n", packet->length);
-            while (i < packet->length) {
-                /* optimization: if message_count == 0, we are on an (output)
-                 * message boundary so we can transfer data directly to the 
-                 * queue
-                 */
-                unsigned char *data = &(packet->data[i]);
-                if (midi->sysex_message_count == 0 &&
-                    !midi->flush &&
-                    i <= packet->length - 4 &&
-                    ((event.message = (((long) data[0]) | 
-                     (((long) data[1]) << 8) | (((long) data[2]) << 16) |
-                     (((long) data[3]) << 24))) &
-                     0x80808080) == 0) { /* all data, no status */
-                    /* event.timestamp is already set */
-                    if (Pm_Enqueue(midi->queue, &event) == pmBufferOverflow) {
-                        midi->flush = TRUE;
-                    }
-                    i += 4;
-                    /* non-optimized: process one byte at a time. This is 
-                     * used to handle any embedded SYSEX or EOX bytes and
-                     * to finish */
-                } else {
-                    pm_read_byte(midi, packet->data[i], event.timestamp);
-                    i++;
-                }
-            }
+            /* printf("sysex packet length: %d\n", packet->length); */
+            pm_read_bytes(midi, packet->data, packet->length, event.timestamp);
         } else {
             process_packet(packet, &event, midi, m);
 	}

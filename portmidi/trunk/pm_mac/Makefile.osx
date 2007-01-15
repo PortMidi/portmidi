@@ -53,7 +53,9 @@ libraries use different compiler flags:\n        \
 make -F pm_mac/Makefile.osx cleanest\n        \
 make -F pm_mac/Makefile.osx dylib\n\
 To install dynamic libraries to /usr/local,\n        \
-sudo make -F pm_mac/Makefile.osx install\n'
+sudo make -F pm_mac/Makefile.osx install\n\
+To install universal dynamic libraries with xcode,\n        \
+make -F pm_mac/Makefile.osx install-with-xcode\''
 
 $(pmlib): pm_mac/Makefile.osx $(pmobjects)
 	ar -crs $(pmlib) $(pmobjects)

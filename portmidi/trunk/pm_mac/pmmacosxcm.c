@@ -23,6 +23,8 @@
 
 #include <stdlib.h>
 
+#define CM_DEBUG 1
+
 #include "portmidi.h"
 #ifdef NEWBUFFER
 #include "pmutil.h"
@@ -238,6 +240,10 @@ readProc(const MIDIPacketList *newPackets, void *refCon, void *connRefCon)
     unsigned long now;
     unsigned int status;
     
+#ifdef CM_DEBUG
+    printf("readProc: numPackets %d: ", newPackets->numPackets);
+#endif
+
     /* Retrieve the context for this connection */
     midi = (PmInternal *) connRefCon;
     m = (midi_macosxcm_type) midi->descriptor;
@@ -262,6 +268,9 @@ readProc(const MIDIPacketList *newPackets, void *refCon, void *connRefCon)
         status = packet->data[0];
         /* process packet as sysex data if it begins with MIDI_SYSEX, or
            MIDI_EOX or non-status byte with no running status */
+#ifdef CM_DEBUG
+        printf(" %d", packet->length);
+#endif
         if (status == MIDI_SYSEX || status == MIDI_EOX || !m->last_command) {
 	    /* previously was: !(status & MIDI_STATUS_MASK)) {
              * but this could mistake running status for sysex data
@@ -276,7 +285,9 @@ readProc(const MIDIPacketList *newPackets, void *refCon, void *connRefCon)
 	}
         packet = MIDIPacketNext(packet);
     }
-
+#ifdef CM_DEBUG
+    printf("\n");
+#endif
 }
 
 static PmError

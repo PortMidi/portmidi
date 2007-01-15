@@ -1104,11 +1104,12 @@ unsigned int pm_read_bytes(PmInternal *midi, unsigned char *data,
             if (byte == MIDI_SYSEX &&
                 !pm_realtime_filtered(byte, midi->filters)) {
                 midi->sysex_in_progress = TRUE;
+                i--; /* back up so code below will get SYSEX byte */
                 break; /* continue looping below to process msg */
             } else if (byte == MIDI_EOX) {
                 midi->sysex_in_progress = FALSE;
-                return i + 1; /* done with one message */
-            } else {
+                return i; /* done with one message */
+            } else if (byte & MIDI_STATUS_MASK) {
                 /* We're getting MIDI but no sysex in progress.
                  * Either the SYSEX status byte was dropped or
                  * the message was filtered. Drop the data, but
@@ -1137,10 +1138,15 @@ unsigned int pm_read_bytes(PmInternal *midi, unsigned char *data,
             if (Pm_Enqueue(midi->queue, &event) == pmBufferOverflow) {
                 midi->sysex_in_progress = FALSE;
             }
+            i += 4;
         } else {
-            while (i < len && midi->sysex_message_count != 0) {
+            while (i < len) {
                 /* send one byte at a time */
                 unsigned char byte = data[i++];
+                if (is_real_time(byte) && 
+                    pm_realtime_filtered(byte, midi->filters)) {
+                    continue; /* real-time data is filtered, so omit */
+                }
                 midi->sysex_message |= 
                     (byte << (8 * midi->sysex_message_count++));
                 if (byte == MIDI_EOX) {
@@ -1149,6 +1155,11 @@ unsigned int pm_read_bytes(PmInternal *midi, unsigned char *data,
                     return i;
                 } else if (midi->sysex_message_count == 4) {
                     pm_flush_sysex(midi, event.timestamp);
+                    /* after handling at least one non-data byte
+                     * and reaching a 4-byte message boundary,
+                     * resume trying to send 4 at a time in outer loop
+                     */
+                    break;
                 }
             }
         }

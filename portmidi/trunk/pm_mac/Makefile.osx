@@ -36,7 +36,7 @@ current: all
 all: $(pmlib) $(ptlib) pm_test/test pm_test/sysex pm_test/midithread \
 	pm_test/latency pm_test/midithru pm_test/qtest pm_test/mm
 	echo $$'\n\
-**** For instructions: make -F pm_mac\Makefile.osx help ****\n'
+**** For instructions: make -f pm_mac\Makefile.osx help ****\n'
 
 help:
 	echo $$'\n\n\
@@ -46,16 +46,16 @@ Flags for dynamic libraries are $(PMDLFLAGS)\n\
 Installation path for dylibs is $(PF)\n\
 You might want to change these.\n\n\
 To build a static library and test applications,\n        \
-make -F pm_mac/Makefile.osx\n\
+make -f pm_mac/Makefile.osx\n\
 To build and install dynamic library, note you must use\n\
 "cleanest" to remove .o and dylibs, especially if these\n\
 libraries use different compiler flags:\n        \
-make -F pm_mac/Makefile.osx cleanest\n        \
-make -F pm_mac/Makefile.osx dylib\n\
+make -f pm_mac/Makefile.osx cleanest\n        \
+make -f pm_mac/Makefile.osx dylib\n\
 To install dynamic libraries to /usr/local,\n        \
-sudo make -F pm_mac/Makefile.osx install\n\
+sudo make -f pm_mac/Makefile.osx install\n\
 To install universal dynamic libraries with xcode,\n        \
-make -F pm_mac/Makefile.osx install-with-xcode\''
+make - pm_mac/Makefile.osx install-with-xcode\''
 
 $(pmlib): pm_mac/Makefile.osx $(pmobjects)
 	ar -crs $(pmlib) $(pmobjects)

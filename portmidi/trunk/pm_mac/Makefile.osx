@@ -12,12 +12,14 @@ PMFLAGS = -DPM_CHECK_ERRORS -DNEWBUFFER
 PMDLFLAGS = -DNEWBUFFER
 # Path for installation of dynamic libraries
 PF = /usr/local
+# Architecture for static libs
+ARCH = -arch ppc -arch i386
 
 pmlib = pm_mac/libportmidi.a
 
 ptlib = porttime/libporttime.a
 
-CC = gcc $(VFLAGS) $(PMFLAGS) -g -Ipm_common -Iporttime
+CC = gcc $(VFLAGS) $(PMFLAGS) $(ARCH) -g -Ipm_common -Iporttime
 
 MACLIB = -framework CoreMIDI -framework CoreFoundation -framework CoreAudio
 

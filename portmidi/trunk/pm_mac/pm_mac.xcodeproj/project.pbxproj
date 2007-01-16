@@ -189,7 +189,7 @@
 		3DA774480663EAE60002CE69 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = /System/Library/Frameworks/CoreMIDI.framework; sourceTree = "<absolute>"; };
 		3DA7744E0663EBB20002CE69 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
 		3DA774500663EBBF0002CE69 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = /System/Library/Frameworks/CoreAudio.framework; sourceTree = "<absolute>"; };
-		3DBF24640B5967A500DAD93B /* mm */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.executable"; path = mm; sourceTree = BUILT_PRODUCTS_DIR; };
+		3DBF24640B5967A500DAD93B /* mm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mm; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DBF246C0B59686800DAD93B /* mm.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = mm.c; path = ../pm_test/mm.c; sourceTree = SOURCE_ROOT; };
 		5851D51E047955B800EE98CD /* porttime.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = porttime.c; path = ../porttime/porttime.c; sourceTree = SOURCE_ROOT; };
 		5851D51F047955B800EE98CD /* porttime.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = porttime.h; path = ../porttime/porttime.h; sourceTree = SOURCE_ROOT; };

@@ -23,7 +23,7 @@
 
 #include <stdlib.h>
 
-#define CM_DEBUG 1
+//#define CM_DEBUG 1
 
 #include "portmidi.h"
 #ifdef NEWBUFFER
@@ -271,7 +271,8 @@ readProc(const MIDIPacketList *newPackets, void *refCon, void *connRefCon)
 #ifdef CM_DEBUG
         printf(" %d", packet->length);
 #endif
-        if (status == MIDI_SYSEX || status == MIDI_EOX || !m->last_command) {
+        if (status == MIDI_SYSEX || status == MIDI_EOX || 
+            ((!(status & MIDI_STATUS_MASK)) && !m->last_command)) {
 	    /* previously was: !(status & MIDI_STATUS_MASK)) {
              * but this could mistake running status for sysex data
              */

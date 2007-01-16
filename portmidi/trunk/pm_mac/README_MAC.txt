@@ -1,12 +1,10 @@
 README_MAC.txt for PortMidi
 Roger Dannenberg
-29 Aug 2006
+15 jan 2007
 
-There are two ways to build PortMidi for Mac OSX:
+To build PortMidi for Mac OS X:
 
-=== METHOD 1 (make) ===
-
-To make PortMidi and PortTime, go back up to the portmidi
+go back up to the portmidi
 directory and type 
 
 make -f pm_mac/Makefile.osx
@@ -25,18 +23,18 @@ function returns an error code.
 If you do not compile with PM_CHECK_ERRORS, you should 
 check for errors yourself.
 
-This code has not been carefully tested; however, 
-all test programs in pm_test seem to run properly.
+The make file will also build an OS X Universal (ppc and i386)
+dynamic link library using xcode. For instructions about this
+and other options, type
 
-=== METHOD 2 (xcodebuild) ===
-From this directory (pm_mac) run this command:
-
-sudo xcodebuild -project pm_mac.xcodeproj -configuration Deployment install DSTROOT=/
+make -f pm_mac/Makefile.osx help
 
 [pm_mac.xcodeproj courtesy of Leigh Smith]
 
 CHANGELOG
 
+15-Jan-2007 Roger B. Dannenberg
+    Changed instructions because of changes to Makefile.osx
 07-Oct-2006 Roger B. Dannenberg
     Added directions for xcodebuild
 29-aug-2006 Roger B. Dannenberg

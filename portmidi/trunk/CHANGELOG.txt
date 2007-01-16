@@ -1,5 +1,17 @@
 /* CHANGELOG FOR PORTMIDI
  *
+ * 15Jan07 Roger Dannenberg
+ *  - multiple rewrites of sysex handling code to take care of 
+ *     error-handling, embedded messages, message filtering,
+ *     driver bugs, and host limitations.
+ *  - fixed windows to use dwBufferLength rather than 
+ *     dwBytesRecorded for long buffer output (fix by Nigel Brown)
+ *  - Win32 MME code always appends an extra zero to long buffer
+ *     output to work around a problem with earlier versions of Midi Yoke
+ *  - Added mm, a command line Midi Monitor to pm_test suite
+ *  - Revised copyright notice to match PortAudio/MIT license (requests 
+ *     are moved out of the license proper and into a separate paragraph)
+ *
  * 18Oct06 Roger Dannenberg
  *  - replace FIFO in pmutil with Light Pipe-based multiprocessor-safe alg.
  *  - replace FIFO in portmidi.c with PmQueue from pmutil

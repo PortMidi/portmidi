@@ -1,6 +1,6 @@
 README_CL.txt for PortMidi
 Roger B. Dannenberg
-13 Jan 2007
+17 Jan 2007
 
 This is a Common Lisp interface to PortMidi.
 
@@ -72,7 +72,7 @@ cffi folder name, e.g. "cffi-061012".
 * (push "/Lisp/portmidi/" asdf:*central-registry*)
 * (asdf:oos 'asdf:load-op :portmidi)
 
-Look in the file portmidi/test.lisp for a test of the lisp interface to
+Look in the file /Lisp/portmidi/test.lisp for a test of the lisp interface to
 portmidi. For example, while still running sbcl:
 
 * (pm:portmidi)  ; initialize portmidi
@@ -85,5 +85,20 @@ portmidi. For example, while still running sbcl:
 Notice that test.lisp assumes MIDI input devices are connected
 and uses some hard-wired device numbers, so it may not run
 as is without error.
+
+Since test.lisp uses some Common Music calls, I (RBD) wrote a
+simpler test, test-no-cm.lisp, which is in the same folder as
+this (README_CL.txt) file. To use it, first check that the 
+values for outid (4) and inid (1) actually match PortMidi device
+id's for output and input devices, and make sure the input
+device is a keyboard that can generate a middle-C -- otherwise
+the program will hang waiting for input. Run sbcl from this
+pm_cl folder, and type:
+
+(load "test-no-cm.lisp")
+
+The program pauses frequently by calling (READ), so you
+should type t or something, then <RETURN> to continue.
+
 
 (Thanks to Leigh Smith and Rick Taube)

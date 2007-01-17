@@ -1097,7 +1097,7 @@ unsigned int pm_read_bytes(PmInternal *midi, unsigned char *data,
      * 4-byte PortMidi message. sysex_in_progress indicates that
      * a sysex has been sent but no eox.
      */
-    if (len == 0) return; /* sanity check */
+    if (len == 0) return 0; /* sanity check */
     if (!midi->sysex_in_progress) {
         while (i < len) { /* process all data */
             unsigned char byte = data[i++];

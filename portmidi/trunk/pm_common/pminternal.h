@@ -163,7 +163,8 @@ PmError pm_fail_timestamp_fn(PmInternal *midi, PmTimestamp timestamp);
 PmError pm_success_fn(PmInternal *midi);
 PmError pm_add_device(char *interf, char *name, int input, void *descriptor,
                       pm_fns_type dictionary);
-void pm_read_byte(PmInternal *midi, unsigned char byte, PmTimestamp timestamp);
+unsigned int pm_read_bytes(PmInternal *midi, unsigned char *data, int len,
+                           PmTimestamp timestamp);
 void pm_read_short(PmInternal *midi, PmEvent *event);
 
 #define none_write_flush pm_fail_timestamp_fn

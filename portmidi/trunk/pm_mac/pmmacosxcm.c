@@ -754,9 +754,10 @@ static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint)
 
 char* cm_get_full_endpoint_name(MIDIEndpointRef endpoint)
 {
+#ifdef OLDCODE
     MIDIEntityRef entity;
     MIDIDeviceRef device;
-#ifdef OLDCODE
+
     CFStringRef endpointName = NULL;
     CFStringRef deviceName = NULL;
 #endif

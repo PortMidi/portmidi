@@ -57,7 +57,7 @@ make -f pm_mac/Makefile.osx dylib\n\
 To install dynamic libraries to /usr/local,\n        \
 sudo make -f pm_mac/Makefile.osx install\n\
 To install universal dynamic libraries with xcode,\n        \
-make - pm_mac/Makefile.osx install-with-xcode\''
+make -f pm_mac/Makefile.osx install-with-xcode\''
 
 $(pmlib): pm_mac/Makefile.osx $(pmobjects)
 	ar -crs $(pmlib) $(pmobjects)
@@ -114,23 +114,17 @@ backup: cleanest
 
 dylib: pm_mac/libportmidi.dylib porttime/libporttime.dylib
 
-pm_mac/libportmidi.dylib: $(PMSRC)
+pm_mac/libportmidi.dylib: $(PMSRC) $(PTSRC)
 	cc -single_module -g $(PMDLFLAGS) -Iporttime -Ipm_common \
-	   -dynamiclib $(PMSRC) -o pm_mac/libportmidi.dylib \
+	   -dynamiclib $(PMSRC) $(PTSRC) -o pm_mac/libportmidi.dylib \
 	  -flat_namespace -undefined suppress \
 	  -framework CoreMIDI -framework CoreFoundation -framework CoreAudio
 
-porttime/libporttime.dylib: $(PTSRC)
-	cc -dynamiclib $(PTSRC) \
-	  $(PMDLFLAGS) -g -Ipm_common -Iporttime -flat_namespace \
-	  -undefined suppress -o porttime/libporttime.dylib
-
 install: porttime/porttime.h pm_common/portmidi.h \
-	   pm_mac/libportmidi.dylib porttime/libporttime.dylib
+	   pm_mac/libportmidi.dylib
 	install porttime/porttime.h  $(PF)/include/
 	install pm_common/portmidi.h $(PF)/include
 	install pm_mac/libportmidi.dylib $(PF)/lib/
-	install porttime/libporttime.dylib $(PF)/lib/
 
 # note - this uses xcode to build and install portmidi universal binaries
 install-with-xcode:

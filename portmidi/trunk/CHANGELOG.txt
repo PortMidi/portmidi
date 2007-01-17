@@ -1,5 +1,15 @@
 /* CHANGELOG FOR PORTMIDI
  *
+ * 17Jan07 Roger Dannenberg
+ * - Lots more help for Common Lisp user in pm_cl
+ * - Minor fix to eliminate a compiler warning
+ * - Went back to single library in OS X for both portmidi and porttime
+ *
+ * 16Jan07 Roger Dannenberg
+ * - OOPS! fixed bug where short messages all had zero data
+ * - Makefile.osx static library build now makes universal (i386 + ppc)
+ *    binaries
+ *
  * 15Jan07 Roger Dannenberg
  *  - multiple rewrites of sysex handling code to take care of 
  *     error-handling, embedded messages, message filtering,

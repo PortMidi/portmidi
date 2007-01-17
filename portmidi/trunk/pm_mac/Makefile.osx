@@ -43,20 +43,20 @@ all: $(pmlib) $(ptlib) pm_test/test pm_test/sysex pm_test/midithread \
 help:
 	echo $$'\n\n\
 This is help for portmidi/pm_mac/Makefile.osx\n\n\
-Flags for static libraries and apps are $(PMFLAGS)\n\
-Flags for dynamic libraries are $(PMDLFLAGS)\n\
-Installation path for dylibs is $(PF)\n\
+Flags for static library and apps are $(PMFLAGS)\n\
+Flags for dynamic library are $(PMDLFLAGS)\n\
+Installation path for dylib is $(PF)\n\
 You might want to change these.\n\n\
 To build a static library and test applications,\n        \
 make -f pm_mac/Makefile.osx\n\
 To build and install dynamic library, note you must use\n\
-"cleanest" to remove .o and dylibs, especially if these\n\
-libraries use different compiler flags:\n        \
+"cleanest" to remove .o and dylib, especially if this\n\
+library uses different compiler flags:\n        \
 make -f pm_mac/Makefile.osx cleanest\n        \
 make -f pm_mac/Makefile.osx dylib\n\
-To install dynamic libraries to /usr/local,\n        \
+To install dynamic library to /usr/local,\n        \
 sudo make -f pm_mac/Makefile.osx install\n\
-To install universal dynamic libraries with xcode,\n        \
+To install universal dynamic library with xcode,\n        \
 make -f pm_mac/Makefile.osx install-with-xcode\''
 
 $(pmlib): pm_mac/Makefile.osx $(pmobjects)

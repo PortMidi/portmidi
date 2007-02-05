@@ -63,3 +63,8 @@ PtTimestamp Pt_Time()
     return timeGetTime() - time_offset;
 }
 
+
+void Pt_Sleep(int duration)
+{
+    Sleep(duration);
+}

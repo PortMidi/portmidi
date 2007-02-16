@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "allegro", "allegro.vcproj", "{4DC7F33E-08BB-4F7F-8969-2D01683221D6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "allegro_test", "allegro_test\allegro_test.vcproj", "{AF00107F-E436-4EBC-A1F3-CB176E7D1F84}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4DC7F33E-08BB-4F7F-8969-2D01683221D6} = {4DC7F33E-08BB-4F7F-8969-2D01683221D6}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4DC7F33E-08BB-4F7F-8969-2D01683221D6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4DC7F33E-08BB-4F7F-8969-2D01683221D6}.Debug|Win32.Build.0 = Debug|Win32
+		{4DC7F33E-08BB-4F7F-8969-2D01683221D6}.Release|Win32.ActiveCfg = Release|Win32
+		{4DC7F33E-08BB-4F7F-8969-2D01683221D6}.Release|Win32.Build.0 = Release|Win32
+		{AF00107F-E436-4EBC-A1F3-CB176E7D1F84}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AF00107F-E436-4EBC-A1F3-CB176E7D1F84}.Debug|Win32.Build.0 = Debug|Win32
+		{AF00107F-E436-4EBC-A1F3-CB176E7D1F84}.Release|Win32.ActiveCfg = Release|Win32
+		{AF00107F-E436-4EBC-A1F3-CB176E7D1F84}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

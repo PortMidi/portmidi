@@ -1,18 +1,10 @@
 File: PortMidi Win32 Readme
 Author: Belinda Thom, June 16 2002
-Revised by: Roger Dannenberg, June 2002, May 2004
+Revised by: Roger Dannenberg, June 2002, May 2004, June 2007
 
 =============================================================================
 USING PORTMIDI:
 =============================================================================
-
-PortMidi has been created using a DLL because the Win32 MMedia API doesn't 
-handle midiInput properly in the debugger. Specifically, it doesn't clean up
-after itself if the user (i.e. you, a PortMidi application) hasn't explicitly
-closed all open midi input devices. This lack of cleanup can lead to much
-pain and agony, including the blue-screen-of-death. This situation becomes
-increasingly unacceptable when you are debugging your code, so a portMidi DLL
-seemed to be the most elegant solution.
 
 Using Microsoft Visual C++ project files (provided with PortMidi), there
 are two configurations of the PortMidi library. The Debug version is 
@@ -27,6 +19,12 @@ every call to PortMidi. You can disable this checking (especially if you
 want to handle error codes in your own way) by removing PM_CHECK_ERRORS
 from the predefined symbols list in the Settings dialog box.
 
+PortMidi for Windows is based on the Win32 MMedia API. Historically, this
+API would crash Windows if a MIDI input device was left open, so PortMidi
+uses a DLL to clean up when a program exits. (The DLL cannot catch all
+exits, but any normal exit or Control-C handler will try to unload the DLL
+at which point code runs to clean up PortMidi.)
+
 PortMidi is designed to run without a console and should work perfectly 
 well within a graphical user interface application. The Release version
 is both optimized and lacking the debugging printout code of the Debug
@@ -38,9 +36,9 @@ See <...>\pm_dll_test\test.c or <...>\multithread\test.c for usage examples.
 =============================================================================
 TO INSTALL PORTMIDI:
 =============================================================================
-1)  download portmidi.zip
+1)  get current source from the portmedia project at SourceForge.net
 
-2)  unzip portmidi.zip into directory: <...>\portmidi
+2)  copy source into directory: <...>\portmidi
 
 =============================================================================
 TO COMPILE PORTMIDI:
@@ -48,22 +46,24 @@ TO COMPILE PORTMIDI:
 
 3)  cd to or open the portmidi directory
 
-4)  start or click on the portmidi.dsw workspace
+4)  start or click on the portmidi.sln workspace
 
 5)  the following projects exist within this workspace:
     - portmidi (the PortMidi library)
-	- pm_dll (the dll library used to close midi ports on program exit)
-	- porttime (a small portable library implementing timer facilities)
-	- test (simple midi I/O testing)
-	- multithread (an example illustrating low-latency MIDI processing
-            using a dedicated low-latency thread)
-	- sysex (simple sysex message I/O testing)
-	- latency (uses porttime to measure system latency)
+    - pm_dll (the dll library used to close midi ports on program exit)
+    - porttime (a small portable library implementing timer facilities)
+    - test (simple midi I/O testing)
+    - midithread (an example illustrating low-latency MIDI processing
+        using a dedicated low-latency thread)
+    - sysex (simple sysex message I/O testing)
+    - latency (uses porttime to measure system latency)
+    - midithru (an example illustrating software MIDI THRU)
+    - qtest (a test of the new multicore-safe queue implementation)
 
 6)  verify that all project settings are for Win32 Debug release:
-	- type Alt-F7
-	- highlight all three projects in left part of Project Settings window; 
-	- "Settings For" should say "Win32 Debug"
+    - type Alt-F7
+    - highlight all three projects in left part of Project Settings window; 
+    - "Settings For" should say "Win32 Debug"
 
 7)  use Build->Batch Build ... to build everything in the project
 
@@ -91,15 +91,17 @@ TO COMPILE PORTMIDI:
     recommend that you always install a copy of pm_dll.dll (either the
     debug version or the release version) in the same directory as the
     application using PortMidi. The release DLL is about 40KB. This will 
-    ensure that the application uses the correct DLL.
+    ensure that the application uses the correct DLL. The alternative is
+    to copy pm_dll.dll to a system directory on the DLL search path, e.g.
+    c:\windows\system32.
 
 10) run test project; use the menu that shows up from the command prompt to
     test that portMidi works on your system. tests include: 
 		- verify midi output works
 		- verify midi input works
-		- verify midi input w/midi thru works
 
-11) run other projects if you wish: sysex, latency, midithread, mm, qtest
+11) run other projects if you wish: sysex, latency, midithread, mm, 
+    qtest, midithru
 
 ============================================================================
 TO CREATE YOUR OWN PORTMIDI CLIENT APPLICATION:
@@ -147,12 +149,14 @@ DESIGN NOTES
 
 The DLL is used so that PortMidi can (usually) close open devices when the
 program terminates. Failure to close input devices under WinNT, Win2K, and
-probably later systems causes the OS to crash.
+probably later systems causes the OS to crash. NOTE: Microsoft seems to 
+have fixed this bug in current versions of WinXP.
 
 This is accomplished with a .LIB/.DLL pair, linking to the .LIB
-in order to access functions in the .DLL. 
+in order to access functions in the .DLL. Note that the PortMidi library
+itself is configured for static linking -- it is not a DLL.
 
-PortMidi for Win32 exists as a simple library,
+PortMidi for Win32 exists as a simple static library,
 with Win32-specific code in pmwin.c and MM-specific code in pmwinmm.c.
 pmwin.c uses a DLL in pmdll.c to call Pm_Terminate() when the program
 exits to make sure that all MIDI ports are closed.
@@ -171,10 +175,8 @@ To open input:
         set descriptor field of PmInternal structure
         - open device
         set handle field of midiwinmm_type structure
-        - allocate buffer 1 for sysex
-        buffer is added to input port
-        - allocate buffer 2 for sysex
-        buffer is added to input port
+        - allocate buffers
+        - start device
         - return
     - return
 

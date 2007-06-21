@@ -1,6 +1,7 @@
 File: PortMidi Win32 Readme
 Author: Belinda Thom, June 16 2002
-Revised by: Roger Dannenberg, June 2002, May 2004, June 2007
+Revised by: Roger Dannenberg, June 2002, May 2004, June 2007, 
+            Umpei Kurokawa, June 2007
 
 =============================================================================
 USING PORTMIDI:
@@ -47,6 +48,7 @@ TO COMPILE PORTMIDI:
 3)  cd to or open the portmidi directory
 
 4)  start or click on the portmidi.sln workspace
+	
 
 5)  the following projects exist within this workspace:
     - portmidi (the PortMidi library)
@@ -59,14 +61,21 @@ TO COMPILE PORTMIDI:
     - latency (uses porttime to measure system latency)
     - midithru (an example illustrating software MIDI THRU)
     - qtest (a test of the new multicore-safe queue implementation)
+    - mm  (allows monitoring of midi messages)
+
 
 6)  verify that all project settings are for Win32 Debug release:
     - type Alt-F7
     - highlight all three projects in left part of Project Settings window; 
     - "Settings For" should say "Win32 Debug"
+	
+    -In Visual C++ 2005 Express Edition, there is a drop down menu in 
+     the top toolbar to select the Win32 and Debug option.
 
 7)  use Build->Batch Build ... to build everything in the project
-
+	
+    -In Visual C++ 2005 Express Edition, use Build->Build Solution
+	
 8)  The settings for these projects were distributed in the zip file, so
     compile should just work.
 
@@ -121,6 +130,15 @@ The easiest way is to start a new project w/in the portMidi workspace:
       in the next step)
 	- Click OK
 	- Select "An Empty Project" and click Finish
+	
+	In Visual C++ 2005 Express Edition, 
+	- File->New->Projects
+	- Location: <...>\portmidi\<yourProjectName>
+	- select Add to solution
+	- select CLR Empty project in CLR
+	- select Win32 Console Application in Win32
+	- select Empty project in General
+	
 
 2) Now this project will be the active project. Make it explicitly depend
    on PortMidi dll:
@@ -128,17 +146,18 @@ The easiest way is to start a new project w/in the portMidi workspace:
 	- Click pm_dll
 
 3) Important! in order to be able to use portMidi DLL from your new project
-   and set breakpoints,	copy following files from <...>\pm_dll\Debug into 
+   and set breakpoints,	copy following files from <...>\pm_win\Debug into 
    <...>\<yourProjectName>\Debug directory:
 		pm_dll.lib
 		pm_dll.dll
     each time you rebuild pm_dll, these copies must be redone!
 
+
 4) add whatever files you wish to add to your new project, using portMidi
    calls as desired (see USING PORTMIDI at top of this readme)
 
 5) when you include portMidi files, do so like this:
-	- #include "..\pm_dll\portmidi.h"
+	- #include "..\pm_common\portmidi.h"
 	- etc.
 
 6) build and run your project
@@ -290,4 +309,3 @@ part of PortMidi is allowed to directly copy sysex bytes to
 fill_length. See the code for details.
 
 
-  

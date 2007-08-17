@@ -15,7 +15,6 @@
 #include "string.h"
 #include "memory.h"
 #include "allegro.h"
-//#include "memory.h"
 #include "trace.h"
 #include "math.h"
 
@@ -913,6 +912,7 @@ bool Alg_time_map::insert_tempo(double tempo, double beat)
     // now i is index of beat where tempo will change
     if (i == beats.len - 1) {
         last_tempo = tempo;
+        printf("last_tempo to %g\n", last_tempo);
         last_tempo_flag = true;
     } else { // adjust all future beats
         // compute the difference in beats
@@ -1561,6 +1561,10 @@ void Alg_track::convert_to_beats()
         for (i = 0; i < length(); i++) {
             Alg_event_ptr e = events[i];
             double beat = time_map->time_to_beat(e->time);
+            // DEBUG CODE:
+            //if (i < 10) {
+            //    printf("c2b %g -> %g\n", e->time, beat);
+            //}
             if (e->is_note()) {
                 Alg_note_ptr n = (Alg_note_ptr) e;
                 n->dur = time_map->time_to_beat(n->time + n->dur) - beat;
@@ -1580,11 +1584,15 @@ void Alg_track::convert_to_seconds()
         for (i = 0; i < length(); i++) {
             Alg_event_ptr e = events[i];
             double time = time_map->beat_to_time(e->time);
+            // DEBUG CODE:
+            //if (i < 10) {
+            //    printf("c2s %g -> %g\n", e->time, time);
+            //}
             if (e->is_note()) {
                 Alg_note_ptr n = (Alg_note_ptr) e;
                 n->dur = time_map->beat_to_time(n->time + n->dur) - time;
-                n->time = time;
             }
+            e->time = time;
         }
     }
 }
@@ -2122,8 +2130,8 @@ void Alg_tracks::add_track(int track_num, Alg_time_map_ptr time_map,
     if (track_num < len) return; // don't add if already there
     while (len <= track_num) {
         tracks[len] = new Alg_track(time_map, seconds);
-        printf("allocated track at %d (%x, this %x) = %x\n", len, 
-               &(tracks[len]), this, tracks[len]);
+        //printf("allocated track at %d (%x, this %x) = %x\n", len, 
+        //       &(tracks[len]), this, tracks[len]);
         len++;
     }
 }
@@ -2243,7 +2251,13 @@ void Alg_seq::convert_to_beats()
 void Alg_seq::convert_to_seconds()
 {
     if (units_are_seconds) return;
+    //printf("convert_to_seconds, tracks %d\n", tracks());
+    //printf("last_tempo of seq: %g on map %x\n", 
+    //       get_time_map()->last_tempo, get_time_map());
     for (int i = 0; i < tracks(); i++) {
+        //printf("last_tempo of track %d: %g on %x\n", i,
+        //       track(i)->get_time_map()->last_tempo, 
+        //       track(i)->get_time_map());
         track(i)->convert_to_seconds();
     }
     // note that the Alg_seq inherits units_are_seconds from an
@@ -2253,7 +2267,8 @@ void Alg_seq::convert_to_seconds()
 }
 
 
-Alg_track_ptr Alg_seq::cut_from_track(int track_num, double start, double dur, bool all)
+Alg_track_ptr Alg_seq::cut_from_track(int track_num, double start, 
+                                      double dur, bool all)
 {
     assert(track_num >= 0 && track_num < tracks());
     Alg_track_ptr tr = track(track_num);
@@ -2497,6 +2512,7 @@ bool Alg_seq::insert_tempo(double bpm, double beat)
     double bps = bpm / 60.0; // convert to beats per second
     // change the tempo at the given beat until the next beat event
     if (beat < 0) return false;
+    assert(!units_are_seconds);
     convert_to_beats(); // beats are invariant when changing tempo
     double time = time_map->beat_to_time(beat);
     long i = time_map->locate_time(time);

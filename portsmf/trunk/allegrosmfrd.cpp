@@ -14,7 +14,7 @@ public:
     Alg_note_ptr note;
     class Alg_pending *next;
     Alg_pending(Alg_note_ptr n, class Alg_pending *list) { 
-		note = n; next = list; }
+        note = n; next = list; }
 } *Alg_pending_ptr;
 
 
@@ -25,16 +25,16 @@ public:
     int divisions;
     Alg_pending_ptr pending;
     Alg_track_ptr track;
-	long channel_offset_per_track; // used to encode track number into channel
-		// chan is actual_channel + channel_offset_per_track * track_num
-	    // default is 100, set this to 0 to merge all tracks to 16 channels
+    long channel_offset_per_track; // used to encode track number into channel
+        // chan is actual_channel + channel_offset_per_track * track_num
+        // default is 100, set this to 0 to merge all tracks to 16 channels
     int channel_offset;
 
     Alg_midifile_reader(FILE *f, Alg_seq_ptr new_seq) {
-		file = f;
-		pending = NULL;
-		seq = new_seq;
-	}
+        file = f;
+        pending = NULL;
+        seq = new_seq;
+    }
     // delete destroys the seq member as well, so set it to NULL if you
     // copied the pointer elsewhere
     ~Alg_midifile_reader();
@@ -84,7 +84,7 @@ Alg_midifile_reader::~Alg_midifile_reader()
         pending = pending->next;
         delete to_be_freed;
     }
-	finalize(); // free Mf reader memory
+    finalize(); // free Mf reader memory
 }
 
 
@@ -135,6 +135,7 @@ void Alg_midifile_reader::merge_tracks()
 void Alg_midifile_reader::parse()
 {
     channel_offset = 0;
+    seq->convert_to_beats();
     midifile();
 }
 
@@ -142,13 +143,14 @@ void Alg_midifile_reader::parse()
 void Alg_midifile_reader::Mf_starttrack()
 {
     // printf("starting new track\n");
-    track = new Alg_track;
+    // create a new track that will share the sequence time map
+    // since time is in beats, the seconds parameter is false
+    track = new Alg_track(seq->get_time_map(), false);
 }
 
 
 void Alg_midifile_reader::Mf_endtrack()
 {
-	seq->convert_to_seconds(); // track event times are in seconds
     seq->track_list.append(track);
     // printf("finished track, length %d number %d\n", track->len, track_num / 100);
     channel_offset += seq->channel_offset_per_track;
@@ -193,6 +195,7 @@ double Alg_midifile_reader::get_time()
 
 void Alg_midifile_reader::Mf_on(int chan, int key, int vel)
 {
+    assert(!seq->get_units_are_seconds());
     if (vel == 0) {
         Mf_off(chan, key, vel);
         return;
@@ -232,10 +235,10 @@ void Alg_midifile_reader::update(int chan, int key, Alg_parameter_ptr param)
 {
     Alg_update_ptr update = new Alg_update;
     update->time = get_time();
-	update->chan = chan;
-	if (chan != -1) {
-		update->chan = chan + channel_offset;
-	}
+    update->chan = chan;
+    if (chan != -1) {
+        update->chan = chan + channel_offset;
+    }
     update->set_identifier(key);
     update->parameter = *param;
     // prevent the destructor from destroying the string twice!
@@ -306,7 +309,9 @@ void Alg_midifile_reader::Mf_arbitrary(int len, char *msg)
 
 void Alg_midifile_reader::Mf_metamisc(int type, int len, char *msg)
 {
-    Mf_error("metamisc data ignored");
+    char text[128];
+    sprintf(text, "metamsic data, type 0x%x, ignored", type);
+    Mf_error(text);
 }
 
 
@@ -324,7 +329,7 @@ void Alg_midifile_reader::Mf_smpte(int i1, int i2, int i3, int i4, int i5)
 
 void Alg_midifile_reader::Mf_timesig(int i1, int i2, int i3, int i4)
 {
-	seq->set_time_sig(get_currtime() / divisions, i1, 1 << i2);
+    seq->set_time_sig(get_currtime() / divisions, i1, 1 << i2);
 }
 
 
@@ -390,7 +395,7 @@ void Alg_midifile_reader::Mf_text(int type, int len, char *msg)
 // parse file into a seq. If new_seq is null, create and return new one.
 Alg_seq_ptr alg_smf_read(FILE *file, Alg_seq_ptr new_seq)
 {
-	if (!new_seq) new_seq = new Alg_seq();
+    if (!new_seq) new_seq = new Alg_seq();
     Alg_midifile_reader ar(file, new_seq);
     ar.parse();
     return ar.seq;

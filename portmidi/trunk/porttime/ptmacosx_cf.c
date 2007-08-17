@@ -134,7 +134,7 @@ PtTimestamp Pt_Time()
 }
 
 
-void Pt_Sleep(int duration)
+void Pt_Sleep(long duration)
 {
     usleep(duration * 1000);
 }

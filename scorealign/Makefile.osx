@@ -1,0 +1,94 @@
+# Makefile for score-align
+
+# profile = -pg
+profile = 
+
+DEBUGFLAGS = 
+
+#optimize = -g $(DEBUGFLAGS) $(profile)
+optimize = -O
+
+INCLUDES = -Isnd -Ifft3 -Iallegro
+
+#OPTIONS FOR LINUX:
+c_opts = $(optimize) -DLINUX $(INCLUDES)
+
+
+cc = gcc $(c_opts)
+c++ = g++ $(c_opts)
+cclink = gcc
+c++link = g++
+syslibs = -lm
+
+score-align_o = comp_chroma.o gen_chroma.o scorealign.o snd/audionone.o snd/sndcvt.o snd/sndheader.o snd/sndio.o snd/snd.o snd/ieeecvt.o snd/sndlinux.o snd/sndfaillinux.o fft3/FFT.o mfmidi.o allegro/allegro.o allegro/allegrosmfrd.o allegro/allegrosmfwr.o allegro/allegrord.o allegro/strparse.o trace.o
+
+.SUFFIXES: .cpp .c .h .aur .o
+
+.cpp.o:
+	$(c++) -c $< -o $*.o
+
+.c.o:
+	$(cc) -c $< -o $*.o
+
+all: score-align
+
+header:
+	echo "**********************************************************"
+	echo "**********************************************************"
+
+clean: 
+	echo "removing objects"
+	find . -name "*~" | xargs rm -f
+	rm -f $(score-align_o)
+	rm -f core*
+
+cleaner: clean
+	rm -f TAGS
+
+cleanest: cleaner
+	rm -f score-align
+	rm -f score-align.ncb
+	rm -f score-align.opt
+	rm -f score-align.plg
+
+TAGS: 
+	find . \( -name "*.cpp" -o -name "*.h" \) -print | etags -
+
+tags: TAGS
+
+backup: cleanest
+	tar cvf ../score-align.tar .
+	gzip ../score-align.tar
+	echo "please rename ../score-align.tar.gz"
+
+
+score-align: $(score-align_o)
+	$(c++link) $(score-align_o) -o score-align $(syslibs)
+
+test0:
+	./score-align /home/rbd/wdh/music/nyquist-temp.wav /home/rbd/wdh/music/chrom_nyquist-temp.wav > output.txt
+	diff output.txt /home/rbd/wdh/music/output.txt | less
+
+test:
+	./score-align /home/rbd/score-align/data/live-beeth-s5m1-25s-mono.wav  /home/rbd/score-align/data/midi-beeth-s5m1-25s-mono.wav > output.txt
+	diff output.txt /home/rbd/wdh/music/output.txt | less
+
+bigtest:
+	./score-align data/live-Beethoven_Symphony_No5_Mvt1.wav data/midi-Beethoven_Symphony_No5_Mvt1.wav
+
+bigtest2: 
+	./score-align data/midi-Beethoven_Symphony_No5_Mvt1.wav data/live-Beethoven_Symphony_No5_Mvt1.wav
+
+
+# DEPENDENCIES
+
+
+
+
+
+
+
+
+
+
+

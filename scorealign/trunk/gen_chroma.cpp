@@ -7,11 +7,11 @@
 #include "math.h"
 #include "snd.h"
 
+#include "allegro.h"
 #include "scorealign.h"
 #include "fft3/FFT.h"
 #include "gen_chroma.h"
 #include "comp_chroma.h"
-#include "allegro.h"
 #include "mfmidi.h"
 
 long end_offset_store;

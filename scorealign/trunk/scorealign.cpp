@@ -62,8 +62,8 @@ FILE *dbf = NULL;
 static void print_usage(char *progname) 
 {
     printf("\nUsage: %s [-<flags> [<period><windowsize><path> <smooth><trans> <midi>]] <file1> [<file2>]\n", progname);
-    printf("   specifying only <file1> simply transcribes MIDI in <file1> to text <file2>\n");
-	printf("   (default is in transcription2.txt. Otherwise, align <file1> and <file2>.\n");
+    printf("   specifying only <file1> simply transcribes MIDI in <file1> to\n");
+	printf("   transcription.txt. Otherwise, align <file1> and <file2>.\n");
 	printf("   -h 0.25 indicates a frame period of 0.25 seconds\n");
 	printf("   -w 0.25 indicates a window size of 0.25 seconds. \n");
 	printf("   -r indicates filename to write raw alignment path to (default path.data)\n");

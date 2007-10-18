@@ -36,4 +36,4 @@ scorealign [-<flags> [<period><windowsize><path> <smooth><trans> <midi>]]
    -t is filename to write the time aligned transcription 
       (default is transcription.txt)
    -m is filename to write the time aligned midi file (default is midi.mid)
-
+   -o 2.0 indicates a smoothing window of 2.0s

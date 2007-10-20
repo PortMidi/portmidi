@@ -25,7 +25,7 @@ cclink = gcc
 c++link = g++
 syslibs = -lm
 
-scorealign_o = comp_chroma.o gen_chroma.o scorealign.o snd/audionone.o snd/sndcvt.o snd/sndheader.o snd/sndio.o snd/snd.o snd/ieeecvt.o snd/sndlinux.o snd/sndfaillinux.o fft3/FFT.o mfmidi.o $(PORTSMF)/allegro.o $(PORTSMF)/allegrosmfrd.o $(PORTSMF)/allegrosmfwr.o $(PORTSMF)/allegrord.o $(PORTSMF)/strparse.o trace.o
+scorealign_o = comp_chroma.o gen_chroma.o scorealign.o snd/audionone.o snd/sndcvt.o snd/sndheader.o snd/sndio.o snd/snd.o snd/ieeecvt.o snd/sndlinux.o snd/sndfaillinux.o fft3/FFT.o mfmidi.o $(PORTSMF)/allegro.o $(PORTSMF)/allegrosmfrd.o $(PORTSMF)/allegrosmfwr.o $(PORTSMF)/allegrord.o $(PORTSMF)/strparse.o trace.o regression.o
 
 .SUFFIXES: .cpp .c .h .aur .o
 

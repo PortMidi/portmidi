@@ -14,7 +14,7 @@
 #include "comp_chroma.h"
 #include "allegro.h"
 #include "mfmidi.h"
-
+#include "regression.h"
 
 #if (defined (WIN32) || defined (_WIN32))
 #define	snprintf	_snprintf
@@ -23,11 +23,18 @@
 #define	LOW_CUTOFF  40
 #define HIGH_CUTOFF 2000
 
+#define VERBOSE 0
+#define V if (VERBOSE)
+
+// for presmoothing, how near does a point have to be to be "on the line"
+#define NEAR 1.5
+
 // these are global parameters for the alignment
 
 /*===========================================================================*/
 float frame_period; // nominal time in seconds
 float window_size;  //window size in seconds
+float presmooth_time = 0.0;
 float smooth_time = 1.75; // duration of smoothing window
 int smooth; // number of points used to compute the smooth time map
 
@@ -72,6 +79,7 @@ static void print_usage(char *progname)
     printf("   -t is filename to write the time aligned transcription (default is transcription.txt)\n");
     printf("   -m is filename to write the time aligned midi file (default is midi.mid)\n");
     printf("   -o 2.0 indicates a smoothing window time of 2.0s\n");
+    printf("   -p 3.0 indicates presmoothing with a 3s window\n");
 #if (defined (_WIN32) || defined (WIN32))
     printf("   This is a Unix style command line application which\n"
            "   should be run in a MSDOS box or Command Shell window.\n\n");
@@ -278,13 +286,13 @@ else
 /*
 returns the first index in pathy where the element is bigger than sec 
 */
-int sec_to_pathy_index(float sec) {
-
-    for (int i=0 ; i<(file1_frames+file2_frames); i++) {
-        if (smooth_time_map[i]*actual_frame_period_2>=sec) {
+int sec_to_pathy_index(float sec) 
+{
+    for (int i = 0 ; i < (file1_frames + file2_frames); i++) {
+        if (smooth_time_map[i] * actual_frame_period_2 >= sec) {
             return i; 
         }
-        //rintf("%i\n" ,pathy[i]);
+        //printf("%i\n" ,pathy[i]);
     }
     return -1; 
 }
@@ -320,8 +328,8 @@ void compare_chroma()
     float *path;
     int x = 0;
     int y = 0;
-	int start_frame_x=0;
-	int start_frame_y=0;
+    int start_frame_x=0;
+    int start_frame_y=0;
     
     /* Allocate the distance matrix */
     path = (float *) calloc(file1_frames * file2_frames, sizeof(float));
@@ -367,12 +375,12 @@ void compare_chroma()
     pathx = (short *) malloc(sizeof(short) * (x + y + 2));
     pathy = (short *) malloc(sizeof(short) * (x + y + 2));
 	
-	assert(pathx!=NULL);
-	assert(pathy!=NULL);
+    assert(pathx!=NULL);
+    assert(pathy!=NULL);
 	 
-	// map from file1 time to file2 time
-	time_map = (float *) malloc(sizeof(float) * file1_frames);
-	smooth_time_map = (float *) malloc(sizeof(float) * file1_frames);
+    // map from file1 time to file2 time
+    time_map = (float *) malloc(sizeof(float) * file1_frames);
+    smooth_time_map = (float *) malloc(sizeof(float) * file1_frames);
 	
 #if DEBUG_LOG
     fprintf(dbf, "\nOptimal Path: ");
@@ -380,13 +388,9 @@ void compare_chroma()
 #endif
     while (1) {
         /* Check for stopping */
-	
-
-
-		if (x ==  0 & y == 0) {
-
-			path_step(0, 0);
-			path_reverse();
+        if (x ==  0 & y == 0) {
+            path_step(0, 0);
+            path_reverse();
             break;
         }
 		
@@ -415,17 +419,14 @@ void save_path(char *filename)
 {
     // print the path to a (plot) file
     FILE *pathf = fopen(filename, "w");
-	assert(pathf);
-	int p;
-	for (p = 0; p < pathlen; p++) {
+    assert(pathf);
+    int p;
+    for (p = 0; p < pathlen; p++) {
         fprintf(pathf, "%g %g\n", pathx[p] * actual_frame_period_1, 
                 pathy[p] * actual_frame_period_2);
     }
     fclose(pathf);
-	
 }
-
-
 
 
 void linear_regression(int n, int width, float &a, float &b)
@@ -437,16 +438,16 @@ void linear_regression(int n, int width, float &a, float &b)
 	float xavg, yavg;
 	int i;
 	for (i = n - hw; i <= n + hw; i++) {
-		xsum += i;
-		ysum += time_map[i];
+            xsum += i;
+            ysum += time_map[i];
 	}
 	xavg = xsum / width;
 	yavg = ysum / width;
 	float num = 0;
 	float den = 0;
 	for (i = n - hw; i <= n + hw; i++) {
-		num += (i - xavg) * (time_map[i] - yavg);
-		den += (i - xavg) * (i - xavg);
+            num += (i - xavg) * (time_map[i] - yavg);
+            den += (i - xavg) * (i - xavg);
 	}
 	b = num / den;
 	a = yavg - b * xavg;
@@ -495,6 +496,188 @@ void compute_smooth_time_map()
 
 
 }
+
+/* print_path_range -- debugging output */
+/**/
+void print_path_range(int i, int j)
+{
+    while (i <= j) {
+        printf("%d %d\n", pathx[i], pathy[i]);
+        i++;
+    }
+}
+
+
+/* near_line -- see if point is near line */
+/**/
+bool near_line(float x1, float y1, float x2, float y2, float x, float y)
+{
+    float exact_y;
+    if (x1 == x) {
+        exact_y = y1;
+    } else {
+        assert(x1 != x2);
+        exact_y = y1 + (y2 - y1) * ((x - x1) / (x2 - x1));
+    }
+    y = y - exact_y;
+    return y < NEAR && y > -NEAR;
+}
+
+
+// path_copy -- copy a path for debugging
+short *path_copy(short *path, int len)
+{
+    int bytes = len * sizeof(path[0]);
+    short *new_path = (short *) malloc(bytes);
+    memcpy(new_path, path, bytes);
+    return new_path;
+}
+
+
+/* presmooth -- try to remove typical dynamic programming errors
+ * 
+ * A common problem is that the best path wanders off track a ways
+ * and then comes back. The idea of presmoothing is to see if the
+ * path is mostly a straight line. If so, adjust the points off of
+ * the line to fall along the line. The variable presmooth_time is
+ * the duration of the line. It is drawn between every pair of 
+ * points presmooth_time apart. If 25% of the first half of the line
+ * falls within one frame of the path, and 25% of the second half of
+ * the line falls within one frame of the path, then find the best
+ * fit of the line to the points within 1 frame. Then adjust the middle
+ * part of the line (from 25% to 75%) to fall along the line.
+ * Note that all this curve fitting is done on integer coordinates.
+ */
+void presmooth()
+{
+    int n = (int) (0.5 + presmooth_time / actual_frame_period_2);
+    n = (n + 3) & ~3; // round up to multiple of 4
+    int i = 0;
+    while (pathx[i] + n < file2_frames) {
+        /* line goes from i to i+n-1 */
+        int x1 = pathx[i];
+        int xmid = x1 + n/2;
+        int x2 = x1 + n;
+        int y1 = pathy[i];
+        int y2;
+        int j;
+        /* search for y2 = pathy[j] s.t. pathx[j] == x2 */
+        for (j = i + n; j < pathlen; j++) {
+            if (pathx[j] == x2) {
+                y2 = pathy[j];
+                break;
+            }
+        }
+        Regression regr;
+        /* see if line fits the data */
+        int k = i;
+        int count = 0;
+        while (pathx[k] < xmid) { // search first half
+            if (near_line(x1, y1, x2, y2, pathx[k], pathy[k])) {
+                count++;
+                regr.point(pathx[k], pathy[k]);
+            }
+            k++;
+        }
+        /* see if points were close to line */
+        if (count < n/4) {
+            i++;
+            continue;
+        }
+        /* see if line fits top half of the data */
+        while (pathx[k] < x2) {
+            if (near_line(x1, y1, x2, y2, pathx[k], pathy[k])) {
+                count++;
+                regr.point(pathx[k], pathy[k]);
+            }
+            k++;
+        }
+        /* see if points were close to line */
+        if (count < n/4) {
+            i++;
+            continue;
+        }
+        /* debug: */
+        V printf("presmoothing path from %d to %d:\n", i, j);
+        V print_path_range(i, j);
+        /* fit line to nearby points */
+        regr.regress();
+        /* adjust points to fall along line */
+        // basically reconstruct pathx and pathy from i to j
+        short x = pathx[i];
+        short y = pathy[i];
+        k = i + 1;
+        V printf("start loop: j %d, pathx %d, pathy %d\n", 
+                 j, pathx[j], pathy[j]);
+        while (x < pathx[j] || y < pathy[j]) {
+            V printf("top of loop: x %d, y %d\n", x, y);
+            // iteratively make an optional move in the +y direction
+            // then make a move in the x direction
+            // check y direction: want to move to y+1 if either we are below
+            // the desired y coordinate or we are below the maximum slope
+            // line (if y is too low, we'll have to go at sharper than 2:1
+            // slope to get to pathx[j], pathy[j], which is bad
+            int target_y = (int) (regr.f(x) + 0.5); // round
+            V printf("target_y@%d %d, r %g, ", x, target_y, regr.f(x));
+            // but what if the line goes way below the last point?
+            // we don't want to go below a diagonal through the last point
+            int dist_to_last_point = pathx[j] - x;
+            int minimum_y = pathy[j] - 2 * dist_to_last_point;
+            if (target_y < minimum_y) {
+                target_y = minimum_y;
+                V printf("minimum_y %d, ", minimum_y);
+            }
+            // alternatively, if line goes too high:
+            int maximum_y = pathy[j] - dist_to_last_point / 2;
+            if (target_y > maximum_y) {
+                target_y = maximum_y;
+                V printf("maximum y %d, ", maximum_y);
+            }
+            // now advance to target_y
+            if (target_y > y) {
+                pathx[k] = x;
+                pathy[k] = y + 1;
+                V printf("up: pathx[%d] %d, pathy[%d] %d\n", k, pathx[k], k, pathy[k]);
+                k++;
+                y++;
+            }
+            if (x < pathx[j]) {
+                // now advance x
+                x++;
+                // y can either go horizontal or diagonal, i.e. y either
+                // stays the same or increments by one
+                target_y = (int) (regr.f(x) + 0.5); // round
+                V printf("target_y@%d %d, r %g, ", x, target_y, regr.f(x));
+                if (target_y > y) y++;
+                pathx[k] = x;
+                pathy[k] = y;
+                V printf("pathx[%d] %d, pathy[%d] %d\n", k, pathx[k], k, pathy[k]);
+                k++;
+            }
+        }
+        // make sure new path is no longer than original path
+        // the last point we wrote was k - 1
+        k = k - 1; // the last point we wrote is now k
+        // DEBUG
+        if (k > j) {
+            printf("oops: k %d, j %d\n", k, j);
+            print_path_range(i, k);
+        }
+        assert(k <= j);
+        // if new path is shorter than original, then fix up path
+        if (k < j) {
+            memmove(&pathx[k], &pathx[j], sizeof(pathx[0]) * (pathlen - j));
+            memmove(&pathy[k], &pathy[j], sizeof(pathy[0]) * (pathlen - j));
+            pathlen -= (j - k);
+        }
+        /* debug */
+        V printf("after presmoothing:\n");
+        V print_path_range(i, k);
+        /* since we adjusted the path, skip by 3/4 of n */
+        i = i + 3 * n/4;
+    }
+}
+
 
 /*				COMPUTE_REGRESSION_LINES
 	computes the smooth time map from the path computed
@@ -702,6 +885,8 @@ int main(int argc, char *argv [])
                 midi_filename=argv[i+1];
             } else if (argv[i][1] == 'o') {
                 smooth_time = atof(argv[i+1]);
+            } else if (argv[i][1] == 'p') {
+                presmooth_time = atof(argv[i+1]);
             }
             i++;
         }
@@ -784,6 +969,8 @@ int main(int argc, char *argv [])
 
     /* Compare the chroma frames */
     compare_chroma();
+    /* if presmooth_time is set, do presmoothing */
+    if (presmooth_time > 0.0) presmooth();
     /* Compute the smooth time map*/	
     compute_regression_lines();
     // save path

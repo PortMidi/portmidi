@@ -74,13 +74,13 @@ int ReverseBits(int index, int NumBits)
 
 void InitFFT()
 {
-   gFFTBitTable = (int **) malloc(sizeof(int)*MaxFastBits);
+   gFFTBitTable = (int **) malloc(sizeof(int *) * MaxFastBits);
 
    int len = 2;
    int b;
    for (b = 1; b <= MaxFastBits; b++) {
 
-       gFFTBitTable[b - 1] = (int *) malloc(len*sizeof(int));
+       gFFTBitTable[b - 1] = (int *) malloc(len * sizeof(int));
        int i;
       for (i = 0; i < len; i++)
          gFFTBitTable[b - 1][i] = ReverseBits(i, b);

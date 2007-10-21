@@ -13,14 +13,12 @@
 #include "gen_chroma.h"
 #include "comp_chroma.h"
 #include "mfmidi.h"
+#include "sautils.h"
 
 long end_offset_store;
 
 //if 1, causes printing internally
 #define PRINT_BIN_ENERGY 1
-
-#define malloc_floats(n) (float *) alloca(sizeof(float) * (n))
-#define malloc_ints(n) (int *) alloca(sizeof(int) * (n))
 
 #define p1 0.0577622650466621
 #define p2 2.1011784386926213
@@ -274,10 +272,10 @@ int gen_chroma_audio(char *filename, int hcutoff, int lcutoff, float **chrom_ene
 
     int infile = snd_open(&file, &flags);
 
-	if (infile != SND_SUCCESS) {
+    if (infile != SND_SUCCESS) {
 	//file failed to open
 		return -1;
-	}
+    }
 
     snd_print_file_info(&file);
 
@@ -294,47 +292,43 @@ int gen_chroma_audio(char *filename, int hcutoff, int lcutoff, float **chrom_ene
    
    /*==============================================================================*/
 	
-	int hopsize_samples= (int)(frame_period*sample_rate+.5);
-	if(hopsize_samples%2 == 1) 
-		hopsize_samples= hopsize_samples+1;
-	*actual_frame_period = (hopsize_samples/sample_rate);
+    int hopsize_samples= (int)(frame_period*sample_rate+.5);
+    if (hopsize_samples%2 == 1) 
+            hopsize_samples= hopsize_samples+1;
+    *actual_frame_period = (hopsize_samples/sample_rate);
 
-	int frame_count= (int)ceil(((float)pcm_frames/ hopsize_samples + 1)); 	
+    int frame_count= (int)ceil(((float)pcm_frames/ hopsize_samples + 1)); 	
 
     printf("   Total chroma frames %d\n", frame_count); 
     printf("   Window size  %g second \n", window_size);
     printf("   Hopsize in samples %d \n", hopsize_samples);
    /*==============================================================================*/
 
- 
-    
     //set up the buffer for reading in data
     int readcount = 0;
 	
     // allocate some buffers for use in the loop
     int full_data_size = nextPowerOf2(samples_per_frame);
 	//int hop_data_size = nextPowerOf2(samples_per_frame*hopsize_ratio);
-    float *full_data = (float *) malloc(sizeof(float) * full_data_size);
-    float *fft_dataR = (float *) malloc(sizeof(float) * full_data_size);
-    float *fft_dataI = (float *) malloc(sizeof(float) * full_data_size);	
-	float *temporary_data = (float *) malloc(sizeof(float) * full_data_size);
-	//set to zero
-	memset(full_data, 0, full_data_size*sizeof(float));
-	memset(fft_dataR,0,full_data_size*sizeof(float));
-	memset(fft_dataI,0,full_data_size*sizeof(float));
-	memset(temporary_data,0,full_data_size*sizeof(float)); 
-	//check to see if memory has been allocated
-	assert(full_data!=NULL);
-	assert(fft_dataR!=NULL);
-	assert(fft_dataI!=NULL);
-	assert(temporary_data!=NULL); 
+    float *full_data = ALLOC(float, full_data_size);
+    float *fft_dataR = ALLOC(float, full_data_size);
+    float *fft_dataI = ALLOC(float, full_data_size);	
+    float *temporary_data = ALLOC(float, full_data_size);
+    //set to zero
+    memset(full_data, 0, full_data_size*sizeof(float));
+    memset(fft_dataR, 0, full_data_size*sizeof(float));	
+    memset(fft_dataI, 0, full_data_size*sizeof(float));
+    memset(temporary_data, 0, full_data_size*sizeof(float)); 
+    //check to see if memory has been allocated
+    assert(full_data!=NULL);
+    assert(fft_dataR!=NULL);
+    assert(fft_dataI!=NULL);
+    assert(temporary_data!=NULL); 
    
-
-	int *bin_map = (int *) malloc(sizeof(int) * full_data_size);
+    int *bin_map = ALLOC(int, full_data_size);
 	
     //set up the chrom_energy array;
-    (*chrom_energy) = (float *) malloc(frame_count * (CHROMA_BIN_COUNT + 1) * 
-                                       sizeof(float));
+    (*chrom_energy) = ALLOC(float, frame_count * (CHROMA_BIN_COUNT + 1));
     int cv_index = 0;
 
     // set up mapping from spectral bins to chroma bins
@@ -367,14 +361,12 @@ int gen_chroma_audio(char *filename, int hcutoff, int lcutoff, float **chrom_ene
         bin_map[i] = mod_bin;
         freq += sample_rate / full_data_size;
     }
-    printf("BIN_COUNT is !!!!!!!!!!!!!   %d\n",CHROMA_BIN_COUNT);
+    // printf("BIN_COUNT is !!!!!!!!!!!!!   %d\n",CHROMA_BIN_COUNT);
 
-	read_window_init();
+    read_window_init();
 	
     while (read_next_window(&file, full_data, temporary_data,
-			samples_per_frame, hopsize_samples))
-          {
-       
+			samples_per_frame, hopsize_samples)) {
         //fill out array with 0's till next power of 2
 #ifdef VERBOSE
         printf("readcount %d sample %g\n", readcount, full_data[0]);
@@ -422,63 +414,53 @@ int gen_chroma_audio(char *filename, int hcutoff, int lcutoff, float **chrom_ene
         /*-------------------------------------
             END OF BIN GENERATION
         -------------------------------------*/
-        
+        /* THE FOLLOWING LOOKS LIKE SOME OLD CODE TO COMPUTE
+         * CHROMA FLUX, BUT IT IS NOT IN USE NOW 
+
         if (PRINT_BIN_ENERGY) {
-          float mao1;
-          float sum=0.;
+            float mao1;
+            float sum=0.;
 
-
-          for (i = 0; i < CHROMA_BIN_COUNT; i++) {
+            for (i = 0; i < CHROMA_BIN_COUNT; i++) {
                 reg12[i]=binEnergy[i] / binCount[i];
-                
-               }
+            }
          
-          if (reg11[0]==-999){
-                 printf("Chroma Flux \n\n");
-              }
-          else {
-                
-                for (i = 0; i < CHROMA_BIN_COUNT; i++){
-               
+            if (reg11[0]==-999){
+                printf("Chroma Flux \n\n");
+            } else {
+                for (i = 0; i < CHROMA_BIN_COUNT; i++) {
                 }
-              
                 for (int k = 0; k < CHROMA_BIN_COUNT; k++) {
-                  float x = reg11[k];
-                  float y = reg12[k];
-                  float diff = x - y;
-                  sum += diff * diff;
+                    float x = reg11[k];
+                    float y = reg12[k];
+                    float diff = x - y;
+                    sum += diff * diff;
                 }
                 mao1=sqrt( sum );           
                 sequence++;              
                 sum=0.;
                 mao1=0.;
-                }
-          for (i = 0; i < CHROMA_BIN_COUNT; i++) {
+            }
+            for (i = 0; i < CHROMA_BIN_COUNT; i++) {
                 reg11[i]=reg12[i];
-               }
-          //fclose(Pointer);
+            }
+            //fclose(Pointer);
         }
-
+*/
         //put chrom energy into the returned array
 
 #ifdef VERBOSE
         printf("cv_index %d\n", cv_index);
 #endif
-		
         for (i = 0;  i < CHROMA_BIN_COUNT; i++)
             CHROM(cv_index, i) = binEnergy[i] / binCount[i];
         cv_index++;
-	
-    }// end of while ((readcount = read_mono_floats...
-		
-	
-    
-	free(fft_dataI);
+    } // end of while ((readcount = read_mono_floats...
+
+    free(fft_dataI);
     free(fft_dataR);
     free(full_data);
     free(temporary_data);
-
-
     return frame_count;
 }
 
@@ -526,30 +508,29 @@ int gen_chroma_midi(char *filename, int hcutoff, int lcutoff,
 
     fclose(inf);
     seq->convert_to_seconds();
-	/* find duration */
-	float dur = 0.0F;
-	int nnotes = 0;
-	nnotes= find_midi_duration(seq,&dur); 
+    /* find duration */
+    float dur = 0.0F;
+    int nnotes = 0;
+    nnotes= find_midi_duration(seq,&dur); 
 
-	/*==============================================================================================*/
+    /*==============================================================================================*/
 	
-	int frame_count= (int)ceil(((float)dur/ frame_period + 1)); 	
+    int frame_count= (int)ceil(((float)dur/ frame_period + 1)); 	
 	
-	/*==============================================================================================*/
+    /*==============================================================================================*/
 	
-	printf("file name = %s\n", filename);
-	printf("note count = %d\n", nnotes);
-	printf("duration in sec =%f\n", dur); 
+    printf("file name = %s\n", filename);
+    printf("note count = %d\n", nnotes);
+    printf("duration in sec =%f\n", dur); 
     printf("chroma frames %d\n", frame_count);
 
     //set up the chrom_energy array;
-    (*chrom_energy) = (float *) malloc(frame_count * (CHROMA_BIN_COUNT + 1) * 
-                                       sizeof(float));
-	Event_list_ptr list = NULL;
-	seq->iteration_begin();
-	Alg_event_ptr event = seq->iteration_next();
+    (*chrom_energy) = ALLOC(float, frame_count * (CHROMA_BIN_COUNT + 1));
+    Event_list_ptr list = NULL;
+    seq->iteration_begin();
+    Alg_event_ptr event = seq->iteration_next();
     int cv_index;
-	for (cv_index = 0; cv_index < frame_count; cv_index++) {
+    for (cv_index = 0; cv_index < frame_count; cv_index++) {
 		
 		/*==============================================================================================*/
 

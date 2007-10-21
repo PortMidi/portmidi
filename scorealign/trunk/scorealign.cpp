@@ -12,9 +12,11 @@
 #include "scorealign.h"
 #include "gen_chroma.h"
 #include "comp_chroma.h"
+#include "curvefit.h"
 #include "allegro.h"
 #include "mfmidi.h"
 #include "regression.h"
+#include "sautils.h"
 
 #if (defined (WIN32) || defined (_WIN32))
 #define	snprintf	_snprintf
@@ -35,6 +37,7 @@
 float frame_period; // nominal time in seconds
 float window_size;  //window size in seconds
 float presmooth_time = 0.0;
+float line_time = 0.0;
 float smooth_time = 1.75; // duration of smoothing window
 int smooth; // number of points used to compute the smooth time map
 
@@ -78,8 +81,10 @@ static void print_usage(char *progname)
     printf("   -s is filename to write smoothed alignment path(default is smooth.data)\n");
     printf("   -t is filename to write the time aligned transcription (default is transcription.txt)\n");
     printf("   -m is filename to write the time aligned midi file (default is midi.mid)\n");
+    printf("   -b is filename to write the time aligned beat times (default is beatmap.txt)\n");
     printf("   -o 2.0 indicates a smoothing window time of 2.0s\n");
     printf("   -p 3.0 indicates presmoothing with a 3s window\n");
+    printf("   -x 6.0 indicates 6s line segment approximation\n");
 #if (defined (_WIN32) || defined (WIN32))
     printf("   This is a Unix style command line application which\n"
            "   should be run in a MSDOS box or Command Shell window.\n\n");
@@ -96,26 +101,21 @@ static void print_usage(char *progname)
 
 float map_time(float t1)
 {
-	t1 /= actual_frame_period_1; // convert from seconds to frames
-	int i = (int) t1; // round down
-	if (i < 0) i = 0;
-
-
-	if (i >= file1_frames - 1) i = file1_frames - 2;
-
+    t1 /= actual_frame_period_1; // convert from seconds to frames
+    int i = (int) t1; // round down
+    if (i < 0) i = 0;
+        if (i >= file1_frames - 1) i = file1_frames - 2;
 	// interpolate to get time
-	return actual_frame_period_2 * 
-		   (smooth_time_map[i] + (t1 - i) * 
-		                         (smooth_time_map[i + 1] - smooth_time_map[i]));
-
-
+        return actual_frame_period_2 * 
+                interpolate(i, smooth_time_map[i], i+1, smooth_time_map[i+1],
+                            t1);
 }
+
+
 /*				PRINT_BEAT_MAP
    prints the allegro beat_map (for debugging) which contain
    the time, beat pair for a song 
 */
-
-
 void print_beat_map(Alg_seq_ptr seq, char *filename) {
 
 	FILE *beatmap_print = fopen(filename, "w"); 
@@ -153,10 +153,8 @@ int find_midi_duration(Alg_seq_ptr seq, float *dur) {
 				if (note_end > *dur) *dur = note_end;
 				nnotes++;
 			}
-
 		}
 	}
-	
 	return nnotes; 
 }
 
@@ -167,7 +165,7 @@ int find_midi_duration(Alg_seq_ptr seq, float *dur) {
 	it to MIDINAME
 */
 
-void midi_tempo_align(Alg_seq_ptr seq , char *midiname) {
+void midi_tempo_align(Alg_seq_ptr seq , char *midiname, char *beatname) {
 
     //We create a new time map out of the alignment, and replace it with
     //the original time map in the song
@@ -180,10 +178,9 @@ void midi_tempo_align(Alg_seq_ptr seq , char *midiname) {
     totalbeats= seq->get_time_map()->time_to_beat(dur_in_sec) +2; //totalbeat= lastbeat +1 and round up the beat
     printf("midi duration = %f, totalbeats=%i \n", dur_in_sec, totalbeats); 	
     
-    float *newtime_array =(float *) malloc(sizeof(float) * totalbeats);
-
-    for(int i=0; i<totalbeats; i++) {
-
+    float *newtime_array = ALLOC(float, totalbeats);
+    
+    for (int i=0; i<totalbeats; i++) {
         newtime_array[i]= map_time(seq->get_time_map()->beat_to_time(i));
         if (newtime_array[i]> 0) 
             new_time_map_seq.insert_beat((double)newtime_array[i], (double)i);
@@ -192,7 +189,7 @@ void midi_tempo_align(Alg_seq_ptr seq , char *midiname) {
     free(newtime_array);
 	
     seq->set_time_map(new_time_map_seq.get_time_map()); 
-    print_beat_map(seq, "beatmapnew.txt"); 
+    print_beat_map(seq, beatname); 
     FILE *tempo_aligned_midi = fopen(midiname, "wb");
 	
     seq->smf_write(tempo_aligned_midi);
@@ -328,8 +325,6 @@ void compare_chroma()
     float *path;
     int x = 0;
     int y = 0;
-    int start_frame_x=0;
-    int start_frame_y=0;
     
     /* Allocate the distance matrix */
     path = (float *) calloc(file1_frames * file2_frames, sizeof(float));
@@ -370,21 +365,20 @@ void compare_chroma()
     x = file1_frames - 1;
     y = file2_frames - 1;
 
-	//x andy are the ending points, it can end at either the end of midi, or end of audio
-	//but not both
-    pathx = (short *) malloc(sizeof(short) * (x + y + 2));
-    pathy = (short *) malloc(sizeof(short) * (x + y + 2));
+    //x and y are the ending points, it can end at either the end of midi, 
+    // or end of audio but not both
+    pathx = ALLOC(short, (x + y + 2));
+    pathy = ALLOC(short, (x + y + 2));
 	
-    assert(pathx!=NULL);
-    assert(pathy!=NULL);
+    assert(pathx != NULL);
+    assert(pathy != NULL);
 	 
     // map from file1 time to file2 time
-    time_map = (float *) malloc(sizeof(float) * file1_frames);
-    smooth_time_map = (float *) malloc(sizeof(float) * file1_frames);
+    time_map = ALLOC(float, file1_frames);
+    smooth_time_map = ALLOC(float, file1_frames);
 	
 #if DEBUG_LOG
     fprintf(dbf, "\nOptimal Path: ");
-	int point_count = 0;
 #endif
     while (1) {
         /* Check for stopping */
@@ -409,7 +403,8 @@ void compare_chroma()
         } else if (x > 0) {
             x--;
         }
-    }	
+    }
+    free(path);
 }
 /*		SAVE_PATH
 	write the alignment path to FILENAME
@@ -527,9 +522,8 @@ bool near_line(float x1, float y1, float x2, float y2, float x, float y)
 // path_copy -- copy a path for debugging
 short *path_copy(short *path, int len)
 {
-    int bytes = len * sizeof(path[0]);
-    short *new_path = (short *) malloc(bytes);
-    memcpy(new_path, path, bytes);
+    short *new_path = ALLOC(short, len);
+    memcpy(new_path, path, len * sizeof(path[0]));
     return new_path;
 }
 
@@ -550,7 +544,7 @@ short *path_copy(short *path, int len)
  */
 void presmooth()
 {
-    int n = (int) (0.5 + presmooth_time / actual_frame_period_2);
+    int n = ROUND(presmooth_time / actual_frame_period_2);
     n = (n + 3) & ~3; // round up to multiple of 4
     int i = 0;
     while (pathx[i] + n < file2_frames) {
@@ -617,7 +611,7 @@ void presmooth()
             // the desired y coordinate or we are below the maximum slope
             // line (if y is too low, we'll have to go at sharper than 2:1
             // slope to get to pathx[j], pathy[j], which is bad
-            int target_y = (int) (regr.f(x) + 0.5); // round
+            int target_y = ROUND(regr.f(x));
             V printf("target_y@%d %d, r %g, ", x, target_y, regr.f(x));
             // but what if the line goes way below the last point?
             // we don't want to go below a diagonal through the last point
@@ -646,7 +640,7 @@ void presmooth()
                 x++;
                 // y can either go horizontal or diagonal, i.e. y either
                 // stays the same or increments by one
-                target_y = (int) (regr.f(x) + 0.5); // round
+                target_y = ROUND(regr.f(x));
                 V printf("target_y@%d %d, r %g, ", x, target_y, regr.f(x));
                 if (target_y > y) y++;
                 pathx[k] = x;
@@ -686,25 +680,25 @@ void presmooth()
 */
 void compute_regression_lines()
 {
-	// first, compute the y value of the path at
-	// each x value. If the path has multiple values
-	// on x, take the average.
-	int p = 0;
-	int i;
-	int upper, lower;
-	for (i = 0; i < file1_frames; i++) {
-	    lower = pathy[p];
-		while (p < pathlen && pathx[p] == i) {
-			upper = pathy[p];
-			p = p + 1;
-		}
-		time_map[i] = ((float) lower + (float) upper) * 0.5;
-	}
-	// now fit a line to the nearest WINDOW points and record the 
-	// line's y value for each x.
-	compute_smooth_time_map();
-
+    // first, compute the y value of the path at
+    // each x value. If the path has multiple values
+    // on x, take the average.
+    int p = 0;
+    int i;
+    int upper, lower;
+    for (i = 0; i < file1_frames; i++) {
+        lower = pathy[p];
+        while (p < pathlen && pathx[p] == i) {
+            upper = pathy[p];
+            p = p + 1;
+        }
+        time_map[i] = (lower + upper) * 0.5;
+    }
+    // now fit a line to the nearest WINDOW points and record the 
+    // line's y value for each x.
+    compute_smooth_time_map();
 }
+
 
 /*				SAVE_SMOOTH_FILE 
 	saves the smooth time map in SMOOTH_FILENAME
@@ -729,7 +723,7 @@ void save_smooth_file(char *smooth_filename) {
 
 */
 void edit_transcription(Alg_seq_ptr seq , bool warp, FILE *outf, 
-                        char *midi_filename) {
+                        char *midi_filename, char *beat_filename) {
     int note_x = 1;	
     seq->iteration_begin();
 
@@ -755,7 +749,7 @@ void edit_transcription(Alg_seq_ptr seq , bool warp, FILE *outf,
     fclose(outf);
     if (warp) {
         // align the midi file and write out 	
-        midi_tempo_align(seq, midi_filename); 
+        midi_tempo_align(seq, midi_filename, beat_filename); 
     }
 }
 
@@ -781,7 +775,7 @@ Where
 
 void save_transcription(char *file1, char *file2, 
                         bool warp, char *filename, char *smooth_filename, 
-                        char *midi_filename)
+                        char *midi_filename, char *beat_filename)
 {
 	
 	char *midiname; //midi file to be read
@@ -828,7 +822,7 @@ void save_transcription(char *file1, char *file2,
 		fprintf(outf, "# transcription format : <sequence number> <channel> <pitch> <velocity> <onset> <duration>\n");
 		
 	
-		edit_transcription(seq, warp, outf, midi_filename); 
+		edit_transcription(seq, warp, outf, midi_filename, beat_filename); 
 		delete(seq); 
 		
 	}
@@ -840,8 +834,8 @@ void save_transcription(char *file1, char *file2,
 int main(int argc, char *argv []) 
 {	
     char *progname, *infilename1, *infilename2;
-    char *smooth_filename, *path_filename, *trans_filename, *midi_filename;
-    float Audio_Offset = 0; //this is the audio offset output
+    char *smooth_filename, *path_filename, *trans_filename;
+    char *midi_filename, *beat_filename;
     
     //just transcribe if trasncribe == 1
     int transcribe = 0;
@@ -854,6 +848,7 @@ int main(int argc, char *argv [])
     smooth_filename = "smooth.data";
     trans_filename = "transcription.txt";
     midi_filename = "midi.mid";
+    beat_filename = "beatmap.txt";
 	
     progname = strrchr(argv [0], '/'); 
     progname = progname ? progname + 1 : argv[0] ;
@@ -871,22 +866,27 @@ int main(int argc, char *argv [])
     while (i < argc) {
         //expected flagged argument
         if (argv[i][0] == '-') {
-            if (argv[i][1] == 'h') {
+            char flag = argv[i][1];
+            if (flag == 'h') {
                 frame_period = atof(argv[i+1]);	
-            } else if (argv[i][1] == 'w') {
+            } else if (flag == 'w') {
                 window_size = atof(argv[i+1]); 
-            } else if (argv[i][1] == 'r') {
+            } else if (flag == 'r') {
                 path_filename=argv[i+1];
-            } else if (argv[i][1] == 's') {
+            } else if (flag == 's') {
                 smooth_filename=argv[i+1];
-            } else if (argv[i][1] == 't') {
+            } else if (flag == 't') {
                 trans_filename=argv[i+1]; 
-            } else if (argv[i][1] == 'm') {
+            } else if (flag == 'm') {
                 midi_filename=argv[i+1];
-            } else if (argv[i][1] == 'o') {
+            } else if (flag == 'b') {
+                beat_filename = argv[i+1];
+            } else if (flag == 'o') {
                 smooth_time = atof(argv[i+1]);
-            } else if (argv[i][1] == 'p') {
+            } else if (flag == 'p') {
                 presmooth_time = atof(argv[i+1]);
+            } else if (flag == 'x') {
+                line_time = atof(argv[i+1]);
             }
             i++;
         }
@@ -906,7 +906,9 @@ int main(int argc, char *argv [])
         i++;
     }
     /**********END PARSING ***********/
-
+    if (presmooth_time > 0 && line_time > 0) {
+        printf("WARNING: both -p and -x options selected.\n");
+    }
 #if DEBUG_LOG
     dbf = fopen("debug-log.txt", "w");
     assert(dbf);
@@ -915,7 +917,7 @@ int main(int argc, char *argv [])
     if (transcribe == 1) {
 	// if only one midi file, just write transcription and exit, 
         // no alignment
-        save_transcription(infilename1, "", false, trans_filename,NULL, NULL);
+        save_transcription(infilename1, "", false, trans_filename,NULL, NULL, NULL);
         printf("Wrote %s\n", trans_filename);
         goto finish;
     }
@@ -953,7 +955,7 @@ int main(int argc, char *argv [])
     printf("\nGenerated Chroma.\n");
     /* now that we have actual_frame_period_2, we can compute smooth */
     // smooth is an odd number of frames that spans about smooth_time
-    smooth = int(0.5 + smooth_time / actual_frame_period_2);
+    smooth = ROUND(smooth_time / actual_frame_period_2);
     if (smooth < 3) smooth = 3;
     if (!(smooth & 1)) smooth++; // must be odd
 
@@ -969,15 +971,25 @@ int main(int argc, char *argv [])
 
     /* Compare the chroma frames */
     compare_chroma();
-    /* if presmooth_time is set, do presmoothing */
-    if (presmooth_time > 0.0) presmooth();
-    /* Compute the smooth time map*/	
+    /* Compute the smooth time map now for use by curve-fitting */	
     compute_regression_lines();
+    /* if line_time is set, do curve-fitting */
+    if (line_time > 0.0) {
+        curve_fitting(line_time);
+        /* Redo the smooth time map after curve fitting or smoothing */	
+        compute_regression_lines();
+    }
+    /* if presmooth_time is set, do presmoothing */
+    if (presmooth_time > 0.0) {
+        presmooth();
+        /* Redo the smooth time map after curve fitting or smoothing */	
+        compute_regression_lines();
+    }
     // save path
     save_path(path_filename);	
     // save smooth, midi, transcription
     save_transcription(infilename1, infilename2, true, trans_filename, 
-                       smooth_filename,midi_filename);
+                       smooth_filename, midi_filename, beat_filename);
 
     // print what the chroma matrix looks like
     /*
@@ -991,8 +1003,8 @@ int main(int argc, char *argv [])
     free(pathy);		
     // only path and smooth are written when aligning two audio files
     if (is_midi_file(infilename1) || is_midi_file(infilename2))
-        printf("Wrote %s %s and %s.", path_filename, smooth_filename, 
-               trans_filename);
+        printf("Wrote %s, %s, %s, and %s.", path_filename, smooth_filename, 
+               trans_filename, beat_filename);
     else
         printf("Wrote %s and %s.",path_filename, smooth_filename); 
 finish:

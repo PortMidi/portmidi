@@ -733,7 +733,7 @@ void edit_transcription(Alg_seq_ptr seq , bool warp, FILE *outf,
         if (e->is_note()) {
             Alg_note_ptr n = (Alg_note_ptr) e;
             fprintf(outf, "%d %d %d %d ", 
-                    note_x++, n->chan, n->pitch, (int) n->loud);
+                    note_x++, n->chan, ROUND(n->pitch), ROUND(n->loud));
             // now compute onset time mapped to audio time
             double start = n->time;
             double finish = n->time + n->dur;

@@ -724,7 +724,8 @@ void save_smooth_file(char *smooth_filename) {
 */
 void edit_transcription(Alg_seq_ptr seq , bool warp, FILE *outf, 
                         char *midi_filename, char *beat_filename) {
-    int note_x = 1;	
+    int note_x = 1;
+    seq->convert_to_seconds();
     seq->iteration_begin();
 
     Alg_event_ptr e = seq->iteration_next();
@@ -752,6 +753,7 @@ void edit_transcription(Alg_seq_ptr seq , bool warp, FILE *outf,
         midi_tempo_align(seq, midi_filename, beat_filename); 
     }
 }
+
 
 /*		SAVE_TRANSCRIPTION
 write note data corresponding to audio file
@@ -789,13 +791,10 @@ void save_transcription(char *file1, char *file2,
 		if (is_midi_file(file1)) {
 			midiname=file1;
 			audioname=file2;
-		}
-		else{
-		
+		} else {
 			midiname=file2;
 			audioname=file1;
-		}	
-		
+		}
 
 		FILE *inf = fopen(midiname, "rb");
 		
@@ -820,15 +819,11 @@ void save_transcription(char *file1, char *file2,
 			fprintf(outf, "# times are unmodified from those in MIDI file\n");
 		}
 		fprintf(outf, "# transcription format : <sequence number> <channel> <pitch> <velocity> <onset> <duration>\n");
-		
-	
+
 		edit_transcription(seq, warp, outf, midi_filename, beat_filename); 
-		delete(seq); 
-		
+		delete(seq);
 	}
-
 }
-
 
 
 int main(int argc, char *argv []) 

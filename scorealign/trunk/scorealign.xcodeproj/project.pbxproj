@@ -89,7 +89,7 @@
 		3D9037B00CC7CB9C00F46FD5 /* gen_chroma.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = gen_chroma.h; sourceTree = "<group>"; };
 		3D9037B70CC7D16200F46FD5 /* regression.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = regression.cpp; sourceTree = "<group>"; };
 		3D9037B90CC7D18400F46FD5 /* regression.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = regression.h; sourceTree = "<group>"; };
-		3D9037BB0CC7D18F00F46FD5 /* scorealign.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = scorealign.cpp; sourceTree = "<group>"; };
+		3D9037BB0CC7D18F00F46FD5 /* scorealign.cpp */ = {isa = PBXFileReference; fileEncoding = 30; indentWidth = 4; lastKnownFileType = sourcecode.cpp.cpp; path = scorealign.cpp; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; };
 		3D9037BC0CC7D18F00F46FD5 /* scorealign.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = scorealign.h; sourceTree = "<group>"; };
 		3D9037BF0CC7D19A00F46FD5 /* FFT.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = FFT.cpp; path = fft3/FFT.cpp; sourceTree = "<group>"; };
 		3D9037C00CC7D19A00F46FD5 /* FFT.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = FFT.h; path = fft3/FFT.h; sourceTree = "<group>"; };

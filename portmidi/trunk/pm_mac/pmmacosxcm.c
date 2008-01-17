@@ -102,7 +102,7 @@ midi_length(long msg)
         3, 3, 3, 3, 2, 2, 3, 1          /* 0x80 through 0xf0 */
     };
     static int low_lengths[] = {
-        1, 1, 3, 2, 1, 1, 1, 1,         /* 0xf0 through 0xf8 */
+        1, 2, 3, 2, 1, 1, 1, 1,         /* 0xf0 through 0xf8 */
         1, 1, 1, 1, 1, 1, 1, 1          /* 0xf9 through 0xff */
     };
 
@@ -110,7 +110,7 @@ midi_length(long msg)
     high = status >> 4;
     low = status & 15;
 
-    return (high != 0xF0) ? high_lengths[high] : low_lengths[low];
+    return (high != 0xF) ? high_lengths[high] : low_lengths[low];
 }
 
 static PmTimestamp midi_synchronize(PmInternal *midi)

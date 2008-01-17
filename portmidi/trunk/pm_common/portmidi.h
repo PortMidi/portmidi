@@ -379,10 +379,10 @@ PmError Pm_OpenOutput( PortMidiStream** stream,
 #define PM_FILT_ACTIVE (1 << 0x0E)
 /* filter system exclusive messages (0xF0): */
 #define PM_FILT_SYSEX (1 << 0x00)
-/* filter clock messages (CLOCK 0xF8, START 0xFA, STOP 0xFC, and CONTINUE 0xFB) */
-#define PM_FILT_CLOCK ((1 << 0x08) | (1 << 0x0A) | (1 << 0x0C) | (1 << 0x0B))
+/* filter MIDI clock message (0xF8) */
+#define PM_FILT_CLOCK (1 << 0x08)
 /* filter play messages (start 0xFA, stop 0xFC, continue 0xFB) */
-#define PM_FILT_PLAY (1 << 0x0A)
+#define PM_FILT_PLAY ((1 << 0x0A) | (1 << 0x0C) | (1 << 0x0B))
 /* filter tick messages (0xF9) */
 #define PM_FILT_TICK (1 << 0x09)
 /* filter undefined FD messages */

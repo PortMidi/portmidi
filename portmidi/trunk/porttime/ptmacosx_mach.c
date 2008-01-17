@@ -8,6 +8,7 @@
 #import <mach/mach_error.h>
 #import <mach/mach_time.h>
 #import <mach/clock.h>
+#include <unistd.h>
 
 #include "porttime.h"
 #include "sys/time.h"

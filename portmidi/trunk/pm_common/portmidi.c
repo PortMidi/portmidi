@@ -1088,7 +1088,7 @@ void pm_read_short(PmInternal *midi, PmEvent *event)
 unsigned int pm_read_bytes(PmInternal *midi, unsigned char *data, 
                     int len, PmTimestamp timestamp)
 {
-    unsigned int i = 0; /* index into data */
+    int i = 0; /* index into data */
     PmEvent event;
     event.timestamp = timestamp;
     assert(midi);

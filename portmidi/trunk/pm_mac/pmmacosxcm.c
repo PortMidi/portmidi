@@ -673,6 +673,10 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal)
   
   str = NULL;
   MIDIObjectGetStringProperty(device, kMIDIPropertyName, &str);
+  if (CFStringGetLength(result) == 0) {
+      CFRelease(result);
+      return str;
+  }
   if (str != NULL) {
     // if an external device has only one entity, throw away
     // the endpoint name and just use the device name
@@ -680,6 +684,10 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal)
       CFRelease(result);
       return str;
     } else {
+      if (CFStringGetLength(str) == 0) {
+        CFRelease(str);
+        return result;
+      }
       // does the entity name already start with the device name?
       // (some drivers do this though they shouldn't)
       // if so, do not prepend
@@ -696,6 +704,7 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal)
   }
   return result;
 }
+
 
 // Obtain the name of an endpoint, following connections.
 // The result should be released by the caller.

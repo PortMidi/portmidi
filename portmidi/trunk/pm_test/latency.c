@@ -163,8 +163,10 @@ int main()
     int choice;
     PtTimestamp stop;
     printf("Latency histogram.\n");
-    period = get_number("Choose timer period (in ms): ");
-    assert(period >= 1);
+    period = 0;
+    while (period < 1) {
+        period = get_number("Choose timer period (in ms, >= 1): ");
+    }
     printf("Benchmark with:\n\t%s\n\t%s\n\t%s\n\t%s\n",
            "1. No MIDI traffic",
            "2. MIDI input",

@@ -70,7 +70,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="odbc32.lib odbccp32.lib winmm.lib ..\pm_win\Release\portmidi.lib ..\porttime\Release\porttime.lib ..\pm_win\Release\pm_dll.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib winmm.lib ..\pm_win\Release\portmidi.lib ..\porttime\Release\porttime.lib"
 				OutputFile=".\testRelease/test.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -136,7 +136,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../pm_common,../porttime"
-				PreprocessorDefinitions="_CONSOLE;WIN32;_DEBUG;USE_DLL_FOR_CLEANUP"
+				PreprocessorDefinitions="_CONSOLE;WIN32;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -163,7 +163,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/VERBOSE:LIB"
-				AdditionalDependencies="odbc32.lib odbccp32.lib winmm.lib ..\pm_win\Debug\portmidi.lib ..\porttime\Debug\porttime.lib ..\pm_win\Debug\pm_dll.lib $(NOINHERIT)"
+				AdditionalDependencies="odbc32.lib odbccp32.lib winmm.lib ..\pm_win\Debug\portmidi.lib ..\porttime\Debug\porttime.lib $(NOINHERIT)"
 				OutputFile=".\testDebug/test.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"

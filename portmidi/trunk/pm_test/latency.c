@@ -261,6 +261,16 @@ int main()
     printf("than the numbers reported here.\n");
     printf("Type return to exit...");
     fgets(line, STRING_MAX, stdin);
+
+	if(choice == 2)
+		Pm_Close(in);
+	else if(choice == 3)
+		Pm_Close(out);
+	else if(choice == 4)
+	{
+		Pm_Close(in);
+		Pm_Close(out);
+	}
     return 0;
 }
 

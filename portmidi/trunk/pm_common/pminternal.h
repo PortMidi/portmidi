@@ -102,16 +102,8 @@ typedef struct pm_internal_struct {
     PmTimeProcPtr time_proc; /* where to get the time */
     void *time_info; /* pass this to get_time() */
     long buffer_len; /* how big is the buffer or queue? */
-#ifdef NEWBUFFER
     PmQueue *queue;
-#else
-    PmEvent *buffer; /* storage for: 
-                        - midi input 
-                        - midi output w/latency != 0 */
-    long head;
-    long tail;
-    int overflow; /* set to non-zero if input is dropped */
-#endif
+
     long latency; /* time delay in ms between timestamps and actual output */
                   /* set to zero to get immediate, simple blocking output */
                   /* if latency is zero, timestamps will be ignored; */

@@ -79,37 +79,12 @@ TO COMPILE PORTMIDI:
 8)  The settings for these projects were distributed in the zip file, so
     compile should just work.
 
-9)  IMPORTANT! PortMidi uses a DLL, pm_dll.dll, but there is no simple way
-    to set up projects to use pm_dll. THEREFORE, you need to copy DLLs
-    as follows (you can do this with <...>\portmidi\pm_win\copy-dll.bat):
-        copy <...>\portmidi\pm_win\Debug\pm_dll.dll to:
-            <...>\portmidi\pm_test\latencyDebug\pm_dll.dll
-            <...>\portmidi\pm_test\midithreadDebug\pm_dll.dll
-            <...>\portmidi\pm_test\sysexDebug\pm_dll.dll
-            <...>\portmidi\pm_test\testDebug\pm_dll.dll
-            <...>\portmidi\pm_test\midithruDebug\pm_dll.dll
-        and copy <...>\portmidi\pm_win\Release\pm_dll.dll to:
-            <...>\portmidi\pm_test\latencyRelease\pm_dll.dll
-            <...>\portmidi\pm_test\midithreadRelease\pm_dll.dll
-            <...>\portmidi\pm_test\sysexRelease\pm_dll.dll
-            <...>\portmidi\pm_test\testRelease\pm_dll.dll
-            <...>\portmidi\pm_test\midithruRelease\pm_dll.dll
-    each time you rebuild the pm_dll project, these copies must be redone!
-
-    Since Windows will look in the executable directory for DLLs, we 
-    recommend that you always install a copy of pm_dll.dll (either the
-    debug version or the release version) in the same directory as the
-    application using PortMidi. The release DLL is about 40KB. This will 
-    ensure that the application uses the correct DLL. The alternative is
-    to copy pm_dll.dll to a system directory on the DLL search path, e.g.
-    c:\windows\system32.
-
-10) run test project; use the menu that shows up from the command prompt to
+9) run test project; use the menu that shows up from the command prompt to
     test that portMidi works on your system. tests include: 
 		- verify midi output works
 		- verify midi input works
 
-11) run other projects if you wish: sysex, latency, midithread, mm, 
+10) run other projects if you wish: sysex, latency, midithread, mm, 
     qtest, midithru
 
 ============================================================================

@@ -7,9 +7,7 @@
 #include "windows.h"
 #include "mmsystem.h"
 #include "portmidi.h"
-#ifdef NEWBUFFER
 #include "pmutil.h"
-#endif
 #include "pminternal.h"
 #include "pmwinmm.h"
 #include "string.h"
@@ -585,7 +583,7 @@ static PmError winmm_in_open(PmInternal *midi, void *driverInfo)
     if (num_input_buffers < MIN_INPUT_BUFFERS)
         num_input_buffers = MIN_INPUT_BUFFERS;
     for (i = 0; i < num_input_buffers; i++) {
-        if (allocate_input_buffer(m->handle.in, INPUT_SYSEX_LEN)) {
+		if (allocate_input_buffer(m->handle.in, INPUT_SYSEX_LEN)) {
             /* either pm_hosterror was set, or the proper return code
                is pmInsufficientMemory */
             goto close_device;
@@ -641,7 +639,7 @@ static PmError winmm_in_close(PmInternal *midi)
     } else if (pm_hosterror = midiInReset(m->handle.in)) {
         midiInClose(m->handle.in); /* best effort to close midi port */
     } else {
-        pm_hosterror = midiInClose(m->handle.in);
+		pm_hosterror = midiInClose(m->handle.in);
     }
     midi->descriptor = NULL;
     DeleteCriticalSection(&m->lock);
@@ -757,6 +755,7 @@ static void FAR PASCAL winmm_in_callback(
         if (lpMidiHdr->dwBytesRecorded > 0) {
             lpMidiHdr->dwBytesRecorded = 0;
             lpMidiHdr->dwFlags = 0;
+			
             /* note: no error checking -- can this actually fail? */
             assert(midiInPrepareHeader(hMidiIn, lpMidiHdr, 
                         sizeof(MIDIHDR)) == MMSYSERR_NOERROR);
@@ -768,7 +767,9 @@ static void FAR PASCAL winmm_in_callback(
             assert(midiInAddBuffer(hMidiIn, lpMidiHdr, 
                         sizeof(MIDIHDR)) == MMSYSERR_NOERROR);
         } else {
-            pm_free(lpMidiHdr);
+			
+			midiInUnprepareHeader(hMidiIn,lpMidiHdr,sizeof(MIDIHDR));
+			pm_free(lpMidiHdr);
         }
         break;
     }

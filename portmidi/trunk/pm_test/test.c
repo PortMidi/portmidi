@@ -267,9 +267,9 @@ void main_test_both()
 
     /* since close device should not needed, lets get
        rid of it just to make sure program exit closes MIDI devices */
-	/* Pm_Close(midi);
+	  Pm_Close(midi);
 	  Pm_Close(midiOut);
-	  Pm_Terminate(); */
+	  Pm_Terminate(); 
 }
 
 

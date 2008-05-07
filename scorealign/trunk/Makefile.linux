@@ -7,8 +7,8 @@ profile =
 
 DEBUGFLAGS = 
 
-#optimize = -g $(DEBUGFLAGS) $(profile)
-optimize = -O
+optimize = -g $(DEBUGFLAGS) $(profile)
+# optimize = -O
 
 #PORTSMF LIBRARY PATH:
 # (set this to the location of allegro.cpp, allegrosmfrd.cpp, allegrosmfwr.cpp, etc.)

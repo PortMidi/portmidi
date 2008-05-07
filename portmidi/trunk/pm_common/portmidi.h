@@ -309,7 +309,7 @@ const PmDeviceInfo* Pm_GetDeviceInfo( PmDeviceID id );
     For input, the buffersize specifies the number of input events to be 
     buffered waiting to be read using Pm_Read(). For output, buffersize 
     specifies the number of output events to be buffered waiting for output. 
-    (In some cases -- see below -- PortMidi does not buffer output at all
+    (In some cases, PortMidi does not buffer output at all
     and merely passes data to a lower-level API, in which case buffersize
     is ignored.)
     
@@ -317,8 +317,8 @@ const PmDeviceInfo* Pm_GetDeviceInfo( PmDeviceID id );
     when the output should actually occur. (If latency is < 0, 0 is assumed.) 
     If latency is zero, timestamps are ignored and all output is delivered
     immediately. If latency is greater than zero, output is delayed until
-    the message timestamp plus the latency. (NOTE: time is measured relative
-    to the time source indicated by time_proc. Timestamps are absolute, not
+    the message timestamp plus the latency. (NOTE: the time reference is 
+    accessed by calling time_proc. Timestamps are absolute, not
     relative delays or offsets.) In some cases, PortMidi can obtain
     better timing than your application by passing timestamps along to the
     device driver or hardware. Latency may also help you to synchronize midi

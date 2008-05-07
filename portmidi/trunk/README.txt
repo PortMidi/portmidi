@@ -1,5 +1,5 @@
 README for PortMidi
-Roger Dannenberg
+Roger B. Dannenberg
 
 VERSION: please use "svn info" to get info.
 

@@ -190,14 +190,14 @@ double Curvefit::compute_dist(int i)
     double sum = 0;
     int n;
     if (dx > dy) { // evauate at each x
-        n = dx;
-        for (int x = x1; x < x2; x++) {
+        n = (int) dx;
+        for (int x = (int) x1; x < x2; x++) {
             double y = interpolate(x1, y1, x2, y2, x);
             sum += distance_xy(x, y);
         }
     } else { // evaluate at each y
-        n = dy;
-        for (int y = y1; y < y2; y++) {
+        n = (int) dy;
+        for (int y = (int) y1; y < y2; y++) {
             double x = interpolate(y1, x1, y2, x2, y);
             sum += distance_xy(x, y);
         }
@@ -231,10 +231,10 @@ void curve_fitting(float line_time)
     int i;
     int j = 0; // index into path
     for (i = 0; i < segments; i++) {
-        int x1 = x[i];
-        int x2 = x[i+1];
-        int y1 = parameters[i];
-        int y2 = parameters[i+1];
+        int x1 = (int) x[i];
+        int x2 = (int) x[i+1];
+        int y1 = (int) parameters[i];
+        int y2 = (int) parameters[i+1];
         int dx = x2 - x1;
         int dy = y2 - y1;
         if (dx >= dy) { // output point at each x
@@ -254,7 +254,7 @@ void curve_fitting(float line_time)
         }
     }
     // output last point
-    pathx[j] = x[segments];
+    pathx[j] = (int) x[segments];
     pathy[j] = (int) (0.5 + parameters[segments]);
     j++;
     pathlen = j;

@@ -175,7 +175,8 @@ void midi_tempo_align(Alg_seq_ptr seq , char *midiname, char *beatname) {
     int totalbeats; 
     float dur_in_sec; 
     find_midi_duration(seq, &dur_in_sec); 
-    totalbeats= seq->get_time_map()->time_to_beat(dur_in_sec) +2; //totalbeat= lastbeat +1 and round up the beat
+    // totalbeat = lastbeat + 1 and round up the beat
+    totalbeats = (int) (seq->get_time_map()->time_to_beat(dur_in_sec) + 2);
     printf("midi duration = %f, totalbeats=%i \n", dur_in_sec, totalbeats); 	
     
     float *newtime_array = ALLOC(float, totalbeats);

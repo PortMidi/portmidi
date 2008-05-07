@@ -1,5 +1,7 @@
 scorealign -- a program for audio-to-audio and audio-to-midi alignment
 
+Last updated May 7, 2008 by RBD
+
 Contributors include: 
              Ning Hu
              Roger B. Dannenberg
@@ -20,9 +22,10 @@ output also includes (1) an estimated transcript in ASCII format with time,
 pitch, MIDI channel, and duration of each notes in the audio file, (2) a
 time-aligned midi file, and (3) a text file with beat times.
 
-For Macintosh OS X, use "make -f Makefile.osx"
-For Linux, use "make"
-For Windows, open score-align.vcproj
+For Macintosh OS X, use Xcode to open scorealign.xcodeproj
+For Linux, use "make -f Makefile.linux"
+For Windows, open score-align.vcproj (probably out of date now -- please
+    update the project following Makefile.linux, or contact rbd at cs.cmu.edu)
 
 Command line parameters:
 

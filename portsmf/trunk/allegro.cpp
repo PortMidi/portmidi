@@ -19,6 +19,7 @@
 #include "math.h"
 
 #define ALG_EPS 0.000001
+#define STREQL(x, y) (strcmp(x, y) == 0)
 
 // 4311 is type cast ponter to long warning
 // 4996 is warning against strcpy
@@ -54,6 +55,12 @@ void Alg_atoms::expand()
 }
 
 
+// insert_new -- insert an attribute name and type
+//
+// attributes are stored as a string consisting of the type
+// (a char) followed by the attribute name. This makes it
+// easy to retrieve the type or the name or both.
+//
 Alg_attribute Alg_atoms::insert_new(char *name, char attr_type)
 {
     if (len == max) expand();
@@ -68,7 +75,7 @@ Alg_attribute Alg_atoms::insert_new(char *name, char attr_type)
 Alg_attribute Alg_atoms::insert_attribute(Alg_attribute attr)
 {
     for (int i = 0; i < len; i++) {
-        if (strcmp(attr, atoms[i]) == 0) {
+        if (STREQL(attr, atoms[i])) {
             return atoms[i];
         }
     }
@@ -81,7 +88,7 @@ Alg_attribute Alg_atoms::insert_string(char *name)
     char attr_type = name[strlen(name) - 1];
     for (int i = 0; i < len; i++) {
         if (attr_type == atoms[i][0] &&
-            strcmp(name, atoms[i] + 1) == 0) {
+            STREQL(name, atoms[i] + 1)) {
             return atoms[i];
         }
     }
@@ -183,7 +190,7 @@ void Alg_parameters::insert_atom(Alg_parameters **list, char *name, char *s)
 Alg_parameters *Alg_parameters::remove_key(Alg_parameters **list, char *name)
 {
     while (*list) {
-        if (strcmp((*list)->parm.attr_name(), name) == 0) {
+        if (STREQL((*list)->parm.attr_name(), name)) {
             Alg_parameters_ptr p = *list;
             *list = p->next;
             p->next = NULL;
@@ -212,25 +219,30 @@ int Alg_event::get_type_code()
 {
     if (!is_note()) {
         const char* attr = get_attribute();
-        if (attr == "gate")         // volume change
+        if (STREQL(attr, "gate"))         // volume change
             return ALG_GATE;
-        if (attr == "bend")         // pitch bend     
+        if (STREQL(attr, "bend"))         // pitch bend     
             return ALG_BEND;
-        if (attr == "control")      // control change
+        if (strncmp(attr, "control", 7) == 0)      // control change
+            // note that midi control changes have attributes of the form
+            // "control<n>" where n is the decimal number (as a character string)
+            // of the midi controller, e.g. control2 is the breath controller.
+            // We don't check for decimal numbers in the range 0-127, so any
+            // attribute that begins with "control" is an ALG_CONTROL:
             return ALG_CONTROL;
-        if (attr == "program")      // program change
+        if (STREQL(attr, "program"))      // program change
             return ALG_PROGRAM;
-        if (attr == "pressure")     // pressure change
+        if (STREQL(attr, "pressure"))    // pressure change
             return ALG_PRESSURE;
-        if (attr == "keysig")       // key signature  
+        if (STREQL(attr, "keysig"))       // key signature  
             return ALG_KEYSIG;
-        if (attr == "timesig_num")  // time signature numerator
+        if (STREQL(attr, "timesig_num"))  // time signature numerator
             return ALG_TIMESIG_NUM;
-        if (attr == "timesig_den")  // time signature denominator
+        if (STREQL(attr, "timesig_den"))  // time signature denominator
             return ALG_TIMESIG_DEN;
         return ALG_OTHER;
     }
-    return 0; // it is a note
+    return ALG_NOTE; // it is a note
 }
 
 
@@ -1034,7 +1046,9 @@ void Alg_time_map::cut(double start, double len, bool units_are_seconds)
     }
     // now i is index into beats of the first breakpoint on or 
     // after start, insert (start, initial_beat) in map
-    if (within(beats[i].time, start, ALG_EPS)) {
+    // note: i may be beyond the last breakpoint, so beat[i] may
+    // be out of bounds
+    if (i < length() && within(beats[i].time, start, ALG_EPS)) {
         // perterb time map slightly (within alg_eps) to place
         // break point exactly at the start time
         beats[i].time = start;
@@ -1930,7 +1944,8 @@ void Alg_time_sigs::cut(double start, double end)
     //    is after end, then maybe we should insert a time change
     //    corresponding to what's in effect at end. We can skip this
     //    insert if it corresponds to whatever is in effect at start
-    if (i_in > i_out && time_sigs[i_in].beat > end + ALG_EPS &&
+    if (i_in > i_out && i_in < len && 
+        time_sigs[i_in].beat > end + ALG_EPS &&
         (i_out == 0 || time_sigs[i_out - 1].num != time_sigs[i_in - 1].num ||
          time_sigs[i_out - 1].den != time_sigs[i_in - 1].den)) {
         time_sigs[i_out] = time_sigs[i_in - 1];

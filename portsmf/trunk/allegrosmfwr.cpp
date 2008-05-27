@@ -471,11 +471,11 @@ void Alg_smf_write::write_32bit(int num)
 
 void Alg_smf_write::write_delta(double event_time)
 {
-	// divisions is ideal absolute time in divisions
-	long divisions = ROUND(division * event_time);
+    // divisions is ideal absolute time in divisions
+    long divisions = ROUND(division * event_time);
     long delta_divs = divisions - previous_divs;
-	write_varinum(delta_divs);
-	previous_divs = divisions;    
+    write_varinum(delta_divs);
+    previous_divs = divisions;    
 }
 
 

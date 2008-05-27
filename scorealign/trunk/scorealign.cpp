@@ -13,7 +13,6 @@
 #include "gen_chroma.h"
 #include "comp_chroma.h"
 #include "curvefit.h"
-#include "allegro.h"
 #include "mfmidi.h"
 #include "regression.h"
 #include "sautils.h"

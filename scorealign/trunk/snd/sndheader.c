@@ -31,6 +31,10 @@
 /* for HUGE_VAL: */
 #include "math.h"
 
+#ifdef _WIN32
+    #define int32_t int
+#endif
+
 typedef int32_t int32;
 
 /* #define TRACE 1 */

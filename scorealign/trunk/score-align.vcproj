@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="fft3;allegro;snd"
+				AdditionalIncludeDirectories="fft3;snd;..\portsmf"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -63,7 +63,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="wsock32.lib allegro\Debug\allegro.lib"
+				AdditionalDependencies="wsock32.lib ..\portsmf\Debug\portsmf.lib"
 				LinkIncremental="2"
 				AddModuleNamesToAssembly=""
 				GenerateDebugInformation="true"
@@ -120,7 +120,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="e:\rbd\allegro;fft3;..\allegro;snd"
+				AdditionalIncludeDirectories="fft3;..\portsmf;snd"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -139,6 +139,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="wsock32.lib ..\portsmf\Release\portsmf.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -185,11 +186,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\curvefit.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\fft3\FFT.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\gen_chroma.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\hillclimb.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\regression.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\sautils.cpp"
 				>
 			</File>
 			<File
@@ -371,7 +388,31 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\comp_chroma.h"
+				>
+			</File>
+			<File
+				RelativePath=".\curvefit.h"
+				>
+			</File>
+			<File
 				RelativePath=".\fft3\FFT.h"
+				>
+			</File>
+			<File
+				RelativePath=".\gen_chroma.h"
+				>
+			</File>
+			<File
+				RelativePath=".\hillclimb.h"
+				>
+			</File>
+			<File
+				RelativePath=".\regression.h"
+				>
+			</File>
+			<File
+				RelativePath=".\sautils.h"
 				>
 			</File>
 			<File

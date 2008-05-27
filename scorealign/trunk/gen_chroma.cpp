@@ -1,5 +1,7 @@
 
-// #include "malloc.h"
+#ifdef _WIN32
+    #include "malloc.h"
+#endif
 #include "stdlib.h" // for OSX compatibility, malloc.h -> stdlib.h
 #include "stdio.h"
 #include "assert.h"
@@ -174,7 +176,7 @@ bool read_next_window(snd_type file, float *data , float *temp_data, int win_sam
 	snd_node float_sound; // descriptor: mono floats
 	int frames_read;    // how many frames did we read?
 
-	char *input_data = (char *)alloca(snd_bytes_per_frame(file) * win_samples);
+	char *input_data = (char *) alloca(snd_bytes_per_frame(file) * win_samples);
 	assert(input_data!=NULL) ;
 	
 	if (reading_first_window) {

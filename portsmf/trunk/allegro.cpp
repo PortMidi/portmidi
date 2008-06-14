@@ -2170,6 +2170,10 @@ void Alg_tracks::reset()
 
 Alg_seq::Alg_seq(FILE *file, bool midi)
 {
+    units_are_seconds = true;
+    type = 's';
+    channel_offset_per_track = 0;
+    add_track(0); // default is one empty track
     if (midi) {
         alg_smf_read(file, this);
     } else {

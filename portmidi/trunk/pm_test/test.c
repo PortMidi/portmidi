@@ -71,8 +71,8 @@ void main_test_input(unsigned int somethingStupid) {
                  TIME_PROC, 
                  TIME_INFO);
 
-    printf("Midi Input opened. Reading %d Midi messages...\n",num);
-    Pm_SetFilter(midi, PM_FILT_ACTIVE | PM_FILT_CLOCK);
+    printf("Midi Input opened. Reading %d Midi messages...\n", num);
+    Pm_SetFilter(midi, PM_FILT_ACTIVE | PM_FILT_CLOCK | PM_FILT_SYSEX);
     /* empty the buffer after setting filter, just in case anything
        got through */
     while (Pm_Poll(midi)) {
@@ -265,11 +265,10 @@ void main_test_both()
         }
     }
 
-    /* since close device should not needed, lets get
-       rid of it just to make sure program exit closes MIDI devices */
-	  Pm_Close(midi);
-	  Pm_Close(midiOut);
-	  Pm_Terminate(); 
+    /* close midi devices */
+    Pm_Close(midi);
+    Pm_Close(midiOut);
+    Pm_Terminate(); 
 }
 
 

@@ -16,11 +16,9 @@
 # simple to create.)
 
 # For debugging, define PM_CHECK_ERRORS
-# Define NEWBUFFER to use new FIFO code that is multiprocessor safe
-# (Besides, it looks like old code (non-NEWBUFFER) is broken now. -RBD)
-PMFLAGS = -DPM_CHECK_ERRORS -DNEWBUFFER
+PMFLAGS = -DPM_CHECK_ERRORS
 # Otherwise do not define PM_CHECK_ERRORS
-# PMFLAGS = -DNEWBUFFER
+# PMFLAGS = 
 
 # Use this for linux alsa (0.9x) version
 versions = pm_linux/pmlinuxalsa.o

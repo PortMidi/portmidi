@@ -20,12 +20,6 @@ every call to PortMidi. You can disable this checking (especially if you
 want to handle error codes in your own way) by removing PM_CHECK_ERRORS
 from the predefined symbols list in the Settings dialog box.
 
-PortMidi for Windows is based on the Win32 MMedia API. Historically, this
-API would crash Windows if a MIDI input device was left open, so PortMidi
-uses a DLL to clean up when a program exits. (The DLL cannot catch all
-exits, but any normal exit or Control-C handler will try to unload the DLL
-at which point code runs to clean up PortMidi.)
-
 PortMidi is designed to run without a console and should work perfectly 
 well within a graphical user interface application. The Release version
 is both optimized and lacking the debugging printout code of the Debug
@@ -114,46 +108,26 @@ The easiest way is to start a new project w/in the portMidi workspace:
 	- select Win32 Console Application in Win32
 	- select Empty project in General
 	
-
 2) Now this project will be the active project. Make it explicitly depend
    on PortMidi dll:
 	- Project->Dependencies
 	- Click pm_dll
 
-3) Important! in order to be able to use portMidi DLL from your new project
-   and set breakpoints,	copy following files from <...>\pm_win\Debug into 
-   <...>\<yourProjectName>\Debug directory:
-		pm_dll.lib
-		pm_dll.dll
-    each time you rebuild pm_dll, these copies must be redone!
-
-
-4) add whatever files you wish to add to your new project, using portMidi
+3) add whatever files you wish to add to your new project, using portMidi
    calls as desired (see USING PORTMIDI at top of this readme)
 
-5) when you include portMidi files, do so like this:
+4) when you include portMidi files, do so like this:
 	- #include "..\pm_common\portmidi.h"
 	- etc.
 
-6) build and run your project
+5) build and run your project
 
 ============================================================================
 DESIGN NOTES
 ============================================================================
 
-The DLL is used so that PortMidi can (usually) close open devices when the
-program terminates. Failure to close input devices under WinNT, Win2K, and
-probably later systems causes the OS to crash. NOTE: Microsoft seems to 
-have fixed this bug in current versions of WinXP.
-
-This is accomplished with a .LIB/.DLL pair, linking to the .LIB
-in order to access functions in the .DLL. Note that the PortMidi library
-itself is configured for static linking -- it is not a DLL.
-
 PortMidi for Win32 exists as a simple static library,
 with Win32-specific code in pmwin.c and MM-specific code in pmwinmm.c.
-pmwin.c uses a DLL in pmdll.c to call Pm_Terminate() when the program
-exits to make sure that all MIDI ports are closed.
 
 Orderly cleanup after errors are encountered is based on a fixed order of
 steps and state changes to reflect each step. Here's the order:
@@ -283,4 +257,15 @@ part of PortMidi is allowed to directly copy sysex bytes to
 "fill_base[*fill_offset_ptr++]" until *fill_offset_ptr reaches
 fill_length. See the code for details.
 
+-----------
+
+Additional notes on using VS 2005 (maybe this is obsolete now?):
+
+1) Make sure "Configuration: All Configurations" is selected in all of the following Properties modifications!
+
+2) In my case the project defaulted to compiling all .c files with the C++ compiler, which was disastrous. I had to go to set Properties for each file, to wit: Expand Configuration Properties, Expand C/C++, Select Advanced, set the Compile As popup to Compile as C Code (/TC). (For better or worse, the project I inherited has a bunch of .c files that rely on C++ features, so I couldn't reliably set this the project properties level.)
+
+3) While you're there, make sure that the C/C++ -> General -> "Compile with Common Language Runtime support" is set to "No Common Language Runtime support" (the C compiler *can't* support CLR, but VS won't do anything useful like automatically set the two options to match)-.
+
+4) I never got VS precompiled header thing to work sensibly, so I took the path of least resistance and turned PCH's off for all my files. Properties -> Configuration Properties -> C/C++ -> Precompiled Headers -> Create/Use Precompiled Header popup set to "Not Using Precompiled Headers". The compiler is reasonably fast even if it has to parse all the header files, so unless someone wants to explain VS's PCHs to me, the hell with it, I say.
 

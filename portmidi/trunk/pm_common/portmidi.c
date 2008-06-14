@@ -94,8 +94,8 @@ PmError pm_add_device(char *interf, char *name, int input,
                       void *descriptor, pm_fns_type dictionary) {
     if (pm_descriptor_index >= pm_descriptor_max) {
         // expand descriptors
-        descriptor_type new_descriptors = 
-                pm_alloc(sizeof(descriptor_node) * (pm_descriptor_max + 32));
+        descriptor_type new_descriptors = (descriptor_type) 
+            pm_alloc(sizeof(descriptor_node) * (pm_descriptor_max + 32));
         if (!new_descriptors) return pmInsufficientMemory;
         if (descriptors) {
             memcpy(new_descriptors, descriptors, 
@@ -314,7 +314,7 @@ PmError Pm_Terminate( void ) {
 /*
  * returns number of longs actually read, or error code
  */
-PmError Pm_Read(PortMidiStream *stream, PmEvent *buffer, long length) {
+int Pm_Read(PortMidiStream *stream, PmEvent *buffer, long length) {
     PmInternal *midi = (PmInternal *) stream;
     int n = 0;
     PmError err = pmNoError;
@@ -359,15 +359,14 @@ PmError Pm_Poll( PortMidiStream *stream )
 {
     PmInternal *midi = (PmInternal *) stream;
     PmError err;
-    PmEvent *event;
 
     pm_hosterror = FALSE;
     /* arg checking */
     if(midi == NULL)
         err = pmBadPtr;
-    else if(!descriptors[midi->device_id].pub.opened)
+    else if (!descriptors[midi->device_id].pub.opened)
         err = pmBadPtr;
-    else if(!descriptors[midi->device_id].pub.input)
+    else if (!descriptors[midi->device_id].pub.input)
         err = pmBadPtr;
     else
         err = (*(midi->dictionary->poll))(midi);
@@ -381,8 +380,7 @@ PmError Pm_Poll( PortMidiStream *stream )
         return pm_errmsg(err);
     }
 
-    event = (PmEvent *) Pm_QueuePeek(midi->queue);
-    return event != NULL;
+    return !Pm_QueueEmpty(midi->queue);
 }
 
 
@@ -410,7 +408,7 @@ static PmError pm_end_sysex(PmInternal *midi)
 PmError Pm_Write( PortMidiStream *stream, PmEvent *buffer, long length)
 {
     PmInternal *midi = (PmInternal *) stream;
-    PmError err;
+    PmError err = pmNoError;
     int i;
     int bits;
     
@@ -540,7 +538,7 @@ error_exit:
 }
 
 
-PmError Pm_WriteShort( PortMidiStream *stream, long when, long msg)
+PmError Pm_WriteShort(PortMidiStream *stream, long when, long msg)
 {
     PmEvent event;
     
@@ -555,7 +553,7 @@ PmError Pm_WriteSysEx(PortMidiStream *stream, PmTimestamp when,
 {
     /* allocate buffer space for PM_DEFAULT_SYSEX_BUFFER_SIZE bytes */
     /* each PmEvent holds sizeof(PmMessage) bytes of sysex data */
-#define BUFLEN (PM_DEFAULT_SYSEX_BUFFER_SIZE / sizeof(PmMessage))
+    #define BUFLEN (PM_DEFAULT_SYSEX_BUFFER_SIZE / sizeof(PmMessage))
     PmEvent buffer[BUFLEN];
     int buffer_size = 1; /* first time, send 1. After that, it's BUFLEN */
     PmInternal *midi = (PmInternal *) stream;
@@ -633,7 +631,8 @@ PmError Pm_OpenInput(PortMidiStream** stream,
                      void *inputDriverInfo,
                      long bufferSize,
                      PmTimeProcPtr time_proc,
-                     void *time_info) {
+                     void *time_info)
+{
     PmInternal *midi;
     PmError err = pmNoError;
     pm_hosterror = FALSE;
@@ -716,7 +715,8 @@ PmError Pm_OpenOutput(PortMidiStream** stream,
                       long bufferSize,
                       PmTimeProcPtr time_proc,
                       void *time_info,
-                      long latency ) {
+                      long latency ) 
+{
     PmInternal *midi;
     PmError err = pmNoError;
     pm_hosterror = FALSE;
@@ -926,7 +926,7 @@ PmError Pm_Abort( PortMidiStream* stream ) {
 }
 */
 
-void pm_flush_sysex(PmInternal *midi, PmTimestamp timestamp)
+static void pm_flush_sysex(PmInternal *midi, PmTimestamp timestamp)
 {
     PmEvent event;
     
@@ -1002,7 +1002,7 @@ void pm_read_short(PmInternal *midi, PmEvent *event)
 unsigned int pm_read_bytes(PmInternal *midi, unsigned char *data, 
                     int len, PmTimestamp timestamp)
 {
-    int i = 0; /* index into data */
+    unsigned int i = 0; /* index into data */
     PmEvent event;
     event.timestamp = timestamp;
     assert(midi);

@@ -130,6 +130,8 @@ extern "C" {
 
 typedef enum {
     pmNoError = 0,
+    pmNoData = 0, /* A "no error" return that also indicates no data avail. */
+    pmGotData = 1, /* A "no error" return that also indicates data available */
     pmHostError = -10000,
     pmInvalidDeviceId, /* out of range or 
                         * output device when input is requested or 
@@ -309,17 +311,17 @@ const PmDeviceInfo* Pm_GetDeviceInfo( PmDeviceID id );
     For input, the buffersize specifies the number of input events to be 
     buffered waiting to be read using Pm_Read(). For output, buffersize 
     specifies the number of output events to be buffered waiting for output. 
-    (In some cases, PortMidi does not buffer output at all
+    (In some cases -- see below -- PortMidi does not buffer output at all
     and merely passes data to a lower-level API, in which case buffersize
     is ignored.)
     
     latency is the delay in milliseconds applied to timestamps to determine 
     when the output should actually occur. (If latency is < 0, 0 is assumed.) 
     If latency is zero, timestamps are ignored and all output is delivered
-    immediately. If latency is greater than zero, output is delayed until
-    the message timestamp plus the latency. (NOTE: the time reference is 
-    accessed by calling time_proc. Timestamps are absolute, not
-    relative delays or offsets.) In some cases, PortMidi can obtain
+    immediately. If latency is greater than zero, output is delayed until the
+    message timestamp plus the latency. (NOTE: the time is measured relative 
+    to the time source indicated by time_proc. Timestamps are absolute,
+    not relative delays or offsets.) In some cases, PortMidi can obtain
     better timing than your application by passing timestamps along to the
     device driver or hardware. Latency may also help you to synchronize midi
     data to audio data by matching midi latency to the audio buffer latency.
@@ -334,7 +336,11 @@ const PmDeviceInfo* Pm_GetDeviceInfo( PmDeviceID id );
     time_proc result values are appended to incoming MIDI data, and time_proc
     times are used to schedule outgoing MIDI data (when latency is non-zero).
 
-    time_info is a pointer passed to time_proc. 
+    time_info is a pointer passed to time_proc.
+
+    Example: If I provide a timestamp of 5000, latency is 1, and time_proc
+    returns 4990, then the desired output time will be when time_proc returns
+    timestamp+latency = 5001. This will be 5001-4990 = 11ms from now.
 
     return value:
     Upon success Pm_Open() returns PmNoError and places a pointer to a
@@ -511,7 +517,7 @@ PmError Pm_Close( PortMidiStream* stream );
    latency (the latency parameter used when opening the output port.)
    Do not expect PortMidi to sort data according to timestamps -- 
    messages should be sent in the correct order, and timestamps MUST 
-   be non-decreasing.
+   be non-decreasing. See also "Example" for Pm_OpenOutput() above.
 
    A sysex message will generally fill many PmEvent structures. On 
    output to a PortMidiStream with non-zero latency, the first timestamp
@@ -563,7 +569,7 @@ typedef struct {
     message" and will be flushed as well.
 
 */
-PmError Pm_Read( PortMidiStream *stream, PmEvent *buffer, long length );
+int Pm_Read( PortMidiStream *stream, PmEvent *buffer, long length );
 
 /*
     Pm_Poll() tests whether input is available, 

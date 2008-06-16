@@ -260,11 +260,7 @@
 								<string>08FB7795FE84155DC02AAC07</string>
 								<string>1AB674ADFE9D54B511CA2CBB</string>
 								<string>1C37FBAC04509CD000000102</string>
-								<string>3D84CA640C754AD300DB0C03</string>
-								<string>3D84CA650C754AD300DB0C03</string>
-								<string>3D84CA660C754AD300DB0C03</string>
-								<string>3D84CA670C754AD300DB0C03</string>
-								<string>3D84CA680C754AD300DB0C03</string>
+								<string>1C37FAAC04509CD000000102</string>
 								<string>1C37FABC05509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
@@ -275,7 +271,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 651}, {186, 522}}</string>
+							<string>{{0, 311}, {186, 522}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -375,9 +371,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>3D84C9890C75269300DB0C03</string>
+				<string>3D20ECC10DEDBE3F00EF6366</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>3D84C98A0C75269300DB0C03</string>
+				<string>3D20ECC20DEDBE3F00EF6366</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -511,14 +507,10 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>3D84C9990C75269300DB0C03</string>
-		<string>3D84C99A0C75269300DB0C03</string>
-		<string>3D84C9950C75269300DB0C03</string>
-		<string>3D84C93F0C74E68D00DB0C03</string>
+		<string>3D20ECC90DEDBE3F00EF6366</string>
 		<string>1CD10A99069EF8BA00B06720</string>
-		<string>3D84C8ED0C73C85E00DB0C03</string>
-		<string>/Users/rbd/portmedia/portsmf/portsmf.xcodeproj</string>
 		<string>1C0AD2B3069F1EA900FABCE6</string>
+		<string>/Users/rbd/portmedia/portsmf/portsmf.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>34 169 729 581 0 0 1440 878 </string>
@@ -642,8 +634,8 @@
 										<string>yes</string>
 										<key>sizes</key>
 										<array>
-											<string>{{0, 0}, {319, 361}}</string>
-											<string>{{319, 0}, {404, 361}}</string>
+											<string>{{0, 0}, {318, 375}}</string>
+											<string>{{318, 0}, {405, 375}}</string>
 										</array>
 									</dict>
 									<key>VerticalSplitView</key>
@@ -658,8 +650,8 @@
 										<string>yes</string>
 										<key>sizes</key>
 										<array>
-											<string>{{0, 0}, {723, 361}}</string>
-											<string>{{0, 361}, {723, 376}}</string>
+											<string>{{0, 0}, {723, 375}}</string>
+											<string>{{0, 375}, {723, 362}}</string>
 										</array>
 									</dict>
 								</dict>
@@ -706,14 +698,14 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1CD10A99069EF8BA00B06720</string>
-				<string>3D84C98F0C75269300DB0C03</string>
+				<string>3D20ECC30DEDBE3F00EF6366</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>3D84C9900C75269300DB0C03</string>
-				<string>3D84C9910C75269300DB0C03</string>
-				<string>3D84C9920C75269300DB0C03</string>
-				<string>3D84C9930C75269300DB0C03</string>
-				<string>3D84C9940C75269300DB0C03</string>
-				<string>3D84C9950C75269300DB0C03</string>
+				<string>3D20ECC40DEDBE3F00EF6366</string>
+				<string>3D20ECC50DEDBE3F00EF6366</string>
+				<string>3D20ECC60DEDBE3F00EF6366</string>
+				<string>3D20ECC70DEDBE3F00EF6366</string>
+				<string>3D20ECC80DEDBE3F00EF6366</string>
+				<string>3D20ECC90DEDBE3F00EF6366</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debug</string>
@@ -949,7 +941,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {620, 271}}</string>
 								<key>RubberWindowFrame</key>
-								<string>76 507 620 312 0 0 1440 878 </string>
+								<string>682 489 620 312 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXRunSessionModule</string>
@@ -972,14 +964,14 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C0AD2B3069F1EA900FABCE6</string>
-				<string>3D84C9970C75269300DB0C03</string>
+				<string>3D20ECCA0DEDBE3F00EF6366</string>
 				<string>1CD0528B0623707200166675</string>
-				<string>3D84C9980C75269300DB0C03</string>
+				<string>3D20ECCB0DEDBE3F00EF6366</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.run</string>
 			<key>WindowString</key>
-			<string>76 507 620 312 0 0 1440 878 </string>
+			<string>682 489 620 312 0 0 1440 878 </string>
 			<key>WindowToolGUID</key>
 			<string>1C0AD2B3069F1EA900FABCE6</string>
 			<key>WindowToolIsVisible</key>

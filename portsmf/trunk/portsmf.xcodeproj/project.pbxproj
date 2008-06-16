@@ -39,20 +39,20 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 3D84C8B90C73C64B00DB0C03 /* portsmf */;
+			remoteGlobalIDString = 3D84C8B90C73C64B00DB0C03;
 			remoteInfo = portsmf;
 		};
 		3D84C95C0C74EC8100DB0C03 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 3D84C8B90C73C64B00DB0C03 /* portsmf */;
+			remoteGlobalIDString = 3D84C8B90C73C64B00DB0C03;
 			remoteInfo = portsmf;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3D84C8BA0C73C64B00DB0C03 /* libportsmf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libportsmf.a; path = build/Debug/libportsmf.a; sourceTree = "<group>"; };
+		3D84C8BA0C73C64B00DB0C03 /* libportsmf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libportsmf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D84C8C10C73C66E00DB0C03 /* allegroconvert */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = allegroconvert; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D84C8C60C73C67E00DB0C03 /* allegroplay */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = allegroplay; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = allegro.cpp; sourceTree = "<group>"; };

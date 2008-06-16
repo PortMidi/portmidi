@@ -1,3 +1,10 @@
+// trace.cpp -- debugging print function
+//
+// (I think this was created to provide a generic print function
+// for use in non-command-line Windows applications where printf
+// does not work. Currently, it is not used, but kept around for
+// possible debugging needs. -RBD)
+
 #include "stdarg.h"
 #include "stdio.h"
 #include "crtdbg.h"

@@ -66,7 +66,8 @@ char *heapify(char *s); // put a string on the heap
 typedef char *Alg_attribute;
 
 
-// Alg_atoms is a symbol table of Alg_attributes
+// Alg_atoms is a symbol table of Alg_attributes and other
+// unique strings
 class Alg_atoms {
 public:
     Alg_atoms() {
@@ -495,7 +496,7 @@ public:
         *loc = value;
     }
     void check_buffer(long needed);
-    void set_string(char *s, long n) { 
+    void set_string(char *s) { 
         char *fence = buffer + len;
         assert(ptr < fence);
         while (*ptr++ = *s++) assert(ptr < fence);
@@ -512,9 +513,9 @@ public:
         memcpy(newbuf, buffer, *len);
         return newbuf;
     }
-    void init_for_read(void *buffer, long n) {
-        buffer = (char *) buffer;
-        ptr = (char *) buffer;
+    void init_for_read(void *buf, long n) {
+        buffer = (char *) buf;
+        ptr = (char *) buf;
         len = n;
     }
     char get_char() { return *ptr++; }
@@ -549,7 +550,7 @@ protected:
     void unserialize_parameter(Alg_parameter_ptr parm_ptr);
 public:
     void serialize_track(bool text);
-    void unserialize_track(long len);
+    void unserialize_track();
     virtual Alg_event_ptr &operator[](int i) {
         assert(i >= 0 && i < len);
         return events[i];
@@ -825,7 +826,7 @@ public:
     // encode sequence structure into contiguous, moveable memory block
     // address of newly allocated memory is assigned to *buffer, which must
     // be freed by caller; the length of data is assigned to *len
-    void unserialize_seq(long len);
+    void unserialize_seq();
 
     // write an ascii representation to file
     void write(FILE *file, bool in_secs);

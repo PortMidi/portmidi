@@ -1692,8 +1692,7 @@ Alg_track_ptr Alg_track::copy(double t, double len, bool all)
     // since we are translating notes in time, do not copy or use old timemap
     Alg_track_ptr track = new Alg_track();
     track->units_are_seconds = units_are_seconds;
-    if (units_are_seconds) track->set_real_dur(len);
-    else track->set_beat_dur(len);
+    track->set_dur(len);
     int i;
     int move_to = 0;
     for (i = 0; i < length(); i++) {
@@ -2421,6 +2420,7 @@ void Alg_seq::paste(double start, Alg_seq *seq)
     // there is nothing to insert
     while (i < tracks()) {
         track(i)->insert_silence(start, seq->get_beat_dur());
+        i++;
     }
     // paste in tempo track
     time_map->paste(start, seq);
@@ -2539,7 +2539,6 @@ bool Alg_seq::insert_tempo(double bpm, double beat)
     double bps = bpm / 60.0; // convert to beats per second
     // change the tempo at the given beat until the next beat event
     if (beat < 0) return false;
-    assert(!units_are_seconds);
     convert_to_beats(); // beats are invariant when changing tempo
     double time = time_map->beat_to_time(beat);
     long i = time_map->locate_time(time);

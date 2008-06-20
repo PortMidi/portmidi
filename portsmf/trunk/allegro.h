@@ -871,12 +871,14 @@ public:
     // find index of first score event after time
     long seek_time(double time, int track_num);
     bool insert_beat(double time, double beat);
+    // warning: insert_tempo may change representation from seconds to beats
     bool insert_tempo(double bpm, double beat);
 
     // add_event takes a pointer to an event on the heap. The event is not
     // copied, and this Alg_seq becomes the owner and freer of the event.
     void add_event(Alg_event_ptr event, int track_num);
     void add(Alg_event_ptr event) { assert(false); } // call add_event instead
+    // warning: set_tempo may change representation from seconds to beats
     bool set_tempo(double bpm, double start_beat, double end_beat);
     void set_time_sig(double beat, double num, double den);
     void beat_to_measure(double beat, long *measure, double *m_beat,

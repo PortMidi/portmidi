@@ -137,6 +137,7 @@ void Alg_midifile_reader::parse()
     channel_offset = 0;
     seq->convert_to_beats();
     midifile();
+    seq->set_real_dur(seq->get_time_map()->beat_to_time(seq->get_beat_dur()));
 }
 
 
@@ -155,6 +156,8 @@ void Alg_midifile_reader::Mf_endtrack()
     // printf("finished track, length %d number %d\n", track->len, track_num / 100);
     channel_offset += seq->channel_offset_per_track;
     track = NULL;
+    double now = get_time();
+    if (seq->get_beat_dur() < now) seq->set_beat_dur(now);
 }
 
 
@@ -398,6 +401,8 @@ Alg_seq_ptr alg_smf_read(FILE *file, Alg_seq_ptr new_seq)
     if (!new_seq) new_seq = new Alg_seq();
     Alg_midifile_reader ar(file, new_seq);
     ar.parse();
+    ar.seq->set_real_dur(ar.seq->get_time_map()->
+                         beat_to_time(ar.seq->get_beat_dur()));
     return ar.seq;
 }
 

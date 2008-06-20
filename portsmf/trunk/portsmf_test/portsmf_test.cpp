@@ -702,16 +702,18 @@ void test31() // test find_in_track
 
 void test32() // serialize big midi file and unserialize
 {
-    FILE *file = fopen("be-ps-05.mid", "rb");
-	 if (!file) {
+    FILE *file = fopen("jsb-wtc-c-f.mid", "rb");
+    if (!file) {
         printf("Error: Could not open be-ps-05.mid for reading\n");
-		  return;
-	 }
-	 Alg_seq_ptr seq = new Alg_seq(file, true); // read midi file
-	 fclose(file);
+        return;
+    }
+    Alg_seq_ptr seq = new Alg_seq(file, true); // read midi file
+    fclose(file);
     
     file = fopen("bigseq1.alg", "w");
-    seq->write(file, false);
+    printf("after reading, real_dur is %g, beat_dur is %g\n",
+           seq->get_real_dur(), seq->get_beat_dur());
+    seq->write(file, true);
     fclose(file);
 
     void *buffer;
@@ -720,7 +722,7 @@ void test32() // serialize big midi file and unserialize
     printf("Serialized %d bytes\n", bytes);
     Alg_seq_ptr new_seq = (Alg_seq_ptr) seq->unserialize(buffer, bytes);
     file = fopen("bigseq2.alg", "w");
-    new_seq->write(file, false);
+    new_seq->write(file, true);
     fclose(file);
 }
 

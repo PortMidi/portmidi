@@ -31,7 +31,11 @@
 
 #define is_empty(midi) ((midi)->tail == (midi)->head)
 
-static int pm_initialized = FALSE;
+/* this is not static so that pm_init can set it directly if
+ *   (see pmmac.c:pm_init())
+ */
+int pm_initialized = FALSE;
+
 int pm_hosterror;
 char pm_hosterror_text[PM_HOST_ERROR_MSG_LEN];
 

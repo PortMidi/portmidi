@@ -51,24 +51,6 @@ extern "C" {
 /* CHANGELOG FOR PORTMIDI
  *     (see ../CHANGELOG.txt)
  *
- * IMPORTANT INFORMATION ABOUT A WIN32 BUG:
- *
- *    Windows apparently has a serious midi bug -- if you do not close ports, Windows
- *    may crash. PortMidi tries to protect against this by using a DLL to clean up.
- *
- *    If client exits for example with:
- *      i)  assert 
- *      ii) Ctrl^c, 
- *    then DLL clean-up routine called. However, when client does something 
- *    really bad (e.g. assigns value to NULL pointer) then DLL CLEANUP ROUTINE
- *    NEVER RUNS! In this state, if you wait around long enough, you will
- *    probably get the blue screen of death. Can also go into Pview and there will
- *    exist zombie process that you can't kill.
- *
- *    You can enable the DLL cleanup routine by defining USE_DLL_FOR_CLEANUP.
- *    Do not define this preprocessor symbol if you do not want to use this
- *    feature.
- *
  * NOTES ON HOST ERROR REPORTING: 
  *
  *    PortMidi errors (of type PmError) are generic, system-independent errors.
@@ -113,8 +95,6 @@ extern "C" {
  *    PM_CHECK_ERRORS more-or-less takes over error checking for return values,
  *        stopping your program and printing error messages when an error
  *        occurs. This also uses stdio for console text I/O.
- *    USE_DLL_FOR_CLEANUP is described above. (Windows only.)
- *    
  */ 
 
 #ifndef FALSE
@@ -224,45 +204,43 @@ int Pm_CountDevices( void );
     Pm_GetDefaultInputDeviceID(), Pm_GetDefaultOutputDeviceID()
 
     Return the default device ID or pmNoDevice if there are no devices.
-    The result can be passed to Pm_OpenMidi().
+    The result (but not pmNoDevice) can be passed to Pm_OpenMidi().
     
-    On the PC, the user can specify a default device by
-    setting an environment variable. For example, to use device #1.
-
-        set PM_RECOMMENDED_OUTPUT_DEVICE=1
+    The default device can be specified using a small application
+    named pmdefaults that is part of the PortMidi distribution. This
+    program in turn uses the Java Preferences object created by
+    java.util.prefs.Preferences.userRoot().node("/PortMidi"); the
+    preference is set by calling 
+        prefs.put("PM_RECOMMENDED_OUTPUT_DEVICE", prefName);
+    or  prefs.put("PM_RECOMMENDED_INPUT_DEVICE", prefName);
     
-    The user should first determine the available device ID by using
-    the supplied application "testin" or "testout".
+    In the statements above, prefName is a string describing the
+    MIDI device in the form "interf, name" where interf identifies
+    the underlying software system or API used by PortMdi to access
+    devices and name is the name of the device. These correspond to 
+    the interf and name fields of a PmDeviceInfo. (Currently supported
+    interfaces are "MMSystem" for Win32, "ALSA" for Linux, and 
+    "CoreMIDI" for OS X, so in fact, there is no choice of interface.)
+    In "interf, name", the strings are actually substrings of 
+    the full interface and name strings. For example, the preference 
+    "Core, Sport" will match a device with interface "CoreMIDI"
+    and name "In USB MidiSport 1x1". It will also match "CoreMIDI"
+    and "In USB MidiSport 2x2". The devices are enumerated in device
+    ID order, so the lowest device ID that matches the pattern becomes
+    the default device. Finally, if the comma-space (", ") separator
+    between interface and name parts of the preference is not found,
+    the entire preference string is interpreted as a name, and the
+    interface part is the empty string, which matches anything.
 
-    In general, the registry is a better place for this kind of info,
-    and with USB devices that can come and go, using integers is not
-    very reliable for device identification. Under Windows, if
-    PM_RECOMMENDED_OUTPUT_DEVICE (or PM_RECOMMENDED_INPUT_DEVICE) is
-    *NOT* found in the environment, then the default device is obtained
-    by looking for a string in the registry under:
-        HKEY_LOCAL_MACHINE/SOFTWARE/PortMidi/Recommended_Input_Device
-    and HKEY_LOCAL_MACHINE/SOFTWARE/PortMidi/Recommended_Output_Device
-    for a string. The number of the first device with a substring that
-    matches the string exactly is returned. For example, if the string
-    in the registry is "USB", and device 1 is named 
-    "In USB MidiSport 1x1", then that will be the default
-    input because it contains the string "USB".
+    On the MAC, preferences are stored in 
+      /Users/$NAME/Library/Preferences/com.apple.java.util.prefs.plist
+    which is a binary file. In addition to the pmdefaults program,
+    there are utilities that can read and edit this preference file.
 
-    In addition to the name, PmDeviceInfo has the member "interf", which
-    is the interface name. (The "interface" is the underlying software
-    system or API used by PortMidi to access devices. Examples are 
-    MMSystem, DirectX (not implemented), ALSA, OSS (not implemented), etc.)
-    At present, the only Win32 interface is "MMSystem", the only Linux
-    interface is "ALSA", and the only Max OS X interface is "CoreMIDI".
-    To specify both the interface and the device name in the registry,
-    separate the two with a comma and a space, e.g.:
-        MMSystem, In USB MidiSport 1x1
-    In this case, the string before the comma must be a substring of
-    the "interf" string, and the string after the space must be a 
-    substring of the "name" name string in order to match the device.
+    On the PC, 
 
-    Note: in the current release, the default is simply the first device
-    (the input or output device with the lowest PmDeviceID).
+    On Linux, 
+
 */
 PmDeviceID Pm_GetDefaultInputDeviceID( void );
 PmDeviceID Pm_GetDefaultOutputDeviceID( void );

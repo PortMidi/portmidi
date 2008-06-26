@@ -459,7 +459,7 @@ void send_sysex()
         if (shift == 32 || data == MIDI_EOX) {
             /* this will send sysex data 4 bytes at a time -- it would
                be much more efficient to send multiple PmEvents at once
-               but this method is simpler. See Pm_WriteSysex for a more
+               but this method is simpler. See Pm_WriteSysEx for a more
                efficient code example.
              */
             Pm_Write(midi, &msg, 1);

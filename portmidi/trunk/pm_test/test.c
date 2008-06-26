@@ -378,11 +378,13 @@ void show_usage()
 
 int main(int argc, char *argv[])
 {
+    int default_in;
+    int default_out;
     int i = 0, n = 0;
     char line[STRING_MAX];
     int test_input = 0, test_output = 0, test_both = 0, somethingStupid = 0;
-	int stream_test = 0;
-	int latency_valid = FALSE;
+    int stream_test = 0;
+    int latency_valid = FALSE;
     
     for (i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-h") == 0) {
@@ -443,21 +445,30 @@ int main(int argc, char *argv[])
     }
     
     /* list device information */
+    default_in = Pm_GetDefaultInputDeviceID();
+    default_out = Pm_GetDefaultOutputDeviceID();
     for (i = 0; i < Pm_CountDevices(); i++) {
+        char *deflt;
         const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
         if (((test_input  | test_both) & info->input) |
             ((test_output | test_both | stream_test) & info->output)) {
             printf("%d: %s, %s", i, info->interf, info->name);
-            if (info->input) printf(" (input)");
-            if (info->output) printf(" (output)");
+            if (info->input) {
+                deflt = (i == default_in ? "default " : "");
+                printf(" (%sinput)", deflt);
+            }
+            if (info->output) {
+                deflt = (i == default_out ? "default " : "");
+                printf(" (%soutput)", deflt);
+            }
             printf("\n");
         }
     }
     
     /* run test */
-	if (stream_test) {
-		main_test_stream();
-	} else if (test_input) {
+    if (stream_test) {
+        main_test_stream();
+    } else if (test_input) {
         main_test_input(somethingStupid);
     } else if (test_output) {
         main_test_output();

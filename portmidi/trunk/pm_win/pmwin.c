@@ -16,9 +16,6 @@
 #include "pmutil.h"
 #include "pminternal.h"
 #include "pmwinmm.h"
-#ifdef USE_DLL_FOR_CLEANUP
-#include "pmdll.h" /* used to close ports on exit */
-#endif
 #ifdef DEBUG
 #include "stdio.h"
 #endif
@@ -45,12 +42,6 @@ static void pm_exit(void) {
 /* pm_init is the windows-dependent initialization.*/
 void pm_init(void)
 {
-#ifdef USE_DLL_FOR_CLEANUP
-    /* we were hoping a DLL could offer more robust cleanup after errors,
-       but the DLL does not seem to run after crashes. Thus, the atexit()
-       mechanism is just as powerful, and simpler to implement.
-     */
-    pm_set_close_function(pm_exit);
 #ifdef DEBUG
     printf("registered pm_term with cleanup DLL\n");
 #endif

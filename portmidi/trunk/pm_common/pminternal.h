@@ -21,6 +21,8 @@
 extern "C" {
 #endif
 
+extern int pm_initialized; /* see note in portmidi.c */
+
 /* these are defined in system-specific file */
 void *pm_alloc(size_t s);
 void pm_free(void *ptr);

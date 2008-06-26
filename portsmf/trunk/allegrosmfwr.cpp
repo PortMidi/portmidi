@@ -211,8 +211,8 @@ void Alg_smf_write::write_update(Alg_update_ptr update)
 		int temp = ROUND(8192.0 * (update->parameter.r + 1));
 		if (temp > 8191) temp = 8191; // 14 bits maximum
 		if (temp < 0) temp = 0;
-		int c2 = temp & 0x7F; // low 7 bits
-		int c1 = temp >> 7;   // high 7 bits
+		int c1 = temp & 0x7F; // low 7 bits
+		int c2 = temp >> 7;   // high 7 bits
 		write_delta(update->time);
 		write_data(0xE0 + to_midi_channel(update->chan));
 		write_data(c1);

@@ -1657,32 +1657,43 @@ Alg_update *Alg_track::create_update(double time, int channel, int identifier)
 }
 
 
-Alg_track *Alg_track::cut(double t, double len, bool all)
+Alg_track_ptr Alg_track::cut(double t, double len, bool all)
 {
-    Alg_track *track = new Alg_track(time_map, units_are_seconds);
+    // since we are translating notes in time, do not copy or use old timemap
+    Alg_track_ptr track = new Alg_track();
+    track->units_are_seconds = units_are_seconds;
+    if (units_are_seconds) {
+        track->set_real_dur(len);
+        track->set_beat_dur(time_map->time_to_beat(t + len) -
+                            time_map->time_to_beat(t));
+    } else {
+        track->set_beat_dur(len);
+        track->set_real_dur(time_map->beat_to_time(t + len) -
+                            time_map->beat_to_time(t));
+    }
     int i;
-    int move_to = 0;
+    int new_len = 0;
     int change = 0;
     for (i = 0; i < length(); i++) {
         Alg_event_ptr event = events[i];
-        Alg_note_ptr note = (Alg_note_ptr) event;
         if (event->overlap(t, len, all)) {
             event->time -= t;
             track->append(event);
             change = 1;
         } else { // if we're not cutting this event, move it to 
                  // eliminate the gaps in events left by cut events
-            events[move_to] = event;
+            events[new_len] = event;
             // adjust times of events after t + len
             if (event->time > t + len - ALG_EPS) {
                 event->time -= len;
                 change = 1;
             }
-            move_to++;
+            new_len++;
         }
     }
-    sequence_number += change; // Alg_event_lists based on this track become invalid
-    this->len = move_to; // adjust length since we removed events
+    // Alg_event_lists based on this track become invalid
+    sequence_number += change;
+    this->len = new_len; // adjust length since we removed events
     return track;
 }
 
@@ -1692,7 +1703,15 @@ Alg_track_ptr Alg_track::copy(double t, double len, bool all)
     // since we are translating notes in time, do not copy or use old timemap
     Alg_track_ptr track = new Alg_track();
     track->units_are_seconds = units_are_seconds;
-    track->set_dur(len);
+    if (units_are_seconds) {
+         track->set_real_dur(len);
+         track->set_beat_dur(time_map->time_to_beat(t + len) - 
+                             time_map->time_to_beat(t));
+    } else {
+        track->set_beat_dur(len);
+        track->set_real_dur(time_map->beat_to_time(t + len) -
+                            time_map->beat_to_time(t));
+    }
     int i;
     int move_to = 0;
     for (i = 0; i < length(); i++) {
@@ -2312,18 +2331,23 @@ void Alg_seq::copy_time_sigs_to(Alg_seq *dest)
 }
 
 
-Alg_track_ptr Alg_seq::cut(double start, double len, bool all)
+Alg_seq_ptr Alg_seq::cut(double start, double len, bool all)
     // return sequence from start to start+len and modify this
     // sequence by removing that time-span
 {
     Alg_seq_ptr result = new Alg_seq();
-    result->track_list.reset();
-    result->set_time_map(new Alg_time_map(get_time_map()));
+    Alg_time_map_ptr map = new Alg_time_map(get_time_map());
+    result->set_time_map(map);
     copy_time_sigs_to(result);
     result->units_are_seconds = units_are_seconds;
+    result->track_list.reset();
+
     for (int i = 0; i < tracks(); i++) {
         result->track_list.append(cut_from_track(i, start, len, all));
+        // since we're moving to a new sequence, change the track's time_map
+        result->track_list[i].set_time_map(map);
     }
+
     // put units in beats to match time_sig's
     double ts_start = start;
     double ts_end = start + len;
@@ -2331,12 +2355,10 @@ Alg_track_ptr Alg_seq::cut(double start, double len, bool all)
         ts_start = time_map->time_to_beat(ts_start);
         ts_end = time_map->time_to_beat(ts_end);
     }
+
     time_sig.cut(ts_start, ts_end);
-    result->time_sig.trim(ts_start,  ts_end);
     time_map->cut(start, len, units_are_seconds);
-    result->get_time_map()->trim(start, start + len, units_are_seconds);
     set_dur(get_dur() - len);
-    result->set_dur(len);
     return result;
 }
 
@@ -2385,8 +2407,11 @@ Alg_seq *Alg_seq::copy(double start, double len, bool all)
     copy_time_sigs_to(result);
     result->units_are_seconds = units_are_seconds;
     result->track_list.reset();
+
     for (int i = 0; i < tracks(); i++) {
-        result->track_list.append(track_list[i].copy(start, len, all));
+        result->track_list.append(copy_track(i, start, len, all));
+        // since we're copying to a new seq, change the track's time_map
+        result->track_list[i]->set_time_map(map);
     }
     result->time_sig.trim(start, start + len);
     result->time_map->trim(start, start + len, units_are_seconds);
@@ -2419,14 +2444,15 @@ void Alg_seq::paste(double start, Alg_seq *seq)
     // make sure all tracks were opened up for an insert, even if
     // there is nothing to insert
     while (i < tracks()) {
-        track(i)->insert_silence(start, seq->get_beat_dur());
+        track(i)->insert_silence(start, seq->get_dur());
         i++;
     }
     // paste in tempo track
     time_map->paste(start, seq);
     // paste in time signatures
     time_sig.paste(start, seq);
-    set_dur(get_beat_dur() + seq->get_beat_dur());
+    set_dur(get_beat_dur() + seq->get_dur());
+    assert(!seq->units_are_seconds && !units_are_seconds);
     if (units_should_be_seconds) {
         convert_to_seconds();
     }

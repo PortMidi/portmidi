@@ -275,7 +275,7 @@ void Alg_midifile_reader::Mf_pitchbend(int chan, int c1, int c2)
 {
     Alg_parameter parameter;
     parameter.set_attr(symbol_table.insert_string("bendr"));
-    parameter.r = ((c1 << 7) + c2) / 8192.0 - 1.0;
+    parameter.r = ((c2 << 7) + c1) / 8192.0 - 1.0;
     update(chan, -1, &parameter);
 }
 

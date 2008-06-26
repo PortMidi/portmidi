@@ -632,6 +632,8 @@ public:
     // the region are copied. CUT NOTES
     // MAY EXTEND BEYOND THE DURATION OF THE RESULTING SEQ.
     // The return type is the same as this (may be Alg_seq).
+    // All times including len are interpreted according to 
+    // units_are_seconds in the track.
     virtual Alg_track *cut(double t, double len, bool all);
 
     // Like cut() but doesn't remove the notes from the original
@@ -830,7 +832,7 @@ public:
 
     // write an ascii representation to file
     void write(FILE *file, bool in_secs);
-    void write(const char *filename);
+    int write(const char *filename);
     void smf_write(FILE *file);
     int smf_write(const char *filename);
 
@@ -853,7 +855,7 @@ public:
 
     Alg_track_ptr cut_from_track(int track_num, double start, double dur, 
                                  bool all);
-    Alg_track_ptr cut(double t, double len, bool all);
+    Alg_seq *cut(double t, double len, bool all);
     void insert_silence_in_track(int track_num, double t, double len);
     void insert_silence(double t, double len);
     Alg_track_ptr copy_track(int track_num, double t, double len, bool all);

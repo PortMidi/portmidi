@@ -122,5 +122,11 @@ void Alg_seq::write(FILE *file, bool in_secs)
     }
 }
 
-
-
+int Alg_seq::write(const char *filename)
+{
+     FILE *file = fopen(filename, "w");
+     if (!file) return errno;
+     write(file, units_are_seconds);
+     fclose(file);
+     return 0;
+}

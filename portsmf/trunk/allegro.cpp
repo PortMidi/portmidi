@@ -2355,10 +2355,20 @@ Alg_seq_ptr Alg_seq::cut(double start, double len, bool all)
         ts_start = time_map->time_to_beat(ts_start);
         ts_end = time_map->time_to_beat(ts_end);
     }
+    // result is shifted from start to 0 and has length len, but
+    // time_sig and time_map are copies from this. Adjust time_sig,
+    // time_map, and duration fields in result:
+    result->time_sig.trim(ts_start, ts_end);
+    result->time_map->trim(start, start + len, result->units_are_seconds);
+    result->set_dur(len);
 
+    // we sliced out a portion of each track, so now we need to
+    // slice out the corresponding sections of time_sig and time_map
+    // as well as to adjust the duration
     time_sig.cut(ts_start, ts_end);
     time_map->cut(start, len, units_are_seconds);
     set_dur(get_dur() - len);
+
     return result;
 }
 

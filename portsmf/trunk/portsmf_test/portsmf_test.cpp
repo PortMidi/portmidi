@@ -737,12 +737,14 @@ void test33() // cut and inspect some notes
     fclose(file);
     seq->convert_to_seconds();
 
+    printf("timestamp before %g\n", (*(seq->track(0)))[6]);
     file = fopen("before-33.alg", "w");
     seq->write(file, true);
     fclose(file);
 
     Alg_seq_ptr cut = seq->cut(0.0, 3.0, false);
 
+    printf("timestamp after %g\n", (*(seq->track(0)))[2]);
     file = fopen("after-33.alg", "w");
     seq->write(file, true);
     fclose(file);

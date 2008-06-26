@@ -704,7 +704,7 @@ void test32() // serialize big midi file and unserialize
 {
     FILE *file = fopen("jsb-wtc-c-f.mid", "rb");
     if (!file) {
-        printf("Error: Could not open be-ps-05.mid for reading\n");
+        printf("Error: Could not open jsb-wtc-c-f.mid for reading\n");
         return;
     }
     Alg_seq_ptr seq = new Alg_seq(file, true); // read midi file
@@ -726,10 +726,33 @@ void test32() // serialize big midi file and unserialize
     fclose(file);
 }
 
+void test33() // cut and inspect some notes
+{
+    FILE *file = fopen("be-ps-05.mid", "rb");
+    if (!file) {
+        printf("Error: Could not open be-ps-05.mid for reading\n");
+        return;
+    }
+    Alg_seq_ptr seq = new Alg_seq(file, true); // read midi file
+    fclose(file);
+    seq->convert_to_seconds();
+
+    file = fopen("before-33.alg", "w");
+    seq->write(file, true);
+    fclose(file);
+
+    Alg_seq_ptr cut = seq->cut(0.0, 3.0, false);
+
+    file = fopen("after-33.alg", "w");
+    seq->write(file, true);
+    fclose(file);
+
+}
+
 
 int main()
 {
-	test32();
-	printf("Test 32 done, type return to exit\n");
+	test33();
+	printf("Test 33 done, type return to exit\n");
 	getchar();
 }

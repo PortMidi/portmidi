@@ -7,7 +7,7 @@
 #include "string.h"
 #include "strparse.h"
 #include "allegro.h"
-
+#include <errno.h>
 
 
 void parameter_print(FILE *file, Alg_parameter_ptr p)

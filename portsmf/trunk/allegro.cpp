@@ -2411,7 +2411,7 @@ Alg_seq *Alg_seq::copy(double start, double len, bool all)
     for (int i = 0; i < tracks(); i++) {
         result->track_list.append(copy_track(i, start, len, all));
         // since we're copying to a new seq, change the track's time_map
-        result->track_list[i]->set_time_map(map);
+        result->track_list[i].set_time_map(map);
     }
     result->time_sig.trim(start, start + len);
     result->time_map->trim(start, start + len, units_are_seconds);

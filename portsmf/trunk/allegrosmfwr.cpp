@@ -520,7 +520,7 @@ int Alg_seq::smf_write(const char *filename)
 {
 	FILE *outf = fopen(filename, "wb");
 	if (!outf) {
-		return errno;
+            return errno;
 	}
 	smf_write(outf);
 	fclose(outf);

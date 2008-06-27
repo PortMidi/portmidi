@@ -20,6 +20,7 @@
 
 #define ALG_EPS 0.000001
 #define STREQL(x, y) (strcmp(x, y) == 0)
+#define MAX(x, y) ((x) > (y) ? (x) : (y))
 
 // 4311 is type cast ponter to long warning
 // 4996 is warning against strcpy
@@ -45,9 +46,9 @@ char *heapify(char *s)
 
 void Alg_atoms::expand()
 {
-    max = (max + 5);   // extra growth for small sizes
-    max += (max >> 2); // add 25%
-    char **new_atoms = new Alg_attribute[max];
+    maxlen = (maxlen + 5);   // extra growth for small sizes
+    maxlen += (maxlen >> 2); // add 25%
+    char **new_atoms = new Alg_attribute[maxlen];
     // now do copy
     memcpy(new_atoms, atoms, len * sizeof(Alg_attribute));
     if (atoms) delete[] atoms;
@@ -63,7 +64,7 @@ void Alg_atoms::expand()
 //
 Alg_attribute Alg_atoms::insert_new(char *name, char attr_type)
 {
-    if (len == max) expand();
+    if (len == maxlen) expand();
     char *h = new char[strlen(name) + 2];
     strcpy(h + 1, name);
     *h = attr_type;
@@ -629,9 +630,9 @@ void Alg_update::show()
 
 void Alg_events::expand()
 {
-    max = (max + 5);   // extra growth for small sizes
-    max += (max >> 2); // add 25%
-    Alg_event_ptr *new_events = new Alg_event_ptr[max];
+    maxlen = (maxlen + 5);   // extra growth for small sizes
+    maxlen += (maxlen >> 2); // add 25%
+    Alg_event_ptr *new_events = new Alg_event_ptr[maxlen];
     // now do copy
     memcpy(new_events, events, len * sizeof(Alg_event_ptr));
     if (events) delete[] events;
@@ -641,7 +642,7 @@ void Alg_events::expand()
 
 void Alg_events::insert(Alg_event_ptr event)
 {
-    if (max <= len) {
+    if (maxlen <= len) {
         expand();
     }
     // Note: if the new event is the last one, the assignment
@@ -678,10 +679,17 @@ Alg_event_ptr Alg_events::uninsert(long index)
 
 void Alg_events::append(Alg_event_ptr event)
 {
-    if (max <= len) {
+    if (maxlen <= len) {
         expand();
     }
     events[len++] = event;
+    // keep track of last note_off time
+    if (event->is_note()) {
+        Alg_note_ptr note = (Alg_note_ptr) event;
+        double note_off = note->time + note->dur;
+        if (note_off > last_note_off)
+            last_note_off = note_off;
+    }
 }
 
 
@@ -762,9 +770,9 @@ void Alg_event_list::set_start_time(Alg_event *event, double t)
 
 void Alg_beats::expand()
 {
-    max = (max + 5);   // extra growth for small sizes
-    max += (max >> 2); // add 25%
-    Alg_beat_ptr new_beats = new Alg_beat[max];
+    maxlen = (maxlen + 5);   // extra growth for small sizes
+    maxlen += (maxlen >> 2); // add 25%
+    Alg_beat_ptr new_beats = new Alg_beat[maxlen];
     // now do copy
     memcpy(new_beats, beats, len * sizeof(Alg_beat));
     if (beats) delete[] beats;
@@ -775,7 +783,7 @@ void Alg_beats::expand()
 void Alg_beats::insert(long i, Alg_beat_ptr beat)
 {
     assert(i >= 0 && i <= len);
-    if (max <= len) {
+    if (maxlen <= len) {
         expand();
     }
     memmove(&beats[i + 1], &beats[i], sizeof(Alg_beat) * (len - i));
@@ -824,7 +832,7 @@ long Alg_time_map::locate_time(double time)
 long Alg_time_map::locate_beat(double beat)
 {
     int i = 0;
-    while (( i < beats.len) && (beat > beats[i].beat)) {
+    while ((i < beats.len) && (beat > beats[i].beat)) {
         i++;
     }
     return i;
@@ -1052,6 +1060,10 @@ void Alg_time_map::cut(double start, double len, bool units_are_seconds)
     if (i < length() && within(beats[i].time, start, ALG_EPS)) {
         // perterb time map slightly (within alg_eps) to place
         // break point exactly at the start time
+        /* D33 */
+        printf("perturb %g to %g, % to %g\n",
+               beats[i].time, start, beats[i].beat, initial_beat);
+        /* 33D */
         beats[i].time = start;
         beats[i].beat = initial_beat;
     } else {
@@ -1065,8 +1077,16 @@ void Alg_time_map::cut(double start, double len, bool units_are_seconds)
     while (i < length() && beats[i].time < end + ALG_EPS) i++;
     // now beats[i] is the next point to be included in beats
     // but from i onward, we must shift by (-len, -beat_len)
+    /* D33 */
+    printf("adjust len %g, beat_len %g\n", len, beat_len);
+    /* 33D */
     while (i < length()) {
         Alg_beat &b = beats[i];
+        /* D33 */
+        if (b.time < 5)
+            printf("adjust %.10g to %.10g, %.10g to %.10g\n",
+                   b.time, b.time - len, b.beat, b.beat - beat_len);
+        /* 33D */
         b.time = b.time - len;
         b.beat = b.beat - beat_len;
         beats[start_index] = b;
@@ -1605,6 +1625,7 @@ void Alg_track::convert_to_seconds()
 // modify all times and durations in notes to seconds
 {
     if (!units_are_seconds) {
+        last_note_off = time_map->beat_to_time(last_note_off);
         units_are_seconds = true;
         long i;
         for (i = 0; i < length(); i++) {
@@ -1877,9 +1898,9 @@ Alg_event_list *Alg_track::find(double t, double len, bool all,
 
 void Alg_time_sigs::expand()
 {
-    max = (max + 5);   // extra growth for small sizes
-    max += (max >> 2); // add 25%
-    Alg_time_sig_ptr new_time_sigs = new Alg_time_sig[max];
+    maxlen = (maxlen + 5);   // extra growth for small sizes
+    maxlen += (maxlen >> 2); // add 25%
+    Alg_time_sig_ptr new_time_sigs = new Alg_time_sig[maxlen];
     // now do copy
     memcpy(new_time_sigs, time_sigs, len * sizeof(Alg_time_sig));
     if (time_sigs) delete[] time_sigs;
@@ -1910,7 +1931,7 @@ void Alg_time_sigs::insert(double beat, double num, double den)
                 return; // redundant inserts are ignored here
             }
             // make room for new event
-            if (max <= len) expand();
+            if (maxlen <= len) expand();
             len++;
             // insert new event at i
             memmove(&time_sigs[i + 1], &time_sigs[i], 
@@ -1922,7 +1943,7 @@ void Alg_time_sigs::insert(double beat, double num, double den)
         }
     }
     // if we fall out of loop, then this goes at end
-    if (max <= len) expand();
+    if (maxlen <= len) expand();
     time_sigs[len].beat = beat;
     time_sigs[len].num = num;
     time_sigs[len].den = den;
@@ -2124,8 +2145,8 @@ Alg_tracks::~Alg_tracks()
 
 void Alg_tracks::expand_to(int new_max)
 {
-    max = new_max;
-    Alg_track_ptr *new_tracks = new Alg_track_ptr[max];
+    maxlen = new_max;
+    Alg_track_ptr *new_tracks = new Alg_track_ptr[maxlen];
     // now do copy
     memcpy(new_tracks, tracks, len * sizeof(Alg_track_ptr));
     if (tracks) {
@@ -2137,15 +2158,15 @@ void Alg_tracks::expand_to(int new_max)
 
 void Alg_tracks::expand()
 {
-    max = (max + 5);   // extra growth for small sizes
-    max += (max >> 2); // add 25%
-    expand_to(max);
+    maxlen = (maxlen + 5);   // extra growth for small sizes
+    maxlen += (maxlen >> 2); // add 25%
+    expand_to(maxlen);
 }
 
 
 void Alg_tracks::append(Alg_track_ptr track)
 {
-    if (max <= len) {
+    if (maxlen <= len) {
         expand();
     }
     tracks[len] = track;
@@ -2161,10 +2182,10 @@ void Alg_tracks::add_track(int track_num, Alg_time_map_ptr time_map,
     // create tracks at len, len+1, ..., track_num.
 {
     assert(track_num >= 0);
-    if (track_num == max) {
+    if (track_num == maxlen) {
         // use eponential growth to insert tracks sequentially
         expand();
-    } else if (track_num > max) {
+    } else if (track_num > maxlen) {
         // grow to exact size for random inserts
         expand_to(track_num + 1);
     }
@@ -2190,7 +2211,7 @@ void Alg_tracks::reset()
     if (tracks) delete [] tracks;
     tracks = NULL;
     len = 0;
-    max = 0;               // Modified by Ning Hu Nov.19 2002
+    maxlen = 0;               // Modified by Ning Hu Nov.19 2002
 }
 
 
@@ -2305,6 +2326,8 @@ void Alg_seq::convert_to_seconds()
         //       track(i)->get_time_map());
         track(i)->convert_to_seconds();
     }
+    // update our copy of last_note_off (which may or may not be valid)
+    last_note_off = time_map->beat_to_time(last_note_off);
     // note that the Alg_seq inherits units_are_seconds from an
     // empty track. Each track also has a (redundant) field called
     // units are seconds. These should always be consistent.
@@ -2335,6 +2358,12 @@ Alg_seq_ptr Alg_seq::cut(double start, double len, bool all)
     // return sequence from start to start+len and modify this
     // sequence by removing that time-span
 {
+    // fix parameters to fall within existing sequence
+    if (start > get_dur()) return NULL; // nothing to cut
+    if (start < 0) start = 0; // can't start before sequence starts
+    if (start + len > get_dur()) // can't cut after end:
+        len = get_dur() - start; 
+
     Alg_seq_ptr result = new Alg_seq();
     Alg_time_map_ptr map = new Alg_time_map(get_time_map());
     result->set_time_map(map);
@@ -2343,28 +2372,48 @@ Alg_seq_ptr Alg_seq::cut(double start, double len, bool all)
     result->track_list.reset();
 
     for (int i = 0; i < tracks(); i++) {
-        result->track_list.append(cut_from_track(i, start, len, all));
+        Alg_track_ptr cut_track = cut_from_track(i, start, len, all);
+        result->track_list.append(cut_track);
+        // initially, result->last_note_off is zero. We want to know the
+        // maximum over all cut_tracks, so compute that here:
+        result->last_note_off = MAX(result->last_note_off, 
+                                    cut_track->last_note_off);
         // since we're moving to a new sequence, change the track's time_map
         result->track_list[i].set_time_map(map);
     }
 
-    // put units in beats to match time_sig's
+    // put units in beats to match time_sig's. Note that we need
+    // two different end times. For result, we want the time of the
+    // last note off, but for cutting out the time signatures in this,
+    // we use len.
     double ts_start = start;
     double ts_end = start + len;
+    double ts_last_note_off = start + result->last_note_off;
     if (units_are_seconds) {
         ts_start = time_map->time_to_beat(ts_start);
         ts_end = time_map->time_to_beat(ts_end);
+        ts_last_note_off = time_map->time_to_beat(ts_last_note_off);
     }
     // result is shifted from start to 0 and has length len, but
     // time_sig and time_map are copies from this. Adjust time_sig,
-    // time_map, and duration fields in result:
-    result->time_sig.trim(ts_start, ts_end);
-    result->time_map->trim(start, start + len, result->units_are_seconds);
+    // time_map, and duration fields in result. The time_sig and 
+    // time_map data is retained out to last_note_off so that we have
+    // information for the entire duration of all the notes, even though
+    // this might extend beyond the duration of the track. (Warning:
+    // no info is retained for notes with negative times.)
+    result->time_sig.trim(ts_start, ts_last_note_off);
+    result->time_map->trim(start, start + result->last_note_off, 
+                           result->units_are_seconds);
+    // even though there might be notes sticking out beyond len, the
+    // track duration is len, not last_note_off. (Warning: if all is
+    // true, there may also be notes at negative offsets. These times
+    // cannot be mapped between beat and time representations, so there
+    // may be subtle bugs or unexpected behaviors in that case.)
     result->set_dur(len);
 
     // we sliced out a portion of each track, so now we need to
     // slice out the corresponding sections of time_sig and time_map
-    // as well as to adjust the duration
+    // as well as to adjust the duration. Note that here, we
     time_sig.cut(ts_start, ts_end);
     time_map->cut(start, len, units_are_seconds);
     set_dur(get_dur() - len);
@@ -2410,6 +2459,12 @@ Alg_track_ptr Alg_seq::copy_track(int track_num, double t, double len, bool all)
 
 Alg_seq *Alg_seq::copy(double start, double len, bool all)
 {
+    // fix parameters to fall within existing sequence
+    if (start > get_dur()) return NULL; // nothing to copy
+    if (start < 0) start = 0; // can't copy before sequence starts
+    if (start + len > get_dur()) // can't copy after end:
+        len = get_dur() - start; 
+
     // return (new) sequence from start to start + len
     Alg_seq_ptr result = new Alg_seq();
     Alg_time_map_ptr map = new Alg_time_map(get_time_map());
@@ -2419,12 +2474,30 @@ Alg_seq *Alg_seq::copy(double start, double len, bool all)
     result->track_list.reset();
 
     for (int i = 0; i < tracks(); i++) {
-        result->track_list.append(copy_track(i, start, len, all));
+        Alg_track_ptr copy = cut_from_track(i, start, len, all);
+        result->track_list.append(copy);
+        result->last_note_off = MAX(result->last_note_off, 
+                                    copy->last_note_off);
         // since we're copying to a new seq, change the track's time_map
         result->track_list[i].set_time_map(map);
     }
-    result->time_sig.trim(start, start + len);
-    result->time_map->trim(start, start + len, units_are_seconds);
+
+    // put units in beats to match time_sig's. Note that we need
+    // two different end times. For result, we want the time of the
+    // last note off, but for cutting out the time signatures in this,
+    // we use len.
+    double ts_start = start;
+    double ts_end = start + len;
+    double ts_last_note_off = start + result->last_note_off;
+    if (units_are_seconds) {
+        ts_start = time_map->time_to_beat(ts_start);
+        ts_end = time_map->time_to_beat(ts_end);
+        ts_last_note_off = time_map->time_to_beat(ts_last_note_off);
+    }
+
+    result->time_sig.trim(ts_start, ts_last_note_off);
+    result->time_map->trim(start, start + result->last_note_off,
+                           units_are_seconds);
     result->set_dur(len);
     return result;
 }

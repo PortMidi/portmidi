@@ -71,7 +71,7 @@ typedef char *Alg_attribute;
 class Alg_atoms {
 public:
     Alg_atoms() {
-        max = len = 0;
+        maxlen = len = 0;
         atoms = NULL;
     }
     // insert/lookup an atttribute
@@ -79,7 +79,7 @@ public:
     // insert/lookup attribute by name (without prefixed type)
     Alg_attribute insert_string(char *name);
 private:
-    long max;
+    long maxlen;
     long len;
     char **atoms;
 
@@ -287,27 +287,35 @@ public:
 // a sequence of Alg_event objects
 typedef class Alg_events {
 private:
-    long max;
+    long maxlen;
     void expand();
 protected:
     long len;
     Alg_event_ptr *events; // events is array of pointers
 public:
+    // sometimes, it is nice to have the time of the last note-off.
+    // In the current implementation,
+    // this field is set by append to indicate the time of the 
+    // last note-off in the current unit, so it should be correct after 
+    // creating a new track and adding notes to it. It is *not*
+    // updated after uninsert(), so use it with care.
+    double last_note_off;
     virtual int length() { return len; }
     Alg_event_ptr &operator[](int i) {
         assert(i >= 0 && i < len);
         return events[i];
     }
     Alg_events() {
-        max = len = 0;
+        maxlen = len = 0;
         events = NULL;
+        last_note_off = 0;
     }
     // destructor deletes the events array, but not the
     // events themselves
     ~Alg_events();
     void set_events(Alg_event_ptr *e, long l, long m) {
         if (events) delete [] events;
-        events = e; len = l; max = m; }
+        events = e; len = l; maxlen = m; }
     // for use by Alg_track and Alg_seq
     void insert(Alg_event_ptr event);
     void append(Alg_event_ptr event);
@@ -402,7 +410,7 @@ public:
 // Alg_beats is a list of Alg_beat objects used in Alg_seq
 typedef class Alg_beats {
 private:
-    long max;
+    long maxlen;
     void expand();
 public:
     long len;
@@ -412,7 +420,7 @@ public:
         return beats[i];
     }
     Alg_beats() {
-        max = len = 0;
+        maxlen = len = 0;
         beats = NULL;
         expand();
         beats[0].time = 0;
@@ -593,7 +601,8 @@ public:
 
     // Every Alg_track may have an associated time_map. If no map is
     // specified, or if you set_time_map(NULL), then the behavior 
-    // should be as if there is a constant tempo of 120 beats/minute.
+    // should be as if there is a constant tempo of 100 beats/minute
+    // (this constant is determined by ALG_DEFAULT_BPM).
     // Recommendation: create a static global tempo map object. When
     // any operation that needs a tempo map gets NULL, use the global
     // tempo map. (Exception: any operation that would modify the
@@ -744,13 +753,13 @@ public:
 // until the next time_sig.
 class Alg_time_sigs {
 private:
-    long max;
+    long maxlen;
     void expand(); // make more space
     long len;
     Alg_time_sig_ptr time_sigs;
 public:
     Alg_time_sigs() {
-        max = len = 0;
+        maxlen = len = 0;
         time_sigs = NULL;
     }
     Alg_time_sig &operator[](int i) { // fetch a time signature
@@ -774,7 +783,7 @@ public:
 // a sequence of Alg_events objects
 typedef class Alg_tracks {
 private:
-    long max;
+    long maxlen;
     void expand();
     void expand_to(int new_max);
     long len;
@@ -786,7 +795,7 @@ public:
     }
     long length() { return len; }
     Alg_tracks() {
-        max = len = 0;
+        maxlen = len = 0;
         tracks = NULL;
     }
     ~Alg_tracks();

@@ -736,15 +736,21 @@ void test33() // cut and inspect some notes
     Alg_seq_ptr seq = new Alg_seq(file, true); // read midi file
     fclose(file);
     seq->convert_to_seconds();
-
-    printf("timestamp before %g\n", (*(seq->track(0)))[6]);
+    
+    Alg_time_map_ptr tm = seq->get_time_map();
+    printf("time map %p before\n", tm);
+    // tm->show();
+    printf("timestamp before %.15g\n", tm->beats[tm->locate_time(3.74)].time);
     file = fopen("before-33.alg", "w");
     seq->write(file, true);
     fclose(file);
 
     Alg_seq_ptr cut = seq->cut(0.0, 3.0, false);
 
-    printf("timestamp after %g\n", (*(seq->track(0)))[2]);
+    tm = seq->get_time_map();
+    printf("timemap %p after\n", tm);
+    // tm->show();
+    printf("timestamp after %.15g\n", tm->beats[tm->locate_time(0.74)].time);
     file = fopen("after-33.alg", "w");
     seq->write(file, true);
     fclose(file);

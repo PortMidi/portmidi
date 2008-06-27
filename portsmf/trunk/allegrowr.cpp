@@ -9,6 +9,13 @@
 #include "allegro.h"
 #include <errno.h>
 
+// Note about precision: %g prints 6 significant digits. For 1ms precision, 
+// the maximum magnitude is 999.999, i.e. 1000s < 17minutes. For anything
+// over 1000s, time in seconds will be printed with 10ms precision, which
+// is not good. Therefore, times and durations are printed as %.4d, which 
+// gives 100us precision.
+// The following define allows you to change this decision:
+#define TIMFMT "%.4d"
 
 void parameter_print(FILE *file, Alg_parameter_ptr p)
 {
@@ -46,9 +53,9 @@ void Alg_seq::write(FILE *file, bool in_secs)
     for (i = 0; i < beats.len - 1; i++) {
         Alg_beat_ptr b = &(beats[i]);
         if (in_secs) {
-            fprintf(file, "T%g", b->time);
+            fprintf(file, "T" TIMFMT, b->time);
         } else {
-            fprintf(file, "TW%g", b->beat / 4);
+            fprintf(file, "TW" TIMFMT, b->beat / 4);
         }
         double tempo = (beats[i + 1].beat - b->beat) /
                        (beats[i + 1].time - beats[i].time);
@@ -57,9 +64,9 @@ void Alg_seq::write(FILE *file, bool in_secs)
     if (time_map->last_tempo_flag) { // we have final tempo:
         Alg_beat_ptr b = &(beats[beats.len - 1]);
         if (in_secs) {
-            fprintf(file, "T%g", b->time);
+            fprintf(file, "T" TIMFMT, b->time);
         } else {
-            fprintf(file, "TW%g", b->beat / 4);
+            fprintf(file, "TM" TIMFMT, b->beat / 4);
         }
         fprintf(file, " -tempor:%g\n", time_map->last_tempo * 60.0);
     }
@@ -69,12 +76,14 @@ void Alg_seq::write(FILE *file, bool in_secs)
         Alg_time_sig &ts = time_sig[i];
         double time = ts.beat;
         if (in_secs) {
-            fprintf(file, "T%g V- -timesig_numr:%g\n", time, ts.num); 
-            fprintf(file, "T%g V- -timesig_denr:%g\n", time, ts.den);
+            fprintf(file, "T" TIMFMT " V- -timesig_numr:%g\n", time, ts.num); 
+            fprintf(file, "T" TIMFMT " V- -timesig_denr:%g\n", time, ts.den);
         } else {
             double wholes = ts.beat / 4;
-            fprintf(file, "TW%g V- -timesig_numr:%g\n", time / 4, ts.num);
-            fprintf(file, "TW%g V- -timesig_denr:%g\n", time / 4, ts.den);
+            fprintf(file, "TW" TIMFMT " V- -timesig_numr:%g\n",
+                    time / 4, ts.num);
+            fprintf(file, "TW" TIMFMT " V- -timesig_denr:%g\n", 
+                    time / 4, ts.den);
         }
     }
 
@@ -86,9 +95,9 @@ void Alg_seq::write(FILE *file, bool in_secs)
             Alg_event_ptr e = notes[i];
             double start = e->time;
             if (in_secs) {
-                fprintf(file, "T%g ", start);
+                fprintf(file, "T" TIMFMT " ", start);
             } else {
-                fprintf(file, "TW%g ", start / 4);
+                fprintf(file, "TW" TIMFMT " ", start / 4);
             }
             // write the channel as Vn or V-
             if (e->chan == -1) fprintf(file, "V-");
@@ -99,9 +108,9 @@ void Alg_seq::write(FILE *file, bool in_secs)
                 double dur = n->dur;
                 fprintf(file, " K%d P%g ", n->get_identifier(), n->pitch);
                 if (in_secs) {
-                    fprintf(file, "U%g ", dur);
+                    fprintf(file, "U" TIMFMT " ", dur);
                 } else {
-                    fprintf(file, "Q%g ", dur);
+                    fprintf(file, "Q" TIMFMT " ", dur);
                 }
                 fprintf(file, "L%g ", n->loud);
                 Alg_parameters_ptr p = n->parameters;

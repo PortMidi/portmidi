@@ -3,7 +3,7 @@
  *
  * license.txt -- a copy of the PortMidi copyright notice and license information
  *
- * Latest version available at: http://www.cs.cmu.edu/~music/portmidi/
+ * Latest version available at: http://sourceforge.net/projects/portmedia
  *
  * Copyright (c) 1999-2000 Ross Bencina and Phil Burk
  * Copyright (c) 2001-2006 Roger B. Dannenberg

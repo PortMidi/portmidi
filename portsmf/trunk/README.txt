@@ -5,6 +5,8 @@ Roger B. Dannenberg
 Portsmf is "Port Standard MIDI File", a cross-platform, C++ library
 for reading and writing Standard MIDI Files.
 
+License information: free and open source, see license.txt for details
+
 Features:
 
 - input and output of Standard MIDI Files
@@ -20,7 +22,8 @@ Features:
 
 Portsmf is a relatively small number of about 9 files, so there is
 currently no support for building/maintaining Portsmf as a separate
-library. (Contributions are welcome.)
+library. (Contributions are welcome.) For now, it is suggested that
+you simply compile these files along with your application sources.
 
 There is a test program in portsmf_test and makefiles to build it as
 an example.

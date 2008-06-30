@@ -1060,10 +1060,6 @@ void Alg_time_map::cut(double start, double len, bool units_are_seconds)
     if (i < length() && within(beats[i].time, start, ALG_EPS)) {
         // perterb time map slightly (within alg_eps) to place
         // break point exactly at the start time
-        /* D33 */
-        printf("perturb %g to %g, % to %g\n",
-               beats[i].time, start, beats[i].beat, initial_beat);
-        /* 33D */
         beats[i].time = start;
         beats[i].beat = initial_beat;
     } else {
@@ -1077,16 +1073,8 @@ void Alg_time_map::cut(double start, double len, bool units_are_seconds)
     while (i < length() && beats[i].time < end + ALG_EPS) i++;
     // now beats[i] is the next point to be included in beats
     // but from i onward, we must shift by (-len, -beat_len)
-    /* D33 */
-    printf("adjust len %g, beat_len %g\n", len, beat_len);
-    /* 33D */
     while (i < length()) {
         Alg_beat &b = beats[i];
-        /* D33 */
-        if (b.time < 5)
-            printf("adjust %.10g to %.10g, %.10g to %.10g\n",
-                   b.time, b.time - len, b.beat, b.beat - beat_len);
-        /* 33D */
         b.time = b.time - len;
         b.beat = b.beat - beat_len;
         beats[start_index] = b;
@@ -2413,7 +2401,7 @@ Alg_seq_ptr Alg_seq::cut(double start, double len, bool all)
 
     // we sliced out a portion of each track, so now we need to
     // slice out the corresponding sections of time_sig and time_map
-    // as well as to adjust the duration. Note that here, we
+    // as well as to adjust the duration.
     time_sig.cut(ts_start, ts_end);
     time_map->cut(start, len, units_are_seconds);
     set_dur(get_dur() - len);
@@ -2474,7 +2462,7 @@ Alg_seq *Alg_seq::copy(double start, double len, bool all)
     result->track_list.reset();
 
     for (int i = 0; i < tracks(); i++) {
-        Alg_track_ptr copy = cut_from_track(i, start, len, all);
+        Alg_track_ptr copy = copy_track(i, start, len, all);
         result->track_list.append(copy);
         result->last_note_off = MAX(result->last_note_off, 
                                     copy->last_note_off);

@@ -1,6 +1,6 @@
 scorealign -- a program for audio-to-audio and audio-to-midi alignment
 
-Last updated May 7, 2008 by RBD
+Last updated July 3, 2008 by RBD
 
 Contributors include: 
              Ning Hu

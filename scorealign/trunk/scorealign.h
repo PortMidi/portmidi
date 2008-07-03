@@ -8,4 +8,4 @@ extern float actual_frame_period_2; // time in seconds
 extern FILE *dbf;
 #endif
 
-int find_midi_duration(Alg_seq_ptr seq, float *dur);
+int find_midi_duration(Alg_seq &seq, float *dur);

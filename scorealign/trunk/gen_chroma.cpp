@@ -8,7 +8,7 @@
 #include "string.h"
 #include "math.h"
 #include "snd.h"
-
+#include <fstream>
 #include "allegro.h"
 #include "scorealign.h"
 #include "fft3/FFT.h"
@@ -16,6 +16,10 @@
 #include "comp_chroma.h"
 #include "mfmidi.h"
 #include "sautils.h"
+
+// min used to work before I included <fstream> (!)
+int min(int a, int b) { return (a <= b ? a : b); }
+int max(int a, int b) { return (a >= b ? a : b); }
 
 long end_offset_store;
 
@@ -76,8 +80,6 @@ void print_Bins(float* bins, int numBins){
       int index = i % numBins;
       int indexNext = (index + 1) % numBins;
       int indexPrev = (index - 1) % numBins;
-      int halfNext = int((bins[index]+bins[indexNext])/2);
-      int halfPrev = int((bins[index]+bins[indexPrev])/2);     
       
       float maxValue =(bins[index]+bins[indexNext])/2;
       float minValue=(bins[index]+bins[indexPrev])/2;
@@ -254,7 +256,6 @@ int gen_chroma_audio(char *filename, int hcutoff, int lcutoff,
                      float **chrom_energy, float *actual_frame_period)
 {
     int i;
-    int sequence=1;
     snd_node file;
     file.device = SND_DEVICE_FILE;
     file.write_flag = SND_READ;
@@ -304,9 +305,6 @@ int gen_chroma_audio(char *filename, int hcutoff, int lcutoff,
     printf("   Hopsize in samples %d \n", hopsize_samples);
    /*=============================================================*/
 
-    //set up the buffer for reading in data
-    int readcount = 0;
-	
     // allocate some buffers for use in the loop
     int full_data_size = nextPowerOf2(samples_per_frame);
 	//int hop_data_size = nextPowerOf2(samples_per_frame*hopsize_ratio);
@@ -495,22 +493,18 @@ int gen_chroma_midi(char *filename, int hcutoff, int lcutoff,
 		        float **chrom_energy, float *actual_frame_period)
 {
 	
-	/*=============================================================*/
+    /*=============================================================*/
 
-	*actual_frame_period = (frame_period) ; // since we don't quantize to samples
+    *actual_frame_period = (frame_period) ; // since we don't quantize to samples
 	
-	/*=============================================================*/
+    /*=============================================================*/
     
-	FILE *inf = fopen(filename, "rb");
-    if (!inf) return -1;
-    Alg_seq_ptr seq = alg_smf_read(inf, NULL);
-
-    fclose(inf);
-    seq->convert_to_seconds();
+    Alg_seq seq(filename, true);
+    seq.convert_to_seconds();
     /* find duration */
     float dur = 0.0F;
     int nnotes = 0;
-    nnotes= find_midi_duration(seq,&dur); 
+    nnotes= find_midi_duration(seq, &dur); 
 
     /*================================================================*/
 	
@@ -526,65 +520,65 @@ int gen_chroma_midi(char *filename, int hcutoff, int lcutoff,
     //set up the chrom_energy array;
     (*chrom_energy) = ALLOC(float, frame_count * (CHROMA_BIN_COUNT + 1));
     Event_list_ptr list = NULL;
-    seq->iteration_begin();
-    Alg_event_ptr event = seq->iteration_next();
+    seq.iteration_begin();
+    Alg_event_ptr event = seq.iteration_next();
     int cv_index;
     for (cv_index = 0; cv_index < frame_count; cv_index++) {
 		
-		/*====================================================*/
+        /*====================================================*/
 
-      float frame_begin = max((cv_index * (frame_period)) - window_size/2 , 0); //chooses zero if negative
-			
-		float frame_end= frame_begin +(window_size/2); 	
+        float frame_begin = max((cv_index * (frame_period)) - 
+                                window_size/2 , 0); //chooses zero if negative
+
+        float frame_end= frame_begin +(window_size/2); 	
 	/*============================================================*/
-		/* zero the vector */
-		for (int i = 0; i < CHROMA_BIN_COUNT; i++) CHROM(cv_index, i) = 0;
-		/* add new notes that are in the frame */
-		while (event && event->time < frame_end) {
-			if (event->is_note()) {
-     			list = new Event_list(event, list);
-			}
-    		event = seq->iteration_next();
-		}
-		/* remove notes that are no longer sounding */
-		Event_list_ptr *ptr = &list;
-		while (*ptr) {
-			while ((*ptr) && 
-				   (*ptr)->note->time + (*ptr)->note->dur < frame_begin) {
-				Event_list_ptr temp = *ptr;
-				*ptr = (*ptr)->next;
-				delete temp;
-			}
-			if (*ptr) ptr = &((*ptr)->next);
-		}
-		for (Event_list_ptr item = list; item; item = item->next) {
-			/* compute duration of overlap */
-			float overlap = 
-				    min(frame_end, item->note->time + item->note->dur) - 
-				    max(frame_begin, item->note->time);
-			float velocity = item->note->loud;
-			float weight = overlap * velocity;
+        /* zero the vector */
+        for (int i = 0; i < CHROMA_BIN_COUNT; i++) CHROM(cv_index, i) = 0;
+        /* add new notes that are in the frame */
+        while (event && event->time < frame_end) {
+            if (event->is_note()) {
+                list = new Event_list(event, list);
+            }
+            event = seq.iteration_next();
+        }
+        /* remove notes that are no longer sounding */
+        Event_list_ptr *ptr = &list;
+        while (*ptr) {
+            while ((*ptr) && 
+                   (*ptr)->note->time + (*ptr)->note->dur < frame_begin) {
+                Event_list_ptr temp = *ptr;
+                *ptr = (*ptr)->next;
+                delete temp;
+            }
+            if (*ptr) ptr = &((*ptr)->next);
+        }
+        for (Event_list_ptr item = list; item; item = item->next) {
+            /* compute duration of overlap */
+            float overlap = 
+                min(frame_end, item->note->time + item->note->dur) - 
+                max(frame_begin, item->note->time);
+            float velocity = item->note->loud;
+            float weight = overlap * velocity;
 #if DEBUG_LOG
-			fprintf(dbf, "%3d note: %d overlap %g velocity %g\n", 
-					cv_index, item->note->pitch, overlap, velocity);
+            fprintf(dbf, "%3d note: %d overlap %g velocity %g\n", 
+                    cv_index, item->note->pitch, overlap, velocity);
 #endif
-			CHROM(cv_index, (int)item->note->pitch % 12) += weight;
-		}
+            CHROM(cv_index, (int)item->note->pitch % 12) += weight;
+        }
 #if DEBUG_LOG
-		for (int i = 0; i < CHROMA_BIN_COUNT; i++) {
-			fprintf(dbf, "%d:%g ", i, CHROM(cv_index, i));
-		}
-		fprintf(dbf, "\n\n");
+        for (int i = 0; i < CHROMA_BIN_COUNT; i++) {
+            fprintf(dbf, "%d:%g ", i, CHROM(cv_index, i));
+        }
+        fprintf(dbf, "\n\n");
 #endif
-	}
-	while (list) {
-		Event_list_ptr temp = list;
-		list = list->next;
-		delete temp;
-	}
-	seq->iteration_end();
-    delete seq;
-	return frame_count;
+    }
+    while (list) {
+        Event_list_ptr temp = list;
+        list = list->next;
+        delete temp;
+    }
+    seq.iteration_end();
+    return frame_count;
 }
 
 
@@ -592,8 +586,8 @@ int gen_chroma_midi(char *filename, int hcutoff, int lcutoff,
 /**/
 bool is_midi_file(char *filename)
 {
-	size_t len = strlen(filename);
-	return (len > 4 && strcmp(filename + len - 4, ".mid") == 0);
+    size_t len = strlen(filename);
+    return (len > 4 && strcmp(filename + len - 4, ".mid") == 0);
 }
 
 
@@ -608,12 +602,11 @@ bool is_midi_file(char *filename)
 int gen_chroma(char *filename, int hcutoff, int lcutoff, float **chrom_energy, 
                float *actual_frame_period)
 {
-	size_t len = strlen(filename);
-	if (is_midi_file(filename)) {
-		return gen_chroma_midi(filename, hcutoff, lcutoff, chrom_energy, 
-							   actual_frame_period);
-	} else {
-		return gen_chroma_audio(filename, hcutoff, lcutoff, chrom_energy, 
-							    actual_frame_period);
-	}
+    if (is_midi_file(filename)) {
+        return gen_chroma_midi(filename, hcutoff, lcutoff, chrom_energy, 
+                               actual_frame_period);
+    } else {
+        return gen_chroma_audio(filename, hcutoff, lcutoff, chrom_energy, 
+                                actual_frame_period);
+    }
 }

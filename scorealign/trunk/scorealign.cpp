@@ -5,9 +5,9 @@
 #include <math.h>
 #include <snd.h>
 #ifndef __MACH__
-    #include <malloc.h>
+#include <malloc.h>
 #endif
-
+#include <fstream>
 #include "allegro.h"
 #include "scorealign.h"
 #include "gen_chroma.h"
@@ -94,8 +94,8 @@ static void print_usage(char *progname)
 
 
 /*			MAP_TIME  
-	lookup time of file1 in smooth_time_map and interpolate
-	to get time in file2 
+    lookup time of file1 in smooth_time_map and interpolate
+    to get time in file2 
 */
 
 float map_time(float t1)
@@ -103,11 +103,11 @@ float map_time(float t1)
     t1 /= actual_frame_period_1; // convert from seconds to frames
     int i = (int) t1; // round down
     if (i < 0) i = 0;
-        if (i >= file1_frames - 1) i = file1_frames - 2;
-	// interpolate to get time
-        return actual_frame_period_2 * 
-                interpolate(i, smooth_time_map[i], i+1, smooth_time_map[i+1],
-                            t1);
+    if (i >= file1_frames - 1) i = file1_frames - 2;
+    // interpolate to get time
+    return actual_frame_period_2 * 
+        interpolate(i, smooth_time_map[i], i+1, smooth_time_map[i+1],
+                    t1);
 }
 
 
@@ -115,56 +115,57 @@ float map_time(float t1)
    prints the allegro beat_map (for debugging) which contain
    the time, beat pair for a song 
 */
-void print_beat_map(Alg_seq_ptr seq, char *filename) {
-
-	FILE *beatmap_print = fopen(filename, "w"); 
-
-	Alg_beats &b = seq->get_time_map()->beats;
-	long num_beats = seq->get_time_map()->length();
-
-	for(int i=0 ; i < num_beats; i++) { 
-			fprintf(beatmap_print," %f  %f \n", b[i].beat, b[i].time); 
-	}	
-	fclose(beatmap_print); 
-
+void print_beat_map(Alg_seq &seq, char *filename) {
+    
+    FILE *beatmap_print = fopen(filename, "w"); 
+    
+    Alg_beats &b = seq.get_time_map()->beats;
+    long num_beats = seq.get_time_map()->length();
+    
+    for(int i=0 ; i < num_beats; i++) { 
+        fprintf(beatmap_print," %f  %f \n", b[i].beat, b[i].time); 
+    }	
+    fclose(beatmap_print); 
+    
 }
 
 /*				FIND_MIDI_DURATION 
-	Finds the duration of a midi song where the end
-	is defined by where the last note off occurs. Duration
-	in seconds is given in DUR, and returns in int the number
-	of notes in the song
+    Finds the duration of a midi song where the end
+    is defined by where the last note off occurs. Duration
+    in seconds is given in DUR, and returns in int the number
+    of notes in the song
 */
 
-int find_midi_duration(Alg_seq_ptr seq, float *dur) {
-	*dur = 0.0F;
-	int nnotes = 0;
-	int i, j;
-	seq->convert_to_seconds();
-    for (j = 0; j < seq->track_list.length(); j++) {
-		Alg_events &notes = (seq->track_list[j]);
-		
-		for (i = 0; i < notes.length(); i++) {
-			Alg_event_ptr e = notes[i];
-			if (e->is_note()) {
-				Alg_note_ptr n = (Alg_note_ptr) e;
-				float note_end = n->time + n->dur;
-				if (note_end > *dur) *dur = note_end;
-				nnotes++;
-			}
-		}
-	}
-	return nnotes; 
+int find_midi_duration(Alg_seq &seq, float *dur) 
+{
+    *dur = 0.0F;
+    int nnotes = 0;
+    int i, j;
+    seq.convert_to_seconds();
+    for (j = 0; j < seq.track_list.length(); j++) {
+        Alg_events &notes = (seq.track_list[j]);
+            
+        for (i = 0; i < notes.length(); i++) {
+            Alg_event_ptr e = notes[i];
+            if (e->is_note()) {
+                Alg_note_ptr n = (Alg_note_ptr) e;
+                float note_end = n->time + n->dur;
+                if (note_end > *dur) *dur = note_end;
+                nnotes++;
+            }
+        }
+    }
+    return nnotes; 
 }
-
-
-
+    
+    
+    
 /*			MIDI_TEMPO_ALIGN 
 	Creates the time aligned midi file from SEQ and writes
 	it to MIDINAME
 */
 
-void midi_tempo_align(Alg_seq_ptr seq , char *midiname, char *beatname) {
+void midi_tempo_align(Alg_seq &seq , char *midiname, char *beatname) {
 
     //We create a new time map out of the alignment, and replace it with
     //the original time map in the song
@@ -175,25 +176,22 @@ void midi_tempo_align(Alg_seq_ptr seq , char *midiname, char *beatname) {
     float dur_in_sec; 
     find_midi_duration(seq, &dur_in_sec); 
     // totalbeat = lastbeat + 1 and round up the beat
-    totalbeats = (int) (seq->get_time_map()->time_to_beat(dur_in_sec) + 2);
+    totalbeats = (int) (seq.get_time_map()->time_to_beat(dur_in_sec) + 2);
     printf("midi duration = %f, totalbeats=%i \n", dur_in_sec, totalbeats); 	
     
     float *newtime_array = ALLOC(float, totalbeats);
     
     for (int i=0; i<totalbeats; i++) {
-        newtime_array[i]= map_time(seq->get_time_map()->beat_to_time(i));
+        newtime_array[i]= map_time(seq.get_time_map()->beat_to_time(i));
         if (newtime_array[i]> 0) 
             new_time_map_seq.insert_beat((double)newtime_array[i], (double)i);
     }
 
     free(newtime_array);
 	
-    seq->set_time_map(new_time_map_seq.get_time_map()); 
+    seq.set_time_map(new_time_map_seq.get_time_map()); 
     print_beat_map(seq, beatname); 
-    FILE *tempo_aligned_midi = fopen(midiname, "wb");
-	
-    seq->smf_write(tempo_aligned_midi);
-    fclose(tempo_aligned_midi);
+    seq.smf_write(midiname);
 }
 
 
@@ -257,27 +255,27 @@ void path_step(int i, int j)
 /**/
 void path_reverse()
 {
-	int i = 0;
-	int j = pathlen - 1;
-	while (i < j) {
-	    short tempx = pathx[i]; short tempy = pathy[i];
-	    pathx[i] = pathx[j]; pathy[i] = pathy[j];
-	    pathx[j] = tempx; pathy[j] = tempy;
-		i++; j--;
-	}
+    int i = 0;
+    int j = pathlen - 1;
+    while (i < j) {
+        short tempx = pathx[i]; short tempy = pathy[i];
+        pathx[i] = pathx[j]; pathy[i] = pathy[j];
+        pathx[j] = tempx; pathy[j] = tempy;
+        i++; j--;
+    }
 }
-
+ 
 /*
-Sees if the chroma energy vector is silent (indicated by the 12th element being one)
-Returns true if it is silent.  False if it is not silent 
+  Sees if the chroma energy vector is silent (indicated by the 12th element being one)
+  Returns true if it is silent.  False if it is not silent 
 */
-bool silent( int i, float *chrom_energy)
-{
-if (AREF2(chrom_energy, i,CHROMA_BIN_COUNT) == 1.0F)
-	return true;
-else 
-	return false; 
-
+ bool silent( int i, float *chrom_energy)
+ {
+     if (AREF2(chrom_energy, i,CHROMA_BIN_COUNT) == 1.0F)
+         return true;
+     else 
+         return false; 
+     
 }
 
 /*
@@ -302,18 +300,18 @@ of the inital frames are designated as silent
 
 int frames_of_init_silence( float *chrom_energy, int frame_count)
 {
-	bool silence = true;
-	int frames=0; 
-	while(silence) {
-		
-		if ( silent(frames, chrom_energy)) 
-			frames++; 
-		else
-			silence=false; 
-		
-	}
-
-	return frames; 
+    bool silence = true;
+    int frames=0; 
+    while(silence) {
+	
+        if ( silent(frames, chrom_energy)) 
+            frames++; 
+        else
+            silence=false; 
+        
+    }
+    
+    return frames; 
 }
 
 
@@ -331,37 +329,37 @@ void compare_chroma()
     
     /* Initialize first row and column */
 
-	/* allow free skip over initial silence in either signal, but not both */
-	/* silence is indicated by a run of zeros along the first row and or 
-	 * column, starting at the origin (0,0). After computing these runs, we
-	 * put the proper value at (0,0)
-	 */
-	printf("Performing silent skip DP \n"); 
-	PATH(0, 0) = (silent(0, chrom_energy1) ? 0 :
-		          gen_dist(0, 0, chrom_energy1, chrom_energy2));
+    /* allow free skip over initial silence in either signal, but not both */
+    /* silence is indicated by a run of zeros along the first row and or 
+     * column, starting at the origin (0,0). After computing these runs, we
+     * put the proper value at (0,0)
+     */
+    printf("Performing silent skip DP \n"); 
+    PATH(0, 0) = (silent(0, chrom_energy1) ? 0 :
+                  gen_dist(0, 0, chrom_energy1, chrom_energy2));
     for (int i = 1; i < file1_frames; i++)
-		PATH(i, 0) = (PATH(i-1, 0) == 0 && silent(i, chrom_energy1) ? 0 :
+        PATH(i, 0) = (PATH(i-1, 0) == 0 && silent(i, chrom_energy1) ? 0 :
                       gen_dist(i, 0, chrom_energy1, chrom_energy2) + 
-					  PATH(i-1, 0));
-	PATH(0, 0) = (silent(0, chrom_energy2) ? 0 :
-		          gen_dist(0, 0, chrom_energy1, chrom_energy2));
+                      PATH(i-1, 0));
+    PATH(0, 0) = (silent(0, chrom_energy2) ? 0 :
+                  gen_dist(0, 0, chrom_energy1, chrom_energy2));
     for (int j = 1; j < file2_frames; j++)
-		PATH(0, j) = (PATH(0, j-1) == 0 && silent(j, chrom_energy2) ? 0 :
-		              gen_dist(0, j, chrom_energy1, chrom_energy2) + 
+        PATH(0, j) = (PATH(0, j-1) == 0 && silent(j, chrom_energy2) ? 0 :
+                      gen_dist(0, j, chrom_energy1, chrom_energy2) + 
                       PATH(0, j-1));
-	/* first row and first column are done, put proper value at (0,0) */
-	PATH(0, 0) = (!silent(0, chrom_energy1) || !silent(0, chrom_energy2) ?
-		          gen_dist(0, 0, chrom_energy1, chrom_energy2) : 0);
-
+    /* first row and first column are done, put proper value at (0,0) */
+    PATH(0, 0) = (!silent(0, chrom_energy1) || !silent(0, chrom_energy2) ?
+                  gen_dist(0, 0, chrom_energy1, chrom_energy2) : 0);
+    
     /* Perform DP for the rest of the matrix */
     for (int i = 1; i < file1_frames; i++)
         for (int j = 1; j < file2_frames; j++)
             PATH(i, j) = gen_dist(i, j, chrom_energy1, chrom_energy2) +
-                         min3(PATH(i-1, j-1), PATH(i-1, j), PATH(i, j-1)); 
-	   
+                min3(PATH(i-1, j-1), PATH(i-1, j), PATH(i, j-1)); 
+    
     printf("Completed Dynamic Programming.\n");
-	
-
+    
+    
     x = file1_frames - 1;
     y = file2_frames - 1;
 
@@ -426,26 +424,26 @@ void save_path(char *filename)
 
 void linear_regression(int n, int width, float &a, float &b)
 {
-	int hw = (width - 1) / 2; // a more convenient form: 1/2 width
-	// compute average of x = avg of time_map[i]
-	float xsum = 0;
-	float ysum = 0;
-	float xavg, yavg;
-	int i;
-	for (i = n - hw; i <= n + hw; i++) {
-            xsum += i;
-            ysum += time_map[i];
-	}
-	xavg = xsum / width;
-	yavg = ysum / width;
-	float num = 0;
-	float den = 0;
-	for (i = n - hw; i <= n + hw; i++) {
-            num += (i - xavg) * (time_map[i] - yavg);
-            den += (i - xavg) * (i - xavg);
-	}
-	b = num / den;
-	a = yavg - b * xavg;
+    int hw = (width - 1) / 2; // a more convenient form: 1/2 width
+    // compute average of x = avg of time_map[i]
+    float xsum = 0;
+    float ysum = 0;
+    float xavg, yavg;
+    int i;
+    for (i = n - hw; i <= n + hw; i++) {
+        xsum += i;
+        ysum += time_map[i];
+    }
+    xavg = xsum / width;
+    yavg = ysum / width;
+    float num = 0;
+    float den = 0;
+    for (i = n - hw; i <= n + hw; i++) {
+        num += (i - xavg) * (time_map[i] - yavg);
+        den += (i - xavg) * (i - xavg);
+    }
+    b = num / den;
+    a = yavg - b * xavg;
 }
 
 
@@ -463,38 +461,38 @@ void linear_regression(int n, int width, float &a, float &b)
 */
 void compute_smooth_time_map()
 {
-	// do the first points:
-	float a, b;
-	linear_regression((smooth - 1) / 2, smooth, a, b);
-	int i;
-	for (i = 0; i < (smooth + 1) / 2; i++) {
-		smooth_time_map[i] = a + b*i;
-	}
-
-	// do the middle points:
-	for (i = (smooth + 1) / 2; i < file1_frames - (smooth + 1) / 2; i++) {
-		linear_regression(i, smooth, a, b);
-		smooth_time_map[i] = a + b*i;
-
+    // do the first points:
+    float a, b;
+    linear_regression((smooth - 1) / 2, smooth, a, b);
+    int i;
+    for (i = 0; i < (smooth + 1) / 2; i++) {
+        smooth_time_map[i] = a + b*i;
+    }
+    
+    // do the middle points:
+    for (i = (smooth + 1) / 2; i < file1_frames - (smooth + 1) / 2; i++) {
+        linear_regression(i, smooth, a, b);
+        smooth_time_map[i] = a + b*i;
+        
 #if DEBUG_LOG
-		fprintf(dbf, "time_map[%d] = %g, smooth_time_map[%d] = %g\n", 
-			    i, time_map[i], i, a + b*i);
+        fprintf(dbf, "time_map[%d] = %g, smooth_time_map[%d] = %g\n", 
+                i, time_map[i], i, a + b*i);
 #endif
-
-	}
-
-	// do the last points
-	linear_regression(file1_frames - (smooth + 1) / 2, smooth, a, b);
-	for (i = file1_frames - (smooth + 1) / 2; i < file1_frames; i++) {
-		smooth_time_map[i] = a + b*i;
-	}
-
-
+        
+    }
+    
+    // do the last points
+    linear_regression(file1_frames - (smooth + 1) / 2, smooth, a, b);
+    for (i = file1_frames - (smooth + 1) / 2; i < file1_frames; i++) {
+        smooth_time_map[i] = a + b*i;
+    }
+    
+    
 }
-
+ 
 /* print_path_range -- debugging output */
 /**/
-void print_path_range(int i, int j)
+ void print_path_range(int i, int j)
 {
     while (i <= j) {
         printf("%d %d\n", pathx[i], pathy[i]);
@@ -717,18 +715,18 @@ void save_smooth_file(char *smooth_filename) {
 
 
 /*				EDIT_TRANSCRIPTION
-	edit the allegro time map structure according
+	edit the allegro time map structure according
 	to the warping and output a midi file and transcription
 	file 
 
 */
-void edit_transcription(Alg_seq_ptr seq , bool warp, FILE *outf, 
+void edit_transcription(Alg_seq &seq , bool warp, FILE *outf, 
                         char *midi_filename, char *beat_filename) {
     int note_x = 1;
-    seq->convert_to_seconds();
-    seq->iteration_begin();
+    seq.convert_to_seconds();
+    seq.iteration_begin();
 
-    Alg_event_ptr e = seq->iteration_next();
+    Alg_event_ptr e = seq.iteration_next();
 
     while (e) {
         if (e->is_note()) {
@@ -744,9 +742,9 @@ void edit_transcription(Alg_seq_ptr seq , bool warp, FILE *outf,
             }
             fprintf(outf, "%.3f %.3f\n", start, finish-start);
         }
-        e = seq->iteration_next();
+        e = seq.iteration_next();
     }
-    seq->iteration_end();
+    seq.iteration_end();
     fclose(outf);
     if (warp) {
         // align the midi file and write out 	
@@ -779,50 +777,40 @@ void save_transcription(char *file1, char *file2,
                         bool warp, char *filename, char *smooth_filename, 
                         char *midi_filename, char *beat_filename)
 {
+    
+    char *midiname; //midi file to be read
+    char *audioname; //audio file to be read
+    
+    if (warp) save_smooth_file(smooth_filename); 
+    
+    //If either is a midifile
+    if (is_midi_file(file1) || is_midi_file(file2)) {
 	
-	char *midiname; //midi file to be read
-	char *audioname; //audio file to be read
+        if (is_midi_file(file1)) {
+            midiname=file1;
+            audioname=file2;
+        } else {
+            midiname=file2;
+            audioname=file1;
+        }
 	
-	if (warp) save_smooth_file(smooth_filename); 
-
-	//If either is a midifile
-	if (is_midi_file(file1) || is_midi_file(file2)) {
+        Alg_seq seq(midiname, true);
 	
-		if (is_midi_file(file1)) {
-			midiname=file1;
-			audioname=file2;
-		} else {
-			midiname=file2;
-			audioname=file1;
-		}
-
-		FILE *inf = fopen(midiname, "rb");
-		
-		if (!inf) {
-			printf("internal error: could not reopen %s\n", midiname);
-			return;
-		}
-		
-		Alg_seq_ptr seq = alg_smf_read(inf, NULL);
-		
-		fclose(inf);
-		
-		FILE *outf = fopen(filename, "w");
-		if (!outf) {
-			printf("Error: could not open %s\n", filename);
-			return;
-		}
-		fprintf(outf, "# transcription of %s\n", midiname);
-		if (warp) {
-    		fprintf(outf, "# note times are aligned to %s\n", audioname);
-		} else {
-			fprintf(outf, "# times are unmodified from those in MIDI file\n");
-		}
-		fprintf(outf, "# transcription format : <sequence number> <channel> <pitch> <velocity> <onset> <duration>\n");
-
-		edit_transcription(seq, warp, outf, midi_filename, beat_filename); 
-		delete(seq);
-	}
+        FILE *outf = fopen(filename, "w");
+        if (!outf) {
+            printf("Error: could not open %s\n", filename);
+            return;
+        }
+        fprintf(outf, "# transcription of %s\n", midiname);
+        if (warp) {
+            fprintf(outf, "# note times are aligned to %s\n", audioname);
+        } else {
+            fprintf(outf, "# times are unmodified from those in MIDI file\n");
+        }
+        fprintf(outf, "# transcription format : <sequence number> <channel> <pitch> <velocity> <onset> <duration>\n");
+        
+        edit_transcription(seq, warp, outf, midi_filename, beat_filename); 
+    }
 }
 
 

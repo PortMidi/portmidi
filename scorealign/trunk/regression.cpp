@@ -31,7 +31,6 @@ void Regression::point(float x, float y)
 void Regression::regress()
 {
     float sxx = sumxx - sumx * sumx / n;
-    float yy = sumyy - sumy * sumy / n;
     float sxy = sumxy - sumx * sumy / n;
     b = sxy / sxx;
     a = (sumy - b * sumx) / n;

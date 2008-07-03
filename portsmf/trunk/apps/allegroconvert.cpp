@@ -5,14 +5,11 @@
              the original beats or original timing (RBD)
 */
 
-#include "stdlib.h"
-#include "memory.h"
-#include "stdio.h"
-#include "assert.h"
+#include <fstream>
 #include "allegro.h"
-#include "mfmidi.h"
-#include "string.h"
-#include "strparse.h"
+
+
+using namespace std;
 
 void midi_fail(char *msg)
 {
@@ -23,34 +20,6 @@ void midi_fail(char *msg)
 
 void *midi_alloc(size_t s) { return malloc(s); }
 void midi_free(void *a) { free(a); }
-
-
-Alg_seq_ptr read_allegro_file(char *name)
-{
-    FILE *inf = fopen(name, "r");
-    if (!inf) {
-        printf("could not open allegro file\n");
-        exit(-1);
-    }
-    Alg_seq_ptr seq = new Alg_seq;
-    alg_read(inf, seq);
-    fclose(inf);
-    return seq;
-}
-
-
-Alg_seq_ptr read_file(char *name)
-{
-    FILE *inf = fopen(name, "rb");
-    if (!inf) {
-        printf("could not open midi file\n");
-        exit(1);
-    }
-    Alg_seq_ptr seq = new Alg_seq;
-    alg_smf_read(inf, seq);
-    fclose(inf);
-    return seq;
-}
 
 
 void print_help()
@@ -120,18 +89,20 @@ int main(int argc, char *argv[])
     // Do not use both -t and -f:
     if (tempo_flag & flatten_flag) print_help();
 
+    int len = strlen(filename);
     if (!midifile && !allegrofile) {
-        int len = strlen(filename);
         if (len < 4) print_help();    // no extension, need -m or -a
         ext = filename + len - 4;
         if (strcmp(ext, ".mid") == 0) midifile = true;
         else if (strcmp(ext, ".gro") == 0) allegrofile = true;
         else print_help();
-    }
+    } else if (len > 4) {
+        ext = filename + len - 4;
+    } 
     Alg_seq_ptr seq;
     strcpy(outfilename, filename);
     if (midifile) {
-        seq = read_file(filename);
+        seq = new Alg_seq(filename, true);
         process(seq, tempo_flag, tempo, flatten_flag);
         if (ext && strcmp(ext, ".mid") == 0) {
             ext = outfilename + strlen(outfilename) - 4;
@@ -139,11 +110,9 @@ int main(int argc, char *argv[])
             ext = outfilename + strlen(outfilename);
         }
         strcpy(ext, ".gro");
-        FILE *outf = fopen(outfilename, "w");
-        seq->write(outf, true);
-        fclose(outf);
+        seq->write(outfilename);
     } else if (allegrofile) {
-        seq = read_allegro_file(filename);
+        seq = new Alg_seq(filename, false);
         process(seq, tempo_flag, tempo, flatten_flag);
         if (ext && strcmp(ext, ".gro") == 0) {
             ext = outfilename + strlen(outfilename) - 4;
@@ -151,9 +120,7 @@ int main(int argc, char *argv[])
             ext = outfilename + strlen(outfilename);
         }
         strcpy(ext, ".mid");
-        FILE *outf = fopen(outfilename, "wb");
-        seq->smf_write(outf);
-        fclose(outf);
+        seq->smf_write(outfilename);
     }
 
     int events = 0;

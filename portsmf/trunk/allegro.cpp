@@ -14,11 +14,15 @@
 #include "stdio.h"
 #include "string.h"
 #include "memory.h"
+#include <iostream>
+#include <fstream>
+using namespace std;
 #include "allegro.h"
+#include "algrd_internal.h"
+#include "algsmfrd_internal.h"
 // #include "trace.h" -- only needed for debugging
 #include "math.h"
 
-#define ALG_EPS 0.000001
 #define STREQL(x, y) (strcmp(x, y) == 0)
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
 
@@ -62,7 +66,7 @@ void Alg_atoms::expand()
 // (a char) followed by the attribute name. This makes it
 // easy to retrieve the type or the name or both.
 //
-Alg_attribute Alg_atoms::insert_new(char *name, char attr_type)
+Alg_attribute Alg_atoms::insert_new(const char *name, char attr_type)
 {
     if (len == maxlen) expand();
     char *h = new char[strlen(name) + 2];
@@ -84,7 +88,7 @@ Alg_attribute Alg_atoms::insert_attribute(Alg_attribute attr)
 }
 
 
-Alg_attribute Alg_atoms::insert_string(char *name)
+Alg_attribute Alg_atoms::insert_string(const char *name)
 {
     char attr_type = name[strlen(name) - 1];
     for (int i = 0; i < len; i++) {
@@ -433,7 +437,6 @@ double Alg_event::get_real_value(char *a, double value)
     assert(is_note());
     assert(a);
     Alg_note* note = (Alg_note *) this;
-    Alg_parameters_ptr temp = note->parameters;
     Alg_attribute attr = symbol_table.insert_string(a);
     assert(a[0] == 'r'); // must be of type real
     Alg_parameter_ptr parm = note->parameters->find(&attr);
@@ -447,7 +450,6 @@ bool Alg_event::get_logical_value(char *a, bool value)
     assert(is_note());
     assert(a);
     Alg_note* note = (Alg_note *) this;
-    Alg_parameters_ptr temp = note->parameters;
     Alg_attribute attr = symbol_table.insert_string(a);
     assert(a[0] == 'l'); // must be of type logical
     Alg_parameter_ptr parm = note->parameters->find(&attr);
@@ -461,7 +463,6 @@ long Alg_event::get_integer_value(char *a, long value)
     assert(is_note());
     assert(a);
     Alg_note* note = (Alg_note *) this;
-    Alg_parameters_ptr temp = note->parameters;
     Alg_attribute attr = symbol_table.insert_string(a);
     assert(a[0] == 'i'); // must be of type integer
     Alg_parameter_ptr parm = note->parameters->find(&attr);
@@ -475,7 +476,6 @@ char *Alg_event::get_atom_value(char *a, char *value)
     assert(is_note());
     assert(a);
     Alg_note* note = (Alg_note *) this;
-    Alg_parameters_ptr temp = note->parameters;
     Alg_attribute attr = symbol_table.insert_string(a);
     assert(a[0] == 'a'); // must be of type atom
     Alg_parameter_ptr parm = note->parameters->find(&attr);
@@ -1053,21 +1053,23 @@ void Alg_time_map::cut(double start, double len, bool units_are_seconds)
     while (i < length() && beats[i].time < start - ALG_EPS) {
         i = i + 1;
     }
+
+    // if no beats exist at or after start, just return; nothing to cut
+    if (i == length()) return;
+
     // now i is index into beats of the first breakpoint on or 
     // after start, insert (start, initial_beat) in map
-    // note: i may be beyond the last breakpoint, so beat[i] may
-    // be out of bounds
     if (i < length() && within(beats[i].time, start, ALG_EPS)) {
         // perterb time map slightly (within alg_eps) to place
         // break point exactly at the start time
         beats[i].time = start;
         beats[i].beat = initial_beat;
     } else {
-        Alg_beat_ptr point = new Alg_beat(start, initial_beat);
-        beats.insert(i, point);
+        Alg_beat point(start, initial_beat);
+        beats.insert(i, &point);
     }
-    // now, we're correct up to beats[i]. find first beat after
-    // end so we can start shifting from there
+    // now, we're correct up to beats[i] and beats[i] happens at start.
+    // find first beat after end so we can start shifting from there
     i = i + 1;
     int start_index = i;
     while (i < length() && beats[i].time < end + ALG_EPS) i++;
@@ -1722,7 +1724,6 @@ Alg_track_ptr Alg_track::copy(double t, double len, bool all)
                             time_map->beat_to_time(t));
     }
     int i;
-    int move_to = 0;
     for (i = 0; i < length(); i++) {
         Alg_event_ptr event = events[i];
         if (event->overlap(t, len, all)) {
@@ -2203,13 +2204,24 @@ void Alg_tracks::reset()
 }
 
 
-Alg_seq::Alg_seq(FILE *file, bool midi)
+Alg_seq::Alg_seq(const char *filename, bool smf)
 {
-    units_are_seconds = true;
-    type = 's';
-    channel_offset_per_track = 0;
-    add_track(0); // default is one empty track
-    if (midi) {
+    basic_initialization();
+    ifstream inf(filename, smf ? ios::binary | ios::in : ios::in);
+    if (inf.fail()) return;
+    if (smf) {
+        alg_smf_read(inf, this);
+    } else {
+        alg_read(inf, this);
+    }
+    inf.close();
+}
+
+
+Alg_seq::Alg_seq(istream &file, bool smf)
+{
+    basic_initialization();
+    if (smf) {
         alg_smf_read(file, this);
     } else {
         alg_read(file, this);

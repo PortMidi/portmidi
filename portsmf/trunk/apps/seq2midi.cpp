@@ -1,15 +1,18 @@
 // seq2midi.cpp -- simple sequence player, intended to help test/demo
 // the allegro code
 
-#include "stdlib.h"
-#include "string.h"
-#include "assert.h"
-#include "stdio.h" // for debugging
-#include "memory.h"
+//#include "stdlib.h"
+//#include "string.h"
+//#include "assert.h"
+//#include "stdio.h" // for debugging
+//#include "memory.h"
+#include <fstream>
+#include "allegro.h"
 #include "porttime.h"
 #include "portmidi.h"
 #include "midicode.h"
-#include "allegro.h"
+
+using namespace std;
 
 #define ROUND(x) (int) ((x)+0.5)
 
@@ -144,7 +147,7 @@ void send_midi_update(Alg_update_ptr u, PortMidiStream *midi)
 }
 
 
-void seq2midi(Alg_seq_ptr seq, PortMidiStream *midi)
+void seq2midi(Alg_seq &seq, PortMidiStream *midi)
 {
     // prepare by doing lookup of important symbols
     pressure_attr = symbol_table.insert_string("pressurer") + 1;
@@ -152,9 +155,9 @@ void seq2midi(Alg_seq_ptr seq, PortMidiStream *midi)
     program_attr = symbol_table.insert_string("programi") + 1;
 
     bool done = false;
-    seq->iteration_begin();
+    seq.iteration_begin();
     Work_ptr pending = NULL;
-    Alg_event_ptr e = seq->iteration_next();
+    Alg_event_ptr e = seq.iteration_next();
     if (e) {
         pending = new Work('n', e->time, e, NULL);
     }
@@ -179,7 +182,7 @@ void seq2midi(Alg_seq_ptr seq, PortMidiStream *midi)
                 send_midi_update(u, midi);
             } 
             // add next note
-            e = seq->iteration_next();
+            e = seq.iteration_next();
             if (e) {
                 pending = insert(pending,
                                  new Work('n', e->time, e, NULL));
@@ -189,11 +192,11 @@ void seq2midi(Alg_seq_ptr seq, PortMidiStream *midi)
         }
         delete w;
     }
-    seq->iteration_end();
+    seq.iteration_end();
 }
 
 
-void seq_play(Alg_seq_ptr seq)
+void seq_play(Alg_seq &seq)
 {
     PortMidiStream *mo;
     Pm_Initialize();

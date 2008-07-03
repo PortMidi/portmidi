@@ -1,4 +1,5 @@
-// Allegro: music representation system, with
+// Portsmf (also known as Allegro):
+// music representation system, with
 //      extensible in-memory sequence structure
 //      upward compatible with MIDI
 //      implementations in C++ and Serpent
@@ -49,7 +50,8 @@
 #define __ALLEGRO__
 #include <assert.h>
 
-#define ALG_DEFAULT_BPM 100.0
+#define ALG_EPS 0.000001 // epsilon
+#define ALG_DEFAULT_BPM 100.0 // default tempo
 
 // are d1 and d2 within epsilon of each other?
 bool within(double d1, double d2, double epsilon);
@@ -64,7 +66,8 @@ char *heapify(char *s); // put a string on the heap
 // as 'rtempor'. To get the string name, just
 // use attribute+1.
 typedef char *Alg_attribute;
-
+#define alg_attr_name(a) ((a) + 1)
+#define alg_attr_type(a) (*(a))
 
 // Alg_atoms is a symbol table of Alg_attributes and other
 // unique strings
@@ -77,14 +80,14 @@ public:
     // insert/lookup an atttribute
     Alg_attribute insert_attribute(Alg_attribute attr);
     // insert/lookup attribute by name (without prefixed type)
-    Alg_attribute insert_string(char *name);
+    Alg_attribute insert_string(const char *name);
 private:
     long maxlen;
     long len;
     char **atoms;
 
     // insert an Attriubute not in table after moving attr to heap
-    Alg_attribute insert_new(char *name, char attr_type);
+    Alg_attribute insert_new(const char *name, char attr_type);
     void expand(); // make more space
 };
 
@@ -106,8 +109,8 @@ public:
         char *a; // symbol (atom)
     }; // anonymous union
     void copy(Alg_parameter *); // copy from another parameter
-    char attr_type() { return attr[0]; }
-    char *attr_name() { return attr + 1; }
+    char attr_type() { return alg_attr_type(attr); }
+    char *attr_name() { return alg_attr_name(attr); }
     void set_attr(Alg_attribute a) { attr = a; }
     void show();
 } *Alg_parameter_ptr;
@@ -818,18 +821,21 @@ public:
     Alg_tracks track_list;       // array of Alg_events
     Alg_time_sigs time_sig;
     int beat_x;
-    Alg_seq() {
+    void basic_initialization() {
         units_are_seconds = true; type = 's';
         channel_offset_per_track = 0;
         add_track(0); // default is one empty track
+    }        
+    Alg_seq() {
+        basic_initialization();
     }
     // copy constructor -- if track is an Alg_seq, make a copy; if
     //    track is just an Alg_track, the track becomes track 0
     Alg_seq(Alg_track_ref track) { seq_from_track(track); }
     Alg_seq(Alg_track_ptr track) { seq_from_track(*track); }
     void seq_from_track(Alg_track_ref tr);
-    Alg_seq(FILE *file, bool midi);
-    Alg_seq(const char *filename); // create from text (Allegro) file
+    Alg_seq(std::istream &file, bool smf); // create from file
+    Alg_seq(const char *filename, bool smf); // create from filename
     ~Alg_seq();
     void serialize(void **buffer, long *bytes, bool text);
     void copy_time_sigs_to(Alg_seq *dest); // a utility function
@@ -840,10 +846,11 @@ public:
     void unserialize_seq();
 
     // write an ascii representation to file
-    void write(FILE *file, bool in_secs);
-    int write(const char *filename);
-    void smf_write(FILE *file);
-    int smf_write(const char *filename);
+    void write(std::ostream &file, bool in_secs);
+    // returns true on success
+    bool write(const char *filename);
+    void smf_write(std::ofstream &file);
+    bool smf_write(const char *filename);
 
     // Returns the number of tracks
     int tracks();
@@ -902,7 +909,9 @@ public:
 } *Alg_seq_ptr, &Alg_seq_ref;
 
 
-Alg_seq_ptr alg_read(FILE *file, Alg_seq_ptr new_seq);
-Alg_seq_ptr alg_smf_read(FILE *file, Alg_seq_ptr new_seq);
-
+// see Alg_seq::Alg_seq() constructors that read from files
+// the following are for internal library implementation and are
+// moved to *_internal.h header files.
+//Alg_seq_ptr alg_read(std::istream &file, Alg_seq_ptr new_seq);
+//Alg_seq_ptr alg_smf_read(std::istream &file, Alg_seq_ptr new_seq);
 #endif

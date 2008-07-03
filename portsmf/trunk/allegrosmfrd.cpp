@@ -4,10 +4,14 @@
 #include "stdio.h"
 #include "string.h"
 #include "assert.h"
+#include <string>
+#include <fstream>
 #include "allegro.h"
+#include "algsmfrd_internal.h"
 #include "mfmidi.h"
 #include "trace.h"
 
+using namespace std;
 
 typedef class Alg_pending {
 public:
@@ -20,20 +24,22 @@ public:
 
 class Alg_midifile_reader: public Midifile_reader {
 public:
-    FILE *file;
+    istream *file;
     Alg_seq_ptr seq;
     int divisions;
     Alg_pending_ptr pending;
     Alg_track_ptr track;
+    int track_number; // the number of the (current) track
     long channel_offset_per_track; // used to encode track number into channel
         // chan is actual_channel + channel_offset_per_track * track_num
         // default is 100, set this to 0 to merge all tracks to 16 channels
     int channel_offset;
 
-    Alg_midifile_reader(FILE *f, Alg_seq_ptr new_seq) {
-        file = f;
+    Alg_midifile_reader(istream &f, Alg_seq_ptr new_seq) {
+        file = &f;
         pending = NULL;
         seq = new_seq;
+        track_number = -1; // no tracks started yet, 1st will be #0
     }
     // delete destroys the seq member as well, so set it to NULL if you
     // copied the pointer elsewhere
@@ -88,50 +94,6 @@ Alg_midifile_reader::~Alg_midifile_reader()
 }
 
 
-/* 
-void Alg_midifile_reader::merge_tracks()
-{
-    double next;
-    int track = -1;
-    // keep an array of indexes into tracks
-    long *current = new long[tracks.len];
-    long sum = 0;
-    long i;
-    for (i = 0; i < tracks.len; i++) {
-        current[i] = 0;
-        sum = sum + tracks[i]->len;
-    }
-    // preallocate array for efficiency:
-    Alg_event_ptr *notes = new Alg_event_ptr[sum];
-    long notes_index = 0;
-
-    bool done = false;
-    while (!done) {
-        Alg_events_ptr tr;  // a track
-        long cur;       // a track index
-        // find lowest next time of any track:
-        next = 1000000.0;
-        for (i = 0; i < tracks.len; i++) {
-            tr = tracks[i];
-            cur = current[i];
-            if (cur < tr->len && (*tr)[cur]->time < next) {
-                next = (*tr)[cur]->time;
-                track = i;
-            }
-        }
-        // insert a track event
-        if (next < 1000000.0) {
-            notes[notes_index++] = (*tracks[track])[current[track]++];
-        } else {
-            done = true;
-        }
-    }
-    tracks.reset(); // don't need them any more
-    seq->set_events(notes, sum, sum);
-    delete[] current;
-}
-*/
-
 void Alg_midifile_reader::parse()
 {
     channel_offset = 0;
@@ -146,13 +108,15 @@ void Alg_midifile_reader::Mf_starttrack()
     // printf("starting new track\n");
     // create a new track that will share the sequence time map
     // since time is in beats, the seconds parameter is false
-    track = new Alg_track(seq->get_time_map(), false);
+    track_number++;
+    seq->add_track(track_number); // make sure track exists
+    track = seq->track(track_number); // keep pointer to current track
 }
 
 
 void Alg_midifile_reader::Mf_endtrack()
 {
-    seq->track_list.append(track);
+    // note: track is already part of seq, so do not add it here
     // printf("finished track, length %d number %d\n", track->len, track_num / 100);
     channel_offset += seq->channel_offset_per_track;
     track = NULL;
@@ -163,7 +127,7 @@ void Alg_midifile_reader::Mf_endtrack()
 
 int Alg_midifile_reader::Mf_getc()
 {
-    return getc(file);
+    return file->get();
 }
 
 
@@ -357,8 +321,8 @@ void Alg_midifile_reader::Mf_keysig(int key, int mode)
     update(-1, -1, &key_parm);
     Alg_parameter mode_parm;
     mode_parm.set_attr(symbol_table.insert_string("modea"));
-    mode_parm.a = (mode == 0 ? symbol_table.insert_string("majora") :
-                               symbol_table.insert_string("minora"));
+    mode_parm.a = (mode == 0 ? symbol_table.insert_string("major") :
+                               symbol_table.insert_string("minor"));
     update(-1, -1, &mode_parm);
 }
 
@@ -395,10 +359,10 @@ void Alg_midifile_reader::Mf_text(int type, int len, char *msg)
 }
 
 
-// parse file into a seq. If new_seq is null, create and return new one.
-Alg_seq_ptr alg_smf_read(FILE *file, Alg_seq_ptr new_seq)
+// parse file into a seq. 
+Alg_seq_ptr alg_smf_read(istream &file, Alg_seq_ptr new_seq)
 {
-    if (!new_seq) new_seq = new Alg_seq();
+    assert(new_seq);
     Alg_midifile_reader ar(file, new_seq);
     ar.parse();
     ar.seq->set_real_dur(ar.seq->get_time_map()->

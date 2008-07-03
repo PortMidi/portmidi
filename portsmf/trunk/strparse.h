@@ -2,15 +2,15 @@
 
 class String_parse {
 public:
-    char string[256];
     int pos;
-    void init(char *s) {
-        strcpy(string, s);
+    std::string *str;
+    void init(std::string *s) {
+        str = s;
         pos = 0;
     }
     void skip_space();
     char peek();
-    void get_nonspace_quoted(char *field);
+    void get_nonspace_quoted(std::string &field);
 };
 
-void string_escape(char *result, char *str, char *quote);
+void string_escape(std::string &result, char *s, char *quote);

@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D6906EE0E1BC84300CD7F1A /* portsmf_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */; };
+		3D6906EF0E1BC86800CD7F1A /* libportsmf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D84C8BA0C73C64B00DB0C03 /* libportsmf.a */; };
+		3D6906F30E1BC9E400CD7F1A /* strparse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D84C8F70C73C9B700DB0C03 /* strparse.cpp */; };
+		3D69074B0E1BDC0200CD7F1A /* libportmidi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D69074A0E1BDC0200CD7F1A /* libportmidi.a */; };
+		3D69074E0E1BDC5200CD7F1A /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D69074D0E1BDC5200CD7F1A /* CoreServices.framework */; };
 		3D84C8D00C73C6A000DB0C03 /* allegro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */; };
 		3D84C8D10C73C6A000DB0C03 /* allegro.h in Headers */ = {isa = PBXBuildFile; fileRef = 3D84C8CF0C73C6A000DB0C03 /* allegro.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3D84C8D70C73C6B600DB0C03 /* allegrord.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D84C8D20C73C6B600DB0C03 /* allegrord.cpp */; };
@@ -20,14 +25,7 @@
 		3D84C8E30C73C71900DB0C03 /* allegroplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D84C8E20C73C71900DB0C03 /* allegroplay.cpp */; };
 		3D84C8F20C73C8BC00DB0C03 /* libportsmf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D84C8BA0C73C64B00DB0C03 /* libportsmf.a */; };
 		3D84C8F30C73C8C500DB0C03 /* libportsmf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D84C8BA0C73C64B00DB0C03 /* libportsmf.a */; };
-		3D84C8F90C73C9B700DB0C03 /* strparse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D84C8F70C73C9B700DB0C03 /* strparse.cpp */; };
 		3D84C9DB0C75388500DB0C03 /* seq2midi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */; };
-		3D84CA240C75423D00DB0C03 /* pmutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D84CA220C75423D00DB0C03 /* pmutil.c */; };
-		3D84CA270C75425300DB0C03 /* portmidi.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D84CA250C75425300DB0C03 /* portmidi.c */; };
-		3D84CA2D0C75426800DB0C03 /* pmmac.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D84CA280C75426800DB0C03 /* pmmac.c */; };
-		3D84CA2F0C75426800DB0C03 /* pmmacosxcm.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D84CA2B0C75426800DB0C03 /* pmmacosxcm.c */; };
-		3D84CA310C75432900DB0C03 /* ptmacosx_cf.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D84CA300C75432900DB0C03 /* ptmacosx_cf.c */; };
-		3D84CA330C75435B00DB0C03 /* porttime.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D84CA320C75435B00DB0C03 /* porttime.c */; };
 		3D84CA5A0C75487500DB0C03 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D84CA590C75487500DB0C03 /* CoreMIDI.framework */; };
 		3D84CA5C0C75489400DB0C03 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D84CA5B0C75489400DB0C03 /* CoreAudio.framework */; };
 		3D84CA5E0C7548AC00DB0C03 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D84CA5D0C7548AC00DB0C03 /* CoreFoundation.framework */; };
@@ -35,6 +33,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		3D6906CA0E1BC43800CD7F1A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D84C8B90C73C64B00DB0C03 /* portsmf */;
+			remoteInfo = portsmf;
+		};
 		3D84C95A0C74EC5000DB0C03 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
@@ -52,6 +57,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3D6906C20E1BC42D00CD7F1A /* portsmf_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = portsmf_test; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = portsmf_test.cpp; path = portsmf_test/portsmf_test.cpp; sourceTree = "<group>"; };
+		3D69074A0E1BDC0200CD7F1A /* libportmidi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libportmidi.a; path = "../portmidi/pm_mac/build/pm_mac.build/Development/libportmidi.a.build/Objects-normal/i386/libportmidi.a"; sourceTree = SOURCE_ROOT; };
+		3D69074D0E1BDC5200CD7F1A /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		3D84C8BA0C73C64B00DB0C03 /* libportsmf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libportsmf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D84C8C10C73C66E00DB0C03 /* allegroconvert */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = allegroconvert; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D84C8C60C73C67E00DB0C03 /* allegroplay */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = allegroplay; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,23 +80,20 @@
 		3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = seq2midi.cpp; path = apps/seq2midi.cpp; sourceTree = "<group>"; };
 		3D84C9DC0C7538A300DB0C03 /* seq2midi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = seq2midi.h; path = apps/seq2midi.h; sourceTree = "<group>"; };
 		3D84C9F30C753A0400DB0C03 /* midicode.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = midicode.h; path = apps/midicode.h; sourceTree = "<group>"; };
-		3D84CA210C75423D00DB0C03 /* pminternal.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = pminternal.h; path = ../portmidi/pm_common/pminternal.h; sourceTree = SOURCE_ROOT; };
-		3D84CA220C75423D00DB0C03 /* pmutil.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = pmutil.c; path = ../portmidi/pm_common/pmutil.c; sourceTree = SOURCE_ROOT; };
-		3D84CA230C75423D00DB0C03 /* pmutil.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = pmutil.h; path = ../portmidi/pm_common/pmutil.h; sourceTree = SOURCE_ROOT; };
-		3D84CA250C75425300DB0C03 /* portmidi.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = portmidi.c; path = ../portmidi/pm_common/portmidi.c; sourceTree = SOURCE_ROOT; };
-		3D84CA260C75425300DB0C03 /* portmidi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = portmidi.h; path = ../portmidi/pm_common/portmidi.h; sourceTree = SOURCE_ROOT; };
-		3D84CA280C75426800DB0C03 /* pmmac.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = pmmac.c; path = ../portmidi/pm_mac/pmmac.c; sourceTree = SOURCE_ROOT; };
-		3D84CA290C75426800DB0C03 /* pmmac.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = pmmac.h; path = ../portmidi/pm_mac/pmmac.h; sourceTree = SOURCE_ROOT; };
-		3D84CA2B0C75426800DB0C03 /* pmmacosxcm.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = pmmacosxcm.c; path = ../portmidi/pm_mac/pmmacosxcm.c; sourceTree = SOURCE_ROOT; };
-		3D84CA2C0C75426800DB0C03 /* pmmacosxcm.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = pmmacosxcm.h; path = ../portmidi/pm_mac/pmmacosxcm.h; sourceTree = SOURCE_ROOT; };
-		3D84CA300C75432900DB0C03 /* ptmacosx_cf.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = ptmacosx_cf.c; path = ../portmidi/porttime/ptmacosx_cf.c; sourceTree = SOURCE_ROOT; };
-		3D84CA320C75435B00DB0C03 /* porttime.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = porttime.c; path = ../portmidi/porttime/porttime.c; sourceTree = SOURCE_ROOT; };
 		3D84CA590C75487500DB0C03 /* CoreMIDI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMIDI.framework; path = /System/Library/Frameworks/CoreMIDI.framework; sourceTree = "<absolute>"; };
 		3D84CA5B0C75489400DB0C03 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = /System/Library/Frameworks/CoreAudio.framework; sourceTree = "<absolute>"; };
 		3D84CA5D0C7548AC00DB0C03 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3D6906C00E1BC42D00CD7F1A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3D6906EF0E1BC86800CD7F1A /* libportsmf.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3D84C8B80C73C64B00DB0C03 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -111,6 +117,8 @@
 				3D84CA5A0C75487500DB0C03 /* CoreMIDI.framework in Frameworks */,
 				3D84CA5C0C75489400DB0C03 /* CoreAudio.framework in Frameworks */,
 				3D84CA5E0C7548AC00DB0C03 /* CoreFoundation.framework in Frameworks */,
+				3D69074B0E1BDC0200CD7F1A /* libportmidi.a in Frameworks */,
+				3D69074E0E1BDC5200CD7F1A /* CoreServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,6 +128,9 @@
 		08FB7794FE84155DC02AAC07 /* portsmf */ = {
 			isa = PBXGroup;
 			children = (
+				3D69074D0E1BDC5200CD7F1A /* CoreServices.framework */,
+				3D69074A0E1BDC0200CD7F1A /* libportmidi.a */,
+				3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */,
 				3D84CA5D0C7548AC00DB0C03 /* CoreFoundation.framework */,
 				3D84CA5B0C75489400DB0C03 /* CoreAudio.framework */,
 				3D84CA590C75487500DB0C03 /* CoreMIDI.framework */,
@@ -145,17 +156,6 @@
 				3D84C8DC0C73C6C900DB0C03 /* mfmidi.cpp */,
 				3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */,
 				3D84C9F30C753A0400DB0C03 /* midicode.h */,
-				3D84CA210C75423D00DB0C03 /* pminternal.h */,
-				3D84CA280C75426800DB0C03 /* pmmac.c */,
-				3D84CA290C75426800DB0C03 /* pmmac.h */,
-				3D84CA2B0C75426800DB0C03 /* pmmacosxcm.c */,
-				3D84CA2C0C75426800DB0C03 /* pmmacosxcm.h */,
-				3D84CA220C75423D00DB0C03 /* pmutil.c */,
-				3D84CA230C75423D00DB0C03 /* pmutil.h */,
-				3D84CA250C75425300DB0C03 /* portmidi.c */,
-				3D84CA260C75425300DB0C03 /* portmidi.h */,
-				3D84CA320C75435B00DB0C03 /* porttime.c */,
-				3D84CA300C75432900DB0C03 /* ptmacosx_cf.c */,
 				3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */,
 				3D84C9DC0C7538A300DB0C03 /* seq2midi.h */,
 				3D84C8F70C73C9B700DB0C03 /* strparse.cpp */,
@@ -170,6 +170,7 @@
 				3D84C8BA0C73C64B00DB0C03 /* libportsmf.a */,
 				3D84C8C10C73C66E00DB0C03 /* allegroconvert */,
 				3D84C8C60C73C67E00DB0C03 /* allegroplay */,
+				3D6906C20E1BC42D00CD7F1A /* portsmf_test */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -196,6 +197,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		3D6906C10E1BC42D00CD7F1A /* portsmf_test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D6906CC0E1BC45700CD7F1A /* Build configuration list for PBXNativeTarget "portsmf_test" */;
+			buildPhases = (
+				3D6906BF0E1BC42D00CD7F1A /* Sources */,
+				3D6906C00E1BC42D00CD7F1A /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3D6906CB0E1BC43800CD7F1A /* PBXTargetDependency */,
+			);
+			name = portsmf_test;
+			productName = portsmf_test;
+			productReference = 3D6906C20E1BC42D00CD7F1A /* portsmf_test */;
+			productType = "com.apple.product-type.tool";
+		};
 		3D84C8B90C73C64B00DB0C03 /* portsmf */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3D84C8BB0C73C66A00DB0C03 /* Build configuration list for PBXNativeTarget "portsmf" */;
@@ -260,15 +278,25 @@
 				3D84C8B90C73C64B00DB0C03 /* portsmf */,
 				3D84C8C00C73C66E00DB0C03 /* allegroconvert */,
 				3D84C8C50C73C67E00DB0C03 /* allegroplay */,
+				3D6906C10E1BC42D00CD7F1A /* portsmf_test */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3D6906BF0E1BC42D00CD7F1A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3D6906EE0E1BC84300CD7F1A /* portsmf_test.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3D84C8B70C73C64B00DB0C03 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D6906F30E1BC9E400CD7F1A /* strparse.cpp in Sources */,
 				3D84C8D00C73C6A000DB0C03 /* allegro.cpp in Sources */,
 				3D84C8D70C73C6B600DB0C03 /* allegrord.cpp in Sources */,
 				3D84C8D80C73C6B600DB0C03 /* allegroserial.cpp in Sources */,
@@ -284,7 +312,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3D84C8E10C73C6F900DB0C03 /* allegroconvert.cpp in Sources */,
-				3D84C8F90C73C9B700DB0C03 /* strparse.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,12 +321,6 @@
 			files = (
 				3D84C8E30C73C71900DB0C03 /* allegroplay.cpp in Sources */,
 				3D84C9DB0C75388500DB0C03 /* seq2midi.cpp in Sources */,
-				3D84CA240C75423D00DB0C03 /* pmutil.c in Sources */,
-				3D84CA270C75425300DB0C03 /* portmidi.c in Sources */,
-				3D84CA2D0C75426800DB0C03 /* pmmac.c in Sources */,
-				3D84CA2F0C75426800DB0C03 /* pmmacosxcm.c in Sources */,
-				3D84CA310C75432900DB0C03 /* ptmacosx_cf.c in Sources */,
-				3D84CA330C75435B00DB0C03 /* porttime.c in Sources */,
 				3D84CA600C7548D300DB0C03 /* strparse.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -307,6 +328,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		3D6906CB0E1BC43800CD7F1A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3D84C8B90C73C64B00DB0C03 /* portsmf */;
+			targetProxy = 3D6906CA0E1BC43800CD7F1A /* PBXContainerItemProxy */;
+		};
 		3D84C95B0C74EC5000DB0C03 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3D84C8B90C73C64B00DB0C03 /* portsmf */;
@@ -353,6 +379,36 @@
 				LIBRARY_SEARCH_PATHS = ..;
 				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Release;
+		};
+		3D6906CD0E1BC45700CD7F1A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = portsmf_test;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		3D6906CE0E1BC45700CD7F1A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = portsmf_test;
+				PREBINDING = NO;
+				PRODUCT_NAME = portsmf_test;
+				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
@@ -441,10 +497,12 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_3)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_4)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/build/Debug\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../portmidi/pm_mac\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_3 = "\"$(SRCROOT)/../portmidi/porttime\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_4 = "\"$(SRCROOT)/../portmidi/pm_mac/build/pm_mac.build/Development/libportmidi.a.build/Objects-normal/i386\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = allegroplay;
 				ZERO_LINK = NO;
@@ -464,10 +522,12 @@
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_3)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_4)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/build/Debug\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SRCROOT)/../portmidi/pm_mac\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_3 = "\"$(SRCROOT)/../portmidi/porttime\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_4 = "\"$(SRCROOT)/../portmidi/pm_mac/build/pm_mac.build/Development/libportmidi.a.build/Objects-normal/i386\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = allegroplay;
 				ZERO_LINK = NO;
@@ -482,6 +542,15 @@
 			buildConfigurations = (
 				1DEB923608733DC60010E9CD /* Debug */,
 				1DEB923708733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3D6906CC0E1BC45700CD7F1A /* Build configuration list for PBXNativeTarget "portsmf_test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D6906CD0E1BC45700CD7F1A /* Debug */,
+				3D6906CE0E1BC45700CD7F1A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

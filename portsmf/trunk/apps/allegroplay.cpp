@@ -1,14 +1,15 @@
 
-#include "stdlib.h"
-#include "stdio.h"
-#include "memory.h"
-#include "assert.h"
+//#include "stdlib.h"
+//#include "stdio.h"
+//#include "memory.h"
+//#include "assert.h"
+#include <fstream>
 #include "allegro.h"
 #include "mfmidi.h"
 #include "portmidi.h"
 #include "seq2midi.h"
-#include "string.h"
-#include "strparse.h"
+//#include "string.h"
+//#include "strparse.h"
 
 #ifdef WIN32
 #include "crtdbg.h" // for memory allocation debugging
@@ -23,32 +24,6 @@ void midi_fail(char *msg)
 
 void *midi_alloc(size_t s) { return malloc(s); }
 void midi_free(void *a) { free(a); }
-
-
-Alg_seq_ptr read_allegro_file(char *name)
-{
-    FILE *inf = fopen(name, "r");
-    if (!inf) {
-        printf("could not open allegro file\n");
-        exit(-1);
-    }
-    Alg_seq_ptr seq = new Alg_seq(inf, false);
-    fclose(inf);
-    return seq;
-}
-
-
-Alg_seq_ptr read_file(char *name)
-{
-    FILE *inf = fopen(name, "rb");
-    if (!inf) {
-        printf("could not open midi file\n");
-        exit(1);
-    }
-    Alg_seq_ptr seq = new Alg_seq(inf, true);
-    fclose(inf);
-    return seq;
-}
 
 
 void print_help()
@@ -93,19 +68,14 @@ int main(int argc, char *argv[])
         else if (strcmp(ext, ".gro") == 0) allegrofile = true;
         else print_help();
     }
-    Alg_seq_ptr seq;
-    if (midifile) {
-        seq = read_file(filename);
-    } else if (allegrofile) {
-        seq = read_allegro_file(filename);
-    }
+    Alg_seq seq(filename, midifile);
 
     int events = 0;
-    for (i = 0; i < seq->tracks(); i++) {
-        events += seq->track(i)->length();
+    for (i = 0; i < seq.tracks(); i++) {
+        events += seq.track(i)->length();
     }
     if (interactive) {
-        printf("%d tracks, %d events\n", seq->tracks(), events);
+        printf("%d tracks, %d events\n", seq.tracks(), events);
     }
     /* PLAY THE FILE VIA MIDI: */
     if (interactive) {
@@ -114,10 +84,6 @@ int main(int argc, char *argv[])
         fgets(input, 80, stdin);
     }
     seq_play(seq);
-    /**/
-
-    /* DELETE THE DATA */
-    delete seq;
 
     return 0;
 }

@@ -1,10 +1,12 @@
-#include "string.h"
-#include "strparse.h"
+#include <string>
+// #include <iostream>  -- for debugging (cout)
 #include "ctype.h"
+using namespace std;
+#include "strparse.h"
 
 void String_parse::skip_space()
 {
-    while (string[pos] && isspace(string[pos])) {
+    while ((*str)[pos] && isspace((*str)[pos])) {
         pos = pos + 1;
     }
 }
@@ -12,63 +14,61 @@ void String_parse::skip_space()
 
 char String_parse::peek()
 {
-    return string[pos];
+    return (*str)[pos];
 }
 
 
-void String_parse::get_nonspace_quoted(char *field)
+void String_parse::get_nonspace_quoted(string &field)
 {
+    field.clear();
     skip_space();
     bool quoted = false;
-    if (string[pos] == '"') {
+    if ((*str)[pos] == '"') {
         quoted = true;
-        *field++ = '"';
+        field.append(1, '"');
         pos = pos + 1;
     }
-    while (string[pos] && (quoted || !isspace(string[pos]))) {
-        if (string[pos] == '"') {
+    while ((*str)[pos] && (quoted || !isspace((*str)[pos]))) {
+        if ((*str)[pos] == '"') {
             if (quoted) {
-                *field++ = '"';
+                field.append(1, '"');
                 pos = pos + 1;
             }
-            *field = 0;
             return;
         }
-        if (string[pos] == '\\') {
+        if ((*str)[pos] == '\\') {
             pos = pos + 1;
         }
-        if (string[pos]) {
-            *field++ = string[pos];
+        if ((*str)[pos]) {
+            field.append(1, (*str)[pos]);
             pos = pos + 1;    
         }
     }
-    *field = 0;
 }
 
 
 char *escape_chars[] = {"\\n", "\\t", "\\\\", "\\r", "\\\""};
 
-void string_escape(char *result, char *str, char *quote)
+
+void string_escape(string &result, char *str, char *quote)
 {
     int length = (int) strlen(str);
     if (quote[0]) {
-        *result++ = quote[0];
+        result.append(1, quote[0]);
     }
     for (int i = 0; i < length; i++) {
-        if (!isalnum(str[i])) {
+        if (!isalnum((unsigned char) str[i])) {
             char *chars = "\n\t\\\r\"";
             char *special = strchr(chars, str[i]);
             if (special) {
-                *result++ = escape_chars[special - chars][0];
-                *result++ = escape_chars[special - chars][1];
+                result.append(escape_chars[special - chars]);
             } else {
-                *result++ = str[i];
+                result.append(1, str[i]);
             }
         } else {
-            *result++ = str[i] ;
+            result.append(1, str[i]);
         }
     }
-    *result++ = quote[0];
-    *result = 0;
+    result.append(1, quote[0]);
 }
 

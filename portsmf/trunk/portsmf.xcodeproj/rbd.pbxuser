@@ -140,8 +140,12 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 236700662;
-			PBXWorkspaceStateSaveDate = 236700662;
+			PBXPerProjectTemplateStateSaveDate = 237157182;
+			PBXWorkspaceStateSaveDate = 237157182;
+		};
+		perUserProjectItems = {
+			3DF287380E22BC6B0091AA8F /* PBXTextBookmark */ = 3DF287380E22BC6B0091AA8F /* PBXTextBookmark */;
+			3DF287390E22BC6B0091AA8F /* PBXTextBookmark */ = 3DF287390E22BC6B0091AA8F /* PBXTextBookmark */;
 		};
 		sourceControlManager = 3D84C8AF0C73C5B100DB0C03 /* Source Control */;
 		userBuildSettings = {
@@ -529,7 +533,7 @@
 		hitCount = 1;
 		lineNumber = 627;
 		location = allegroconvert;
-		modificationTime = 236808698.888551;
+		modificationTime = 236808698.8885511;
 		state = 1;
 	};
 	3D84C8AF0C73C5B100DB0C03 /* Source Control */ = {
@@ -658,8 +662,8 @@
 	3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {639, 45408}}";
-			sepNavSelRange = "{29041, 32}";
-			sepNavVisRect = "{{0, 16724}, {639, 744}}";
+			sepNavSelRange = "{510, 0}";
+			sepNavVisRect = "{{0, 0}, {639, 744}}";
 			sepNavWindowFrame = "{{20, 2}, {678, 873}}";
 		};
 	};
@@ -905,6 +909,29 @@
 			3D84C9A00C7527F800DB0C03 /* allegroconvert.cpp:138 */,
 			3D84CA190C7540A600DB0C03 /* allegroplay.cpp:95 */,
 			3D84CA1B0C7540D900DB0C03 /* seq2midi.cpp:200 */,
+			3D6907880E1BE45A00CD7F1A /* allegroconvert.cpp:75 */,
+			3D69078D0E1BE81600CD7F1A /* allegroconvert.cpp:115 */,
+			3D69078F0E1BE90600CD7F1A /* allegrord.cpp:94 */,
+			3D6907910E1BE90B00CD7F1A /* allegrord.cpp:96 */,
+			3D6907930E1C139700CD7F1A /* allegrord.cpp:630 */,
+			3D6907B00E1C1B4C00CD7F1A /* allegroconvert.cpp:113 */,
+			3D6907B20E1C1B5400CD7F1A /* allegroconvert.cpp:106 */,
+			3D6907B40E1C1B8000CD7F1A /* allegroconvert.cpp:105 */,
+			3D6907B60E1C1BA500CD7F1A /* allegrosmfrd.cpp:159 */,
+			3D6907C20E1C555600CD7F1A /* allegrosmfwr.cpp:265 */,
+			3D6907C50E1C55ED00CD7F1A /* allegrosmfwr.cpp:264 */,
+			3D6907DC0E1C81F200CD7F1A /* allegrosmfwr.cpp:307 */,
+			3D6907FD0E1D5A2300CD7F1A /* allegrosmfrd.cpp:305 */,
+			3D6908020E1D5C7600CD7F1A /* allegrord.cpp:112 */,
+			3D6908040E1D5C8900CD7F1A /* allegrord.cpp:113 */,
+			3D6908060E1D5E3500CD7F1A /* allegro.cpp:2646 */,
+			3D6908080E1D5FA900CD7F1A /* allegrosmfwr.cpp:379 */,
+			3D69080A0E1D5FE200CD7F1A /* allegrosmfwr.cpp:351 */,
+			3D69080C0E1D602300CD7F1A /* allegrosmfwr.cpp:392 */,
+			3D6908160E1D685800CD7F1A /* allegrosmfwr.cpp:300 */,
+			3D69081B0E1D68BA00CD7F1A /* allegrord.cpp:107 */,
+			3D69081D0E1D69D300CD7F1A /* allegrord.cpp:260 */,
+			3D69081F0E1D69F900CD7F1A /* allegrord.cpp:627 */,
 		);
 	};
 	3D84C9470C74E77A00DB0C03 /* allegro.cpp:2229 */ = {
@@ -991,7 +1018,7 @@
 		hitCount = 1;
 		lineNumber = 1575;
 		location = libportsmf.ab;
-		modificationTime = 236808306.840276;
+		modificationTime = 236808306.8402761;
 		state = 2;
 	};
 	3D84C9A00C7527F800DB0C03 /* allegroconvert.cpp:138 */ = {
@@ -1044,5 +1071,23 @@
 		lineNumber = 200;
 		modificationTime = 236809592.538201;
 		state = 1;
+	};
+	3DF287380E22BC6B0091AA8F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "error: 'alg_smf_read' was not declared in this scope";
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		rLen = 1;
+		rLoc = 2212;
+		rType = 1;
+	};
+	3DF287390E22BC6B0091AA8F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 21";
+		rLen = 0;
+		rLoc = 510;
+		rType = 0;
+		vrLen = 1174;
+		vrLoc = 0;
 	};
 }

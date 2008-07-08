@@ -62,7 +62,7 @@
 		3D69074A0E1BDC0200CD7F1A /* libportmidi.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libportmidi.a; path = "../portmidi/pm_mac/build/pm_mac.build/Development/libportmidi.a.build/Objects-normal/i386/libportmidi.a"; sourceTree = SOURCE_ROOT; };
 		3D69074D0E1BDC5200CD7F1A /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		3D84C8BA0C73C64B00DB0C03 /* libportsmf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libportsmf.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		3D84C8C10C73C66E00DB0C03 /* allegroconvert */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.executable"; path = allegroconvert; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D84C8C10C73C66E00DB0C03 /* allegroconvert */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = allegroconvert; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D84C8C60C73C67E00DB0C03 /* allegroplay */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = allegroplay; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = allegro.cpp; sourceTree = "<group>"; };
 		3D84C8CF0C73C6A000DB0C03 /* allegro.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = allegro.h; sourceTree = "<group>"; };

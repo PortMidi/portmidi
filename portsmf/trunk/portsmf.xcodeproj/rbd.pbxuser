@@ -140,16 +140,54 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 237157182;
-			PBXWorkspaceStateSaveDate = 237157182;
+			PBXPerProjectTemplateStateSaveDate = 237219581;
+			PBXWorkspaceStateSaveDate = 237219581;
 		};
 		perUserProjectItems = {
-			3DF287380E22BC6B0091AA8F /* PBXTextBookmark */ = 3DF287380E22BC6B0091AA8F /* PBXTextBookmark */;
-			3DF287390E22BC6B0091AA8F /* PBXTextBookmark */ = 3DF287390E22BC6B0091AA8F /* PBXTextBookmark */;
+			3D24393C0E23AF3B0028BF24 /* PBXTextBookmark */ = 3D24393C0E23AF3B0028BF24 /* PBXTextBookmark */;
+			3D2439400E23AF5E0028BF24 /* PBXBookmark */ = 3D2439400E23AF5E0028BF24 /* PBXBookmark */;
+			3D24394E0E23B10A0028BF24 /* PBXTextBookmark */ = 3D24394E0E23B10A0028BF24 /* PBXTextBookmark */;
+			3D24394F0E23B10A0028BF24 /* PBXTextBookmark */ = 3D24394F0E23B10A0028BF24 /* PBXTextBookmark */;
+			3DF287380E22BC6B0091AA8F = 3DF287380E22BC6B0091AA8F /* PBXTextBookmark */;
+			3DF287390E22BC6B0091AA8F = 3DF287390E22BC6B0091AA8F /* PBXTextBookmark */;
 		};
 		sourceControlManager = 3D84C8AF0C73C5B100DB0C03 /* Source Control */;
 		userBuildSettings = {
 		};
+	};
+	3D24393C0E23AF3B0028BF24 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 21";
+		rLen = 0;
+		rLoc = 510;
+		rType = 0;
+		vrLen = 1174;
+		vrLoc = 0;
+	};
+	3D2439400E23AF5E0028BF24 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 3D84C8D20C73C6B600DB0C03 /* allegrord.cpp */;
+	};
+	3D24394E0E23B10A0028BF24 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8D20C73C6B600DB0C03 /* allegrord.cpp */;
+		name = "allegrord.cpp: 730";
+		rLen = 0;
+		rLoc = 24284;
+		rType = 0;
+		vrLen = 1160;
+		vrLoc = 0;
+	};
+	3D24394F0E23B10A0028BF24 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 2838";
+		rLen = 0;
+		rLoc = 85594;
+		rType = 0;
+		vrLen = 1174;
+		vrLoc = 0;
 	};
 	3D6906C10E1BC42D00CD7F1A /* portsmf_test */ = {
 		activeExec = 0;
@@ -205,7 +243,7 @@
 		hitCount = 1;
 		lineNumber = 75;
 		location = allegroconvert;
-		modificationTime = 236808306.840292;
+		modificationTime = 237219712.918007;
 		state = 2;
 	};
 	3D69078D0E1BE81600CD7F1A /* allegroconvert.cpp:115 */ = {
@@ -220,7 +258,7 @@
 		hitCount = 1;
 		lineNumber = 115;
 		location = allegroconvert;
-		modificationTime = 236808306.840296;
+		modificationTime = 237219712.918014;
 		state = 2;
 	};
 	3D69078F0E1BE90600CD7F1A /* allegrord.cpp:94 */ = {
@@ -235,7 +273,7 @@
 		hitCount = 1;
 		lineNumber = 94;
 		location = allegroconvert;
-		modificationTime = 236808306.8403;
+		modificationTime = 237219712.91802;
 		state = 2;
 	};
 	3D6907910E1BE90B00CD7F1A /* allegrord.cpp:96 */ = {
@@ -250,7 +288,7 @@
 		hitCount = 1;
 		lineNumber = 96;
 		location = allegroconvert;
-		modificationTime = 236808306.840304;
+		modificationTime = 237219712.918027;
 		state = 2;
 	};
 	3D6907930E1C139700CD7F1A /* allegrord.cpp:630 */ = {
@@ -265,7 +303,7 @@
 		hitCount = 1;
 		lineNumber = 630;
 		location = allegroconvert;
-		modificationTime = 236808306.840336;
+		modificationTime = 237219712.918034;
 		state = 2;
 	};
 	3D6907B00E1C1B4C00CD7F1A /* allegroconvert.cpp:113 */ = {
@@ -279,7 +317,7 @@
 		functionName = "main()";
 		hitCount = 1;
 		lineNumber = 113;
-		modificationTime = 236808306.840342;
+		modificationTime = 237219712.91804;
 		state = 2;
 	};
 	3D6907B20E1C1B5400CD7F1A /* allegroconvert.cpp:106 */ = {
@@ -294,7 +332,7 @@
 		hitCount = 1;
 		lineNumber = 106;
 		location = allegroconvert;
-		modificationTime = 236808306.840346;
+		modificationTime = 237219712.918046;
 		state = 2;
 	};
 	3D6907B40E1C1B8000CD7F1A /* allegroconvert.cpp:105 */ = {
@@ -309,7 +347,7 @@
 		hitCount = 1;
 		lineNumber = 105;
 		location = allegroconvert;
-		modificationTime = 236808306.840362;
+		modificationTime = 237219712.918052;
 		state = 2;
 	};
 	3D6907B60E1C1BA500CD7F1A /* allegrosmfrd.cpp:159 */ = {
@@ -324,7 +362,7 @@
 		hitCount = 1;
 		lineNumber = 159;
 		location = allegroconvert;
-		modificationTime = 236808306.840367;
+		modificationTime = 237219712.918059;
 		state = 2;
 	};
 	3D6907C20E1C555600CD7F1A /* allegrosmfwr.cpp:265 */ = {
@@ -338,7 +376,7 @@
 		functionName = "Alg_smf_write::write_update()";
 		hitCount = 1;
 		lineNumber = 265;
-		modificationTime = 236808306.840371;
+		modificationTime = 237219712.918065;
 		state = 2;
 	};
 	3D6907C50E1C55ED00CD7F1A /* allegrosmfwr.cpp:264 */ = {
@@ -353,7 +391,7 @@
 		hitCount = 1;
 		lineNumber = 264;
 		location = allegroconvert;
-		modificationTime = 236808306.840375;
+		modificationTime = 237219712.918071;
 		state = 2;
 	};
 	3D6907DC0E1C81F200CD7F1A /* allegrosmfwr.cpp:307 */ = {
@@ -368,7 +406,7 @@
 		hitCount = 1;
 		lineNumber = 307;
 		location = allegroconvert;
-		modificationTime = 236808306.840379;
+		modificationTime = 237219712.918078;
 		state = 2;
 	};
 	3D6907FD0E1D5A2300CD7F1A /* allegrosmfrd.cpp:305 */ = {
@@ -383,7 +421,7 @@
 		hitCount = 1;
 		lineNumber = 305;
 		location = allegroconvert;
-		modificationTime = 236808306.840383;
+		modificationTime = 237219712.918084;
 		state = 1;
 	};
 	3D6908020E1D5C7600CD7F1A /* allegrord.cpp:112 */ = {
@@ -398,7 +436,7 @@
 		hitCount = 1;
 		lineNumber = 112;
 		location = allegroconvert;
-		modificationTime = 236808306.840387;
+		modificationTime = 237219712.918091;
 		state = 2;
 	};
 	3D6908040E1D5C8900CD7F1A /* allegrord.cpp:113 */ = {
@@ -413,7 +451,7 @@
 		hitCount = 1;
 		lineNumber = 113;
 		location = allegroconvert;
-		modificationTime = 236808306.840392;
+		modificationTime = 237219712.918097;
 		state = 2;
 	};
 	3D6908060E1D5E3500CD7F1A /* allegro.cpp:2646 */ = {
@@ -428,7 +466,7 @@
 		hitCount = 1;
 		lineNumber = 2646;
 		location = allegroconvert;
-		modificationTime = 236808306.840396;
+		modificationTime = 237219712.918103;
 		state = 2;
 	};
 	3D6908080E1D5FA900CD7F1A /* allegrosmfwr.cpp:379 */ = {
@@ -443,7 +481,7 @@
 		hitCount = 1;
 		lineNumber = 379;
 		location = allegroconvert;
-		modificationTime = 236808306.8404;
+		modificationTime = 237219712.91811;
 		state = 2;
 	};
 	3D69080A0E1D5FE200CD7F1A /* allegrosmfwr.cpp:351 */ = {
@@ -458,7 +496,7 @@
 		hitCount = 1;
 		lineNumber = 351;
 		location = allegroconvert;
-		modificationTime = 236808315.299435;
+		modificationTime = 237219712.918116;
 		state = 2;
 	};
 	3D69080C0E1D602300CD7F1A /* allegrosmfwr.cpp:392 */ = {
@@ -473,7 +511,7 @@
 		hitCount = 1;
 		lineNumber = 392;
 		location = allegroconvert;
-		modificationTime = 236808320.403466;
+		modificationTime = 237219712.918123;
 		state = 2;
 	};
 	3D6908160E1D685800CD7F1A /* allegrosmfwr.cpp:300 */ = {
@@ -488,8 +526,8 @@
 		hitCount = 1;
 		lineNumber = 300;
 		location = allegroconvert;
-		modificationTime = 236808321.630817;
-		state = 1;
+		modificationTime = 237219739.505506;
+		state = 2;
 	};
 	3D69081B0E1D68BA00CD7F1A /* allegrord.cpp:107 */ = {
 		isa = PBXFileBreakpoint;
@@ -500,11 +538,11 @@
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D20C73C6B600DB0C03 /* allegrord.cpp */;
 		functionName = "Alg_reader::process_attributes()";
-		hitCount = 4;
+		hitCount = 2;
 		lineNumber = 107;
 		location = allegroconvert;
-		modificationTime = 236808678.718387;
-		state = 1;
+		modificationTime = 237219735.497326;
+		state = 2;
 	};
 	3D69081D0E1D69D300CD7F1A /* allegrord.cpp:260 */ = {
 		isa = PBXFileBreakpoint;
@@ -515,11 +553,11 @@
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D20C73C6B600DB0C03 /* allegrord.cpp */;
 		functionName = "Alg_reader::parse()";
-		hitCount = 5;
+		hitCount = 1;
 		lineNumber = 260;
 		location = allegroconvert;
-		modificationTime = 236808679.47887;
-		state = 1;
+		modificationTime = 237219723.168873;
+		state = 2;
 	};
 	3D69081F0E1D69F900CD7F1A /* allegrord.cpp:627 */ = {
 		isa = PBXFileBreakpoint;
@@ -533,8 +571,8 @@
 		hitCount = 1;
 		lineNumber = 627;
 		location = allegroconvert;
-		modificationTime = 236808698.8885511;
-		state = 1;
+		modificationTime = 237219727.649166;
+		state = 2;
 	};
 	3D84C8AF0C73C5B100DB0C03 /* Source Control */ = {
 		isa = PBXSourceControlManager;
@@ -662,7 +700,7 @@
 	3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {639, 45408}}";
-			sepNavSelRange = "{510, 0}";
+			sepNavSelRange = "{85594, 0}";
 			sepNavVisRect = "{{0, 0}, {639, 744}}";
 			sepNavWindowFrame = "{{20, 2}, {678, 873}}";
 		};
@@ -677,9 +715,9 @@
 	};
 	3D84C8D20C73C6B600DB0C03 /* allegrord.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1121, 11712}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1233, 11728}}";
 			sepNavSelRange = "{24284, 0}";
-			sepNavVisRect = "{{0, 10435}, {1121, 138}}";
+			sepNavVisRect = "{{0, 0}, {1233, 681}}";
 			sepNavWindowFrame = "{{19, 63}, {1272, 810}}";
 		};
 	};
@@ -764,7 +802,7 @@
 		hitCount = 1;
 		lineNumber = 137;
 		location = allegroconvert.ob;
-		modificationTime = 236808306.840188;
+		modificationTime = 237219712.917757;
 		state = 2;
 	};
 	3D84C91C0C74E07E00DB0C03 /* allegroconvert.cpp:78 */ = {
@@ -779,7 +817,7 @@
 		hitCount = 1;
 		lineNumber = 78;
 		location = allegroconvert.ob;
-		modificationTime = 236808306.840213;
+		modificationTime = 237219712.917875;
 		state = 2;
 	};
 	3D84C91F0C74E0F500DB0C03 /* allegroconvert.cpp:136 */ = {
@@ -794,7 +832,7 @@
 		hitCount = 1;
 		lineNumber = 136;
 		location = allegroconvert.ob;
-		modificationTime = 236808306.840219;
+		modificationTime = 237219712.917885;
 		state = 2;
 	};
 	3D84C9220C74E28900DB0C03 /* allegrosmfrd.cpp:138 */ = {
@@ -809,7 +847,7 @@
 		hitCount = 1;
 		lineNumber = 138;
 		location = libportsmf.ab;
-		modificationTime = 236808306.840223;
+		modificationTime = 237219712.917892;
 		state = 2;
 	};
 	3D84C9260C74E30D00DB0C03 /* allegro.cpp:2228 */ = {
@@ -824,7 +862,7 @@
 		hitCount = 1;
 		lineNumber = 2228;
 		location = libportsmf.ab;
-		modificationTime = 236808306.840227;
+		modificationTime = 237219712.917914;
 		state = 2;
 	};
 	3D84C9280C74E33C00DB0C03 /* allegro.cpp:2241 */ = {
@@ -839,7 +877,7 @@
 		hitCount = 1;
 		lineNumber = 2241;
 		location = libportsmf.ab;
-		modificationTime = 236808306.84024;
+		modificationTime = 237219712.917924;
 		state = 2;
 	};
 	3D84C92A0C74E44C00DB0C03 /* allegrosmfrd.cpp:210 */ = {
@@ -854,7 +892,7 @@
 		hitCount = 1;
 		lineNumber = 210;
 		location = libportsmf.ab;
-		modificationTime = 236808306.840245;
+		modificationTime = 237219712.91793;
 		state = 2;
 	};
 	3D84C92D0C74E5D600DB0C03 /* allegrosmfrd.cpp:152 */ = {
@@ -869,7 +907,7 @@
 		hitCount = 1;
 		lineNumber = 152;
 		location = libportsmf.ab;
-		modificationTime = 236808306.840249;
+		modificationTime = 237219712.917937;
 		state = 2;
 	};
 	3D84C92F0C74E5E800DB0C03 /* allegro.cpp:1554 */ = {
@@ -884,7 +922,7 @@
 		hitCount = 1;
 		lineNumber = 1554;
 		location = libportsmf.ab;
-		modificationTime = 236808306.840253;
+		modificationTime = 237219712.917943;
 		state = 2;
 	};
 	3D84C9310C74E63E00DB0C03 /* XCBreakpointsBucket */ = {
@@ -945,7 +983,7 @@
 		hitCount = 1;
 		lineNumber = 2229;
 		location = libportsmf.ab;
-		modificationTime = 236808306.840257;
+		modificationTime = 237219712.917949;
 		state = 2;
 	};
 	3D84C9490C74E77C00DB0C03 /* allegro.cpp:2244 */ = {
@@ -959,7 +997,7 @@
 		hitCount = 1;
 		lineNumber = 2244;
 		location = libportsmf.ab;
-		modificationTime = 236808306.840261;
+		modificationTime = 237219712.917956;
 		state = 2;
 	};
 	3D84C9740C74EFF000DB0C03 /* allegro.cpp:2246 */ = {
@@ -974,7 +1012,7 @@
 		hitCount = 1;
 		lineNumber = 2246;
 		location = libportsmf.ab;
-		modificationTime = 236808306.840265;
+		modificationTime = 237219712.917963;
 		state = 2;
 	};
 	3D84C9760C74F00300DB0C03 /* allegro.cpp:1574 */ = {
@@ -989,7 +1027,7 @@
 		hitCount = 1;
 		lineNumber = 1574;
 		location = libportsmf.ab;
-		modificationTime = 236808306.840269;
+		modificationTime = 237219712.917969;
 		state = 2;
 	};
 	3D84C99C0C7526D000DB0C03 /* allegro.cpp:1577 */ = {
@@ -1003,7 +1041,7 @@
 		functionName = "Alg_track::convert_to_seconds()";
 		hitCount = 1;
 		lineNumber = 1577;
-		modificationTime = 236808306.840272;
+		modificationTime = 237219712.917975;
 		state = 2;
 	};
 	3D84C99E0C7526D500DB0C03 /* allegro.cpp:1575 */ = {
@@ -1018,7 +1056,7 @@
 		hitCount = 1;
 		lineNumber = 1575;
 		location = libportsmf.ab;
-		modificationTime = 236808306.8402761;
+		modificationTime = 237219712.917982;
 		state = 2;
 	};
 	3D84C9A00C7527F800DB0C03 /* allegroconvert.cpp:138 */ = {
@@ -1033,7 +1071,7 @@
 		hitCount = 1;
 		lineNumber = 138;
 		location = allegroconvert.ob;
-		modificationTime = 236808306.84028;
+		modificationTime = 237219712.917988;
 		state = 2;
 	};
 	3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */ = {
@@ -1055,7 +1093,7 @@
 		functionName = "main()";
 		hitCount = 1;
 		lineNumber = 95;
-		modificationTime = 236809592.538221;
+		modificationTime = 237219740.902828;
 		state = 1;
 	};
 	3D84CA1B0C7540D900DB0C03 /* seq2midi.cpp:200 */ = {
@@ -1069,7 +1107,7 @@
 		functionName = "seq_play()";
 		hitCount = 1;
 		lineNumber = 200;
-		modificationTime = 236809592.538201;
+		modificationTime = 237219740.902813;
 		state = 1;
 	};
 	3DF287380E22BC6B0091AA8F /* PBXTextBookmark */ = {

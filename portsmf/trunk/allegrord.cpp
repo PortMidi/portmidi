@@ -5,6 +5,7 @@
 #include "trace.h"
 #include <string>
 #include <fstream>
+#include <algorithm>
 #include "strparse.h"
 #include "allegro.h"
 #include "algrd_internal.h"

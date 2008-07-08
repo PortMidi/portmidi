@@ -1213,7 +1213,7 @@ Alg_track::Alg_track(Alg_event_list_ref event_list, Alg_time_map_ptr map,
 }
 
 
-void Alg_track::serialize(void **buffer, long *bytes, bool midi)
+void Alg_track::serialize(void **buffer, long *bytes)
 {
     // first determine whether this is a seq or a track.
     // if it is a seq, then we will write the time map and a set of tracks
@@ -1278,7 +1278,7 @@ void Alg_track::serialize(void **buffer, long *bytes, bool midi)
     // The format for a track is given within the Seq format above
     assert(get_type() == 't');
     ser_buf.init_for_write();
-    serialize_track(midi);
+    serialize_track();
     *buffer = ser_buf.to_heap(bytes); 
 }
 
@@ -1342,14 +1342,14 @@ void Alg_seq::serialize_seq(bool midi)
     ser_buf.set_int32(tracks());
     ser_buf.pad(); 
     for (i = 0; i < tracks(); i++) {
-        track(i)->serialize_track(midi);
+        track(i)->serialize_track();
     }
     // do not include ALGS, include padding at end
     ser_buf.store_long(length_offset, ser_buf.get_posn() - length_offset);
 }
 
 
-void Alg_track::serialize_track(bool text)
+void Alg_track::serialize_track()
 {
     // to simplify the code, copy from parameter addresses to locals
     int j;
@@ -1383,7 +1383,7 @@ void Alg_track::serialize_track(bool text)
             ser_buf.set_int32(0); // placeholder for no. parameters
             Alg_parameters_ptr parms = note->parameters;
             while (parms) {
-                serialize_parameter(&(parms->parm), text);
+                serialize_parameter(&(parms->parm));
                 parms = parms->next;
                 parm_num++;
             }
@@ -1391,7 +1391,7 @@ void Alg_track::serialize_track(bool text)
         } else {
             assert(event->is_update());
             Alg_update *update = (Alg_update *) event;
-            serialize_parameter(&(update->parameter), text);
+            serialize_parameter(&(update->parameter));
         }
         ser_buf.check_buffer(7); // maximum padding possible
         ser_buf.pad();
@@ -1401,7 +1401,7 @@ void Alg_track::serialize_track(bool text)
 }
 
 
-void Alg_track::serialize_parameter(Alg_parameter *parm, bool text)
+void Alg_track::serialize_parameter(Alg_parameter *parm)
 {
     // add eight to account for name + zero end-of-string and the
     // possibility of adding 7 padding bytes

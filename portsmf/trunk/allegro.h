@@ -555,12 +555,12 @@ protected:
     double get_double(char **p, long *b);
     float get_float(char **p, long *b);
     static Serial_buffer ser_buf;
-    void serialize_parameter(Alg_parameter *parm, bool text);
+    void serialize_parameter(Alg_parameter *parm);
     // *buffer_ptr points to binary data, bytes_ptr points to how many
     // bytes have been used so far, len is length of binary data
     void unserialize_parameter(Alg_parameter_ptr parm_ptr);
 public:
-    void serialize_track(bool text);
+    void serialize_track();
     void unserialize_track();
     virtual Alg_event_ptr &operator[](int i) {
         assert(i >= 0 && i < len);
@@ -583,7 +583,7 @@ public:
     // file.  It will be an ASCII representation unless text is true.
     // *buffer gets a newly allocated buffer pointer. The caller must free it.
     // *len gets the length of the serialized track
-    virtual void serialize(void **buffer, long *bytes, bool text);
+    virtual void serialize(void **buffer, long *bytes);
 
     // Try to read from a memory buffer.  Automatically guess
     // whether it's MIDI or text.

@@ -76,13 +76,13 @@ Alg_reader::Alg_reader(istream *a_file, Alg_seq_ptr new_seq)
 }
 
 
-Alg_seq_ptr alg_read(istream &file, Alg_seq_ptr new_seq)
+Alg_error alg_read(istream &file, Alg_seq_ptr new_seq)
     // read a sequence from allegro file
 {
     assert(new_seq);
     Alg_reader alg_reader(&file, new_seq);
-    alg_reader.parse();
-    return alg_reader.seq;
+    bool err = alg_reader.parse();
+    return (err ? alg_error_syntax : alg_no_error);
 }
 
 
@@ -372,14 +372,11 @@ bool Alg_reader::parse()
         }
         readline();
     }
-    //print "Finished reading score"
-    if (!error_flag) {
+    if (!error_flag) { // why not convert even if there was an error? -RBD
         seq->convert_to_seconds(); // make sure format is correct
-        // seq->notes.sort('event_greater_than');
     }
     // real_dur is valid, translate to beat_dur
     seq->set_beat_dur((seq->get_time_map())->time_to_beat(seq->get_real_dur()));
-    // print "parse returns error_flag", error_flag
     return error_flag;
 }
 

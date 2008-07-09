@@ -45,7 +45,7 @@ public:
     // copied the pointer elsewhere
     ~Alg_midifile_reader();
     // the following is used to load the Alg_seq from the file:
-    void parse();
+    bool parse();
 
     void set_nomerge(bool flag) { Mf_nomerge = flag; }
     void set_skipinit(bool flag) { Mf_skipinit = flag; }
@@ -94,12 +94,13 @@ Alg_midifile_reader::~Alg_midifile_reader()
 }
 
 
-void Alg_midifile_reader::parse()
+bool Alg_midifile_reader::parse()
 {
     channel_offset = 0;
     seq->convert_to_beats();
     midifile();
     seq->set_real_dur(seq->get_time_map()->beat_to_time(seq->get_beat_dur()));
+    return midifile_error != 0;
 }
 
 
@@ -360,13 +361,13 @@ void Alg_midifile_reader::Mf_text(int type, int len, char *msg)
 
 
 // parse file into a seq. 
-Alg_seq_ptr alg_smf_read(istream &file, Alg_seq_ptr new_seq)
+Alg_error alg_smf_read(istream &file, Alg_seq_ptr new_seq)
 {
     assert(new_seq);
     Alg_midifile_reader ar(file, new_seq);
-    ar.parse();
+    bool err = ar.parse();
     ar.seq->set_real_dur(ar.seq->get_time_map()->
                          beat_to_time(ar.seq->get_beat_dur()));
-    return ar.seq;
+    return (err ? alg_error_syntax : alg_no_error);
 }
 

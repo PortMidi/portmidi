@@ -2208,11 +2208,14 @@ Alg_seq::Alg_seq(const char *filename, bool smf)
 {
     basic_initialization();
     ifstream inf(filename, smf ? ios::binary | ios::in : ios::in);
-    if (inf.fail()) return;
+    if (inf.fail()) {
+        error = alg_error_open;
+        return;
+    }
     if (smf) {
-        alg_smf_read(inf, this);
+        error = alg_smf_read(inf, this);
     } else {
-        alg_read(inf, this);
+        error = alg_read(inf, this);
     }
     inf.close();
 }
@@ -2222,9 +2225,9 @@ Alg_seq::Alg_seq(istream &file, bool smf)
 {
     basic_initialization();
     if (smf) {
-        alg_smf_read(file, this);
+        error = alg_smf_read(file, this);
     } else {
-        alg_read(file, this);
+        error = alg_read(file, this);
     }
 }
 

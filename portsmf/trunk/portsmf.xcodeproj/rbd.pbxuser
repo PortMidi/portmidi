@@ -148,6 +148,9 @@
 			3D2439400E23AF5E0028BF24 /* PBXBookmark */ = 3D2439400E23AF5E0028BF24 /* PBXBookmark */;
 			3D24394E0E23B10A0028BF24 /* PBXTextBookmark */ = 3D24394E0E23B10A0028BF24 /* PBXTextBookmark */;
 			3D24394F0E23B10A0028BF24 /* PBXTextBookmark */ = 3D24394F0E23B10A0028BF24 /* PBXTextBookmark */;
+			3D2439540E240C870028BF24 /* PBXTextBookmark */ = 3D2439540E240C870028BF24 /* PBXTextBookmark */;
+			3D2439550E240C870028BF24 /* PBXTextBookmark */ = 3D2439550E240C870028BF24 /* PBXTextBookmark */;
+			3D2439590E24FB480028BF24 /* PBXTextBookmark */ = 3D2439590E24FB480028BF24 /* PBXTextBookmark */;
 			3DF287380E22BC6B0091AA8F = 3DF287380E22BC6B0091AA8F /* PBXTextBookmark */;
 			3DF287390E22BC6B0091AA8F = 3DF287390E22BC6B0091AA8F /* PBXTextBookmark */;
 		};
@@ -185,6 +188,36 @@
 		name = "allegro.cpp: 2838";
 		rLen = 0;
 		rLoc = 85594;
+		rType = 0;
+		vrLen = 1174;
+		vrLoc = 0;
+	};
+	3D2439540E240C870028BF24 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8D20C73C6B600DB0C03 /* allegrord.cpp */;
+		name = "allegrord.cpp: 730";
+		rLen = 0;
+		rLoc = 24284;
+		rType = 0;
+		vrLen = 1160;
+		vrLoc = 0;
+	};
+	3D2439550E240C870028BF24 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 2838";
+		rLen = 0;
+		rLoc = 85594;
+		rType = 0;
+		vrLen = 1174;
+		vrLoc = 0;
+	};
+	3D2439590E24FB480028BF24 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 2841";
+		rLen = 0;
+		rLoc = 85674;
 		rType = 0;
 		vrLen = 1174;
 		vrLoc = 0;
@@ -699,33 +732,33 @@
 	};
 	3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {639, 45408}}";
-			sepNavSelRange = "{85594, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {639, 45456}}";
+			sepNavSelRange = "{85674, 0}";
 			sepNavVisRect = "{{0, 0}, {639, 744}}";
 			sepNavWindowFrame = "{{20, 2}, {678, 873}}";
 		};
 	};
 	3D84C8CF0C73C6A000DB0C03 /* allegro.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {699, 14672}}";
-			sepNavSelRange = "{24912, 0}";
-			sepNavVisRect = "{{0, 9731}, {682, 320}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1121, 14912}}";
+			sepNavSelRange = "{34018, 30}";
+			sepNavVisRect = "{{0, 13315}, {1121, 138}}";
 			sepNavWindowFrame = "{{11, 5}, {678, 873}}";
 		};
 	};
 	3D84C8D20C73C6B600DB0C03 /* allegrord.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1233, 11728}}";
-			sepNavSelRange = "{24284, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {1233, 11680}}";
+			sepNavSelRange = "{24252, 0}";
 			sepNavVisRect = "{{0, 0}, {1233, 681}}";
 			sepNavWindowFrame = "{{19, 63}, {1272, 810}}";
 		};
 	};
 	3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {685, 5968}}";
-			sepNavSelRange = "{4188, 0}";
-			sepNavVisRect = "{{0, 4712}, {682, 320}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1121, 5984}}";
+			sepNavSelRange = "{9798, 0}";
+			sepNavVisRect = "{{0, 1475}, {1121, 138}}";
 			sepNavWindowFrame = "{{709, -2}, {678, 873}}";
 		};
 	};

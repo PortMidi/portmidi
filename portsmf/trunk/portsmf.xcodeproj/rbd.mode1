@@ -190,46 +190,6 @@
 			<key>Content</key>
 			<dict>
 				<key>PBXProjectModuleGUID</key>
-				<string>3D24394C0E23B10A0028BF24</string>
-				<key>PBXProjectModuleLabel</key>
-				<string>allegrord.cpp</string>
-				<key>PBXSplitModuleInNavigatorKey</key>
-				<dict>
-					<key>Split0</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
-						<string>3D24394D0E23B10A0028BF24</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>allegrord.cpp</string>
-						<key>_historyCapacity</key>
-						<integer>0</integer>
-						<key>bookmark</key>
-						<string>3D24394E0E23B10A0028BF24</string>
-						<key>history</key>
-						<array>
-							<string>3D2439400E23AF5E0028BF24</string>
-						</array>
-					</dict>
-					<key>SplitCount</key>
-					<string>1</string>
-				</dict>
-				<key>StatusBarVisibility</key>
-				<true/>
-			</dict>
-			<key>Geometry</key>
-			<dict>
-				<key>Frame</key>
-				<string>{{0, 20}, {1272, 713}}</string>
-				<key>PBXModuleWindowStatusBarHidden2</key>
-				<false/>
-				<key>RubberWindowFrame</key>
-				<string>19 119 1272 754 0 0 1440 878 </string>
-			</dict>
-		</dict>
-		<dict>
-			<key>Content</key>
-			<dict>
-				<key>PBXProjectModuleGUID</key>
 				<string>3DF287360E22BC6B0091AA8F</string>
 				<key>PBXProjectModuleLabel</key>
 				<string>allegro.cpp</string>
@@ -244,7 +204,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>3D24394F0E23B10A0028BF24</string>
+						<string>3D2439590E24FB480028BF24</string>
 						<key>history</key>
 						<array>
 							<string>3DF287390E22BC6B0091AA8F</string>
@@ -594,10 +554,9 @@
 		<string>3D2439490E23AFA20028BF24</string>
 		<string>3DF287360E22BC6B0091AA8F</string>
 		<string>/Users/rbd/portmedia/portsmf/portsmf.xcodeproj</string>
-		<string>3D24394C0E23B10A0028BF24</string>
 		<string>3D84C93F0C74E68D00DB0C03</string>
-		<string>3D84C8ED0C73C85E00DB0C03</string>
 		<string>1C0AD2B3069F1EA900FABCE6</string>
+		<string>3D84C8ED0C73C85E00DB0C03</string>
 	</array>
 	<key>WindowString</key>
 	<string>679 297 729 581 0 0 1440 878 </string>
@@ -616,12 +575,14 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string></string>
+								<string>mfmidi.h</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -630,7 +591,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {1162, 170}}</string>
 								<key>RubberWindowFrame</key>
-								<string>557 182 1162 631 0 0 1440 878 </string>
+								<string>61 91 1162 631 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -638,8 +599,6 @@
 							<string>170pt</string>
 						</dict>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXBuildLogShowsTranscriptDefaultKey</key>
@@ -658,7 +617,7 @@
 								<key>Frame</key>
 								<string>{{0, 175}, {1162, 415}}</string>
 								<key>RubberWindowFrame</key>
-								<string>557 182 1162 631 0 0 1440 878 </string>
+								<string>61 91 1162 631 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXBuildResultsModule</string>
@@ -688,7 +647,7 @@
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.build</string>
 			<key>WindowString</key>
-			<string>557 182 1162 631 0 0 1440 878 </string>
+			<string>61 91 1162 631 0 0 1440 878 </string>
 			<key>WindowToolGUID</key>
 			<string>3D84C8ED0C73C85E00DB0C03</string>
 			<key>WindowToolIsVisible</key>

@@ -809,6 +809,17 @@ public:
 } *Alg_tracks_ptr;
 
 
+typedef enum {
+    alg_no_error = 0,      // no error reading Allegro or MIDI file
+    alg_error_open = -800, // could not open Allegro or MIDI file
+    alg_error_syntax       // something found in the file that could not be parsed;
+    // generally you should ignore syntax errors or look at the printed error messages
+    // because there are some things in standard midi files that we do not handle;
+    // (maybe we should only set alg_error_syntax when there is a real problem with
+    // the file as opposed to when there is some warning message for the user)
+} Alg_error;
+
+
 // An Alg_seq is an array of Alg_events, each a sequence of Alg_event, 
 // with a tempo map and a sequence of time signatures
 //
@@ -816,12 +827,14 @@ typedef class Alg_seq : public Alg_track {
 protected:
     long *current; // array of indexes used by iteration methods
     void serialize_seq(bool text);
+    Alg_error error; // error code set by file readers
 public:
     int channel_offset_per_track; // used to encode track_num into channel
     Alg_tracks track_list;       // array of Alg_events
     Alg_time_sigs time_sig;
     int beat_x;
     void basic_initialization() {
+        error = alg_no_error;
         units_are_seconds = true; type = 's';
         channel_offset_per_track = 0;
         add_track(0); // default is one empty track
@@ -837,6 +850,7 @@ public:
     Alg_seq(std::istream &file, bool smf); // create from file
     Alg_seq(const char *filename, bool smf); // create from filename
     ~Alg_seq();
+    int get_read_error() { return error; }
     void serialize(void **buffer, long *bytes, bool text);
     void copy_time_sigs_to(Alg_seq *dest); // a utility function
 

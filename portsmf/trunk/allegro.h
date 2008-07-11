@@ -826,7 +826,7 @@ typedef enum {
 typedef class Alg_seq : public Alg_track {
 protected:
     long *current; // array of indexes used by iteration methods
-    void serialize_seq(bool text);
+    void serialize_seq();
     Alg_error error; // error code set by file readers
 public:
     int channel_offset_per_track; // used to encode track_num into channel
@@ -851,7 +851,7 @@ public:
     Alg_seq(const char *filename, bool smf); // create from filename
     ~Alg_seq();
     int get_read_error() { return error; }
-    void serialize(void **buffer, long *bytes, bool text);
+    void serialize(void **buffer, long *bytes);
     void copy_time_sigs_to(Alg_seq *dest); // a utility function
 
     // encode sequence structure into contiguous, moveable memory block

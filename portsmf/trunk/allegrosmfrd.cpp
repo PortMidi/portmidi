@@ -370,4 +370,3 @@ Alg_error alg_smf_read(istream &file, Alg_seq_ptr new_seq)
                          beat_to_time(ar.seq->get_beat_dur()));
     return (err ? alg_error_syntax : alg_no_error);
 }
-

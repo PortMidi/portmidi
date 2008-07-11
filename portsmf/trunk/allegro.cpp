@@ -1283,11 +1283,11 @@ void Alg_track::serialize(void **buffer, long *bytes)
 }
 
 
-void Alg_seq::serialize(void **buffer, long *bytes, bool midi)
+void Alg_seq::serialize(void **buffer, long *bytes)
 {	
     assert(get_type() == 's');
     ser_buf.init_for_write();
-    serialize_seq(midi);
+    serialize_seq();
     *buffer = ser_buf.to_heap(bytes); 
 }
 
@@ -1310,7 +1310,7 @@ void Serial_buffer::check_buffer(long needed)
 }
 
 
-void Alg_seq::serialize_seq(bool midi)
+void Alg_seq::serialize_seq()
 {
     int i; // loop counters
     // we can easily compute how much buffer space we need until we

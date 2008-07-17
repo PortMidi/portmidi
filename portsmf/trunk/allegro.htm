@@ -249,8 +249,12 @@ if only pitch bend is updated.
 <p>To get MIDI-like semantics, the keyi (K) attribute should not be specified
 at all. If you specify pitch using P or A through G, then the key will
 be implied by the pitch, and notes will therefore be identified as in MIDI.
-For example, a MIDI note-off message uses pitch to say which note to turn
-off. If keyi (K) is not specified, control changes will have no keyi and
+For example, a MIDI note-off message uses key number (not pitch, which may
+depend upon pitch-bend, etc.) to say which note to turn off.
+<p>If the key (K) is specified and less than 128, and no pitch is specified,
+then the pitch will default to the the key number. Thus K60 (with no P60
+or C4 pitch specifications) is equivalent to P60 or C4.
+<p>If keyi (K) is not specified, control changes will have no keyi and
 therefore apply to the channel as a whole. This also corresponds to MIDI.
 The one exception to this is that pressure (polyphonic aftertouch) MIDI
 messages need a key number. If you specify pitch along with the control

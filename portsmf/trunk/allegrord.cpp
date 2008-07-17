@@ -155,12 +155,10 @@ bool Alg_reader::parse()
         bool voice_flag = false;
         bool loud_flag = false;
         bool dur_flag = false;
-        bool new_pitch_flag = false; // "P" syntax
+        bool new_pitch_flag = false; // "P" syntax or "A"-"G" syntax
         double new_pitch = 0.0;
         bool new_key_flag = false;   // "K" syntax
         int new_key = 0;
-        bool new_note_flag = false;  // "A"-"G" syntax
-        int new_note = 0;
         Alg_parameters_ptr attributes = NULL;
         if (line_parser.peek() == '#') {
             // look for #track
@@ -226,7 +224,7 @@ bool Alg_reader::parse()
                     }
                     loud_flag = true;
                 } else if (first == 'P') {
-                    if (new_note_flag || new_pitch_flag) {
+                    if (new_pitch_flag) {
                         parse_error(field, 0, "Pitch specified twice");
                     } else {
                         new_pitch = parse_pitch(field);
@@ -249,13 +247,13 @@ bool Alg_reader::parse()
                         dur_flag = true;
                     }
                 } else if (strchr("ABCDEFG", first)) {
-                    if (new_note_flag || new_pitch_flag) {
+                    if (new_pitch_flag) {
                         parse_error(field, 0, "Pitch specified twice");
                     } else {
-                        // prepend 'K' to field, copy EOS too
-                        field.insert(0, 1, 'K');
-                        new_note = parse_key(field);
-                        new_note_flag = true;
+                        // prepend 'P' to field
+                        field.insert(0, 1, 'P');
+                        new_pitch = parse_pitch(field);
+                        new_pitch_flag = true;
                     }
                 } else if (first == '-') {
                     Alg_parameter parm;
@@ -284,33 +282,37 @@ bool Alg_reader::parse()
                 }
             }
             // a case analysis:
-            // Key < 128 counts as both key and pitch
-            // A-G implies pitch AND key unless key given too
+            // Key < 128 implies pitch unless pitch is explicitly given
+            // Pitch implies Key unless key is explicitly given,
+            // Pitch is rounded to nearest integer to determine the Key
+            //    if necessary, so MIDI files will lose the pitch fraction
+            // A-G is a Pitch specification (therefore it implies Key)
             //   K60 P60 -- both are specified, use 'em
             //   K60 P60 C4 -- overconstrained, an error
-            //   K60 C4 -- overconstrained
+            //   K60 C4 -- OK, but K60 is already implied by C4
             //   K60 -- OK, pitch is 60
             //   C4 P60 -- over constrained
-            //   P60 -- OK, key is from before, pitch is 60
+            //   P60 -- OK, key is 60
+            //   P60.1 -- OK, key is 60
             //   C4 -- OK, key is 60, pitch is 60
             //   <nothing> -- OK, key and pitch from before
-            //   K200 with P60 ok, pitch is 60
+            //   K200 P60 -- ok, pitch is 60
             //   K200 with neither P60 nor C4 uses 
             //       pitch from before
+
             // figure out what the key/instance is:
             if (new_key_flag) { // it was directly specified
                 key = new_key;
-                if (key < 128 && new_note_flag) {
-                    string empty;
-                    parse_error(empty, 0, "Pitch specified twice");
-                }
-            } else if (new_note_flag) { // "A"-"G" used
-                key = new_note;
+            } else if (new_pitch_flag) {
+                // pitch was specified, but key was not; get key from pitch
+                key = (int) (new_pitch + 0.5); // round to integer key number
             }
             if (new_pitch_flag) {
                 pitch = new_pitch;
-            } else if (key < 128) {
+            } else if (key < 128 && new_key_flag) {
+                // no explicit pitch, but key < 128, so it implies pitch
                 pitch = key;
+                new_pitch_flag = true;
             }
             // now we've acquired new parameters
             // if (it is a note, then enter the note
@@ -318,9 +320,7 @@ bool Alg_reader::parse()
                 // change tempo or beat
                 attributes = process_attributes(attributes, time);
                 // if there's a duration or pitch, make a note:
-                if (new_pitch_flag || dur_flag || new_note_flag) {
-                    new_key_flag = false;
-                    new_pitch_flag = false;
+                if (new_pitch_flag || dur_flag) {
                     Alg_note_ptr note_ptr = new Alg_note;
                     note_ptr->chan = voice;
                     note_ptr->time = time;
@@ -333,9 +333,9 @@ bool Alg_reader::parse()
                     if (seq->get_real_dur() < (time + dur)) seq->set_real_dur(time + dur);
                 } else {
                     int update_key = -1;
-                    // key or pitch must appear explicitly; otherwise
+                    // key must appear explicitly; otherwise
                     //    update applies to channel
-                    if (new_key_flag || new_pitch_flag) {
+                    if (new_key_flag) {
                         update_key = key;
                     }
                     if (loud_flag) {
@@ -365,7 +365,7 @@ bool Alg_reader::parse()
                 }
                 if (next_flag) {
                     time = time + next;
-                } else if (dur_flag) {
+                } else if (dur_flag || new_pitch_flag) { // a note: incr by dur
                     time = time + dur;
                 }
             }
@@ -496,7 +496,7 @@ double Alg_reader::parse_dur(string &field, double base)
         // convert dur from seconds to beats
         dur = seq->get_time_map()->time_to_beat(base + dur) - 
               seq->get_time_map()->time_to_beat(base);
-    } else if (p = strchr(durs, field[1])) {
+    } else if (p = strchr(durs, toupper(field[1]))) {
         dur = duration_lookup[p - durs];
         last = 2;
     } else {
@@ -516,7 +516,7 @@ double Alg_reader::parse_after_dur(double dur, string &field,
     if ((int) field.length() == n) {
         return dur;
     }
-    if (field[n] == 'T') {
+    if (toupper(field[n]) == 'T') {
         return parse_after_dur(dur * 2/3, field, n + 1, base);
     }
     if (field[n] == '.') {
@@ -568,14 +568,20 @@ double Alg_reader::parse_loud(string &field)
 int key_lookup[] = {21, 23, 12, 14, 16, 17, 19};
 
 
+// the field can be K<number> or K[A-G]<number> or P[A-G]<number>
+// (this can be called from parse_pitch() to handle [A-G])
+// Notice that the routine ignores the first character: K or P
+//
 long Alg_reader::parse_key(string &field)
 {
     char *msg = "Pitch expected";
     char *pitches = "ABCDEFG";
     char *p;
     if (isdigit(field[1])) {
+        // This routine would not have been called if field = "P<number>"
+        // so it must be "K<number>" so <number> must be an integer.
         return parse_int(field);
-    } else if (p = strchr(pitches, field[1])) {
+    } else if (p = strchr(pitches, toupper(field[1]))) {
         long key = key_lookup[p - pitches];
         key = parse_after_key(key, field, 2);
         return key;
@@ -597,7 +603,7 @@ long Alg_reader::parse_after_key(int key, string &field, int n)
     if (c == 'F') {
         return parse_after_key(key - 1, field, n + 1);
     }
-    if (isdigit(c)) {
+    if (isdigit(field[n])) {
         int last = find_int_in(field, n);
         string octave = field.substr(n, last - n);
         int oct = atoi(octave.c_str());

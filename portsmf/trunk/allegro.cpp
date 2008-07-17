@@ -2584,11 +2584,31 @@ void Alg_seq::clear_track(int track_num, double start, double len, bool all)
 }
 
 
-void Alg_seq::clear(double t, double len, bool all)
+void Alg_seq::clear(double start, double len, bool all)
 {
-    for (int i = 0; i < tracks(); i++) {
-        clear_track(i, t, len, all);
+    // Fix parameters to fall within existing sequence
+    if (start > get_dur()) return; // nothing to cut
+    if (start < 0) start = 0; // can't start before sequence starts
+    if (start + len > get_dur()) // can't cut after end:
+        len = get_dur() - start;
+
+    for (int i = 0; i < tracks(); i++)
+        clear_track(i, start, len, all);
+
+    // Put units in beats to match time_sig's.
+    double ts_start = start;
+    double ts_end = start + len;
+    if (units_are_seconds) {
+        ts_start = time_map->time_to_beat(ts_start);
+        ts_end = time_map->time_to_beat(ts_end);
     }
+
+    // we sliced out a portion of each track, so now we need to
+    // slice out the corresponding sections of time_sig and time_map
+    // as well as to adjust the duration.
+    time_sig.cut(ts_start, ts_end);
+    time_map->cut(start, len, units_are_seconds);
+    set_dur(get_dur() - len);
 }
 
 

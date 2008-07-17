@@ -1,6 +1,12 @@
-#include "snd.h"
+
+#include <fstream>
+#include "sndfile.h"
+#include "allegro.h"
+#include "audioreader.h"
 #include "gen_chroma.h"
 #include  "comp_chroma.h"
+
+using namespace std;
 
 /*				NORM_CHROMA
  *

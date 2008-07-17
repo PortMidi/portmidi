@@ -1,6 +1,6 @@
 scorealign -- a program for audio-to-audio and audio-to-midi alignment
 
-Last updated July 3, 2008 by RBD
+Last updated July 17, 2008 by RBD
 
 Contributors include: 
              Ning Hu
@@ -21,6 +21,9 @@ Output includes a map from one version to the other. If one file is MIDI,
 output also includes (1) an estimated transcript in ASCII format with time, 
 pitch, MIDI channel, and duration of each notes in the audio file, (2) a
 time-aligned midi file, and (3) a text file with beat times.
+
+scorealign uses libsndfile (http://www.mega-nerd.com/libsndfile/). You must
+install libsndfile to build scorealign.
 
 For Macintosh OS X, use Xcode to open scorealign.xcodeproj
 For Linux, use "make -f Makefile.linux"
@@ -80,3 +83,37 @@ be fairly straight. Linear interpolation is used to estimate chroma distance
 since the lines do always pass through integer frame locations. This approach
 is probably good when the audio is known to have a steady tempo or be 
 performed with tempo changes that match those in the midi file.
+
+Some notes on the software architecture of scorealign:
+
+scorealign was originally implemented as a fairly monolithic program
+in MatLab. It was ported to C++. To incorporate this code into Audacity,
+the code was restructured so that audio input is obtained from
+Audio_reader, an abstract class that calls on a subclass to implement
+read(). The subclass just copies floats into the provided buffer. It is
+responsible for sample format conversion, stereo-to-mono conversion, etc.
+The Audio_reader returns possibly overlapping buffers of floats. The
+Audio_file_reader subclass uses libsndfile to read in samples and convert
+them to float. It does its own conversion to mono.
+
+When scorealign is used in Audacity, a different subclass of Audio_reader
+will call into Audacity using a Mixer object to retrieve samples from
+selected tracks.
+
+For use from the command line, scorealign has a module main.cpp that 
+parses command line arguments. A lot of parameters and options that 
+were formerly globals are now stored in a Scorealign object that is
+passed around to many routines and methods. main.cpp creates a (global)
+Scorealign object and uses code in the module alignfiles.cpp to do the
+work. The purpose of alignfiles is to provide an API that does not 
+depend upon a command line interface, but which assumes you are aligning
+files. Finally, alignfiles.cpp uses an Audio_file_reader to offer
+samples to the main score alignment algorithm.
+
+To summarize:
+   scorealign.cpp and gen_chroma.cpp do most of the pure alignment work
+   audioreader.cpp abstracts the source of audio, whether it comes from
+      a file or some other source
+   alignfiles.cpp opens files and invokes the modules above
+   main.cpp parses the command line and invokes alignfiles.
+

@@ -36,4 +36,5 @@
  * is not critical, the alignment will avoid any rubato or over-fitting.
  */
 
-void curve_fitting(float line_time);
+void curve_fitting(Scorealign *sa, bool verbose);
+

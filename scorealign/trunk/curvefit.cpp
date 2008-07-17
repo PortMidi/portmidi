@@ -7,25 +7,20 @@
  *
  */
 
-#include "hillclimb.h"
-#include "curvefit.h"
 #include "assert.h"
 #include "comp_chroma.h"
 #include "sautils.h"
+// the following are needed to get Scorealign
+#include "sndfile.h"
+#include <fstream>
+#include "allegro.h"
+#include "audioreader.h"
+#include "audiofilereader.h"
+#include "scorealign.h"
+#include "hillclimb.h"
+#include "curvefit.h"
 
 void save_path(char *filename);
-
-// This global data should be moved to some separate file, or at least
-// there should be a special header to declare them.
-extern float *chrom_energy1;
-extern int file1_frames;
-extern float *chrom_energy2;
-extern int file2_frames;
-extern float actual_frame_period_1;
-extern short *pathx;
-extern short *pathy;
-extern int pathlen;
-extern float *time_map;
 
 /* Curvefit class: do hill-climbing to fit lines to data
  *
@@ -55,12 +50,18 @@ extern float *time_map;
 
 class Curvefit : public Hillclimb {
 public:
+    Curvefit(Scorealign *sa_, bool verbose_) { sa = sa_; verbose = verbose_; }
     virtual double evaluate();
     void setup(int n);
     double *get_x() { return x; }
 private:
+    Scorealign *sa;
+    bool verbose;
     double line_dist(int i); // get cost of line segment i
     double compute_dist(int i); // compute cost of line segment i
+    double distance_rc(int row, int col);
+    double distance_xy(double x, double y);
+
     double *p1_cache; // left endpoint y values
     double *p2_cache; // right endpoint y values
     double *d_cache; // cached cost of line segment
@@ -113,19 +114,20 @@ void Curvefit::setup(int segments)
     max_param = ALLOC(double, n);
     int i;
     // ideal frames per segment
-    float seg_length = ((float) (file1_frames - 1)) / segments;
+    float seg_length = ((float) (sa->file1_frames - 1)) / segments;
     for (i = 0; i < n; i++) { // initialize cache keys to garbage
         p1_cache[i] = p2_cache[i] = -999999.99;
         // initialize x values
         x[i] = ROUND(i * seg_length);
         // now initialize parameters based on pathx/pathy/time_map
         // time_map has y values for each x
-        parameters[i] = time_map[(int) x[i]];
-        printf("initial x[%d] = %g, parameters[%d] = %g\n", 
-               i, x[i], i, parameters[i]);
+        parameters[i] = sa->time_map[(int) x[i]];
+        if (verbose)
+            printf("initial x[%d] = %g, parameters[%d] = %g\n", 
+                   i, x[i], i, parameters[i]);
         step_size[i] = 0.5;
         min_param[i] = 0;
-        max_param[i] = file2_frames - 1;
+        max_param[i] = sa->file2_frames - 1;
     }
 }
 
@@ -155,15 +157,15 @@ void Curvefit::setup(int segments)
 //    if (dist == -1) { return distances[20 * row + i] = compute_distance...}
 //    return dist;
 //
-static double distance_rc(int row, int col)
+double Curvefit::distance_rc(int row, int col)
 {
-    return gen_dist(row, col, chrom_energy1, chrom_energy2);
+    return gen_dist(row, col, sa->chrom_energy1, sa->chrom_energy2);
 }
 
 
 // compute distance from distance matrix using interpolation. A least
 // one of x, y should be an integer value so interpolation is only 2-way
-static double distance_xy(double x, double y)
+double Curvefit::distance_xy(double x, double y)
 {
     int xi = (int) x;
     int yi = (int) y;
@@ -176,7 +178,8 @@ static double distance_xy(double x, double y)
         double d2 = distance_rc(xi + 1, yi);
         return interpolate(xi, d1, xi + 1, d2, x);
     } else {
-        printf("FATAL INTERNAL ERROR IN distance_xy: neither x nor y is an integer\n");
+        printf("FATAL INTERNAL ERROR IN distance_xy: neither x nor y is "
+               "an integer\n");
         assert(false);
     }
 }
@@ -211,16 +214,18 @@ double Curvefit::compute_dist(int i)
 }
 
     
-void curve_fitting(float line_time)
+void curve_fitting(Scorealign *sa, bool verbose)
 {
-    printf("Performing line-segment approximation with %gs segments.\n", 
-           line_time);
-    Curvefit curvefit;
+    if (verbose)
+        printf("Performing line-segment approximation with %gs segments.\n", 
+               sa->line_time);
+    Curvefit curvefit(sa, verbose);
     double *parameters;
     double *x;
     // how many segments? About total time / line_time:
     int segments = 
-            (int) (0.5 + (actual_frame_period_1 * file1_frames) / line_time);
+        (int) (0.5 + (sa->actual_frame_period_1 * sa->file1_frames) /
+                     sa->line_time);
     curvefit.setup(segments);
     curvefit.optimize();
     parameters = curvefit.get_parameters();
@@ -240,24 +245,24 @@ void curve_fitting(float line_time)
         if (dx >= dy) { // output point at each x
             int x;
             for (x = x1; x < x2; x++) {
-                pathx[j] = x;
-                pathy[j] = (int) (0.5 + interpolate(x1, y1, x2, y2, x));
+                sa->pathx[j] = x;
+                sa->pathy[j] = (int) (0.5 + interpolate(x1, y1, x2, y2, x));
                 j++;
             }
         } else {
             int y;
             for (y = y1; y < y2; y++) {
-                pathx[j] = (int) (0.5 + interpolate(y1, x1, y2, x2, y));
-                pathy[j] = y;
+                sa->pathx[j] = (int) (0.5 + interpolate(y1, x1, y2, x2, y));
+                sa->pathy[j] = y;
                 j++;
             }
         }
     }
     // output last point
-    pathx[j] = (int) x[segments];
-    pathy[j] = (int) (0.5 + parameters[segments]);
+    sa->pathx[j] = (int) x[segments];
+    sa->pathy[j] = (int) (0.5 + parameters[segments]);
     j++;
-    pathlen = j;
+    sa->set_pathlen(j);
 }
 
 

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D848DC60E2C391300EDB5E3 /* audiofilereader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D848DC50E2C391300EDB5E3 /* audiofilereader.cpp */; };
+		3D848DC90E2C392600EDB5E3 /* audioreader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D848DC80E2C392600EDB5E3 /* audioreader.cpp */; };
+		3D848E540E2CE2B300EDB5E3 /* alignfiles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D848E530E2CE2B300EDB5E3 /* alignfiles.cpp */; };
+		3D848E7A0E2CEC4200EDB5E3 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D848E790E2CEC4200EDB5E3 /* main.cpp */; };
 		3D9037AD0CC7CB3C00F46FD5 /* comp_chroma.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D9037AB0CC7CB3C00F46FD5 /* comp_chroma.cpp */; };
 		3D9037AE0CC7CB3C00F46FD5 /* comp_chroma.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D9037AC0CC7CB3C00F46FD5 /* comp_chroma.h */; };
 		3D9037B10CC7CB9C00F46FD5 /* gen_chroma.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D9037AF0CC7CB9C00F46FD5 /* gen_chroma.cpp */; };
@@ -17,9 +21,6 @@
 		3D9037BE0CC7D18F00F46FD5 /* scorealign.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D9037BC0CC7D18F00F46FD5 /* scorealign.h */; };
 		3D9037C10CC7D19A00F46FD5 /* FFT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D9037BF0CC7D19A00F46FD5 /* FFT.cpp */; };
 		3D9037C20CC7D19A00F46FD5 /* FFT.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D9037C00CC7D19A00F46FD5 /* FFT.h */; };
-		3D9037CC0CC7D1D500F46FD5 /* sndfileio.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D9037CB0CC7D1D500F46FD5 /* sndfileio.h */; };
-		3D9037CE0CC7D1EE00F46FD5 /* sndio.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D9037CD0CC7D1EE00F46FD5 /* sndio.c */; };
-		3D9037D20CC7D21300F46FD5 /* sndwrite.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D9037CF0CC7D21300F46FD5 /* sndwrite.h */; };
 		3D9037D30CC7D21300F46FD5 /* switches.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D9037D00CC7D21300F46FD5 /* switches.h */; };
 		3D9037D40CC7D21300F46FD5 /* swlogic.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D9037D10CC7D21300F46FD5 /* swlogic.h */; };
 		3D9037E20CC7E2E000F46FD5 /* allegro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D9037E10CC7E2E000F46FD5 /* allegro.cpp */; };
@@ -32,16 +33,8 @@
 		3D9037F30CC7E33D00F46FD5 /* strparse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D9037F10CC7E33D00F46FD5 /* strparse.cpp */; };
 		3D9037F40CC7E33D00F46FD5 /* strparse.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D9037F20CC7E33D00F46FD5 /* strparse.h */; };
 		3D9037FF0CC7E46700F46FD5 /* mfmidi.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D9037FE0CC7E46700F46FD5 /* mfmidi.h */; };
-		3D9038020CC7E4BF00F46FD5 /* sndcvt.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D9038010CC7E4BF00F46FD5 /* sndcvt.c */; };
-		3D9038050CC7E4EE00F46FD5 /* sndheader.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D9038040CC7E4EE00F46FD5 /* sndheader.c */; };
-		3D9038090CC7E54000F46FD5 /* snd.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D9038070CC7E54000F46FD5 /* snd.c */; };
-		3D90380A0CC7E54000F46FD5 /* snd.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D9038080CC7E54000F46FD5 /* snd.h */; };
 		3D90380D0CC7E55200F46FD5 /* ieeecvt.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D90380B0CC7E55200F46FD5 /* ieeecvt.c */; };
 		3D90380E0CC7E55200F46FD5 /* ieeecvt.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D90380C0CC7E55200F46FD5 /* ieeecvt.h */; };
-		3D9038110CC7E58B00F46FD5 /* sndfaillinux.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D9038100CC7E58B00F46FD5 /* sndfaillinux.c */; };
-		3D9038150CC7E5B700F46FD5 /* sndlinux.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D9038130CC7E5B700F46FD5 /* sndlinux.c */; };
-		3D9038160CC7E5B700F46FD5 /* sndlinux.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D9038140CC7E5B700F46FD5 /* sndlinux.h */; };
-		3D9038190CC7E5FD00F46FD5 /* audionone.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D9038180CC7E5FD00F46FD5 /* audionone.c */; };
 		3D9038800CC9B54000F46FD5 /* curvefit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D90387E0CC9B54000F46FD5 /* curvefit.h */; };
 		3D9038810CC9B54000F46FD5 /* curvefit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3D90387F0CC9B54000F46FD5 /* curvefit.cpp */; };
 		3D9038880CCA25E100F46FD5 /* hillclimb.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D9038860CCA25E100F46FD5 /* hillclimb.h */; };
@@ -64,16 +57,12 @@
 				3D9037BA0CC7D18400F46FD5 /* regression.h in CopyFiles */,
 				3D9037BE0CC7D18F00F46FD5 /* scorealign.h in CopyFiles */,
 				3D9037C20CC7D19A00F46FD5 /* FFT.h in CopyFiles */,
-				3D9037CC0CC7D1D500F46FD5 /* sndfileio.h in CopyFiles */,
-				3D9037D20CC7D21300F46FD5 /* sndwrite.h in CopyFiles */,
 				3D9037D30CC7D21300F46FD5 /* switches.h in CopyFiles */,
 				3D9037D40CC7D21300F46FD5 /* swlogic.h in CopyFiles */,
 				3D9037E40CC7E2F700F46FD5 /* allegro.h in CopyFiles */,
 				3D9037F40CC7E33D00F46FD5 /* strparse.h in CopyFiles */,
 				3D9037FF0CC7E46700F46FD5 /* mfmidi.h in CopyFiles */,
-				3D90380A0CC7E54000F46FD5 /* snd.h in CopyFiles */,
 				3D90380E0CC7E55200F46FD5 /* ieeecvt.h in CopyFiles */,
-				3D9038160CC7E5B700F46FD5 /* sndlinux.h in CopyFiles */,
 				3D9038800CC9B54000F46FD5 /* curvefit.h in CopyFiles */,
 				3D9038880CCA25E100F46FD5 /* hillclimb.h in CopyFiles */,
 				3D9038DE0CCA815D00F46FD5 /* sautils.h in CopyFiles */,
@@ -83,6 +72,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3D848DC50E2C391300EDB5E3 /* audiofilereader.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = audiofilereader.cpp; sourceTree = "<group>"; };
+		3D848DC80E2C392600EDB5E3 /* audioreader.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = audioreader.cpp; sourceTree = "<group>"; };
+		3D848E530E2CE2B300EDB5E3 /* alignfiles.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = alignfiles.cpp; sourceTree = "<group>"; };
+		3D848E790E2CEC4200EDB5E3 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		3D9037AB0CC7CB3C00F46FD5 /* comp_chroma.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = comp_chroma.cpp; sourceTree = "<group>"; };
 		3D9037AC0CC7CB3C00F46FD5 /* comp_chroma.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = comp_chroma.h; sourceTree = "<group>"; };
 		3D9037AF0CC7CB9C00F46FD5 /* gen_chroma.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = gen_chroma.cpp; sourceTree = "<group>"; };
@@ -93,9 +86,6 @@
 		3D9037BC0CC7D18F00F46FD5 /* scorealign.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = scorealign.h; sourceTree = "<group>"; };
 		3D9037BF0CC7D19A00F46FD5 /* FFT.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = FFT.cpp; path = fft3/FFT.cpp; sourceTree = "<group>"; };
 		3D9037C00CC7D19A00F46FD5 /* FFT.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = FFT.h; path = fft3/FFT.h; sourceTree = "<group>"; };
-		3D9037CB0CC7D1D500F46FD5 /* sndfileio.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = sndfileio.h; path = snd/sndfileio.h; sourceTree = "<group>"; };
-		3D9037CD0CC7D1EE00F46FD5 /* sndio.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = sndio.c; path = snd/sndio.c; sourceTree = "<group>"; };
-		3D9037CF0CC7D21300F46FD5 /* sndwrite.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = sndwrite.h; path = snd/sndwrite.h; sourceTree = "<group>"; };
 		3D9037D00CC7D21300F46FD5 /* switches.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = switches.h; path = snd/switches.h; sourceTree = "<group>"; };
 		3D9037D10CC7D21300F46FD5 /* swlogic.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = swlogic.h; path = snd/swlogic.h; sourceTree = "<group>"; };
 		3D9037E10CC7E2E000F46FD5 /* allegro.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = allegro.cpp; path = ../portsmf/allegro.cpp; sourceTree = SOURCE_ROOT; };
@@ -108,16 +98,8 @@
 		3D9037F10CC7E33D00F46FD5 /* strparse.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = strparse.cpp; path = ../portsmf/strparse.cpp; sourceTree = SOURCE_ROOT; };
 		3D9037F20CC7E33D00F46FD5 /* strparse.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = strparse.h; path = ../portsmf/strparse.h; sourceTree = SOURCE_ROOT; };
 		3D9037FE0CC7E46700F46FD5 /* mfmidi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = mfmidi.h; path = ../portsmf/mfmidi.h; sourceTree = SOURCE_ROOT; };
-		3D9038010CC7E4BF00F46FD5 /* sndcvt.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = sndcvt.c; path = snd/sndcvt.c; sourceTree = "<group>"; };
-		3D9038040CC7E4EE00F46FD5 /* sndheader.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = sndheader.c; path = snd/sndheader.c; sourceTree = "<group>"; };
-		3D9038070CC7E54000F46FD5 /* snd.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = snd.c; path = snd/snd.c; sourceTree = "<group>"; };
-		3D9038080CC7E54000F46FD5 /* snd.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = snd.h; path = snd/snd.h; sourceTree = "<group>"; };
 		3D90380B0CC7E55200F46FD5 /* ieeecvt.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = ieeecvt.c; path = snd/ieeecvt.c; sourceTree = "<group>"; };
 		3D90380C0CC7E55200F46FD5 /* ieeecvt.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = ieeecvt.h; path = snd/ieeecvt.h; sourceTree = "<group>"; };
-		3D9038100CC7E58B00F46FD5 /* sndfaillinux.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = sndfaillinux.c; path = snd/sndfaillinux.c; sourceTree = "<group>"; };
-		3D9038130CC7E5B700F46FD5 /* sndlinux.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = sndlinux.c; path = snd/sndlinux.c; sourceTree = "<group>"; };
-		3D9038140CC7E5B700F46FD5 /* sndlinux.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = sndlinux.h; path = snd/sndlinux.h; sourceTree = "<group>"; };
-		3D9038180CC7E5FD00F46FD5 /* audionone.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = audionone.c; path = snd/audionone.c; sourceTree = "<group>"; };
 		3D90387E0CC9B54000F46FD5 /* curvefit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = curvefit.h; sourceTree = "<group>"; };
 		3D90387F0CC9B54000F46FD5 /* curvefit.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = curvefit.cpp; sourceTree = "<group>"; };
 		3D9038860CCA25E100F46FD5 /* hillclimb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hillclimb.h; sourceTree = "<group>"; };
@@ -163,15 +145,16 @@
 				3D9037ED0CC7E33200F46FD5 /* mfmidi.cpp */,
 				3D9037EB0CC7E32400F46FD5 /* allegrosmfwr.cpp */,
 				3D9037E90CC7E31C00F46FD5 /* allegrowr.cpp */,
+				3D848DC80E2C392600EDB5E3 /* audioreader.cpp */,
+				3D848E790E2CEC4200EDB5E3 /* main.cpp */,
+				3D848DC50E2C391300EDB5E3 /* audiofilereader.cpp */,
 				3D9037E70CC7E31300F46FD5 /* allegrosmfrd.cpp */,
 				3D9037E50CC7E30600F46FD5 /* allegrord.cpp */,
 				3D9037E30CC7E2F700F46FD5 /* allegro.h */,
+				3D848E530E2CE2B300EDB5E3 /* alignfiles.cpp */,
 				3D9037E10CC7E2E000F46FD5 /* allegro.cpp */,
-				3D9037CF0CC7D21300F46FD5 /* sndwrite.h */,
 				3D9037D00CC7D21300F46FD5 /* switches.h */,
 				3D9037D10CC7D21300F46FD5 /* swlogic.h */,
-				3D9037CD0CC7D1EE00F46FD5 /* sndio.c */,
-				3D9037CB0CC7D1D500F46FD5 /* sndfileio.h */,
 				3D9037BF0CC7D19A00F46FD5 /* FFT.cpp */,
 				3D9037C00CC7D19A00F46FD5 /* FFT.h */,
 				3D9037BC0CC7D18F00F46FD5 /* scorealign.h */,
@@ -180,16 +163,8 @@
 				3D9037AF0CC7CB9C00F46FD5 /* gen_chroma.cpp */,
 				3D9037B00CC7CB9C00F46FD5 /* gen_chroma.h */,
 				3D9037AB0CC7CB3C00F46FD5 /* comp_chroma.cpp */,
-				3D9038180CC7E5FD00F46FD5 /* audionone.c */,
-				3D9038130CC7E5B700F46FD5 /* sndlinux.c */,
-				3D9038140CC7E5B700F46FD5 /* sndlinux.h */,
-				3D9038100CC7E58B00F46FD5 /* sndfaillinux.c */,
 				3D90380B0CC7E55200F46FD5 /* ieeecvt.c */,
 				3D90380C0CC7E55200F46FD5 /* ieeecvt.h */,
-				3D9038070CC7E54000F46FD5 /* snd.c */,
-				3D9038080CC7E54000F46FD5 /* snd.h */,
-				3D9038040CC7E4EE00F46FD5 /* sndheader.c */,
-				3D9038010CC7E4BF00F46FD5 /* sndcvt.c */,
 				3D9037FE0CC7E46700F46FD5 /* mfmidi.h */,
 				3D9037AC0CC7CB3C00F46FD5 /* comp_chroma.h */,
 				3D9037BB0CC7D18F00F46FD5 /* scorealign.cpp */,
@@ -259,7 +234,6 @@
 				3D9037B80CC7D16200F46FD5 /* regression.cpp in Sources */,
 				3D9037BD0CC7D18F00F46FD5 /* scorealign.cpp in Sources */,
 				3D9037C10CC7D19A00F46FD5 /* FFT.cpp in Sources */,
-				3D9037CE0CC7D1EE00F46FD5 /* sndio.c in Sources */,
 				3D9037E20CC7E2E000F46FD5 /* allegro.cpp in Sources */,
 				3D9037E60CC7E30600F46FD5 /* allegrord.cpp in Sources */,
 				3D9037E80CC7E31300F46FD5 /* allegrosmfrd.cpp in Sources */,
@@ -267,16 +241,14 @@
 				3D9037EC0CC7E32400F46FD5 /* allegrosmfwr.cpp in Sources */,
 				3D9037EF0CC7E33200F46FD5 /* mfmidi.cpp in Sources */,
 				3D9037F30CC7E33D00F46FD5 /* strparse.cpp in Sources */,
-				3D9038020CC7E4BF00F46FD5 /* sndcvt.c in Sources */,
-				3D9038050CC7E4EE00F46FD5 /* sndheader.c in Sources */,
-				3D9038090CC7E54000F46FD5 /* snd.c in Sources */,
 				3D90380D0CC7E55200F46FD5 /* ieeecvt.c in Sources */,
-				3D9038110CC7E58B00F46FD5 /* sndfaillinux.c in Sources */,
-				3D9038150CC7E5B700F46FD5 /* sndlinux.c in Sources */,
-				3D9038190CC7E5FD00F46FD5 /* audionone.c in Sources */,
 				3D9038890CCA25E100F46FD5 /* hillclimb.cpp in Sources */,
 				3D9038810CC9B54000F46FD5 /* curvefit.cpp in Sources */,
 				3D9038DF0CCA815D00F46FD5 /* sautils.cpp in Sources */,
+				3D848DC60E2C391300EDB5E3 /* audiofilereader.cpp in Sources */,
+				3D848DC90E2C392600EDB5E3 /* audioreader.cpp in Sources */,
+				3D848E540E2CE2B300EDB5E3 /* alignfiles.cpp in Sources */,
+				3D848E7A0E2CEC4200EDB5E3 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,8 +264,12 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INSTALL_PATH = "$(HOME)/bin";
+				OTHER_LDFLAGS = (
+					"-L/usr/local/lib",
+					"-lsndfile",
+				);
 				PRODUCT_NAME = scorealign;
-				USER_HEADER_SEARCH_PATHS = ../portsmf/;
+				USER_HEADER_SEARCH_PATHS = "../portsmf/ /usr/local/include";
 				ZERO_LINK = YES;
 			};
 			name = Debug;

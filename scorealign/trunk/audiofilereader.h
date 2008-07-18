@@ -10,7 +10,7 @@ class Audio_file_reader : public Audio_reader {
     long total_frames;
     bool open(char *filename, Scorealign &sa, bool verbose);
     void close();
-    double Audio_file_reader::get_sample_rate();
+    double get_sample_rate();
     long get_frames();
     void print_info();
 };

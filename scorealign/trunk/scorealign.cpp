@@ -201,7 +201,7 @@ int frames_of_init_silence( float *chrom_energy, int frame_count)
 /*		COMPARE_CHROMA
 Perform Dynamic Programming to find optimal alignment
 */
-void Scorealign::compare_chroma() 
+void Scorealign::compare_chroma(bool verbose)
 {
     float *path;
     int x = 0;
@@ -217,7 +217,7 @@ void Scorealign::compare_chroma()
      * column, starting at the origin (0,0). After computing these runs, we
      * put the proper value at (0,0)
      */
-    printf("Performing silent skip DP \n"); 
+    if (verbose) printf("Performing silent skip DP \n"); 
     PATH(0, 0) = (silent(0, chrom_energy1) ? 0 :
                   gen_dist(0, 0, chrom_energy1, chrom_energy2));
     for (int i = 1; i < file1_frames; i++)
@@ -240,7 +240,7 @@ void Scorealign::compare_chroma()
             PATH(i, j) = gen_dist(i, j, chrom_energy1, chrom_energy2) +
                 min3(PATH(i-1, j-1), PATH(i-1, j), PATH(i, j-1)); 
     
-    printf("Completed Dynamic Programming.\n");
+    if (verbose) printf("Completed Dynamic Programming.\n");
     
     
     x = file1_frames - 1;
@@ -556,6 +556,31 @@ void Scorealign::compute_regression_lines()
 }
 
 
+void Scorealign::midi_tempo_align(Alg_seq &seq, bool verbose)
+{
+    // We create a new time map out of the alignment, and replace
+    // the original time map in the Alg_seq sequence
+    Alg_seq new_time_map_seq;
+
+    /** align at all integer beats **/
+    int totalbeats; 
+    float dur_in_sec; 
+    find_midi_duration(seq, &dur_in_sec); 
+    // totalbeat = lastbeat + 1 and round up the beat
+    totalbeats = (int) (seq.get_time_map()->time_to_beat(dur_in_sec) + 2);
+    if (verbose)
+        printf("midi duration = %f, totalbeats=%i \n", dur_in_sec, totalbeats);   
+    
+    for (int i = 0; i < totalbeats; i++) {
+        double newtime = map_time(seq.get_time_map()->beat_to_time(i));
+        if (newtime > 0) 
+            new_time_map_seq.insert_beat(newtime, (double) i);
+    }
+	
+    seq.set_time_map(new_time_map_seq.get_time_map());
+}
+
+
 // this routine performs an alignment by adjusting midi to match audio
 //
 void Scorealign::align_midi_to_audio(Alg_seq &seq, Audio_reader &reader, 
@@ -619,7 +644,7 @@ void Scorealign::align_chromagrams(bool verbose)
         printf("Normalized Chroma.\n");
 
     /* Compare the chroma frames */
-    compare_chroma();
+    compare_chroma(verbose);
     /* Compute the smooth time map now for use by curve-fitting */	
     compute_regression_lines();
     /* if line_time is set, do curve-fitting */

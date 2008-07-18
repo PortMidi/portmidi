@@ -73,47 +73,11 @@ void print_beat_map(Alg_seq &seq, char *filename) {
     Alg_beats &b = seq.get_time_map()->beats;
     long num_beats = seq.get_time_map()->length();
     
-    for(int i=0 ; i < num_beats; i++) { 
+    for(int i = 0; i < num_beats; i++) { 
         fprintf(beatmap_print," %f  %f \n", b[i].beat, b[i].time); 
     }	
     fclose(beatmap_print); 
     
-}
-
-
-/*			MIDI_TEMPO_ALIGN 
-	Creates the time aligned midi file from SEQ and writes
-	it to MIDINAME
-*/
-
-void midi_tempo_align(Alg_seq &seq, char *midiname, 
-                      char *beatname, Scorealign &sa)
-{
-    //We create a new time map out of the alignment, and replace it with
-    //the original time map in the song
-    Alg_seq new_time_map_seq;
-	
-    /** align at all integer beats **/
-    int totalbeats; 
-    float dur_in_sec; 
-    find_midi_duration(seq, &dur_in_sec); 
-    // totalbeat = lastbeat + 1 and round up the beat
-    totalbeats = (int) (seq.get_time_map()->time_to_beat(dur_in_sec) + 2);
-    printf("midi duration = %f, totalbeats=%i \n", dur_in_sec, totalbeats); 	
-    
-    float *newtime_array = ALLOC(float, totalbeats);
-    
-    for (int i = 0; i < totalbeats; i++) {
-        newtime_array[i] = sa.map_time(seq.get_time_map()->beat_to_time(i));
-        if (newtime_array[i] > 0) 
-            new_time_map_seq.insert_beat((double)newtime_array[i], (double)i);
-    }
-
-    free(newtime_array);
-	
-    seq.set_time_map(new_time_map_seq.get_time_map()); 
-    print_beat_map(seq, beatname); 
-    seq.smf_write(midiname);
 }
 
 
@@ -151,7 +115,9 @@ void edit_transcription(Alg_seq &seq , bool warp, FILE *outf,
     fclose(outf);
     if (warp) {
         // align the midi file and write out 	
-        midi_tempo_align(seq, midi_filename, beat_filename, sa); 
+        sa.midi_tempo_align(seq, true);
+        seq.smf_write(midi_filename);
+        print_beat_map(seq, beat_filename);
     }
 }
 

@@ -75,11 +75,12 @@ class Scorealign {
     void path_step(int i, int j);
     void path_reverse();
     int sec_to_pathy_index(float sec);
-    void compare_chroma();
+    void compare_chroma(bool verbose);
     void linear_regression(int n, int width, float &a, float &b);
     void compute_smooth_time_map();
     void presmooth();
     void compute_regression_lines();
+    void midi_tempo_align(Alg_seq &seq, bool verbose);
 };
 
 #define DEBUG_LOG 1

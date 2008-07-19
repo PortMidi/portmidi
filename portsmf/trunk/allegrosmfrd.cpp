@@ -30,16 +30,24 @@ public:
     Alg_pending_ptr pending;
     Alg_track_ptr track;
     int track_number; // the number of the (current) track
+    // chan is actual_channel + channel_offset_per_track * track_num +
+    //                          channel_offset_per_track * port 
     long channel_offset_per_track; // used to encode track number into channel
-        // chan is actual_channel + channel_offset_per_track * track_num
-        // default is 100, set this to 0 to merge all tracks to 16 channels
+        // default is 0, set this to 0 to merge all tracks to 16 channels
+    long channel_offset_per_port; // used to encode port number into channel
+        // default is 16, set to 0 to ignore port prefix meta events
+    // while reading, this is channel_offset_per_track * track_num
     int channel_offset;
 
     Alg_midifile_reader(istream &f, Alg_seq_ptr new_seq) {
         file = &f;
         pending = NULL;
         seq = new_seq;
+        channel_offset_per_track = 0;
+        channel_offset_per_port = 16;
         track_number = -1; // no tracks started yet, 1st will be #0
+        meta_channel = -1;
+        port = 0;
     }
     // delete destroys the seq member as well, so set it to NULL if you
     // copied the pointer elsewhere
@@ -52,6 +60,9 @@ public:
     long get_currtime() { return Mf_currtime; }
 
 protected:
+    int meta_channel; // the channel for meta events, set by MIDI chan prefix
+    int port; // value from the portprefix meta event
+
     double get_time();
     void update(int chan, int key, Alg_parameter_ptr param);
     void *Mf_malloc(size_t size) { return malloc(size); }
@@ -60,6 +71,8 @@ protected:
     void Mf_starttrack();
     void Mf_endtrack();
     int Mf_getc();
+    void Mf_chanprefix(int chan);
+    void Mf_portprefix(int port);
     void Mf_eot();
     void Mf_error(char *);
     void Mf_header(int,int,int);
@@ -70,6 +83,7 @@ protected:
     void Mf_pitchbend(int,int,int);
     void Mf_program(int,int);
     void Mf_chanpressure(int,int);
+    void binary_msg(int len, char *msg, const char *attr_string);
     void Mf_sysex(int,char*);
     void Mf_arbitrary(int,char*);
     void Mf_metamisc(int,int,char*);
@@ -112,6 +126,8 @@ void Alg_midifile_reader::Mf_starttrack()
     track_number++;
     seq->add_track(track_number); // make sure track exists
     track = seq->track(track_number); // keep pointer to current track
+    meta_channel = -1;
+    port = 0;
 }
 
 
@@ -123,6 +139,8 @@ void Alg_midifile_reader::Mf_endtrack()
     track = NULL;
     double now = get_time();
     if (seq->get_beat_dur() < now) seq->set_beat_dur(now);
+    meta_channel = -1;
+    port = 0;
 }
 
 
@@ -132,8 +150,22 @@ int Alg_midifile_reader::Mf_getc()
 }
 
 
+void Alg_midifile_reader::Mf_chanprefix(int chan)
+{
+    meta_channel = chan;
+}
+
+
+void Alg_midifile_reader::Mf_portprefix(int p)
+{
+    port = p;
+}
+
+
 void Alg_midifile_reader::Mf_eot()
 {
+    meta_channel = -1;
+    port = 0;
 }
 
 
@@ -172,12 +204,13 @@ void Alg_midifile_reader::Mf_on(int chan, int key, int vel)
     pending = new Alg_pending(note, pending);
     /*    trace("on: %d at %g\n", key, get_time()); */
     note->time = get_time();
-    note->chan = chan + channel_offset;
+    note->chan = chan + channel_offset + port * channel_offset_per_port;
     note->dur = 0;
     note->set_identifier(key);
     note->pitch = (float) key;
     note->loud = (float) vel;
     track->append(note);
+    meta_channel = -1;
 }
 
 
@@ -186,7 +219,9 @@ void Alg_midifile_reader::Mf_off(int chan, int key, int vel)
     double time = get_time();
     Alg_pending_ptr *p = &pending;
     while (*p) {
-        if ((*p)->note->get_identifier() == key && (*p)->note->chan == chan + channel_offset) {
+        if ((*p)->note->get_identifier() == key &&
+            (*p)->note->chan == 
+                    chan + channel_offset + port * channel_offset_per_port) {
             (*p)->note->dur = time - (*p)->note->time;
             // trace("updated %d dur %g\n", (*p)->note->key, (*p)->note->dur);
             Alg_pending_ptr to_be_freed = *p;
@@ -196,6 +231,7 @@ void Alg_midifile_reader::Mf_off(int chan, int key, int vel)
             p = &((*p)->next);
         }
     }
+    meta_channel = -1;
 }
 
 
@@ -205,7 +241,7 @@ void Alg_midifile_reader::update(int chan, int key, Alg_parameter_ptr param)
     update->time = get_time();
     update->chan = chan;
     if (chan != -1) {
-        update->chan = chan + channel_offset;
+        update->chan = chan + channel_offset + port * channel_offset_per_port;
     }
     update->set_identifier(key);
     update->parameter = *param;
@@ -222,6 +258,7 @@ void Alg_midifile_reader::Mf_pressure(int chan, int key, int val)
     parameter.set_attr(symbol_table.insert_string("pressurer"));
     parameter.r = val / 127.0;
     update(chan, key, &parameter);
+    meta_channel = -1;
 }
 
 
@@ -233,6 +270,7 @@ void Alg_midifile_reader::Mf_controller(int chan, int control, int val)
     parameter.set_attr(symbol_table.insert_string(name));
     parameter.r = val / 127.0;
     update(chan, -1, &parameter);
+    meta_channel = -1;
 }
 
 
@@ -242,6 +280,7 @@ void Alg_midifile_reader::Mf_pitchbend(int chan, int c1, int c2)
     parameter.set_attr(symbol_table.insert_string("bendr"));
     parameter.r = ((c2 << 7) + c1) / 8192.0 - 1.0;
     update(chan, -1, &parameter);
+    meta_channel = -1;
 }
 
 
@@ -251,6 +290,7 @@ void Alg_midifile_reader::Mf_program(int chan, int program)
     parameter.set_attr(symbol_table.insert_string("programi"));
     parameter.i = program;
     update(chan, -1, &parameter);
+    meta_channel = -1;
 }
 
 
@@ -260,12 +300,28 @@ void Alg_midifile_reader::Mf_chanpressure(int chan, int val)
     parameter.set_attr(symbol_table.insert_string("pressurer"));
     parameter.r = val / 127.0;
     update(chan, -1, &parameter);
+    meta_channel = -1;
+}
+
+
+void Alg_midifile_reader::binary_msg(int len, char *msg, 
+                                     const char *attr_string)
+{
+    Alg_parameter parameter;
+    char *hexstr = new char[len * 2 + 1];
+    for (int i = 0; i < len; i++) {
+        sprintf(hexstr + 2 * i, "%02x", (0xFF & msg[i]));
+    }
+    parameter.s = hexstr;
+    parameter.set_attr(symbol_table.insert_string(attr_string));
+    update(meta_channel, -1, &parameter);
 }
 
 
 void Alg_midifile_reader::Mf_sysex(int len, char *msg)
 {
-    Mf_error("sysex message ignored - not implemented");
+    // sysex messages become updates with attribute sysexs and a hex string
+    binary_msg(len, msg, "sysexs");
 }
 
 
@@ -289,9 +345,23 @@ void Alg_midifile_reader::Mf_seqnum(int n)
 }
 
 
-void Alg_midifile_reader::Mf_smpte(int i1, int i2, int i3, int i4, int i5)
+static char *fpsstr[4] = {"24", "25", "29.97", "30"};
+
+void Alg_midifile_reader::Mf_smpte(int hours, int mins, int secs,
+                                   int frames, int subframes)
 {
-    Mf_error("SMPTE data ignored");
+    // string will look like "24fps:01h:27m:07s:19.00f"
+    // 30fps (drop frame) is notated as "29.97fps"
+    char text[32];
+    int fps = (hours >> 6) & 3;
+    hours &= 0x1F;
+    sprintf(text, "%sfps:%02dh:%02dm:%02ds:%02d.%02df", 
+            fpsstr[fps], hours, mins, secs, frames, subframes);
+    Alg_parameter smpteoffset;
+    smpteoffset.s = heapify(text);
+    smpteoffset.set_attr(symbol_table.insert_string("smpteoffsets"));
+    update(meta_channel, -1, &smpteoffset);
+    // Mf_error("SMPTE data ignored");
 }
 
 
@@ -319,18 +389,20 @@ void Alg_midifile_reader::Mf_keysig(int key, int mode)
     // the number of sharps, where flats are negative sharps
     key_parm.i = key; //<<<---- fix this
     // use -1 to mean "all channels"
-    update(-1, -1, &key_parm);
+    update(meta_channel, -1, &key_parm);
     Alg_parameter mode_parm;
     mode_parm.set_attr(symbol_table.insert_string("modea"));
     mode_parm.a = (mode == 0 ? symbol_table.insert_string("major") :
                                symbol_table.insert_string("minor"));
-    update(-1, -1, &mode_parm);
+    update(meta_channel, -1, &mode_parm);
 }
 
 
 void Alg_midifile_reader::Mf_sqspecific(int len, char *msg)
 {
-    Mf_error("sq specific data ignored");
+    // sequencer specific messages become updates with attribute sqspecifics
+    // and a hex string for the value
+    binary_msg(len, msg, "sqspecifics");
 }
 
 
@@ -347,16 +419,17 @@ void Alg_midifile_reader::Mf_text(int type, int len, char *msg)
 {
     Alg_parameter text;
     text.s = heapify2(len, msg);
-    char *attr = "miscs";
+    const char *attr = "miscs";
     if (type == 1) attr = "texts";
     else if (type == 2) attr = "copyrights";
-    else if (type == 3) attr = "names";
+    else if (type == 3) 
+        attr = (track_number == 0 ? "seqnames" : "tracknames");
     else if (type == 4) attr = "instruments";
     else if (type == 5) attr = "lyrics";
     else if (type == 6) attr = "markers";
     else if (type == 7) attr = "cues";
     text.set_attr(symbol_table.insert_string(attr));
-    update(-1, -1, &text);
+    update(meta_channel, -1, &text);
 }
 
 

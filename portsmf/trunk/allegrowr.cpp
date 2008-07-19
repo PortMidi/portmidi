@@ -48,14 +48,41 @@ void parameter_print(ostream &file, Alg_parameter_ptr p)
     }
 }
 
+Alg_event_ptr Alg_seq::write_track_name(ostream &file, int n, 
+                                        Alg_events &events)
+// write #track <n> <trackname-or-sequencename>
+// if we write the name on the "#track" line, then we do *not* want
+// to write again as an update: "-seqnames:"Jordu", so if we do
+// find a name and write it, return a pointer to it so the track
+// writer knows what update (if any) to skip
+{
+    Alg_event_ptr e = NULL;
+    file << "#track " << n;
+    const char *attr = symbol_table.insert_string(
+                               n == 0 ? "seqnames" : "tracknames");
+    // search for name in events with timestamp of 0
+    for (int i = 0; i < events.length(); i++) {
+        e = events[i];
+        if (e->time > 0) break;
+        if (e->is_update()) {
+            Alg_update_ptr u = (Alg_update_ptr) e;
+            if (u->parameter.attr == attr) {
+                file << " " << u->parameter.s;
+                break;
+            }
+        }
+    }
+    file << endl;
+    return e;
+}
+
 
 void Alg_seq::write(ostream &file, bool in_secs)
 {
     int i, j;
     if (in_secs) convert_to_seconds();
     else convert_to_beats();
-    // first write the tempo map
-    file << "#track 0\n";
+    Alg_event_ptr update_to_skip = write_track_name(file, 0, track_list[0]);
     Alg_beats &beats = time_map->beats;
     for (i = 0; i < beats.len - 1; i++) {
         Alg_beat_ptr b = &(beats[i]);
@@ -98,10 +125,13 @@ void Alg_seq::write(ostream &file, bool in_secs)
 
     for (j = 0; j < track_list.length(); j++) {
         Alg_events &notes = track_list[j];
-        if (j != 0) file << "#track " << j << "\n";
+        if (j != 0) update_to_skip = write_track_name(file, j, notes);
         // now write the notes at beat positions
         for (i = 0; i < notes.length(); i++) {
             Alg_event_ptr e = notes[i];
+            // if we already wrote this event as a track or sequence name,
+            // do not write it again
+            if (e == update_to_skip) continue;
             double start = e->time;
             if (in_secs) {
                 file << "T" << TIMFMT << start;
@@ -118,11 +148,11 @@ void Alg_seq::write(ostream &file, bool in_secs)
                 file << " K" << n->get_identifier() << 
                         " P" << GFMT << n->pitch;
                 if (in_secs) {
-                    file << " U" << TIMFMT << dur << " ";
+                    file << " U" << TIMFMT << dur;
                 } else {
-                    file << " Q" << TIMFMT << dur << " ";
+                    file << " Q" << TIMFMT << dur;
                 }
-                file << " L" << GFMT << n->loud << " "; 
+                file << " L" << GFMT << n->loud; 
                 Alg_parameters_ptr p = n->parameters;
                 while (p) {
                     parameter_print(file, &(p->parm));

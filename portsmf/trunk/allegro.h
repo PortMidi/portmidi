@@ -56,7 +56,7 @@
 // are d1 and d2 within epsilon of each other?
 bool within(double d1, double d2, double epsilon);
 
-char *heapify(char *s); // put a string on the heap
+char *heapify(const char *s); // put a string on the heap
 
 
 // Alg_attribute is an atom in the symbol table
@@ -510,7 +510,7 @@ public:
     void set_string(char *s) { 
         char *fence = buffer + len;
         assert(ptr < fence);
-        while (*ptr++ = *s++) assert(ptr < fence);
+        while ((*ptr++ = *s++)) assert(ptr < fence);
         assert((char *)(((long) (ptr + 7)) & ~7) <= fence);
         pad(); }
     void set_int32(long v) { *((long *) ptr) = v; ptr += 4; }
@@ -828,6 +828,9 @@ protected:
     long *current; // array of indexes used by iteration methods
     void serialize_seq();
     Alg_error error; // error code set by file readers
+    // an internal function used for writing Allegro track names
+    Alg_event_ptr write_track_name(std::ostream &file, int n, 
+                                   Alg_events &events);
 public:
     int channel_offset_per_track; // used to encode track_num into channel
     Alg_tracks track_list;       // array of Alg_events

@@ -45,7 +45,10 @@ private:
     void write_time_signature(int i);
     void write_note(Alg_note_ptr note, bool on);
     void write_update(Alg_update_ptr update);
-    void write_text(char type, char length, char *s, double event_time);
+    void write_text(Alg_update_ptr update, char type);
+    void write_binary(int type_byte, char *msg);
+    void write_midi_channel_prefix(Alg_update_ptr update);
+    void write_smpteoffset(Alg_update_ptr update, char *s);
     void write_data(int data);
     int to_midi_channel(int channel);
     int to_track(int channel);
@@ -177,20 +180,50 @@ void Alg_smf_write::write_note(Alg_note_ptr note, bool on)
 }
 
 
-void Alg_smf_write::write_text(char type, char length, char *s, double event_time)
+void Alg_smf_write::write_midi_channel_prefix(Alg_update_ptr update)
 {
-    write_delta(event_time);
-    out_file->put(0xFF);
-    out_file->put(type);
-    out_file->put(length);
-    *out_file << s;
+   if (update->chan >= 0) { // write MIDI Channel Prefix
+        write_delta(update->time);
+        out_file->put(0xFF); // Meta Event
+        out_file->put(0x20); // Type code for MIDI Channel Prefix
+        out_file->put(1); // length
+        out_file->put(to_midi_channel(update->chan));
+        // one thing odd about the Std MIDI File spec is that once
+        // you turn on MIDI Channel Prefix, there seems to be no
+        // way to cancel it unless a non-Meta event shows up. We
+        // don't do any analysis to avoid assigning channels to
+        // meta events.
+    }
 }
 
 
+void Alg_smf_write::write_text(Alg_update_ptr update, char type)
+{
+    write_midi_channel_prefix(update);
+    write_delta(update->time);
+    out_file->put(0xFF);
+    out_file->put(type);
+    out_file->put((char) strlen(update->parameter.s));
+    *out_file << update->parameter.s;
+}
+
+
+void Alg_smf_write::write_smpteoffset(Alg_update_ptr update, char *s)
+{
+    write_midi_channel_prefix(update);
+    write_delta(update->time);
+    out_file->put(0xFF); // meta event
+    out_file->put(0x54); // smpte offset type code
+    out_file->put(5); // length
+    for (int i = 0; i < 5; i++) *out_file << s[i];
+}
+
+
+// write_data - limit data to the range of [0...127] and write it
 void Alg_smf_write::write_data(int data)
 {
     if (data < 0) data = 0;
-    else if (data > 0xFF) data = 0xFF;
+    else if (data > 0x7F) data = 0x7F;
 
     out_file->put(data);
 }
@@ -212,6 +245,34 @@ int Alg_smf_write::to_track(int channel)
 }
 
 
+static char hex_to_nibble(char c)
+{
+    if (isalpha(c)) {
+        return 10 + (toupper(c) - 'A');
+    } else {
+        return c - '0';
+    }
+}
+
+
+static char hex_to_char(char *s)
+{
+    return (hex_to_nibble(s[0]) << 4) + hex_to_nibble(s[1]);
+}
+
+
+void Alg_smf_write::write_binary(int type_byte, char *msg)
+{
+    int len = strlen(msg) / 2;
+    out_file->put(type_byte);
+    write_varinum(len);
+    for (int i = 0; i < len; i++) {
+        out_file->put(hex_to_char(msg));
+        msg += 2;
+    }
+}
+
+
 void Alg_smf_write::write_update(Alg_update_ptr update)
 {
     char *name = update->parameter.attr_name();
@@ -220,16 +281,16 @@ void Alg_smf_write::write_update(Alg_update_ptr update)
     if (!strcmp(name, "pressurer")) {
         write_delta(update->time);
         if (update->get_identifier() < 0) { // channel pressure message
-            write_data(0xD0 + to_midi_channel(update->chan));
+            out_file->put(0xD0 + to_midi_channel(update->chan));
             write_data((int)(update->parameter.r * 127));
         } else { // just 1 key -- poly pressure
-            write_data(0xA0 + to_midi_channel(update->chan));
+            out_file->put(0xA0 + to_midi_channel(update->chan));
             write_data(update->get_identifier());
             write_data((int)(update->parameter.r * 127));
         }
     } else if (!strcmp(name, "programi")) {
         write_delta(update->time);
-        write_data(0xC0 + to_midi_channel(update->chan));
+        out_file->put(0xC0 + to_midi_channel(update->chan));
         write_data(update->parameter.i);
     } else if (!strcmp(name, "bendr")) {
         int temp = ROUND(0x2000 * (update->parameter.r + 1));
@@ -238,7 +299,7 @@ void Alg_smf_write::write_update(Alg_update_ptr update)
         int c1 = temp & 0x7F; // low 7 bits
         int c2 = temp >> 7;   // high 7 bits
         write_delta(update->time);
-        write_data(0xE0 + to_midi_channel(update->chan));
+        out_file->put(0xE0 + to_midi_channel(update->chan));
         write_data(c1);
         write_data(c2);
     } else if (!strncmp(name, "control", 7) && 
@@ -246,37 +307,74 @@ void Alg_smf_write::write_update(Alg_update_ptr update)
       int ctrlnum = atoi(name + 7);
       int val = ROUND(update->parameter.r * 127);
       write_delta(update->time);
-      write_data(0xB0 + to_midi_channel(update->chan));
+      out_file->put(0xB0 + to_midi_channel(update->chan));
       write_data(ctrlnum);
       write_data(val);
+    } else if (!strcmp(name, "sysexs") &&
+               update->parameter.attr_type() == 's') {
+        char *s = update->parameter.s;
+        if (s[0] && s[1] && toupper(s[0]) == 'F' && s[1] == '0') {
+            s += 2; // skip the initial "F0" byte in message: it is implied
+        }
+        write_delta(update->time);
+        write_binary(0xF0, s);
+    } else if (!strcmp(name, "sqspecifics") &&
+               update->parameter.attr_type() == 's') {
+        char *s = update->parameter.s;
+        write_delta(update->time);
+        out_file->put(0xFF);
+        write_binary(0x7F, s);
 
     /****Text Events****/
     } else if (!strcmp(name, "texts")) {
-        write_text(0x01, (char) strlen(update->parameter.s),
-                  update->parameter.s, update->time);
+        write_text(update, 0x01);
     } else if (!strcmp(name, "copyrights")) {
-        write_text(0x02, (char) strlen(update->parameter.s),
-                  update->parameter.s, update->time);
-    } else if (!strcmp(name, "names")) {
-        write_text(0x03, (char) strlen(update->parameter.s),
-                  update->parameter.s, update->time);
+        write_text(update, 0x02);
+    } else if (!strcmp(name, "seqnames") || !strcmp(name, "tracknames")) {
+        write_text(update, 0x03);
     } else if (!strcmp(name, "instruments")) {
-        write_text(0x04, (char) strlen(update->parameter.s),
-                  update->parameter.s, update->time);
+        write_text(update, 0x04);
     } else if (!strcmp(name, "lyrics")) {
-        write_text(0x05, (char) strlen(update->parameter.s),
-                  update->parameter.s, update->time);
+        write_text(update, 0x05);
     } else if (!strcmp(name, "markers")) {
-        write_text(0x06, (char) strlen(update->parameter.s),
-                  update->parameter.s, update->time);
+        write_text(update, 0x06);
     } else if (!strcmp(name, "cues")) {
-        write_text(0x07, (char) strlen(update->parameter.s),
-                  update->parameter.s, update->time);
-    } else if (!strcmp(name, "misc")) {
-        write_text(0x08, (char) strlen(update->parameter.s),
-                  update->parameter.s, update->time);
+        write_text(update, 0x07);
+    } else if (!strcmp(name, "miscs")) {
+        write_text(update, 0x08);
 
     /****Other Events****/
+    } else if (!strcmp(name, "smpteoffsets")) {
+#define decimal(p) (((p)[0] - '0') * 10 + ((p)[1] - '0'))
+        // smpteoffset is specified as "24fps:00h:10m:00s:11.00f"
+        // the following simple parser does not reject all badly
+        // formatted strings, but it should parse good strings ok
+        char *s = update->parameter.s;
+        int len = strlen(s);
+        char smpteoffset[5];
+        if (len < 24) return; // not long enough, must be bad format
+        int fps;
+        if (s[0] == '2') {
+            if (s[1] == '4') fps = 0;
+            else if (s[1] == '5') fps = 1;
+            else if (s[1] == '9') {
+                fps = 2;
+                if (len != 27) return; // not right length
+                s += 3; // cancel effect of longer string
+            }
+        } else fps = 3;
+        s += 6;   int hours = decimal(s);
+        s += 4;   int mins = decimal(s);
+        s += 4;   int secs = decimal(s);
+        s += 4;   int frames = decimal(s);
+        s += 3;   int subframes = decimal(s);
+        smpteoffset[0] = (fps << 6) + hours;
+        smpteoffset[1] = mins;
+        smpteoffset[2] = secs;
+        smpteoffset[3] = frames;
+        smpteoffset[4] = subframes;
+        write_smpteoffset(update, smpteoffset);
+
     // key signature is special because it takes two events in the Alg_seq
     // structure to make one midi file event. When we encounter one or 
     // the other event, we'll just record it in the Alg_smf_write object.
@@ -292,13 +390,13 @@ void Alg_smf_write::write_update(Alg_update_ptr update)
     }
     if (keysig != -99 && keysig_mode) { // write when both are defined
         write_delta(keysig_when);
-        write_data(0xFF);
-        write_data(0x59);
-        write_data(2);
+        out_file->put(0xFF);
+        out_file->put(0x59);
+        out_file->put(2);
         // mask off high bits so that this value appears to be positive
         // i.e. -1 -> 0xFF (otherwise, write_data will clip -1 to 0)
-        write_data(keysig & 0xFF);
-        write_data(keysig_mode == 'm');
+        out_file->put(keysig & 0xFF);
+        out_file->put(keysig_mode == 'm');
         keysig = -99;
         keysig_mode = false;
     }

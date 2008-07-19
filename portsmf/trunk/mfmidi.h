@@ -43,6 +43,8 @@ protected:
     virtual void Mf_starttrack() = 0;
     virtual void Mf_endtrack() = 0;
     virtual int Mf_getc() = 0;
+    virtual void Mf_chanprefix(int) = 0;
+    virtual void Mf_portprefix(int) = 0;
     virtual void Mf_eot() = 0;
     virtual void Mf_error(char *) = 0;
     virtual void Mf_header(int,int,int) = 0;

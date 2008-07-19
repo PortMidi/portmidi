@@ -285,11 +285,12 @@ void Midifile_reader::metaevent(int type)
         /* These are all text events */
         Mf_text(type,leng,m);
         break;
-    // note that there are some missing meta events here. In particular
-    // FF 20 01 0n is a "Channel Prefix" used to associate messages without
-    //     channels such as text and sysex events with a channel
-    // FF 21 01 0n is a "Port Prefix" used, I think, to associate messages
-    //     with ports
+    case 0x20:
+        Mf_chanprefix(m[0]);
+        break;
+    case 0x21:
+        Mf_portprefix(m[0]);
+        break;
     case 0x2f:     /* End of Track */
         Mf_eot();
         break;

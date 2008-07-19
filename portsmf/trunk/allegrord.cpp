@@ -170,7 +170,27 @@ bool Alg_reader::parse()
                 track_num = parse_int(field);
                 seq->add_track(track_num);
             }
-            // maybe we have a comment
+            // maybe we have a sequence or track name
+            line_parser.get_remainder(field);
+            // if there is a non-space character after #track n then
+            // use it as sequence or track name. Note that because we
+            // skip over spaces, a sequence or track name cannot begin
+            // with leading blanks. Another decision is that the name
+            // must be at time zero
+            if (field.length() > 0) {
+                // insert the field as sequence name or track name
+                Alg_update_ptr update = new Alg_update;
+                update->chan = -1;
+                update->time = 0;
+                update->set_identifier(-1);
+                // sequence name is whatever is on track 0
+                // other tracks have track names
+                const char *attr =
+                        (track_num == 0 ? "seqnames" : "tracknames");
+                update->parameter.set_attr(symbol_table.insert_string(attr));
+                update->parameter.s = heapify(field.c_str());
+                seq->add_event(update, track_num);
+            }
         } else {
             // we must have a track to insert into
             if (seq->tracks() == 0) seq->add_track(0);

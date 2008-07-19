@@ -40,7 +40,7 @@ bool within(double d1, double d2, double epsilon)
 }
 
 
-char *heapify(char *s)
+char *heapify(const char *s)
 {
     char *h = new char[strlen(s) + 1];
     strcpy(h, s);
@@ -265,7 +265,7 @@ void Alg_event::set_parameter(Alg_parameter_ptr new_parameter)
         Alg_update_ptr update = (Alg_update_ptr) this;
         parm = &(update->parameter);
     }
-    *parm = *new_parameter; // copy entire parameter
+    parm->copy(new_parameter); // copy entire parameter
 }
 
 

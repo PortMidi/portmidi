@@ -3,7 +3,6 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
-#include <snd.h>
 #ifndef __MACH__
 #include <malloc.h>
 #endif
@@ -25,11 +24,13 @@
 #define	LOW_CUTOFF  40
 #define HIGH_CUTOFF 2000
 
-#define VERBOSE 1
-#define V if (VERBOSE)
+//#define VERBOSE 1
 
 #ifdef VERBOSE
 #include "main.h"
+#define V(stmt) stmt
+#else
+#define V(stmt) 
 #endif
 
 // for presmoothing, how near does a point have to be to be "on the line"
@@ -448,8 +449,8 @@ void Scorealign::presmooth()
             continue;
         }
         /* debug: */
-        V printf("presmoothing path from %d to %d:\n", i, j);
-        V print_path_range(pathx, pathy, i, j);
+        V(printf("presmoothing path from %d to %d:\n", i, j);)
+        V(print_path_range(pathx, pathy, i, j);)
         /* fit line to nearby points */
         regr.regress();
         /* adjust points to fall along line */
@@ -457,10 +458,10 @@ void Scorealign::presmooth()
         short x = pathx[i];
         short y = pathy[i];
         k = i + 1;
-        V printf("start loop: j %d, pathx %d, pathy %d\n", 
-                 j, pathx[j], pathy[j]);
+        V(printf("start loop: j %d, pathx %d, pathy %d\n",
+                 j, pathx[j], pathy[j]);)
         while (x < pathx[j] || y < pathy[j]) {
-            V printf("top of loop: x %d, y %d\n", x, y);
+            V(printf("top of loop: x %d, y %d\n", x, y);)
             // iteratively make an optional move in the +y direction
             // then make a move in the x direction
             // check y direction: want to move to y+1 if either we are below
@@ -468,26 +469,27 @@ void Scorealign::presmooth()
             // line (if y is too low, we'll have to go at sharper than 2:1
             // slope to get to pathx[j], pathy[j], which is bad
             int target_y = ROUND(regr.f(x));
-            V printf("target_y@%d %d, r %g, ", x, target_y, regr.f(x));
+            V(printf("target_y@%d %d, r %g, ", x, target_y, regr.f(x));)
             // but what if the line goes way below the last point?
             // we don't want to go below a diagonal through the last point
             int dist_to_last_point = pathx[j] - x;
             int minimum_y = pathy[j] - 2 * dist_to_last_point;
             if (target_y < minimum_y) {
                 target_y = minimum_y;
-                V printf("minimum_y %d, ", minimum_y);
+                V(printf("minimum_y %d, ", minimum_y);)
             }
             // alternatively, if line goes too high:
             int maximum_y = pathy[j] - dist_to_last_point / 2;
             if (target_y > maximum_y) {
                 target_y = maximum_y;
-                V printf("maximum y %d, ", maximum_y);
+                V(printf("maximum y %d, ", maximum_y);)
             }
             // now advance to target_y
             if (target_y > y) {
                 pathx[k] = x;
                 pathy[k] = y + 1;
-                V printf("up: pathx[%d] %d, pathy[%d] %d\n", k, pathx[k], k, pathy[k]);
+                V(printf("up: pathx[%d] %d, pathy[%d] %d\n", 
+                         k, pathx[k], k, pathy[k]);)
                 k++;
                 y++;
             }
@@ -497,11 +499,12 @@ void Scorealign::presmooth()
                 // y can either go horizontal or diagonal, i.e. y either
                 // stays the same or increments by one
                 target_y = ROUND(regr.f(x));
-                V printf("target_y@%d %d, r %g, ", x, target_y, regr.f(x));
+                V(printf("target_y@%d %d, r %g, ", x, target_y, regr.f(x));)
                 if (target_y > y) y++;
                 pathx[k] = x;
                 pathy[k] = y;
-                V printf("pathx[%d] %d, pathy[%d] %d\n", k, pathx[k], k, pathy[k]);
+                V(printf("pathx[%d] %d, pathy[%d] %d\n", 
+                         k, pathx[k], k, pathy[k]);)
                 k++;
             }
         }
@@ -511,7 +514,7 @@ void Scorealign::presmooth()
         // DEBUG
         if (k > j) {
             printf("oops: k %d, j %d\n", k, j);
-            V print_path_range(pathx, pathy, i, k);
+            V(print_path_range(pathx, pathy, i, k);)
         }
         assert(k <= j);
         // if new path is shorter than original, then fix up path
@@ -521,8 +524,8 @@ void Scorealign::presmooth()
             pathlen -= (j - k);
         }
         /* debug */
-        V printf("after presmoothing:\n");
-        V print_path_range(pathx, pathy, i, k);
+        V(printf("after presmoothing:\n");)
+        V(print_path_range(pathx, pathy, i, k);)
         /* since we adjusted the path, skip by 3/4 of n */
         i = i + 3 * n/4;
     }

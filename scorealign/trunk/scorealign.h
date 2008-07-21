@@ -49,7 +49,7 @@ class Scorealign {
        with a low cutoff and high cutoff.  
        The chroma energy is placed in the float** chrom_energy.
        this 2D is an array of pointers.  the pointers point to an array 
-       of lenght 12, representing the 12 chroma bins
+       of length 12, representing the 12 chroma bins
        The function returns the number of frames 
        (i.e. the length of the 1st dimention of chrom_energy
     */
@@ -83,7 +83,7 @@ class Scorealign {
     void midi_tempo_align(Alg_seq &seq, bool verbose);
 };
 
-#define DEBUG_LOG 1
+#define DEBUG_LOG 0
 #if DEBUG_LOG
 extern FILE *dbf;
 #endif

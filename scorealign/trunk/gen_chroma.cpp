@@ -7,10 +7,9 @@
 #include "assert.h"
 #include "string.h"
 #include "math.h"
-#include "sndfile.h"
 #include <fstream>
 #include "allegro.h"
-#include "fft3/FFT.h"
+#include "fft3/FFT3.h"
 #include "audioreader.h"
 #include "scorealign.h"
 #include "gen_chroma.h"
@@ -258,7 +257,7 @@ int Scorealign::gen_chroma_audio(Audio_reader &reader, int hcutoff,
 #ifdef VERBOSE
         printf("preFFT: hammingData[1000] %g\n", full_data[1000]);
 #endif
-        FFT(full_data_size, 0, full_data, NULL, fft_dataR, fft_dataI); //fft3
+        FFT3(full_data_size, 0, full_data, NULL, fft_dataR, fft_dataI); //fft3
       
         //given the fft, compute the energy of each point
         gen_Magnitude(fft_dataR, fft_dataI, low_bin, high_bin, full_data);
@@ -378,7 +377,7 @@ int Scorealign::gen_chroma_midi(Alg_seq &seq, int hcutoff, int lcutoff,
                     float **chrom_energy, float *actual_frame_period,
                     int id, bool verbose)
 {	
-    if (verbose)
+   if (verbose)
         printf ("==============FILE %d====================\n", id);
     /*=============================================================*/
 
@@ -469,4 +468,3 @@ int Scorealign::gen_chroma_midi(Alg_seq &seq, int hcutoff, int lcutoff,
         printf("\nGenerated Chroma. file%d_frames is %i\n", id, file1_frames);
     return frame_count;
 }
-

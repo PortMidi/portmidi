@@ -1,5 +1,16 @@
 /**********************************************************************
 
+  FFT3.h -- FFT routines, based on the following but renamed with "3"
+  to avoid naming problems. This early implementation from Audacity has
+  been upated and the current Audacity version imports wxChar, but if I
+  adapt the latest code into the scorealign library, then scorealign
+  will depend upon wxWindows. On the other hand, if I don't update to
+  the latest, then there are name conflicts when scorealign is used
+  within Audacity. For now, at least, I'm just renaming functions, 
+  which has no real impact on scorealign (other than function names
+  with the mystery "3" appended), but will result in duplicated code
+  in Audacity. -RBD
+
   FFT.h
 
   Dominic Mazzoni
@@ -46,7 +57,7 @@
  * input array, and that NumSamples must be a power of two.
  */
 
-void PowerSpectrum(int NumSamples, float *In, float *Out);
+void PowerSpectrum3(int NumSamples, float *In, float *Out);
 
 /*
  * Computes an FFT when the input data is real but you still
@@ -55,7 +66,7 @@ void PowerSpectrum(int NumSamples, float *In, float *Out);
  * two.
  */
 
-void RealFFT(int NumSamples,
+void RealFFT3(int NumSamples,
              float *RealIn, float *RealOut, float *ImagOut);
 
 /*
@@ -64,7 +75,7 @@ void RealFFT(int NumSamples,
  * inverse transform as well.
  */
 
-void FFT(int NumSamples,
+void FFT3(int NumSamples,
          int InverseTransform,
          float *RealIn, float *ImagIn, float *RealOut, float *ImagOut);
 
@@ -77,16 +88,16 @@ void FFT(int NumSamples,
  * 3: Hanning
  */
 
-void WindowFunc(int whichFunction, int NumSamples, float *data);
+void WindowFunc3(int whichFunction, int NumSamples, float *data);
 
 /*
  * Returns the name of the windowing function (for UI display)
  */
 
-char *WindowFuncName(int whichFunction);
+char *WindowFuncName3(int whichFunction);
 
 /*
  * Returns the number of windowing functions supported
  */
 
-int NumWindowFuncs();   
+int NumWindowFuncs3();   

@@ -1,5 +1,7 @@
 /**********************************************************************
 
+  FFT3.cpp -- see notes in FFT3.h -RBD
+
   FFT.cpp
 
   Dominic Mazzoni
@@ -30,9 +32,9 @@
 #ifndef __MACH__
    #include <malloc.h>
 #endif
-#include "FFT.h"
+#include "FFT3.h"
 
-int **gFFTBitTable = NULL;
+int **gFFTBitTable3 = NULL;
 const int MaxFastBits = 16;
 
 int IsPowerOfTwo(int x)
@@ -74,16 +76,16 @@ int ReverseBits(int index, int NumBits)
 
 void InitFFT()
 {
-   gFFTBitTable = (int **) malloc(sizeof(int *) * MaxFastBits);
+   gFFTBitTable3 = (int **) malloc(sizeof(int *) * MaxFastBits);
 
    int len = 2;
    int b;
    for (b = 1; b <= MaxFastBits; b++) {
 
-       gFFTBitTable[b - 1] = (int *) malloc(len * sizeof(int));
+       gFFTBitTable3[b - 1] = (int *) malloc(len * sizeof(int));
        int i;
       for (i = 0; i < len; i++)
-         gFFTBitTable[b - 1][i] = ReverseBits(i, b);
+         gFFTBitTable3[b - 1][i] = ReverseBits(i, b);
 
       len <<= 1;
    }
@@ -92,7 +94,7 @@ void InitFFT()
 inline int FastReverseBits(int i, int NumBits)
 {
    if (NumBits <= MaxFastBits)
-      return gFFTBitTable[NumBits - 1][i];
+      return gFFTBitTable3[NumBits - 1][i];
    else
       return ReverseBits(i, NumBits);
 }
@@ -101,7 +103,7 @@ inline int FastReverseBits(int i, int NumBits)
  * Complex Fast Fourier Transform
  */
 
-void FFT(int NumSamples,
+void FFT3(int NumSamples,
          int InverseTransform,
          float *RealIn, float *ImagIn, float *RealOut, float *ImagOut)
 {
@@ -117,7 +119,7 @@ void FFT(int NumSamples,
       exit(1);
    }
 
-   if (!gFFTBitTable)
+   if (!gFFTBitTable3)
       InitFFT();
 
    if (InverseTransform)
@@ -130,7 +132,7 @@ void FFT(int NumSamples,
     */
 
    for (i = 0; i < NumSamples; i++) {
-      j = FastReverseBits(i, NumBits);
+      j = FastReverseBits3(i, NumBits);
       RealOut[j] = RealIn[i];
       ImagOut[j] = (ImagIn == NULL) ? 0.0F : ImagIn[i];
    }
@@ -217,7 +219,7 @@ void FFT(int NumSamples,
  * i4  <->  imag[n/2-i]
  */
 
-void RealFFT(int NumSamples, float *RealIn, float *RealOut, float *ImagOut)
+void RealFFT3(int NumSamples, float *RealIn, float *RealOut, float *ImagOut)
 {
    int Half = NumSamples / 2;
    int i;
@@ -232,7 +234,7 @@ void RealFFT(int NumSamples, float *RealIn, float *RealOut, float *ImagOut)
       tmpImag[i] = RealIn[2 * i + 1];
    }
 
-   FFT(Half, 0, tmpReal, tmpImag, RealOut, ImagOut);
+   FFT3(Half, 0, tmpReal, tmpImag, RealOut, ImagOut);
 
    float wtemp = (float) (sin(0.5 * theta));
 
@@ -282,7 +284,7 @@ void RealFFT(int NumSamples, float *RealIn, float *RealOut, float *ImagOut)
  * of its code.
  */
 
-void PowerSpectrum(int NumSamples, float *In, float *Out)
+void PowerSpectrum3(int NumSamples, float *In, float *Out)
 {
    int Half = NumSamples / 2;
    int i;
@@ -299,7 +301,7 @@ void PowerSpectrum(int NumSamples, float *In, float *Out)
       tmpImag[i] = In[2 * i + 1];
    }
 
-   FFT(Half, 0, tmpReal, tmpImag, RealOut, ImagOut);
+   FFT3(Half, 0, tmpReal, tmpImag, RealOut, ImagOut);
 
    float wtemp = (float) (sin(0.5 * theta));
 
@@ -353,12 +355,12 @@ void PowerSpectrum(int NumSamples, float *In, float *Out)
  * Windowing Functions
  */
 
-int NumWindowFuncs()
+int NumWindowFuncs3()
 {
    return 4;
 }
 
-char *WindowFuncName(int whichFunction)
+char *WindowFuncName3(int whichFunction)
 {
    switch (whichFunction) {
    default:
@@ -373,7 +375,7 @@ char *WindowFuncName(int whichFunction)
    }
 }
 
-void WindowFunc(int whichFunction, int NumSamples, float *in)
+void WindowFunc3(int whichFunction, int NumSamples, float *in)
 {
    int i;
 

@@ -11,11 +11,9 @@
 #include "comp_chroma.h"
 #include "sautils.h"
 // the following are needed to get Scorealign
-#include "sndfile.h"
 #include <fstream>
 #include "allegro.h"
 #include "audioreader.h"
-#include "audiofilereader.h"
 #include "scorealign.h"
 #include "hillclimb.h"
 #include "curvefit.h"

@@ -1,6 +1,5 @@
 
 #include <fstream>
-#include "sndfile.h"
 #include "allegro.h"
 #include "audioreader.h"
 #include "gen_chroma.h"

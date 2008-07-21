@@ -35,30 +35,30 @@ long Audio_reader::read_window(float *data)
 {
     int frames_read;    // how many frames did we read?
 
+    int hop = samples_per_frame;
     if (reading_first_window) {
-        hop_samples = samples_per_frame / 2; // first time we read more data	
+        hop = samples_per_frame / 2; // first time we read more data	
         // zero end of temp_data, which will shift to beginning
-        memset(temp_data + hop_samples, 0, 
-               sizeof(float) * (samples_per_frame - hop_samples));
+        memset(temp_data + hop, 0, 
+               sizeof(float) * (samples_per_frame - hop));
         reading_first_window = false;
     }
 	
     // before reading in new sounds, shift temp_data by hop_size
-    memmove(temp_data, temp_data + hop_samples, 
-            (samples_per_frame - hop_samples) * sizeof(float));
+    memmove(temp_data, temp_data + hop, 
+            (samples_per_frame - hop) * sizeof(float));
 
-    frames_read = read(temp_data + samples_per_frame - hop_samples, 
-                       hop_samples);
+    frames_read = read(temp_data + samples_per_frame - hop, hop);
     // zero any leftovers (happens at last frame):
     //printf("check fr %i  hs %i ws %i ",frames_read,hop_size,window_size); 
-    memset(temp_data + samples_per_frame - hop_samples + frames_read, 0, 
-           sizeof(float) * (hop_samples - frames_read));
+    memset(temp_data + samples_per_frame - hop + frames_read, 0, 
+           sizeof(float) * (hop - frames_read));
     assert(samples_per_frame - frames_read >= 0);
 
     // now copy temp_data to data	
     memcpy(data, temp_data, sizeof(float) * samples_per_frame);
     
-    if (frames_read != hop_samples && reading_last_window == false) {
+    if (frames_read != hop && reading_last_window == false) {
         reading_last_window = true;
         return true; 
     } else if (reading_last_window == true) {

@@ -91,7 +91,7 @@ void InitFFT()
    }
 }
 
-inline int FastReverseBits(int i, int NumBits)
+inline int FastReverseBits3(int i, int NumBits)
 {
    if (NumBits <= MaxFastBits)
       return gFFTBitTable3[NumBits - 1][i];

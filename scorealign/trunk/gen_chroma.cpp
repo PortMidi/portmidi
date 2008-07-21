@@ -324,6 +324,7 @@ int Scorealign::gen_chroma_audio(Audio_reader &reader, int hcutoff,
 #ifdef VERBOSE
         printf("cv_index %d\n", cv_index);
 #endif
+        assert(cv_index < reader.frame_count);
         for (i = 0;  i < CHROMA_BIN_COUNT; i++)
             CHROM(cv_index, i) = binEnergy[i] / binCount[i];
         cv_index++;
@@ -334,7 +335,7 @@ int Scorealign::gen_chroma_audio(Audio_reader &reader, int hcutoff,
     free(full_data);
     if (verbose)
         printf("\nGenerated Chroma. file%d_frames is %i\n", id, file1_frames);
-    return reader.frame_count;
+    return cv_index;
 }
 
 

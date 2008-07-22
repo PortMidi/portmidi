@@ -2357,6 +2357,15 @@ void Alg_seq::copy_time_sigs_to(Alg_seq *dest)
 }
 
 
+void Alg_seq::set_time_map(Alg_time_map *map)
+{
+    Alg_track::set_time_map(map);
+    for (int i = 0; i < tracks(); i++) {
+        track(i)->set_time_map(map);
+    }
+}
+
+
 Alg_seq_ptr Alg_seq::cut(double start, double len, bool all)
     // return sequence from start to start+len and modify this
     // sequence by removing that time-span

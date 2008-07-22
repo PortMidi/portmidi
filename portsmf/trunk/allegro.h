@@ -611,7 +611,7 @@ public:
     // tempo map. (Exception: any operation that would modify the
     // tempo map should raise an error -- you don't want to change the
     // default tempo map.)
-    void set_time_map(Alg_time_map *map);
+    virtual void set_time_map(Alg_time_map *map);
     Alg_time_map *get_time_map() { return time_map; }
 
     // Methods to create events. The returned event is owned by the caller.
@@ -856,6 +856,7 @@ public:
     int get_read_error() { return error; }
     void serialize(void **buffer, long *bytes);
     void copy_time_sigs_to(Alg_seq *dest); // a utility function
+    void set_time_map(Alg_time_map *map);
 
     // encode sequence structure into contiguous, moveable memory block
     // address of newly allocated memory is assigned to *buffer, which must

@@ -24,13 +24,13 @@
 #define	LOW_CUTOFF  40
 #define HIGH_CUTOFF 2000
 
-//#define VERBOSE 1
+// Note: There are "verbose" flags passed as parameters that 
+// enable some printing. The SA_VERBOSE compiler flag causes a
+// lot more debugging output, so it could be called VERY_VERBOSE
+// as opposed to the quieter verbose flags.
 
-#ifdef VERBOSE
+#ifdef SA_VERBOSE
 #include "main.h"
-#define V(stmt) stmt
-#else
-#define V(stmt) 
 #endif
 
 // for presmoothing, how near does a point have to be to be "on the line"
@@ -449,8 +449,8 @@ void Scorealign::presmooth()
             continue;
         }
         /* debug: */
-        V(printf("presmoothing path from %d to %d:\n", i, j);)
-        V(print_path_range(pathx, pathy, i, j);)
+        SA_V(printf("presmoothing path from %d to %d:\n", i, j);)
+        SA_V(print_path_range(pathx, pathy, i, j);)
         /* fit line to nearby points */
         regr.regress();
         /* adjust points to fall along line */
@@ -458,10 +458,10 @@ void Scorealign::presmooth()
         short x = pathx[i];
         short y = pathy[i];
         k = i + 1;
-        V(printf("start loop: j %d, pathx %d, pathy %d\n",
+        SA_V(printf("start loop: j %d, pathx %d, pathy %d\n",
                  j, pathx[j], pathy[j]);)
         while (x < pathx[j] || y < pathy[j]) {
-            V(printf("top of loop: x %d, y %d\n", x, y);)
+            SA_V(printf("top of loop: x %d, y %d\n", x, y);)
             // iteratively make an optional move in the +y direction
             // then make a move in the x direction
             // check y direction: want to move to y+1 if either we are below
@@ -469,26 +469,26 @@ void Scorealign::presmooth()
             // line (if y is too low, we'll have to go at sharper than 2:1
             // slope to get to pathx[j], pathy[j], which is bad
             int target_y = ROUND(regr.f(x));
-            V(printf("target_y@%d %d, r %g, ", x, target_y, regr.f(x));)
+            SA_V(printf("target_y@%d %d, r %g, ", x, target_y, regr.f(x));)
             // but what if the line goes way below the last point?
             // we don't want to go below a diagonal through the last point
             int dist_to_last_point = pathx[j] - x;
             int minimum_y = pathy[j] - 2 * dist_to_last_point;
             if (target_y < minimum_y) {
                 target_y = minimum_y;
-                V(printf("minimum_y %d, ", minimum_y);)
+                SA_V(printf("minimum_y %d, ", minimum_y);)
             }
             // alternatively, if line goes too high:
             int maximum_y = pathy[j] - dist_to_last_point / 2;
             if (target_y > maximum_y) {
                 target_y = maximum_y;
-                V(printf("maximum y %d, ", maximum_y);)
+                SA_V(printf("maximum y %d, ", maximum_y);)
             }
             // now advance to target_y
             if (target_y > y) {
                 pathx[k] = x;
                 pathy[k] = y + 1;
-                V(printf("up: pathx[%d] %d, pathy[%d] %d\n", 
+                SA_V(printf("up: pathx[%d] %d, pathy[%d] %d\n", 
                          k, pathx[k], k, pathy[k]);)
                 k++;
                 y++;
@@ -499,11 +499,11 @@ void Scorealign::presmooth()
                 // y can either go horizontal or diagonal, i.e. y either
                 // stays the same or increments by one
                 target_y = ROUND(regr.f(x));
-                V(printf("target_y@%d %d, r %g, ", x, target_y, regr.f(x));)
+                SA_V(printf("target_y@%d %d, r %g, ", x, target_y, regr.f(x));)
                 if (target_y > y) y++;
                 pathx[k] = x;
                 pathy[k] = y;
-                V(printf("pathx[%d] %d, pathy[%d] %d\n", 
+                SA_V(printf("pathx[%d] %d, pathy[%d] %d\n", 
                          k, pathx[k], k, pathy[k]);)
                 k++;
             }
@@ -514,7 +514,7 @@ void Scorealign::presmooth()
         // DEBUG
         if (k > j) {
             printf("oops: k %d, j %d\n", k, j);
-            V(print_path_range(pathx, pathy, i, k);)
+            SA_V(print_path_range(pathx, pathy, i, k);)
         }
         assert(k <= j);
         // if new path is shorter than original, then fix up path
@@ -524,8 +524,8 @@ void Scorealign::presmooth()
             pathlen -= (j - k);
         }
         /* debug */
-        V(printf("after presmoothing:\n");)
-        V(print_path_range(pathx, pathy, i, k);)
+        SA_V(printf("after presmoothing:\n");)
+        SA_V(print_path_range(pathx, pathy, i, k);)
         /* since we adjusted the path, skip by 3/4 of n */
         i = i + 3 * n/4;
     }
@@ -640,9 +640,11 @@ void Scorealign::align_chromagrams(bool verbose)
     }
     /* Normalize the chroma frames */
     norm_chroma(file1_frames, chrom_energy1);
-    // print_chroma_table(chrom_energy1, file1_frames);
+    SA_V(printf("Chromagram data for file1:\n");)
+    SA_V(print_chroma_table(chrom_energy1, file1_frames);)
     norm_chroma(file2_frames, chrom_energy2);
-    // print_chroma_table(chrom_energy2, file2_frames);
+    SA_V(printf("Chromagram data for file1:\n");)
+    SA_V(print_chroma_table(chrom_energy2, file2_frames);)
     if (verbose)
         printf("Normalized Chroma.\n");
 

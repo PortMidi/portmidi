@@ -16,11 +16,10 @@
 #include "comp_chroma.h"
 #include "mfmidi.h"
 #include "sautils.h"
-
-// min used to work before I included <fstream> (!)
-int min(int a, int b) { return (a <= b ? a : b); }
-int max(int a, int b) { return (a >= b ? a : b); }
-
+#ifdef SA_VERBOSE
+#include <iostream> // cout
+using namespace std;
+#endif
 
 //if 1, causes printing internally
 #define PRINT_BIN_ENERGY 1
@@ -54,7 +53,7 @@ void gen_Magnitude(float* inR,float* inI, int low, int hi, float* out)
       float magVal = sqrt(inR[i] * inR[i] + inI[i] * inI[i]);
       //printf("   %d: sqrt(%g^2+%g^2)=%g\n",i,inR[i],inI[i+1],magVal);
       out[i]= magVal;
-#ifdef VERBOSE
+#ifdef SA_VERBOSE
       if (i == 1000) printf("gen_Magnitude: %d %g\n", i, magVal);
 #endif
     }
@@ -124,7 +123,7 @@ void gen_Hamming(float* in, int n, float* out)
       float internalValue = 2.0 * M_PI * k * (1.0 / (n - 1));
       float cosValue = cos(internalValue);
       float hammingValue = 0.54F + (-0.46F * cosValue);
-#ifdef VERBOSE
+#ifdef SA_VERBOSE
       if (k == 1000) printf("Hamming %g\n", hammingValue);
 #endif
       out[k] = hammingValue * in[k];
@@ -241,20 +240,21 @@ int Scorealign::gen_chroma_audio(Audio_reader &reader, int hcutoff,
 
     while (reader.read_window(full_data)) {
         //fill out array with 0's till next power of 2
-#ifdef VERBOSE
-        printf("readcount %d sample %g\n", readcount, full_data[0]);
+#ifdef SA_VERBOSE
+        printf("samples_per_frame %d sample %g\n", reader.samples_per_frame,
+               full_data[0]);
 #endif
         for (i = reader.samples_per_frame; i < full_data_size; i++) 
             full_data[i] = 0;
 
-#ifdef VERBOSE
+#ifdef AS_VERBOSE
         printf("preFFT: full_data[1000] %g\n", full_data[1000]);
 #endif
 
         //the data from the wave file, each point mult by a hamming value
         gen_Hamming(full_data, full_data_size, full_data);
 
-#ifdef VERBOSE
+#ifdef SA_VERBOSE
         printf("preFFT: hammingData[1000] %g\n", full_data[1000]);
 #endif
         FFT3(full_data_size, 0, full_data, NULL, fft_dataR, fft_dataI); //fft3
@@ -321,7 +321,7 @@ int Scorealign::gen_chroma_audio(Audio_reader &reader, int hcutoff,
         */
         //put chrom energy into the returned array
 
-#ifdef VERBOSE
+#ifdef SA_VERBOSE
         printf("cv_index %d\n", cv_index);
 #endif
         assert(cv_index < reader.frame_count);
@@ -378,8 +378,10 @@ int Scorealign::gen_chroma_midi(Alg_seq &seq, int hcutoff, int lcutoff,
                     float **chrom_energy, float *actual_frame_period,
                     int id, bool verbose)
 {	
-   if (verbose)
+    if (verbose) {
         printf ("==============FILE %d====================\n", id);
+        SA_V(seq.write(cout, true));
+    }
     /*=============================================================*/
 
     *actual_frame_period = (frame_period) ; // since we don't quantize to samples
@@ -415,7 +417,7 @@ int Scorealign::gen_chroma_midi(Alg_seq &seq, int hcutoff, int lcutoff,
         /*====================================================*/
 
         float frame_begin = max((cv_index * (frame_period)) - 
-                                window_size/2 , 0); //chooses zero if negative
+                                window_size/2 , 0.0F); //chooses zero if negative
 
         float frame_end= frame_begin +(window_size/2); 	
 	/*============================================================*/
@@ -442,13 +444,14 @@ int Scorealign::gen_chroma_midi(Alg_seq &seq, int hcutoff, int lcutoff,
         for (Event_list_ptr item = list; item; item = item->next) {
             /* compute duration of overlap */
             float overlap = 
-                min(frame_end, item->note->time + item->note->dur) - 
-                max(frame_begin, item->note->time);
+                min(frame_end, (float) (item->note->time + item->note->dur)) - 
+                max(frame_begin, (float) item->note->time);
             float velocity = item->note->loud;
             float weight = overlap * velocity;
 #if DEBUG_LOG
-            fprintf(dbf, "%3d note: %d overlap %g velocity %g\n", 
-                    cv_index, item->note->pitch, overlap, velocity);
+            fprintf(dbf, "%3d pitch %g key %d overlap %g velocity %g\n", 
+                    cv_index, item->note->pitch, item->note->get_identifier(), 
+                    overlap, velocity);
 #endif
             CHROM(cv_index, (int)item->note->pitch % 12) += weight;
         }

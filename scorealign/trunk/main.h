@@ -9,3 +9,4 @@
  */
 
 void print_path_range(short *pathx, short *pathy, int i, int j);
+void print_chroma_table(float *chrom_energy, int frames);

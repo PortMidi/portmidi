@@ -12,6 +12,7 @@
 #include "sautils.h"
 #include "alignfiles.h"
 #include "gen_chroma.h"
+#include "comp_chroma.h"
 
 // a global object with score alignment parameters and data
 Scorealign sa;
@@ -35,6 +36,8 @@ static void print_usage(char *progname)
            "(default is midi.mid)\n");
     printf("   -b is filename to write the time aligned beat times "
            "(default is beatmap.txt)\n");
+    printf("   -i is filename to write an image of the distance matrix "
+           "(default is distance.pnm)\n");
     printf("   -o 2.0 indicates a smoothing window time of 2.0s\n");
     printf("   -p 3.0 indicates presmoothing with a 3s window\n");
     printf("   -x 6.0 indicates 6s line segment approximation\n");
@@ -122,6 +125,29 @@ void edit_transcription(Alg_seq &seq , bool warp, FILE *outf,
 }
 
 
+// save image of distance matrix
+void save_image(char *image_filename, Scorealign &sa)
+{
+    FILE *outf = fopen(image_filename, "wb");
+    float max_d = 0.0;
+    float min_d = 999999.0;
+    fputs("P5\n", outf);
+    fprintf(outf, "%d %d 255\n", sa.file1_frames, sa.file2_frames);
+    for (int col = 0; col < sa.file1_frames; col++) {
+        for (int row = 0; row < sa.file2_frames; row++) {
+            float d = gen_dist(row, col, sa.chrom_energy2, sa.chrom_energy1);
+            if (d > max_d) max_d = d;
+            if (d < min_d) min_d = d;
+            int pixel = (int) (255 * (d / 6.0) + 0.5);
+            if (pixel > 255) pixel = 255;
+            putc(pixel, outf);
+        }
+    }
+    fclose(outf);
+    printf("max distance %g, min distance %g\n", max_d, min_d);
+}
+
+
 /*		SAVE_TRANSCRIPTION
 write note data corresponding to audio file
 
@@ -139,10 +165,7 @@ Where
    <velocity> is MIDI key velocity (1 to 127)
    <onset> is time in seconds, rounded to 3 decimal places (milliseconds)
    <duration> is time in seconds, rounded to 3 decimal places
-
 */
-
-
 void save_transcription(char *file1, char *file2, 
                         bool warp, char *filename, char *smooth_filename, 
                         char *midi_filename, char *beat_filename)
@@ -212,7 +235,7 @@ void print_chroma_table(float *chrom_energy, int frames)
     int i, j;
     for (j = 0; j < frames; j++) {
         for (i = 0; i <= CHROMA_BIN_COUNT; i++) {
-            printf("%g| ", AREF2(chrom_energy, j, i));
+            printf("%5.2f | ", AREF2(chrom_energy, j, i));
         }
         printf("\n");
     }
@@ -223,7 +246,7 @@ int main(int argc, char *argv [])
 {	
     char *progname, *infilename1, *infilename2;
     char *smooth_filename, *path_filename, *trans_filename;
-    char *midi_filename, *beat_filename;
+    char *midi_filename, *beat_filename, *image_filename;
     
     //just transcribe if trasncribe == 1
     int transcribe = 0;
@@ -235,7 +258,8 @@ int main(int argc, char *argv [])
     trans_filename = "transcription.txt";
     midi_filename = "midi.mid";
     beat_filename = "beatmap.txt";
-	
+    image_filename = "distance.pnm";
+
     progname = strrchr(argv [0], '/'); 
     progname = progname ? progname + 1 : argv[0] ;
 
@@ -258,13 +282,15 @@ int main(int argc, char *argv [])
             } else if (flag == 'w') {
                 sa.window_size = atof(argv[i+1]); 
             } else if (flag == 'r') {
-                path_filename=argv[i+1];
+                path_filename = argv[i+1];
             } else if (flag == 's') {
-                smooth_filename=argv[i+1];
+                smooth_filename = argv[i+1];
             } else if (flag == 't') {
-                trans_filename=argv[i+1]; 
+                trans_filename = argv[i+1]; 
             } else if (flag == 'm') {
-                midi_filename=argv[i+1];
+                midi_filename = argv[i+1];
+            } else if (flag == 'i') {
+                image_filename = argv[i+1];
             } else if (flag == 'b') {
                 beat_filename = argv[i+1];
             } else if (flag == 'o') {
@@ -330,6 +356,8 @@ int main(int argc, char *argv [])
     // save path
     save_path(path_filename, sa.pathlen, sa.pathx, sa.pathy, 
               sa.actual_frame_period_1, sa.actual_frame_period_2);
+    // save image of distance matrix
+    save_image(image_filename, sa);
     // save smooth, midi, transcription
     save_transcription(infilename1, infilename2, true, trans_filename, 
                        smooth_filename, midi_filename, beat_filename);

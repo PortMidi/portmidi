@@ -74,7 +74,8 @@ float gen_dist( int i, int j, float *chrom_energy1,
 
   if (AREF2(chrom_energy1, i, CHROMA_BIN_COUNT) !=
 	  AREF2(chrom_energy2, j, CHROMA_BIN_COUNT)) {
-	  return SILENCE_DISTANCE;
+      printf("gd%g ", SILENCE_DISTANCE);
+      return SILENCE_DISTANCE;
   }
   /* Determine the distance between these vectors 
      chroma1[i] and chroma2[j] to return */
@@ -85,5 +86,7 @@ float gen_dist( int i, int j, float *chrom_energy1,
 
       sum += diff*diff ;
   }
-  return min2( sqrt( sum ), MAX );
+  sum = min2( sqrt( sum ), MAX );
+  printf("gd%g ", sum);
+  return sum;
 }

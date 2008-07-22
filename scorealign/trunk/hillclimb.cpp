@@ -29,8 +29,8 @@
 #include "hillclimb.h"
 #include "stdio.h"
 
-#define VERBOSE 0
-#define V if (VERBOSE)
+#define HC_VERBOSE 0
+#define V if (HC_VERBOSE)
 
 void Hillclimb::set_parameters(double *p, double *ss, 
                                double *min_, double *max_, int plen)

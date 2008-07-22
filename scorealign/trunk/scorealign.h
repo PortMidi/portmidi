@@ -1,3 +1,18 @@
+/* scorealign.h 
+ *
+ * RBD
+ */
+
+// turn on lots of debugging, comment this line out to disable
+#define SA_VERBOSE 1
+
+#ifdef SA_VERBOSE
+#define SA_V(stmt) stmt
+#else
+#define SA_V(stmt) 
+#endif
+
+
 class Scorealign {
  public:
     float frame_period; // time in seconds
@@ -83,7 +98,7 @@ class Scorealign {
     void midi_tempo_align(Alg_seq &seq, bool verbose);
 };
 
-#define DEBUG_LOG 0
+#define DEBUG_LOG 1
 #if DEBUG_LOG
 extern FILE *dbf;
 #endif

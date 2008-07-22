@@ -35,7 +35,7 @@ long Audio_reader::read_window(float *data)
 {
     int frames_read;    // how many frames did we read?
 
-    int hop = samples_per_frame;
+    int hop = hop_samples;
     if (reading_first_window) {
         hop = samples_per_frame / 2; // first time we read more data	
         // zero end of temp_data, which will shift to beginning

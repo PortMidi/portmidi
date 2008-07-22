@@ -133,8 +133,8 @@ void save_image(char *image_filename, Scorealign &sa)
     float min_d = 999999.0;
     fputs("P5\n", outf);
     fprintf(outf, "%d %d 255\n", sa.file1_frames, sa.file2_frames);
-    for (int col = 0; col < sa.file1_frames; col++) {
-        for (int row = 0; row < sa.file2_frames; row++) {
+    for (int row = 0; row < sa.file2_frames; row++) {
+        for (int col = 0; col < sa.file1_frames; col++) {
             float d = gen_dist(row, col, sa.chrom_energy2, sa.chrom_energy1);
             if (d > max_d) max_d = d;
             if (d < min_d) min_d = d;

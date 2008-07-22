@@ -579,7 +579,7 @@ void Scorealign::midi_tempo_align(Alg_seq &seq, bool verbose)
         if (newtime > 0) 
             new_time_map_seq.insert_beat(newtime, (double) i);
     }
-	
+    seq.convert_to_beats();
     seq.set_time_map(new_time_map_seq.get_time_map());
 }
 
@@ -640,10 +640,10 @@ void Scorealign::align_chromagrams(bool verbose)
     }
     /* Normalize the chroma frames */
     norm_chroma(file1_frames, chrom_energy1);
-    SA_V(printf("Chromagram data for file1:\n");)
+    SA_V(printf("Chromagram data for file 1:\n");)
     SA_V(print_chroma_table(chrom_energy1, file1_frames);)
     norm_chroma(file2_frames, chrom_energy2);
-    SA_V(printf("Chromagram data for file1:\n");)
+    SA_V(printf("Chromagram data for file 2:\n");)
     SA_V(print_chroma_table(chrom_energy2, file2_frames);)
     if (verbose)
         printf("Normalized Chroma.\n");

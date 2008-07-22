@@ -18,8 +18,8 @@
 #include "sautils.h"
 #ifdef SA_VERBOSE
 #include <iostream> // cout
-using namespace std;
 #endif
+using namespace std;
 
 //if 1, causes printing internally
 #define PRINT_BIN_ENERGY 1

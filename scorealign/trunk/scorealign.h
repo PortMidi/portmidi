@@ -4,7 +4,7 @@
  */
 
 // turn on lots of debugging, comment this line out to disable
-#define SA_VERBOSE 1
+// #define SA_VERBOSE 1
 
 #ifdef SA_VERBOSE
 #define SA_V(stmt) stmt

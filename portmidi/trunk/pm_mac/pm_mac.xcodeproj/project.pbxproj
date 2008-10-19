@@ -188,7 +188,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 5851D5180479552300EE98CD /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 3D17A13C0E13D47F00930576 /* JPortMidiHeaders */;
+			remoteGlobalIDString = 3D17A13C0E13D47F00930576;
 			remoteInfo = JPortMidiHeaders;
 		};
 		3D8DABA40D57B68A000FEBA8 /* PBXContainerItemProxy */ = {
@@ -299,7 +299,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3D17A13D0E13D47F00930576 /* JPortMidiHeaders */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; name = JPortMidiHeaders; path = build/Development/JPortMidiHeaders; sourceTree = "<group>"; };
+		3D17A13D0E13D47F00930576 /* JPortMidiHeaders.jar */ = {isa = PBXFileReference; explicitFileType = archive.jar; includeInIndex = 0; path = JPortMidiHeaders.jar; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D17A18C0E13E1EF00930576 /* jportmidi_JportMidiApi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = jportmidi_JportMidiApi.h; path = build/Development/jportmidi_JportMidiApi.h; sourceTree = "<group>"; };
 		3D17A1910E13E25E00930576 /* libpmjni.jnilib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libpmjni.jnilib; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D17A1A10E13E30100930576 /* pmjni.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = pmjni.c; path = ../pm_java/pmjni/pmjni.c; sourceTree = SOURCE_ROOT; };
@@ -608,7 +608,7 @@
 				3DBF24640B5967A500DAD93B /* mm */,
 				3DA60D6C0D3FBEA40036B654 /* midiclock */,
 				3D9D57CE0E12E22800C4C68D /* PmDefaults.app */,
-				3D17A13D0E13D47F00930576 /* JPortMidiHeaders */,
+				3D17A13D0E13D47F00930576 /* JPortMidiHeaders.jar */,
 				3D17A18C0E13E1EF00930576 /* jportmidi_JportMidiApi.h */,
 				3D17A1910E13E25E00930576 /* libpmjni.jnilib */,
 			);
@@ -679,7 +679,7 @@
 			name = JPortMidiHeaders;
 			productInstallPath = /usr/local/lib;
 			productName = JPortMidiHeaders;
-			productReference = 3D17A13D0E13D47F00930576 /* JPortMidiHeaders */;
+			productReference = 3D17A13D0E13D47F00930576 /* JPortMidiHeaders.jar */;
 		};
 /* End PBXLibraryTarget section */
 
@@ -1143,10 +1143,9 @@
 				JAVA_ARCHIVE_CLASSES = YES;
 				JAVA_ARCHIVE_TYPE = JAR;
 				JAVA_COMPILER = /usr/bin/javac;
-				JAVA_COMPILER_FLAGS = "";
 				JAVA_SOURCE_SUBDIR = .;
 				LIBRARY_STYLE = STATIC;
-				OPTIMIZATION_CFLAGS = "";
+				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOL_FLAGS = "";
@@ -1174,10 +1173,9 @@
 				JAVA_ARCHIVE_CLASSES = YES;
 				JAVA_ARCHIVE_TYPE = JAR;
 				JAVA_COMPILER = /usr/bin/javac;
-				JAVA_COMPILER_FLAGS = "";
 				JAVA_SOURCE_SUBDIR = .;
 				LIBRARY_STYLE = STATIC;
-				OPTIMIZATION_CFLAGS = "";
+				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOL_FLAGS = "";
@@ -1203,10 +1201,9 @@
 				JAVA_ARCHIVE_CLASSES = YES;
 				JAVA_ARCHIVE_TYPE = JAR;
 				JAVA_COMPILER = /usr/bin/javac;
-				JAVA_COMPILER_FLAGS = "";
 				JAVA_SOURCE_SUBDIR = .;
 				LIBRARY_STYLE = STATIC;
-				OPTIMIZATION_CFLAGS = "";
+				OPTIMIZATION_CFLAGS = "-O0";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOL_FLAGS = "";

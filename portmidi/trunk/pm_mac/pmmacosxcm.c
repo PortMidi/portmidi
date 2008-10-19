@@ -418,7 +418,19 @@ midi_out_close(PmInternal *midi)
 static PmError
 midi_abort(PmInternal *midi)
 {
-    return pmNoError;
+    PmError err = pmNoError;
+    OSStatus macHostError;
+    midi_macosxcm_type m = (midi_macosxcm_type) midi->descriptor;
+    MIDIEndpointRef endpoint =
+            (MIDIEndpointRef) descriptors[midi->device_id].descriptor;
+    macHostError = MIDIFlushOutput(endpoint);
+    if (macHostError != noErr) {
+        pm_hosterror = macHostError;
+        sprintf(pm_hosterror_text,
+                "Host error %ld: MIDIFlushOutput()", macHostError);
+        err = pmHostError;
+    }
+    return err;
 }
 
 

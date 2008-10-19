@@ -7,12 +7,7 @@ extern "C" {
 /*
  * PortMidi Portable Real-Time MIDI Library
  * PortMidi API Header File
- * Latest version available at: http://www.cs.cmu.edu/~music/portmidi/
- *
- * Copyright (c) 1999-2000 Ross Bencina and Phil Burk
- * Copyright (c) 2001-2006 Roger B. Dannenberg
- *
- * Latest version available at: http://www.cs.cmu.edu/~music/portmidi/
+ * Latest version available at: http://sourceforge.net/projects/portmedia
  *
  * Copyright (c) 1999-2000 Ross Bencina and Phil Burk
  * Copyright (c) 2001-2006 Roger B. Dannenberg
@@ -121,7 +116,10 @@ typedef enum {
     pmInsufficientMemory,
     pmBufferTooSmall,
     pmBufferOverflow,
-    pmBadPtr,
+    pmBadPtr, /* PortMidiStream parameter is NULL or
+               * stream is not opened or
+               * stream is output when input is required or
+               * stream is input when output is required */
     pmBadData, /* illegal midi data, e.g. missing EOX */
     pmInternalError,
     pmBufferMaxSize /* buffer is already as large as it can be */

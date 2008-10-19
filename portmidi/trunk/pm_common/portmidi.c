@@ -646,9 +646,9 @@ PmError Pm_OpenInput(PortMidiStream** stream,
     if (inputDevice < 0 || inputDevice >= pm_descriptor_index) 
         err = pmInvalidDeviceId;
     else if (!descriptors[inputDevice].pub.input) 
-        err =  pmBadPtr;
+        err =  pmInvalidDeviceId;
     else if(descriptors[inputDevice].pub.opened)
-        err =  pmBadPtr;
+        err =  pmInvalidDeviceId;
     
     if (err != pmNoError) 
         goto error_return;
@@ -860,9 +860,9 @@ PmError Pm_Abort( PortMidiStream* stream ) {
     /* arg checking */
     if (midi == NULL)
         err = pmBadPtr;
-    if (!descriptors[midi->device_id].pub.output)
+    else if (!descriptors[midi->device_id].pub.output)
         err = pmBadPtr;
-    if (!descriptors[midi->device_id].pub.opened)
+    else if (!descriptors[midi->device_id].pub.opened)
         err = pmBadPtr;
     else
         err = (*midi->dictionary->abort)(midi);
@@ -954,7 +954,7 @@ static void pm_flush_sysex(PmInternal *midi, PmTimestamp timestamp)
    The input handler MUST obey these rules:
    1) all short input messages must be sent to pm_read_short, which
       enqueues them to a FIFO for the application.
-   2) eash buffer of sysex bytes should be reported by calling pm_read_bytes
+   2) each buffer of sysex bytes should be reported by calling pm_read_bytes
       (which sets midi->sysex_in_progress). After the eox byte, 
       pm_read_bytes will clear sysex_in_progress
  */

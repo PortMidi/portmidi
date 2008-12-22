@@ -46,7 +46,6 @@ TO COMPILE PORTMIDI:
 
 5)  the following projects exist within this workspace:
     - portmidi (the PortMidi library)
-    - pm_dll (the dll library used to close midi ports on program exit)
     - porttime (a small portable library implementing timer facilities)
     - test (simple midi I/O testing)
     - midithread (an example illustrating low-latency MIDI processing
@@ -56,7 +55,16 @@ TO COMPILE PORTMIDI:
     - midithru (an example illustrating software MIDI THRU)
     - qtest (a test of the new multicore-safe queue implementation)
     - mm  (allows monitoring of midi messages)
+    - pmjni (a dll to provide an interface to PortMidi for Java)
 
+
+6)  open the pmjni project properties
+    - visit Configuration Properties, C/C++, General
+    - find Additional Include Directories property and open the editor (...)
+    - at the end of the list, you will find two paths beginning with E:\
+    - these are absolute paths to the Java SDK; you'll need to install the
+      Java SDK (from Sun) and update these directories in order to build
+      this project.
 
 6)  verify that all project settings are for Win32 Debug release:
     - type Alt-F7
@@ -73,13 +81,20 @@ TO COMPILE PORTMIDI:
 8)  The settings for these projects were distributed in the zip file, so
     compile should just work.
 
-9) run test project; use the menu that shows up from the command prompt to
+9)  run test project; use the menu that shows up from the command prompt to
     test that portMidi works on your system. tests include: 
 		- verify midi output works
 		- verify midi input works
 
 10) run other projects if you wish: sysex, latency, midithread, mm, 
     qtest, midithru
+
+11) use pm_java/make.bat (run in a cmd window from pm_java) to compile
+    the java code.
+
+12) run pm_java/pmdefaults.bat (run in a cmd window from pm_java) to
+    run the PmDefaults program. This lets you select the default input
+    and output devices for PortMidi.
 
 ============================================================================
 TO CREATE YOUR OWN PORTMIDI CLIENT APPLICATION:

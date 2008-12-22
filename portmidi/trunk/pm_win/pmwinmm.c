@@ -682,6 +682,7 @@ static void FAR PASCAL winmm_in_callback(
          * hardware interrupt? -- but I've seen reentrant behavior 
          * using a debugger, so it happens.
          */
+        long new_driver_time;
         EnterCriticalSection(&m->lock);
 
         /* dwParam1 is MIDI data received, packed into DWORD w/ 1st byte of
@@ -690,7 +691,7 @@ static void FAR PASCAL winmm_in_callback(
             in [ms] from when midiInStart called.
            each message is expanded to include the status byte */
 
-        long new_driver_time = dwParam2;
+        new_driver_time = dwParam2;
 
         if ((dwParam1 & 0x80) == 0) {
             /* not a status byte -- ignore it. This happened running the
@@ -1301,10 +1302,12 @@ static void CALLBACK winmm_out_callback(HMIDIOUT hmo, UINT wMsg,
        buffers are free, so we need to do something to flag empty buffers if
        we leave them prepared
      */
+    /*
     printf("out_callback: hdr %x, wMsg %x, MOM_DONE %x\n", 
            hdr, wMsg, MOM_DONE);
+    */
     if (wMsg == MOM_DONE)
-    assert(midiOutUnprepareHeader(m->handle.out, hdr,
+        assert(midiOutUnprepareHeader(m->handle.out, hdr,
                         sizeof(MIDIHDR)) == MMSYSERR_NOERROR);
     /* notify waiting sender that a buffer is available */
     err = SetEvent(m->buffer_signal);

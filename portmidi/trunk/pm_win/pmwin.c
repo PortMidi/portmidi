@@ -42,14 +42,9 @@ static void pm_exit(void) {
 /* pm_init is the windows-dependent initialization.*/
 void pm_init(void)
 {
-#ifdef DEBUG
-    printf("registered pm_term with cleanup DLL\n");
-#endif
-#else
     atexit(pm_exit);
 #ifdef DEBUG
     printf("registered pm_exit with atexit()\n");
-#endif
 #endif
     pm_winmm_init();
     /* initialize other APIs (DirectX?) here */

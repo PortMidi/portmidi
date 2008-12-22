@@ -195,11 +195,13 @@ public class PmDefaultsFrame extends JFrame
         int id = outputSelection.getSelectedIndex();
         if (id >= 0) {
             String prefName = makePrefName(outputIds.get(id));
+            System.out.println("output pref: " + prefName);
             prefs.put("PM_RECOMMENDED_OUTPUT_DEVICE", prefName);
         }
         id = inputSelection.getSelectedIndex();
         if (id >= 0) {
             String prefName = makePrefName(inputIds.get(id));
+            System.out.println("input pref: " + prefName);
             prefs.put("PM_RECOMMENDED_INPUT_DEVICE", prefName);
         }
     }

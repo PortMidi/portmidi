@@ -227,10 +227,10 @@ JNIEXPORT jint JNICALL Java_jportmidi_JPortMidiApi_Pm_1WriteShort
 
 /*
  * Class:     jportmidi_JPortMidiApi
- * Method:    Pm_WriteSysex
+ * Method:    Pm_WriteSysEx
  * Signature: (Ljportmidi/JPortMidiApi/PortMidiStream;I[B)I
  */
-JNIEXPORT jint JNICALL Java_jportmidi_JPortMidiApi_Pm_1WriteSysex
+JNIEXPORT jint JNICALL Java_jportmidi_JPortMidiApi_Pm_1WriteSysEx
   (JNIEnv *, jclass, jobject, jint, jbyteArray);
 
 /*

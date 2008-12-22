@@ -420,7 +420,6 @@ midi_abort(PmInternal *midi)
 {
     PmError err = pmNoError;
     OSStatus macHostError;
-    midi_macosxcm_type m = (midi_macosxcm_type) midi->descriptor;
     MIDIEndpointRef endpoint =
             (MIDIEndpointRef) descriptors[midi->device_id].descriptor;
     macHostError = MIDIFlushOutput(endpoint);
@@ -916,7 +915,7 @@ PmError pm_macosxcm_init(void)
     }
 
     /* Iterate over the MIDI output devices */
-    for (i = 0; i < numOutputs; i++) {
+    for (i = 0; i < numInputs; i++) {
         endpoint = MIDIGetDestination(i);
         if (endpoint == NULL) {
             continue;

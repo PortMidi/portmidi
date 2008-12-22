@@ -118,6 +118,13 @@
 		3D17A2290E13EF8000930576 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D17A2280E13EF8000930576 /* CoreServices.framework */; };
 		3D17A22D0E13EF9300930576 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D17A2280E13EF8000930576 /* CoreServices.framework */; };
 		3D17A4C40E14079000930576 /* pmdefaults.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3D17A4C30E14079000930576 /* pmdefaults.icns */; };
+		3D65FEE30ECB7548008083A3 /* CoreServices in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D65FEE20ECB7548008083A3 /* CoreServices */; };
+		3D65FEE40ECB7548008083A3 /* CoreServices in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D65FEE20ECB7548008083A3 /* CoreServices */; };
+		3D65FEE50ECB7548008083A3 /* CoreServices in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D65FEE20ECB7548008083A3 /* CoreServices */; };
+		3D65FEE60ECB7548008083A3 /* CoreServices in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D65FEE20ECB7548008083A3 /* CoreServices */; };
+		3D65FEE70ECB7548008083A3 /* CoreServices in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D65FEE20ECB7548008083A3 /* CoreServices */; };
+		3D65FEE80ECB7548008083A3 /* CoreServices in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D65FEE20ECB7548008083A3 /* CoreServices */; };
+		3D65FEE90ECB7548008083A3 /* CoreServices in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D65FEE20ECB7548008083A3 /* CoreServices */; };
 		3D9D57C40E12E1CF00C4C68D /* finddefault.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D9D57C30E12E1CF00C4C68D /* finddefault.c */; };
 		3D9D57C60E12E1E500C4C68D /* readbinaryplist.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D9D57C50E12E1E500C4C68D /* readbinaryplist.c */; };
 		3D9D57E60E12E39B00C4C68D /* JPortMidi.java in Sources */ = {isa = PBXBuildFile; fileRef = 3D9D57DE0E12E39B00C4C68D /* JPortMidi.java */; };
@@ -306,6 +313,7 @@
 		3D17A1E70E13E57700930576 /* JavaVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaVM.framework; path = /System/Library/Frameworks/JavaVM.framework; sourceTree = "<absolute>"; };
 		3D17A2280E13EF8000930576 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		3D17A4C30E14079000930576 /* pmdefaults.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = pmdefaults.icns; path = ../pm_java/pmdefaults/pmdefaults.icns; sourceTree = SOURCE_ROOT; };
+		3D65FEE20ECB7548008083A3 /* CoreServices */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = CoreServices; path = /System/Library/Frameworks/CoreServices.framework/CoreServices; sourceTree = "<absolute>"; };
 		3D9D57C30E12E1CF00C4C68D /* finddefault.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = finddefault.c; sourceTree = "<group>"; };
 		3D9D57C50E12E1E500C4C68D /* readbinaryplist.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = readbinaryplist.c; sourceTree = "<group>"; };
 		3D9D57CE0E12E22800C4C68D /* PmDefaults.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PmDefaults.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -352,7 +360,7 @@
 		D8684B420ACBFA09009F6478 /* midithread */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = midithread; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8684B610ACBFA75009F6478 /* midithru */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = midithru; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8684B6D0ACBFAB7009F6478 /* sysex */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sysex; sourceTree = BUILT_PRODUCTS_DIR; };
-		D8684B810ACBFB0B009F6478 /* latency */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = latency; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8684B810ACBFB0B009F6478 /* latency */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.executable"; path = latency; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -390,6 +398,7 @@
 				3DA60D650D3FBEA40036B654 /* CoreMIDI.framework in Frameworks */,
 				3DA60D660D3FBEA40036B654 /* CoreFoundation.framework in Frameworks */,
 				3DA60D670D3FBEA40036B654 /* CoreAudio.framework in Frameworks */,
+				3D65FEE90ECB7548008083A3 /* CoreServices in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -401,6 +410,7 @@
 				3DBF24720B59691500DAD93B /* CoreMIDI.framework in Frameworks */,
 				3DBF24780B59691800DAD93B /* CoreFoundation.framework in Frameworks */,
 				3DBF24A10B59691B00DAD93B /* CoreAudio.framework in Frameworks */,
+				3D65FEE80ECB7548008083A3 /* CoreServices in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -430,6 +440,7 @@
 				D8684B570ACBFA3E009F6478 /* CoreMIDI.framework in Frameworks */,
 				D8684B580ACBFA3E009F6478 /* CoreFoundation.framework in Frameworks */,
 				D8684B590ACBFA3E009F6478 /* CoreAudio.framework in Frameworks */,
+				3D65FEE30ECB7548008083A3 /* CoreServices in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -441,6 +452,7 @@
 				D8684B540ACBFA34009F6478 /* CoreMIDI.framework in Frameworks */,
 				D8684B550ACBFA34009F6478 /* CoreFoundation.framework in Frameworks */,
 				D8684B560ACBFA34009F6478 /* CoreAudio.framework in Frameworks */,
+				3D65FEE40ECB7548008083A3 /* CoreServices in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,6 +464,7 @@
 				D8684B670ACBFAA5009F6478 /* CoreMIDI.framework in Frameworks */,
 				D8684B680ACBFAA5009F6478 /* CoreFoundation.framework in Frameworks */,
 				D8684B690ACBFAA5009F6478 /* CoreAudio.framework in Frameworks */,
+				3D65FEE50ECB7548008083A3 /* CoreServices in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -463,6 +476,7 @@
 				D8684B7B0ACBFAFD009F6478 /* CoreMIDI.framework in Frameworks */,
 				D8684B7C0ACBFAFD009F6478 /* CoreFoundation.framework in Frameworks */,
 				D8684B7D0ACBFAFD009F6478 /* CoreAudio.framework in Frameworks */,
+				3D65FEE60ECB7548008083A3 /* CoreServices in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,6 +488,7 @@
 				D8684B870ACBFB33009F6478 /* CoreMIDI.framework in Frameworks */,
 				D8684B880ACBFB33009F6478 /* CoreFoundation.framework in Frameworks */,
 				D8684B890ACBFB33009F6478 /* CoreAudio.framework in Frameworks */,
+				3D65FEE70ECB7548008083A3 /* CoreServices in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -530,6 +545,7 @@
 		5851D5140479552300EE98CD = {
 			isa = PBXGroup;
 			children = (
+				3D65FEE20ECB7548008083A3 /* CoreServices */,
 				3D17A4C30E14079000930576 /* pmdefaults.icns */,
 				3D17A2280E13EF8000930576 /* CoreServices.framework */,
 				3D17A1E70E13E57700930576 /* JavaVM.framework */,
@@ -1381,8 +1397,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = midiclock;
 				ZERO_LINK = YES;
@@ -1401,8 +1419,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = midiclock;
 				ZERO_LINK = NO;
@@ -1418,8 +1438,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = midiclock;
 				ZERO_LINK = YES;
@@ -1439,8 +1461,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = mm;
 				ZERO_LINK = YES;
@@ -1459,8 +1483,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = mm;
 				ZERO_LINK = NO;
@@ -1476,8 +1502,10 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_2)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_2 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = mm;
 				ZERO_LINK = YES;
@@ -1671,6 +1699,11 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = NEWBUFFER;
 				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = test;
 				ZERO_LINK = YES;
@@ -1686,6 +1719,11 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PREPROCESSOR_DEFINITIONS = NEWBUFFER;
 				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = test;
 				ZERO_LINK = NO;
@@ -1699,6 +1737,11 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PREPROCESSOR_DEFINITIONS = NEWBUFFER;
 				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = test;
 				ZERO_LINK = YES;
@@ -1716,6 +1759,11 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = NEWBUFFER;
 				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = midithread;
 				ZERO_LINK = YES;
@@ -1731,6 +1779,11 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PREPROCESSOR_DEFINITIONS = NEWBUFFER;
 				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = midithread;
 				ZERO_LINK = NO;
@@ -1744,6 +1797,11 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PREPROCESSOR_DEFINITIONS = NEWBUFFER;
 				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = midithread;
 				ZERO_LINK = YES;
@@ -1761,6 +1819,11 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = NEWBUFFER;
 				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = midithru;
 				ZERO_LINK = YES;
@@ -1776,6 +1839,11 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PREPROCESSOR_DEFINITIONS = NEWBUFFER;
 				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = midithru;
 				ZERO_LINK = NO;
@@ -1789,6 +1857,11 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PREPROCESSOR_DEFINITIONS = NEWBUFFER;
 				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = midithru;
 				ZERO_LINK = YES;
@@ -1805,6 +1878,11 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = sysex;
 				ZERO_LINK = YES;
@@ -1819,6 +1897,11 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = sysex;
 				ZERO_LINK = NO;
@@ -1831,6 +1914,11 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = sysex;
 				ZERO_LINK = YES;
@@ -1848,6 +1936,11 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = NEWBUFFER;
 				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = latency;
 				ZERO_LINK = YES;
@@ -1863,6 +1956,11 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PREPROCESSOR_DEFINITIONS = NEWBUFFER;
 				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = latency;
 				ZERO_LINK = NO;
@@ -1876,6 +1974,11 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PREPROCESSOR_DEFINITIONS = NEWBUFFER;
 				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = latency;
 				ZERO_LINK = YES;

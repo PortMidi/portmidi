@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		D8684B960ACBFB93009F6478 /* lib+test suite */ = {
+		D8684B960ACBFB93009F6478 /* everything suite */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = D8684BAA0ACBFBDD009F6478 /* Build configuration list for PBXAggregateTarget "lib+test suite" */;
+			buildConfigurationList = D8684BAA0ACBFBDD009F6478 /* Build configuration list for PBXAggregateTarget "everything suite" */;
 			buildPhases = (
 			);
 			comments = "Builds the Library and all the test shell tools.";
@@ -22,8 +22,9 @@
 				D8684BA00ACBFB9D009F6478 /* PBXTargetDependency */,
 				D8684BA20ACBFB9D009F6478 /* PBXTargetDependency */,
 				D8E738E20ACDA3BD0030B95B /* PBXTargetDependency */,
+				3D3534900F0D2DB30059CD05 /* PBXTargetDependency */,
 			);
-			name = "lib+test suite";
+			name = "everything suite";
 			productName = "lib+test suite";
 		};
 /* End PBXAggregateTarget section */
@@ -44,7 +45,7 @@
 			name = PmDefaults;
 			productInstallPath = "$(USER_APPS_DIR)";
 			productName = pmdefaults;
-			productReference = 3D9D57CE0E12E22800C4C68D /* PmDefaults.app */;
+			productReference = 3D9D57CE0E12E22800C4C68D /* pmdefaults.app */;
 			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
 <plist version=\"1.0\">
@@ -198,6 +199,13 @@
 			remoteGlobalIDString = 3D17A13C0E13D47F00930576;
 			remoteInfo = JPortMidiHeaders;
 		};
+		3D35348F0F0D2DB30059CD05 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5851D5180479552300EE98CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D9D57CD0E12E22800C4C68D;
+			remoteInfo = PmDefaults;
+		};
 		3D8DABA40D57B68A000FEBA8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5851D5180479552300EE98CD /* Project object */;
@@ -316,7 +324,7 @@
 		3D65FEE20ECB7548008083A3 /* CoreServices */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = CoreServices; path = /System/Library/Frameworks/CoreServices.framework/CoreServices; sourceTree = "<absolute>"; };
 		3D9D57C30E12E1CF00C4C68D /* finddefault.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = finddefault.c; sourceTree = "<group>"; };
 		3D9D57C50E12E1E500C4C68D /* readbinaryplist.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = readbinaryplist.c; sourceTree = "<group>"; };
-		3D9D57CE0E12E22800C4C68D /* PmDefaults.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PmDefaults.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D9D57CE0E12E22800C4C68D /* pmdefaults.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pmdefaults.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D9D57DE0E12E39B00C4C68D /* JPortMidi.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = JPortMidi.java; sourceTree = "<group>"; };
 		3D9D57E20E12E39B00C4C68D /* JPortMidiApi.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = JPortMidiApi.java; sourceTree = "<group>"; };
 		3D9D57E40E12E39B00C4C68D /* JPortMidiException.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = JPortMidiException.java; sourceTree = "<group>"; };
@@ -360,7 +368,7 @@
 		D8684B420ACBFA09009F6478 /* midithread */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = midithread; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8684B610ACBFA75009F6478 /* midithru */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = midithru; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8684B6D0ACBFAB7009F6478 /* sysex */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = sysex; sourceTree = BUILT_PRODUCTS_DIR; };
-		D8684B810ACBFB0B009F6478 /* latency */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.executable"; path = latency; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8684B810ACBFB0B009F6478 /* latency */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = latency; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -623,7 +631,7 @@
 				D8684B810ACBFB0B009F6478 /* latency */,
 				3DBF24640B5967A500DAD93B /* mm */,
 				3DA60D6C0D3FBEA40036B654 /* midiclock */,
-				3D9D57CE0E12E22800C4C68D /* PmDefaults.app */,
+				3D9D57CE0E12E22800C4C68D /* pmdefaults.app */,
 				3D17A13D0E13D47F00930576 /* JPortMidiHeaders.jar */,
 				3D17A18C0E13E1EF00930576 /* jportmidi_JportMidiApi.h */,
 				3D17A1910E13E25E00930576 /* libpmjni.jnilib */,
@@ -900,7 +908,7 @@
 				D8684B800ACBFB0B009F6478 /* latency */,
 				3DBF24630B5967A500DAD93B /* mm */,
 				3DA60D5E0D3FBEA40036B654 /* midiclock */,
-				D8684B960ACBFB93009F6478 /* lib+test suite */,
+				D8684B960ACBFB93009F6478 /* everything suite */,
 				3D9D57CD0E12E22800C4C68D /* PmDefaults */,
 				3D17A13C0E13D47F00930576 /* JPortMidiHeaders */,
 			);
@@ -1068,6 +1076,11 @@
 			isa = PBXTargetDependency;
 			target = 3D17A13C0E13D47F00930576 /* JPortMidiHeaders */;
 			targetProxy = 3D17A1EB0E13E5D100930576 /* PBXContainerItemProxy */;
+		};
+		3D3534900F0D2DB30059CD05 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3D9D57CD0E12E22800C4C68D /* PmDefaults */;
+			targetProxy = 3D35348F0F0D2DB30059CD05 /* PBXContainerItemProxy */;
 		};
 		3D8DABA50D57B68A000FEBA8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2147,7 +2160,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Default;
 		};
-		D8684BAA0ACBFBDD009F6478 /* Build configuration list for PBXAggregateTarget "lib+test suite" */ = {
+		D8684BAA0ACBFBDD009F6478 /* Build configuration list for PBXAggregateTarget "everything suite" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D8684BAB0ACBFBDD009F6478 /* Development */,

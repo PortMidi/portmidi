@@ -576,11 +576,12 @@ static PmError winmm_in_open(PmInternal *midi, void *driverInfo)
      */
     InitializeCriticalSectionAndSpinCount(&m->lock, 4000);
     /* open device */
-    pm_hosterror = midiInOpen(&(m->handle.in),  /* input device handle */
-                              dwDevice,  /* device ID */
-                              (DWORD) winmm_in_callback,  /* callback address */
-                              (DWORD) midi,  /* callback instance data */
-                              CALLBACK_FUNCTION); /* callback is a procedure */
+    pm_hosterror = midiInOpen(
+	    &(m->handle.in),  /* input device handle */
+	    dwDevice,  /* device ID */
+	    (DWORD_PTR) winmm_in_callback,  /* callback address */
+	    (DWORD_PTR) midi,  /* callback instance data */
+	    CALLBACK_FUNCTION); /* callback is a procedure */
     if (pm_hosterror) goto free_descriptor;
 
     if (num_input_buffers < MIN_INPUT_BUFFERS)
@@ -857,20 +858,22 @@ static PmError winmm_out_open(PmInternal *midi, void *driverInfo)
     /* open device */
     if (midi->latency == 0) {
         /* use simple midi out calls */
-        pm_hosterror = midiOutOpen((LPHMIDIOUT) & m->handle.out,  /* device Handle */
-                                   dwDevice,  /* device ID  */
-                                   /* note: same callback fn as for StreamOpen: */
-                                   (DWORD) winmm_streamout_callback, /* callback fn */
-                                   (DWORD) midi,  /* callback instance data */
-                                   CALLBACK_FUNCTION); /* callback type */
+        pm_hosterror = midiOutOpen(
+                (LPHMIDIOUT) & m->handle.out,  /* device Handle */
+		dwDevice,  /* device ID  */
+		/* note: same callback fn as for StreamOpen: */
+		(DWORD_PTR) winmm_streamout_callback, /* callback fn */
+		(DWORD_PTR) midi,  /* callback instance data */
+		CALLBACK_FUNCTION); /* callback type */
     } else {
         /* use stream-based midi output (schedulable in future) */
-        pm_hosterror = midiStreamOpen(&m->handle.stream,  /* device Handle */
-                                      (LPUINT) & dwDevice,  /* device ID pointer */
-                                      1,  /* reserved, must be 1 */
-                                      (DWORD) winmm_streamout_callback,
-                                      (DWORD) midi,  /* callback instance data */
-                                      CALLBACK_FUNCTION);
+        pm_hosterror = midiStreamOpen(
+	        &m->handle.stream,  /* device Handle */
+		(LPUINT) & dwDevice,  /* device ID pointer */
+		1,  /* reserved, must be 1 */
+		(DWORD_PTR) winmm_streamout_callback,
+		(DWORD_PTR) midi,  /* callback instance data */
+		CALLBACK_FUNCTION);
     }
     if (pm_hosterror != MMSYSERR_NOERROR) {
         goto free_descriptor;

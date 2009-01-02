@@ -1,3 +1,8 @@
+#ifdef _MSC_VER
+ #pragma warning(disable: 4244) // stop warnings about downsize typecasts
+ #pragma warning(disable: 4018) // stop warnings about signed/unsigned
+#endif
+
 #include "stdlib.h"
 #include "string.h"
 #include "portmidi.h"

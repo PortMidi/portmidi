@@ -1,5 +1,9 @@
 /* pmwinmm.c -- system specific definitions */
 
+#ifdef _MSC_VER
+ #pragma warning(disable: 4133) // stop warnings about implicit typecasts
+#endif
+
 #ifndef _WIN32_WINNT
     /* without this define, InitializeCriticalSectionAndSpinCount is 
      * undefined. This version level means "Windows 2000 and higher" 

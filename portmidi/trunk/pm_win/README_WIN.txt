@@ -41,9 +41,9 @@ TO COMPILE PORTMIDI:
 
 3)  cd to or open the portmidi directory
 
-4)  start or click on the portmidi.sln workspace
+4)  start or click on the portmidi.sln workspace (note, there is also
+    portmidi-VC9.sln for Visual C++ version 9 users).
 	
-
 5)  the following projects exist within this workspace:
     - portmidi (the PortMidi library)
     - porttime (a small portable library implementing timer facilities)
@@ -56,7 +56,6 @@ TO COMPILE PORTMIDI:
     - qtest (a test of the new multicore-safe queue implementation)
     - mm  (allows monitoring of midi messages)
     - pmjni (a dll to provide an interface to PortMidi for Java)
-
 
 6)  open the pmjni project properties
     - visit Configuration Properties, C/C++, General

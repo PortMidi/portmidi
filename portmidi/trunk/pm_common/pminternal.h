@@ -170,6 +170,8 @@ void pm_read_short(PmInternal *midi, PmEvent *event);
 #define is_real_time(msg) \
     ((Pm_MessageStatus(msg) & MIDI_REALTIME_MASK) == MIDI_REALTIME_MASK)
 
+int pm_find_default_device(char *pattern, int is_input);
+
 #ifdef __cplusplus
 }
 #endif

@@ -303,10 +303,9 @@ int main()
                 printf("Transposition must be within -127...127\n");
             }
         } else {
-            printf("%s\n%s\n%s\n",
-                   "Type 'q' to quit, 'm' to monitor next pitch, or",
-                   "type a number to specify transposition.",
-				   "Must terminate with [ENTER]");
+            printf("%s\n%s\n",
+              "Type 'q[ENTER]' to quit, 'm[ENTER]' to monitor next pitch, or",
+              "enter a number to specify transposition.");
         }
     }
 

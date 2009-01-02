@@ -382,6 +382,7 @@ public class PmDefaultsFrame extends JFrame
         for (int i = 0; i < n; i++) {
             String interf = jpm.getDeviceInterf(i);
             String name = jpm.getDeviceName(i);
+	    System.out.println("name " + name);
             String selection = name + " [" + interf + "]";
             if (jpm.getDeviceInput(i)) {
                 inputIds.add(i);

@@ -163,7 +163,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/VERBOSE:LIB"
-				AdditionalDependencies="odbc32.lib odbccp32.lib winmm.lib ..\pm_win\Debug\portmidi.lib ..\porttime\Debug\porttime.lib $(NOINHERIT)"
+				AdditionalDependencies="advapi32.lib winmm.lib ..\pm_win\Debug\portmidi.lib ..\porttime\Debug\porttime.lib $(NOINHERIT)"
 				OutputFile=".\testDebug/test.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"

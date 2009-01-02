@@ -131,6 +131,37 @@ PmError pm_add_device(char *interf, char *name, int input,
 }
 
 
+/* utility to look up device, given a pattern, 
+   note: pattern is modified
+ */
+int pm_find_default_device(char *pattern, int is_input)
+{
+    int id = pmNoDevice;
+    int i;
+    /* first parse pattern into name, interf parts */
+    char *interf_pref = ""; /* initially assume it is not there */
+    char *name_pref = strstr(pattern, ", ");
+
+    if (name_pref) { /* found separator, adjust the pointer */
+        interf_pref = pattern;
+        name_pref[0] = 0;
+        name_pref += 2;
+    } else {
+        name_pref = pattern; /* whole string is the name pattern */
+    }
+    for (i = 0; i < pm_descriptor_index; i++) {
+        const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
+        if (info->input == is_input &&
+            strstr(info->name, name_pref) &&
+            strstr(info->interf, interf_pref)) {
+            id = i;
+            break;
+        }
+    }    
+    return id;
+}
+
+
 /*
 ====================================================================
 portmidi implementation

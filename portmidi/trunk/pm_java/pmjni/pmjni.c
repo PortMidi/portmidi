@@ -59,6 +59,7 @@ JNIEXPORT jstring JNICALL Java_jportmidi_JPortMidiApi_Pm_1GetHostErrorText
 JNIEXPORT jint JNICALL Java_jportmidi_JPortMidiApi_Pm_1CountDevices
   (JNIEnv *env, jclass cl)
 {
+    printf("Pm_CountDevices called.\n");
     return Pm_CountDevices();
 }
 
@@ -99,6 +100,7 @@ JNIEXPORT jstring JNICALL Java_jportmidi_JPortMidiApi_Pm_1GetDeviceName
 {
     const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
     if (!info) return NULL;
+    printf("jni:Pm_GetDeviceName %s\n", info->name);
     return (*env)->NewStringUTF(env, info->name);
 }
 

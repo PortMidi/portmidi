@@ -1,6 +1,11 @@
 /* CHANGELOG FOR PORTMIDI
  *
- * 19Jun07 Roger Dannenberg and Austin Sung
+ * 02Jan09 Roger Dannenberg
+ * - Created Java interface and wrote PmDefaults application to set
+ *   values for Pm_GetDefaultInputDeviceID() and 
+ *   Pm_GetDefaultOutputDeviceID(). Other fixes.
+ *
+ * 19Jun08 Roger Dannenberg and Austin Sung
  * - Removed USE_DLL_FOR_CLEANUP -- Windows 2000 through Vista seem to be
  *   fixed now, and can recover if MIDI ports are left open
  * - Various other minor patches

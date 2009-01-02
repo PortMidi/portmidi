@@ -235,7 +235,20 @@ int Pm_CountDevices( void );
     which is a binary file. In addition to the pmdefaults program,
     there are utilities that can read and edit this preference file.
 
-    On the PC, 
+    On Win32 systems, preferences are stored in the registry as
+      \HKEY_CURRENT_USER\Software\JavaSoft\Prefs\
+              /Port/Midi\/P/M_/R/E/C/O/M/M/N/D/E/D_/I/N/P/U/T_/D/E/V/I/C/E
+      (note 1: This path is one string with no space between Prefs\ and
+          /Port/Midi
+       note 2: Because the registry is case-insensitive, Java preferences
+          use "/" prefixes to indicate capital letters. You write
+          "PortMidi" in Java, and the registry key is "/Port/Midi".)
+      The default output device is:
+      \HKEY_CURRENT_USER\Software\JavaSoft\Prefs\
+              /Port/Midi\/P/M_/R/E/C/O/M/M/N/D/E/D_/O/U/T/P/U/T_/D/E/V/I/C/E
+
+      The actual string values are also escaped, so PortMidi converts the
+      registry value back to the unescaped prefName.
 
     On Linux, 
 

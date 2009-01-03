@@ -48,6 +48,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MidiMonitor", "pm_test\mm-V
 		{33E3B196-B9F4-4D0A-85E1-31C7BBD4967A} = {33E3B196-B9F4-4D0A-85E1-31C7BBD4967A}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PortMidiJni", "pm_java\pmjni\pmjni-VC9.vcproj", "{7AA255C8-48BF-40AC-97BA-F7E7BA4DDAA8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug VC9|Win32 = Debug VC9|Win32
@@ -90,6 +92,10 @@ Global
 		{2FC1D7B8-E434-4D6F-A50D-AB262C825BCD}.Debug VC9|Win32.Build.0 = MidiMonitor Debug VC9|Win32
 		{2FC1D7B8-E434-4D6F-A50D-AB262C825BCD}.Release VC9|Win32.ActiveCfg = MidiMonitor Release VC9|Win32
 		{2FC1D7B8-E434-4D6F-A50D-AB262C825BCD}.Release VC9|Win32.Build.0 = MidiMonitor Release VC9|Win32
+		{7AA255C8-48BF-40AC-97BA-F7E7BA4DDAA8}.Debug VC9|Win32.ActiveCfg = Debug VC9|Win32
+		{7AA255C8-48BF-40AC-97BA-F7E7BA4DDAA8}.Debug VC9|Win32.Build.0 = Debug VC9|Win32
+		{7AA255C8-48BF-40AC-97BA-F7E7BA4DDAA8}.Release VC9|Win32.ActiveCfg = Release VC9|Win32
+		{7AA255C8-48BF-40AC-97BA-F7E7BA4DDAA8}.Release VC9|Win32.Build.0 = Release VC9|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

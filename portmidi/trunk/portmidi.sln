@@ -39,8 +39,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "pm_test\test.vcproj
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qtest", "pm_test\qtest.vcproj", "{8C30CCF4-0D5F-4CC0-9EF3-76D491B829DF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{33E3B196-B9F4-4D0A-85E1-31C7BBD4967A} = {33E3B196-B9F4-4D0A-85E1-31C7BBD4967A}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mm", "pm_test\mm.vcproj", "{2FC1D7B8-E434-4D6F-A50D-AB262C825BCD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{33E3B196-B9F4-4D0A-85E1-31C7BBD4967A} = {33E3B196-B9F4-4D0A-85E1-31C7BBD4967A}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pmjni", "pm_java\pmjni\pmjni.vcproj", "{7AA255C8-48BF-40AC-97BA-F7E7BA4DDAA8}"
 EndProject

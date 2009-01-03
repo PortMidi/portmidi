@@ -915,7 +915,7 @@ PmError pm_macosxcm_init(void)
     }
 
     /* Iterate over the MIDI output devices */
-    for (i = 0; i < numInputs; i++) {
+    for (i = 0; i < numOutputs; i++) {
         endpoint = MIDIGetDestination(i);
         if (endpoint == NULL) {
             continue;

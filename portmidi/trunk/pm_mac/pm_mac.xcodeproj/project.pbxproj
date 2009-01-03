@@ -22,6 +22,7 @@
 				D8684B9E0ACBFB9D009F6478 /* PBXTargetDependency */,
 				D8684BA00ACBFB9D009F6478 /* PBXTargetDependency */,
 				D8684BA20ACBFB9D009F6478 /* PBXTargetDependency */,
+				3D4799F50F0EE7D10006C842 /* PBXTargetDependency */,
 				D8E738E20ACDA3BD0030B95B /* PBXTargetDependency */,
 				3D3534900F0D2DB30059CD05 /* PBXTargetDependency */,
 			);
@@ -42,6 +43,7 @@
 			);
 			comments = "Application to set PortMidi default input and output devices.";
 			dependencies = (
+				3D4799F80F0EE7FB0006C842 /* PBXTargetDependency */,
 			);
 			name = PmDefaults;
 			productInstallPath = "$(USER_APPS_DIR)";
@@ -135,7 +137,6 @@
 		3D9D57F80E12E3DE00C4C68D /* PmDefaults.java in Sources */ = {isa = PBXBuildFile; fileRef = 3D9D57EF0E12E3DE00C4C68D /* PmDefaults.java */; };
 		3D9D57FE0E12E3DE00C4C68D /* PmDefaultsFrame.java in Sources */ = {isa = PBXBuildFile; fileRef = 3D9D57F50E12E3DE00C4C68D /* PmDefaultsFrame.java */; };
 		3D9D57FF0E12E3DE00C4C68D /* portmusic_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D9D57F60E12E3DE00C4C68D /* portmusic_logo.png */; };
-		3D9D58010E12E48500C4C68D /* libpmjni.jnilib in Resources */ = {isa = PBXBuildFile; fileRef = 3D9D58000E12E48500C4C68D /* libpmjni.jnilib */; };
 		3DA60D640D3FBEA40036B654 /* libportmidi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D81440D40ACB36E100515C41 /* libportmidi.a */; };
 		3DA60D650D3FBEA40036B654 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DA774480663EAE60002CE69 /* CoreMIDI.framework */; };
 		3DA60D660D3FBEA40036B654 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DA7744E0663EBB20002CE69 /* CoreFoundation.framework */; };
@@ -213,6 +214,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 3DBF24630B5967A500DAD93B /* mm */;
 			remoteInfo = mm;
+		};
+		3D4799F40F0EE7D10006C842 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5851D5180479552300EE98CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D17A1900E13E25E00930576 /* libpmjni.jnilib */;
+			remoteInfo = libpmjni.jnilib;
+		};
+		3D4799F70F0EE7FB0006C842 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5851D5180479552300EE98CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D17A1900E13E25E00930576 /* libpmjni.jnilib */;
+			remoteInfo = libpmjni.jnilib;
 		};
 		3D8DABA40D57B68A000FEBA8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -339,7 +354,6 @@
 		3D9D57EF0E12E3DE00C4C68D /* PmDefaults.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = PmDefaults.java; sourceTree = "<group>"; };
 		3D9D57F50E12E3DE00C4C68D /* PmDefaultsFrame.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = PmDefaultsFrame.java; sourceTree = "<group>"; };
 		3D9D57F60E12E3DE00C4C68D /* portmusic_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = portmusic_logo.png; sourceTree = "<group>"; };
-		3D9D58000E12E48500C4C68D /* libpmjni.jnilib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpmjni.jnilib; path = ../pm_java/pmjni/libpmjni.jnilib; sourceTree = SOURCE_ROOT; };
 		3DA60D6C0D3FBEA40036B654 /* midiclock */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = midiclock; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DA60D710D3FBF160036B654 /* midiclock.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = midiclock.c; sourceTree = "<group>"; };
 		3DA774110663E9DA0002CE69 /* latency.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; name = latency.c; path = ../pm_test/latency.c; sourceTree = SOURCE_ROOT; };
@@ -566,7 +580,6 @@
 				3D17A2280E13EF8000930576 /* CoreServices.framework */,
 				3D17A1E70E13E57700930576 /* JavaVM.framework */,
 				3D17A1A10E13E30100930576 /* pmjni.c */,
-				3D9D58000E12E48500C4C68D /* libpmjni.jnilib */,
 				3D9D57D90E12E35700C4C68D /* pm_java */,
 				5851D51D047955A100EE98CD /* porttime */,
 				5851D51C0479553600EE98CD /* pm_common */,
@@ -928,7 +941,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3D9D58010E12E48500C4C68D /* libpmjni.jnilib in Resources */,
 				3D9D57FF0E12E3DE00C4C68D /* portmusic_logo.png in Resources */,
 				3D17A4C40E14079000930576 /* pmdefaults.icns in Resources */,
 			);
@@ -1094,6 +1106,16 @@
 			isa = PBXTargetDependency;
 			target = 3DBF24630B5967A500DAD93B /* mm */;
 			targetProxy = 3D4799D30F0E87350006C842 /* PBXContainerItemProxy */;
+		};
+		3D4799F50F0EE7D10006C842 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3D17A1900E13E25E00930576 /* libpmjni.jnilib */;
+			targetProxy = 3D4799F40F0EE7D10006C842 /* PBXContainerItemProxy */;
+		};
+		3D4799F80F0EE7FB0006C842 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3D17A1900E13E25E00930576 /* libpmjni.jnilib */;
+			targetProxy = 3D4799F70F0EE7FB0006C842 /* PBXContainerItemProxy */;
 		};
 		3D8DABA50D57B68A000FEBA8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

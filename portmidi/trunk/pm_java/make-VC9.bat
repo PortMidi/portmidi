@@ -3,10 +3,10 @@
 rem Compile the java PortMidi interface classes.
 javac jportmidi/*.java
 
-rem Compile the pmdefailts application.
+rem Compile the pmdefaults application.
 javac -classpath . pmdefaults/*.java
 
-rem Temporarily copy portmusic_logo.png file here to add to the jar file.
+rem Temporarily copy the portmusic_logo.png file here to add to the jar file.
 copy pmdefaults\portmusic_logo.png .
 
 rem Create a directory to hold the distribution.
@@ -15,7 +15,7 @@ mkdir win32
 rem Copy the interface DLL to the distribution directory.
 copy "pmjni\Release VC9\pmjni.dll" win32\pmjni.dll
 
-rem Creat a java archive (jar) file of the distribution.
+rem Create a java archive (jar) file of the distribution.
 jar cmf pmdefaults\manifest.txt win32\pmdefaults.jar pmdefaults\*.class portmusic_logo.png jportmidi\*.class
 
 rem Clean up the temporary image file now that it is in the jar file.

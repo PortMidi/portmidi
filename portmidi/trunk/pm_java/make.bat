@@ -1,5 +1,5 @@
-javac pmdefaults/*.java
 javac jportmidi/*.java
+javac -classpath . pmdefaults/*.java
 rem -- temporarily copy portmusic_logo.png here to add to jar file
 copy pmdefaults\portmusic_logo.png .
 mkdir win32

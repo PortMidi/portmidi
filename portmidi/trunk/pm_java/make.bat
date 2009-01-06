@@ -7,7 +7,7 @@ rem Compile the pmdefaults application.
 javac -classpath . pmdefaults/*.java
 
 rem Temporarily copy the portmusic_logo.png file here to add to the jar file.
-copy pmdefaults\portmusic_logo.png .
+copy pmdefaults\portmusic_logo.png . > nul
 
 rem Create a directory to hold the distribution.
 mkdir win32
@@ -21,11 +21,11 @@ echo "ERROR: pmjni.dll not found!"
 exit /b 1
 
 :copy-vc9-dll
-copy "pmjni\Release VC9\pmjni.dll" win32\pmjni.dll
+copy "pmjni\Release VC9\pmjni.dll" win32\pmjni.dll > nul
 goto keepgoing
 
 :copy-vc8-dll
-copy "..\release\pmjni.dll" win32\pmjni.dll
+copy "..\release\pmjni.dll" win32\pmjni.dll > nul
 
 :keepgoing
 
@@ -39,16 +39,16 @@ rem Copy the java execution code obtained from
 rem http://devwizard.free.fr/html/en/JavaExe.html to the distribution
 rem directory.  The copy also renames the file to our desired executable
 rem name.
-copy JavaExe.exe win32\pmdefaults.exe
+copy JavaExe.exe win32\pmdefaults.exe > nul
 
 rem Integrate the icon into the executable using UpdateRsrcJavaExe from
 rem http://devwizard.free.fr
 UpdateRsrcJavaExe -run -exe=win32\pmdefaults.exe -ico=pmdefaults\pmdefaults.ico
 
 rem Copy the 32-bit windows read me file to the distribution directory.
-copy pmdefaults\readme-win32.txt win32\README.txt
+copy pmdefaults\readme-win32.txt win32\README.txt > nul
 
 rem Copy the license file to the distribution directory.
-copy pmdefaults\pmdefaults-license.txt win32\license.txt
+copy pmdefaults\pmdefaults-license.txt win32\license.txt > nul
 
 echo "You can run pmdefault.exe in win32"

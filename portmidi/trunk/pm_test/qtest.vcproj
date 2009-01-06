@@ -20,7 +20,7 @@
 			OutputDirectory=".\qtestDebug"
 			IntermediateDirectory=".\qtestDebug"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -98,7 +98,7 @@
 			OutputDirectory=".\qtestRelease"
 			IntermediateDirectory=".\qtestRelease"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool

@@ -1,6 +1,6 @@
 #include "portmidi.h"
 #include "porttime.h"
-#include "jportmidi_JPortMidiApi.h"
+#include "jportmidi_JportMidiApi.h"
 #include <stdio.h>
 
 /*

@@ -212,21 +212,21 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 5851D5180479552300EE98CD /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 3DBF24630B5967A500DAD93B /* mm */;
+			remoteGlobalIDString = 3DBF24630B5967A500DAD93B;
 			remoteInfo = mm;
 		};
 		3D4799F40F0EE7D10006C842 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5851D5180479552300EE98CD /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 3D17A1900E13E25E00930576 /* libpmjni.jnilib */;
+			remoteGlobalIDString = 3D17A1900E13E25E00930576;
 			remoteInfo = libpmjni.jnilib;
 		};
 		3D4799F70F0EE7FB0006C842 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5851D5180479552300EE98CD /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 3D17A1900E13E25E00930576 /* libpmjni.jnilib */;
+			remoteGlobalIDString = 3D17A1900E13E25E00930576;
 			remoteInfo = libpmjni.jnilib;
 		};
 		3D8DABA40D57B68A000FEBA8 /* PBXContainerItemProxy */ = {
@@ -790,6 +790,7 @@
 				D814404C0ACB2C1200515C41 /* Headers */,
 				D81440530ACB2C1200515C41 /* Sources */,
 				D81440590ACB2C1200515C41 /* Frameworks */,
+				3D3447A30F5054800027274F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -962,6 +963,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "echo BUILT_PRODUCTS_DIR is ${BUILT_PRODUCTS_DIR}\njavah -classpath \"${BUILT_PRODUCTS_DIR}/JPortMidiHeaders.jar\" -force -o \"${BUILT_PRODUCTS_DIR}/jportmidi_JportMidiApi.h\" \"jportmidi.JPortMidiApi\"";
+		};
+		3D3447A30F5054800027274F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			comments = "Copies deployment library to pm_mac so other applications can find it -- maybe this should be an installation to system directories, but I prefer to be able to develop using local copies of software so I know where it came from.";
+			files = (
+			);
+			inputPaths = (
+				build/Deployment/libportmidi.a,
+			);
+			outputPaths = (
+				libportmidi.a,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp build/Deployment/libportmidi.a .";
 		};
 /* End PBXShellScriptBuildPhase section */
 

@@ -40,6 +40,7 @@
 				3D9D57CA0E12E22800C4C68D /* Resources */,
 				3D9D57CB0E12E22800C4C68D /* JavaArchive */,
 				3D9D57CC0E12E22800C4C68D /* Frameworks */,
+				3D1A6BA30FC8A92D008E9959 /* CopyFiles */,
 			);
 			comments = "Application to set PortMidi default input and output devices.";
 			dependencies = (
@@ -122,6 +123,7 @@
 		3D17A2290E13EF8000930576 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D17A2280E13EF8000930576 /* CoreServices.framework */; };
 		3D17A22D0E13EF9300930576 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D17A2280E13EF8000930576 /* CoreServices.framework */; };
 		3D17A4C40E14079000930576 /* pmdefaults.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3D17A4C30E14079000930576 /* pmdefaults.icns */; };
+		3D4713310FC8B28D00D6DABB /* libpmjni.jnilib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D17A1910E13E25E00930576 /* libpmjni.jnilib */; };
 		3D65FEE30ECB7548008083A3 /* CoreServices in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D65FEE20ECB7548008083A3 /* CoreServices */; };
 		3D65FEE40ECB7548008083A3 /* CoreServices in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D65FEE20ECB7548008083A3 /* CoreServices */; };
 		3D65FEE50ECB7548008083A3 /* CoreServices in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D65FEE20ECB7548008083A3 /* CoreServices */; };
@@ -335,6 +337,19 @@
 			remoteInfo = portmidi;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3D1A6BA30FC8A92D008E9959 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 15;
+			files = (
+				3D4713310FC8B28D00D6DABB /* libpmjni.jnilib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		3D17A13D0E13D47F00930576 /* JPortMidiHeaders.jar */ = {isa = PBXFileReference; explicitFileType = archive.jar; includeInIndex = 0; path = JPortMidiHeaders.jar; sourceTree = BUILT_PRODUCTS_DIR; };

@@ -13,14 +13,22 @@ dnl autoconf
 
 dnl Process this file with autoconf to produce a configure script.
 
-dnl Require autoconf >= 2.60
+dnl Require autoconf >= 2.61
 AC_PREREQ(2.61)
 
 dnl Init autoconf and automake
 AC_INIT([portSMF],[0.1])
+dnl check that we have some source code
+AC_CONFIG_SRCDIR([allegro.h])
 dnl keep autools files in a subdirectory
 AC_CONFIG_AUX_DIR(autotools)
+# which also contains a subdir containing macros
+AC_CONFIG_MACRO_DIR([autotools/m4])
+dnl set up automake
 AM_INIT_AUTOMAKE([-Wall foreign])
+dnl Audacity policy: don't enable automatic rebuild of configure et al if 
+dnl sources change
+AM_MAINTAINER_MODE([enabled])
 
 dnl -------------------------------------------------------
 dnl Checks for programs.

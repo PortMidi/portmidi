@@ -1,7 +1,10 @@
 ## Process this file with automake to produce Makefile.in
 # Makefile(.in) for portSMF using Autotools (but not libtool).
 # Written by Richard Ash following Gary Vaughan's Autobook
-#
+
+# tell aclocal that extra macros can be found in autotools/m4/
+ACLOCAL_AMFLAGS = -I autotools/m4
+
 # define the output library (link with -lportSMF)
 lib_LIBRARIES = libportSMF.a
 

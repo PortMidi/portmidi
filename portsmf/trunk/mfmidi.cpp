@@ -13,6 +13,7 @@
 #include "stdio.h"
 #include "mfmidi.h"
 #include "string.h"
+#include "assert.h"
 
 #define MIDIFILE_ERROR -1
 
@@ -38,6 +39,7 @@ int Midifile_reader::readmt(char *s, int skip)
     /* read through the "MThd" or "MTrk" header string */
     /* if skip == 1, we attempt to skip initial garbage. */
 {
+    assert(strlen(s) == 4); // must be "MThd" or "MTrk"
     int nread = 0;
     char b[4];
     char buff[32];
@@ -66,8 +68,10 @@ int Midifile_reader::readmt(char *s, int skip)
         goto retry;
     }
     err:
+#pragma warning(disable: 4996) // strcpy is safe since strings have known lengths
     (void) strcpy(buff,errmsg);
     (void) strcat(buff,s);
+#pragma warning(default: 4996) // turn it back on
     mferror(buff);
     return(0);
 }
@@ -253,8 +257,9 @@ void Midifile_reader::readtrack()
 void Midifile_reader::badbyte(int c)
 {
     char buff[32];
-
+#pragma warning(disable: 4996) // safe in this case
     (void) sprintf(buff,"unexpected byte: 0x%02x",c);
+#pragma warning(default: 4996)
     mferror(buff);
 }
 

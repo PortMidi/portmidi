@@ -262,7 +262,7 @@ bool Alg_reader::parse()
                         parse_error(field, 0, "Dur specified twice");
                     } else {
                         // prepend 'U' to field, copy EOS too
-                        field.insert(0, 1, 'U');
+                        field.insert((unsigned int)0, 1, 'U');
                         dur = parse_dur(field, time);
                         dur_flag = true;
                     }
@@ -271,7 +271,7 @@ bool Alg_reader::parse()
                         parse_error(field, 0, "Pitch specified twice");
                     } else {
                         // prepend 'P' to field
-                        field.insert(0, 1, 'P');
+                        field.insert((unsigned int)0, 1, 'P');
                         new_pitch = parse_pitch(field);
                         new_pitch_flag = true;
                     }
@@ -346,8 +346,8 @@ bool Alg_reader::parse()
                     note_ptr->time = time;
                     note_ptr->dur = dur;
                     note_ptr->set_identifier(key);
-                    note_ptr->pitch = pitch;
-                    note_ptr->loud = loud;
+                    note_ptr->pitch = (float) pitch;
+                    note_ptr->loud = (float) loud;
                     note_ptr->parameters = attributes;
                     seq->add_event(note_ptr, track_num); // sort later
                     if (seq->get_real_dur() < (time + dur)) seq->set_real_dur(time + dur);
@@ -677,7 +677,7 @@ bool Alg_reader::parse_val(Alg_parameter_ptr param, string &s, int i)
         // note: (len - i) includes 2 quote characters but no EOS character
         // so total memory to allocate is (len - i) - 1
         char *r = new char[(len - i) - 1];
-        strncpy(r, s.c_str() + i + 1, (len - i) - 2);
+        strncpy_s(r, (len - i) - 2, s.c_str() + i + 1, _TRUNCATE);
         r[(len - i) - 2] = 0; // terminate the string
         param->s = r;
     } else if (s[i] == '\'') {

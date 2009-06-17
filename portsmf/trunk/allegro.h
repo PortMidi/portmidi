@@ -49,6 +49,8 @@
 #ifndef __ALLEGRO__
 #define __ALLEGRO__
 #include <assert.h>
+#include <istream>
+#include <ostream>
 
 #define ALG_EPS 0.000001 // epsilon
 #define ALG_DEFAULT_BPM 100.0 // default tempo
@@ -315,7 +317,7 @@ public:
     }
     // destructor deletes the events array, but not the
     // events themselves
-    ~Alg_events();
+    virtual ~Alg_events();
     void set_events(Alg_event_ptr *e, long l, long m) {
         if (events) delete [] events;
         events = e; len = l; maxlen = m; }
@@ -510,6 +512,8 @@ public:
     void set_string(char *s) { 
         char *fence = buffer + len;
         assert(ptr < fence);
+        // two lots of brackets surpress a g++ warning, because this is an
+        // assignment operator inside a test.
         while ((*ptr++ = *s++)) assert(ptr < fence);
         assert((char *)(((long) (ptr + 7)) & ~7) <= fence);
         pad(); }
@@ -517,7 +521,10 @@ public:
     void set_double(double v) { *((double *) ptr) = v; ptr += 8; }
     void set_float(float v) { *((float *) ptr) = v; ptr += 4; }
     void set_char(char v) { *ptr++ = v; }
+#pragma warning(disable: 546) // cast to int is OK, we only want low 7 bits
     void pad() { while (((long) ptr) & 7) set_char(0); }
+    void get_pad() { while (((long) ptr) & 7) ptr++; }
+#pragma warning(default: 546)
     void *to_heap(long *len) {
         *len = get_posn();
         char *newbuf = new char[*len];
@@ -539,7 +546,6 @@ public:
                          while (*ptr++) assert(ptr < fence);
                          get_pad();
                          return s; }
-    void get_pad() { while (((long) ptr) & 7) ptr++; }
     void check_input_buffer(long needed) {
         assert(get_posn() + needed <= len); }
 } *Serial_buffer_ptr;

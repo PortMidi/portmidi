@@ -1,4 +1,5 @@
 #include <string>
+#include <cstring>
 // #include <iostream>  -- for debugging (cout)
 #include "ctype.h"
 using namespace std;
@@ -47,10 +48,10 @@ void String_parse::get_nonspace_quoted(string &field)
 }
 
 
-char *escape_chars[] = {"\\n", "\\t", "\\\\", "\\r", "\\\""};
+static const char *const escape_chars[] = {"\\n", "\\t", "\\\\", "\\r", "\\\""};
 
 
-void string_escape(string &result, char *str, char *quote)
+void string_escape(string &result, const char *str, const char *quote)
 {
     int length = (int) strlen(str);
     if (quote[0]) {
@@ -58,8 +59,8 @@ void string_escape(string &result, char *str, char *quote)
     }
     for (int i = 0; i < length; i++) {
         if (!isalnum((unsigned char) str[i])) {
-            char *chars = "\n\t\\\r\"";
-            char *special = strchr(chars, str[i]);
+            const char *const chars = "\n\t\\\r\"";
+            const char *const special = strchr(chars, str[i]);
             if (special) {
                 result.append(escape_chars[special - chars]);
             } else {

@@ -103,7 +103,7 @@ void test4()
     file.close();
     delete seq;
     ifstream ifile("test4.mid", ios::binary | ios::in);
-    if (file.fail()) {
+    if (ifile.fail()) {
         printf("could not open test4.mid for reading");
         return;
     }
@@ -719,7 +719,7 @@ void test32() // serialize big midi file and unserialize
 
     void *buffer;
     long bytes;
-    seq->serialize(&buffer, &bytes, false);
+    seq->serialize(&buffer, &bytes);
     printf("Serialized %d bytes\n", bytes);
     Alg_seq_ptr new_seq = (Alg_seq_ptr) seq->unserialize(buffer, bytes);
     ofstream sfile("bigseq2.alg", ios::out | ios::binary);

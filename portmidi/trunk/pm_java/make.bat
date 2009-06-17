@@ -14,20 +14,13 @@ mkdir win32
 
 rem Attempt to copy the interface DLL to the distribution directory.
 
-if exist "pmjni\Release VC9\pmjni.dll" goto copy-vc9-dll
-if exist "..\release\pmjni.dll"  goto copy-vc8-dll
+if exist "pmjni\release\pmjni.dll"  goto have-dll
 
 echo "ERROR: pmjni.dll not found!"
 exit /b 1
 
-:copy-vc9-dll
-copy "pmjni\Release VC9\pmjni.dll" win32\pmjni.dll > nul
-goto keepgoing
-
-:copy-vc8-dll
-copy "..\release\pmjni.dll" win32\pmjni.dll > nul
-
-:keepgoing
+:have-dll
+copy "pmjni\release\pmjni.dll" win32\pmjni.dll > nul
 
 rem Create a java archive (jar) file of the distribution.
 jar cmf pmdefaults\manifest.txt win32\pmdefaults.jar pmdefaults\*.class portmusic_logo.png jportmidi\*.class
@@ -51,4 +44,4 @@ copy pmdefaults\readme-win32.txt win32\README.txt > nul
 rem Copy the license file to the distribution directory.
 copy pmdefaults\pmdefaults-license.txt win32\license.txt > nul
 
-echo "You can run pmdefault.exe in win32"
+echo "You can run pmdefaults.exe in win32"

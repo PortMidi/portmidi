@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
-	Name="Sysex"
-	ProjectGUID="{300F59F8-5E94-492B-A899-0EB2B1140E20}"
-	TargetFrameworkVersion="131072"
+	Version="8.00"
+	Name="midithru"
+	ProjectGUID="{B4B4240D-7022-4C47-838F-913B4878E938}"
+	RootNamespace="midithru"
 	>
 	<Platforms>
 		<Platform
@@ -15,9 +15,9 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Sysex Debug VC9|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			Name="Debug|Win32"
+			OutputDirectory=".\midithruDebug"
+			IntermediateDirectory=".\midithruDebug"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -38,21 +38,21 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\$(OutDir)\sysex.tlb"
+				TypeLibraryName=".\midithruDebug/midithru.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\pm_common,..\porttime"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="../pm_common,../porttime"
+				PreprocessorDefinitions="_CONSOLE;WIN32;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
-				PrecompiledHeaderFile=".\$(OutDir)\sysex.pch"
-				AssemblerListingLocation=".\$(OutDir)\"
-				ObjectFile=".\$(OutDir)\"
-				ProgramDataBaseFileName=".\$(OutDir)\"
+				PrecompiledHeaderFile=".\midithruDebug/midithru.pch"
+				AssemblerListingLocation=".\midithruDebug/"
+				ObjectFile=".\midithruDebug/"
+				ProgramDataBaseFileName=".\midithruDebug/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
@@ -70,18 +70,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="portmidi.lib porttime.lib odbc32.lib odbccp32.lib winmm.lib"
-				OutputFile=".\$(OutDir)\sysex.exe"
+				AdditionalDependencies="..\pm_win\Debug\portmidi.lib ..\porttime\Debug\porttime.lib winmm.lib"
+				OutputFile=".\midithruDebug/midithru.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;..\pm_win\Debug VC9&quot;;&quot;..\porttime\Debug VC9&quot;"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\$(OutDir)\sysex.pdb"
+				ProgramDatabaseFile=".\midithruDebug/midithru.pdb"
 				SubSystem="1"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
-				Profile="false"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -95,7 +91,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\$(OutDir)\sysex.bsc"
+				OutputFile=".\midithruDebug/midithru.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -104,13 +100,16 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
-			Name="Sysex Release VC9|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			Name="Release|Win32"
+			OutputDirectory=".\midithruRelease"
+			IntermediateDirectory=".\midithruRelease"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -131,22 +130,22 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\$(OutDir)\sysex.tlb"
+				TypeLibraryName=".\midithruRelease/midithru.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\pm_common,..\porttime"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				AdditionalIncludeDirectories="../pm_common,../porttime"
+				PreprocessorDefinitions="WIN32;_CONSOLE"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\$(OutDir)\sysex.pch"
-				AssemblerListingLocation=".\$(OutDir)\"
-				ObjectFile=".\$(OutDir)\"
-				ProgramDataBaseFileName=".\$(OutDir)\"
+				PrecompiledHeaderFile=".\midithruRelease/midithru.pch"
+				AssemblerListingLocation=".\midithruRelease/"
+				ObjectFile=".\midithruRelease/"
+				ProgramDataBaseFileName=".\midithruRelease/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -163,15 +162,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="portmidi.lib porttime.lib odbc32.lib odbccp32.lib winmm.lib"
-				OutputFile=".\$(OutDir)\sysex.exe"
+				AdditionalDependencies="..\pm_win\Release\portmidi.lib ..\porttime\Release\porttime.lib winmm.lib"
+				OutputFile=".\midithruRelease/midithru.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;..\pm_win\Release VC9&quot;;&quot;..\porttime\Release VC9&quot;"
-				ProgramDatabaseFile=".\$(OutDir)\sysex.pdb"
+				ProgramDatabaseFile=".\midithruRelease/midithru.pdb"
 				SubSystem="1"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -186,13 +182,16 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\$(OutDir)\sysex.bsc"
+				OutputFile=".\midithruRelease/midithru.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -202,10 +201,43 @@
 	<References>
 	</References>
 	<Files>
-		<File
-			RelativePath="sysex.c"
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
-		</File>
+			<File
+				RelativePath="midithru.c"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl"
+			>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+			>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

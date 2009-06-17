@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
-	Name="PortMidi jni"
-	ProjectGUID="{7AA255C8-48BF-40AC-97BA-F7E7BA4DDAA8}"
-	RootNamespace="pmjni"
+	Version="8.00"
+	Name="qtest"
+	ProjectGUID="{8C30CCF4-0D5F-4CC0-9EF3-76D491B829DF}"
+	RootNamespace="qtest"
 	Keyword="Win32Proj"
-	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -17,10 +16,10 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug VC9|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="2"
+			Name="Debug|Win32"
+			OutputDirectory=".\qtestDebug"
+			IntermediateDirectory=".\qtestDebug"
+			ConfigurationType="1"
 			CharacterSet="2"
 			>
 			<Tool
@@ -41,15 +40,15 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\pm_common&quot;;&quot;$(SolutionDir)\porttime&quot;;&quot;$(ProjectDir)&quot;;&quot;C:\Program Files\Java\jdk1.6.0_11\include&quot;;&quot;C:\Program Files\Java\jdk1.6.0_11\include\win32&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;PMJNI_EXPORTS"
+				AdditionalIncludeDirectories="../pm_common,../porttime"
+				PreprocessorDefinitions="_CONSOLE;WIN32;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
+				Detect64BitPortabilityProblems="true"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -62,13 +61,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="winmm.lib"
-				OutputFile="$(OutDir)\pmjni.dll"
+				AdditionalDependencies="odbc32.lib odbccp32.lib winmm.lib ..\pm_win\Debug\portmidi.lib ..\porttime\Debug\porttime.lib"
+				OutputFile=".\qtestDebug\qtest.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
+				SubSystem="1"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -90,14 +87,17 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release VC9|Win32"
-			OutputDirectory="$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="2"
+			Name="Release|Win32"
+			OutputDirectory=".\qtestRelease"
+			IntermediateDirectory=".\qtestRelease"
+			ConfigurationType="1"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -118,12 +118,12 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)\pm_common&quot;;&quot;$(SolutionDir)\porttime&quot;;&quot;$(ProjectDir)&quot;;&quot;C:\Program Files\Java\jdk1.6.0_11\include&quot;;&quot;C:\Program Files\Java\jdk1.6.0_11\include\win32&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;PMJNI_EXPORTS"
-				RuntimeLibrary="2"
+				AdditionalIncludeDirectories="../pm_common,../porttime"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
+				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -137,15 +137,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="winmm.lib"
-				OutputFile="$(OutDir)\pmjni.dll"
+				AdditionalDependencies="odbc32.lib odbccp32.lib winmm.lib ..\pm_win\Release\portmidi.lib ..\porttime\Release\porttime.lib"
+				OutputFile=".\qtestRelease\qtest.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
-				SubSystem="2"
+				SubSystem="1"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -167,6 +165,9 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
+				Name="VCWebDeploymentTool"
+			/>
+			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -174,34 +175,28 @@
 	<References>
 	</References>
 	<Files>
-		<File
-			RelativePath=".\pmjni.c"
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
-		</File>
-		<File
-			RelativePath="..\..\pm_common\pmutil.c"
+			<File
+				RelativePath=".\qtest.c"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-		</File>
-		<File
-			RelativePath="..\..\pm_win\pmwin.c"
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
-		</File>
-		<File
-			RelativePath="..\..\pm_win\pmwinmm.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\pm_common\portmidi.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\porttime\porttime.c"
-			>
-		</File>
-		<File
-			RelativePath="..\..\porttime\ptwinmm.c"
-			>
-		</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

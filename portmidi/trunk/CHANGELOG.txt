@@ -1,5 +1,16 @@
 /* CHANGELOG FOR PORTMIDI
  *
+ * 16Jun09 Roger Dannenberg
+ * - Started using Microsoft Visual C++ Version 9 (Express). Converted
+ * all *-VC9.vcproj file to *.vcproj and renamed old project files to 
+ * *-VC8.proj. Previously, output from VC9 went to special VC9 files,
+ * that breaks any program or script looking for output in release or
+ * debug files, so now both compiler version output to the same folders.
+ * Now, debug version uses static linking with debug DLL runtime, and 
+ * release version uses static linking with statically linked runtime.
+ * Converted to Inno Setup and worked on scripts to make things build
+ * properly, especially pmdefaults.
+ *
  * 02Jan09 Roger Dannenberg
  * - Created Java interface and wrote PmDefaults application to set
  *   values for Pm_GetDefaultInputDeviceID() and 

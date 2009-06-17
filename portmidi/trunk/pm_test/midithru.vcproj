@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
-	Name="midithru"
+	Version="9.00"
+	Name="MidiThru"
 	ProjectGUID="{B4B4240D-7022-4C47-838F-913B4878E938}"
-	RootNamespace="midithru"
+	RootNamespace="MidiThru"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -15,9 +16,9 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory=".\midithruDebug"
-			IntermediateDirectory=".\midithruDebug"
+			Name="MidiThru Debug|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -38,7 +39,7 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\midithruDebug/midithru.tlb"
+				TypeLibraryName=".\$(OutDir)\midithru.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -48,11 +49,11 @@
 				PreprocessorDefinitions="_CONSOLE;WIN32;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				PrecompiledHeaderFile=".\midithruDebug/midithru.pch"
-				AssemblerListingLocation=".\midithruDebug/"
-				ObjectFile=".\midithruDebug/"
-				ProgramDataBaseFileName=".\midithruDebug/"
+				RuntimeLibrary="3"
+				PrecompiledHeaderFile=".\$(OutDir)\midithru.pch"
+				AssemblerListingLocation=".\$(OutDir)\"
+				ObjectFile=".\$(OutDir)\"
+				ProgramDataBaseFileName=".\$(OutDir)\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
@@ -70,13 +71,16 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\pm_win\Debug\portmidi.lib ..\porttime\Debug\porttime.lib winmm.lib"
-				OutputFile=".\midithruDebug/midithru.exe"
+				AdditionalDependencies="portmidi.lib porttime.lib winmm.lib"
+				OutputFile=".\$(OutDir)\midithru.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="&quot;..\pm_win\Debug&quot;;&quot;..\porttime\Debug&quot;"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\midithruDebug/midithru.pdb"
+				ProgramDatabaseFile=".\$(OutDir)\midithru.pdb"
 				SubSystem="1"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -91,7 +95,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\midithruDebug/midithru.bsc"
+				OutputFile=".\$(OutDir)\midithru.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -100,16 +104,13 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory=".\midithruRelease"
-			IntermediateDirectory=".\midithruRelease"
+			Name="MidiThru Release|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -130,7 +131,7 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\midithruRelease/midithru.tlb"
+				TypeLibraryName=".\$(OutDir)\midithru.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -142,10 +143,10 @@
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\midithruRelease/midithru.pch"
-				AssemblerListingLocation=".\midithruRelease/"
-				ObjectFile=".\midithruRelease/"
-				ProgramDataBaseFileName=".\midithruRelease/"
+				PrecompiledHeaderFile=".\$(OutDir)\midithru.pch"
+				AssemblerListingLocation=".\$(OutDir)\"
+				ObjectFile=".\$(OutDir)\"
+				ProgramDataBaseFileName=".\$(OutDir)\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -162,12 +163,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\pm_win\Release\portmidi.lib ..\porttime\Release\porttime.lib winmm.lib"
-				OutputFile=".\midithruRelease/midithru.exe"
+				AdditionalDependencies="portmidi.lib porttime.lib winmm.lib"
+				OutputFile=".\$(OutDir)\midithru.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				ProgramDatabaseFile=".\midithruRelease/midithru.pdb"
+				AdditionalLibraryDirectories="&quot;..\pm_win\Release&quot;;&quot;..\porttime\Release&quot;"
+				ProgramDatabaseFile=".\$(OutDir)\midithru.pdb"
 				SubSystem="1"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -182,16 +186,13 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\midithruRelease/midithru.bsc"
+				OutputFile=".\$(OutDir)\midithru.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -201,43 +202,10 @@
 	<References>
 	</References>
 	<Files>
-		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+		<File
+			RelativePath="midithru.c"
 			>
-			<File
-				RelativePath="midithru.c"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl"
-			>
-		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
-			>
-		</Filter>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
-	Name="midithread"
+	Version="9.00"
+	Name="MidiThread"
 	ProjectGUID="{4E555AA6-B348-41C9-A685-0B76149BBBAF}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -14,9 +15,9 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory=".\midithreadDebug"
-			IntermediateDirectory=".\midithreadDebug"
+			Name="MidiThread Debug|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -37,7 +38,7 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\midithreadDebug/midithread.tlb"
+				TypeLibraryName=".\$(OutDir)\midithread.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -47,11 +48,11 @@
 				PreprocessorDefinitions="_CONSOLE;WIN32;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				PrecompiledHeaderFile=".\midithreadDebug/midithread.pch"
-				AssemblerListingLocation=".\midithreadDebug/"
-				ObjectFile=".\midithreadDebug/"
-				ProgramDataBaseFileName=".\midithreadDebug/"
+				RuntimeLibrary="3"
+				PrecompiledHeaderFile=".\$(OutDir)\midithread.pch"
+				AssemblerListingLocation=".\$(OutDir)\"
+				ObjectFile=".\$(OutDir)\"
+				ProgramDataBaseFileName=".\$(OutDir)\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
@@ -69,13 +70,16 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\pm_win\Debug\portmidi.lib ..\porttime\Debug\porttime.lib winmm.lib"
-				OutputFile=".\midithreadDebug/midithread.exe"
+				AdditionalDependencies="portmidi.lib porttime.lib winmm.lib"
+				OutputFile=".\$(OutDir)\midithread.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="&quot;..\pm_win\Debug&quot;;&quot;..\porttime\Debug&quot;"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\midithreadDebug/midithread.pdb"
+				ProgramDatabaseFile=".\$(OutDir)\midithread.pdb"
 				SubSystem="1"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -90,7 +94,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\midithreadDebug/midithread.bsc"
+				OutputFile=".\$(OutDir)\midithread.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -99,16 +103,13 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory=".\midithreadRelease"
-			IntermediateDirectory=".\midithreadRelease"
+			Name="MidiThread Release|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -129,7 +130,7 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\midithreadRelease/midithread.tlb"
+				TypeLibraryName=".\$(OutDir)\midithread.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -141,10 +142,10 @@
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\midithreadRelease/midithread.pch"
-				AssemblerListingLocation=".\midithreadRelease/"
-				ObjectFile=".\midithreadRelease/"
-				ProgramDataBaseFileName=".\midithreadRelease/"
+				PrecompiledHeaderFile=".\$(OutDir)\midithread.pch"
+				AssemblerListingLocation=".\$(OutDir)\"
+				ObjectFile=".\$(OutDir)\"
+				ProgramDataBaseFileName=".\$(OutDir)\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -161,12 +162,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\pm_win\Release\portmidi.lib ..\porttime\Release\porttime.lib winmm.lib"
-				OutputFile=".\midithreadRelease/midithread.exe"
+				AdditionalDependencies="portmidi.lib porttime.lib winmm.lib"
+				OutputFile=".\$(OutDir)\midithread.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				ProgramDatabaseFile=".\midithreadRelease/midithread.pdb"
+				AdditionalLibraryDirectories="&quot;..\pm_win\Release&quot;;&quot;..\porttime\Release&quot;"
+				ProgramDatabaseFile=".\$(OutDir)\midithread.pdb"
 				SubSystem="1"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -181,16 +185,13 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\midithreadRelease/midithread.bsc"
+				OutputFile=".\$(OutDir)\midithread.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -200,43 +201,10 @@
 	<References>
 	</References>
 	<Files>
-		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+		<File
+			RelativePath="midithread.c"
 			>
-			<File
-				RelativePath="midithread.c"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl"
-			>
-		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
-			>
-		</Filter>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

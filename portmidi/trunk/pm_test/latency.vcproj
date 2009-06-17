@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
-	Name="latency"
+	Version="9.00"
+	Name="Latency"
 	ProjectGUID="{EDC3A027-917B-4D23-AE70-73C409B47F85}"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -14,9 +15,9 @@
 	</ToolFiles>
 	<Configurations>
 		<Configuration
-			Name="Debug|Win32"
-			OutputDirectory=".\latencyDebug"
-			IntermediateDirectory=".\latencyDebug"
+			Name="Latency Debug|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -37,7 +38,7 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\latencyDebug/latency.tlb"
+				TypeLibraryName=".\$(OutDir)\latency.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -47,11 +48,11 @@
 				PreprocessorDefinitions="_CONSOLE;WIN32;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
-				PrecompiledHeaderFile=".\latencyDebug/latency.pch"
-				AssemblerListingLocation=".\latencyDebug/"
-				ObjectFile=".\latencyDebug/"
-				ProgramDataBaseFileName=".\latencyDebug/"
+				RuntimeLibrary="3"
+				PrecompiledHeaderFile=".\$(OutDir)\latency.pch"
+				AssemblerListingLocation=".\$(OutDir)\"
+				ObjectFile=".\$(OutDir)\"
+				ProgramDataBaseFileName=".\$(OutDir)\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
@@ -70,13 +71,16 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/verbose:lib"
-				AdditionalDependencies="..\pm_win\Debug\portmidi.lib ..\porttime\Debug\porttime.lib winmm.lib"
-				OutputFile=".\latencyDebug/latency.exe"
+				AdditionalDependencies="portmidi.lib porttime.lib winmm.lib"
+				OutputFile=".\$(OutDir)\latency.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="&quot;..\pm_win\Debug&quot;;&quot;..\porttime\Debug&quot;"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile=".\latencyDebug/latency.pdb"
+				ProgramDatabaseFile=".\$(OutDir)\latency.pdb"
 				SubSystem="1"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -91,7 +95,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\latencyDebug/latency.bsc"
+				OutputFile=".\$(OutDir)\latency.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -100,16 +104,13 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
 		<Configuration
-			Name="Release|Win32"
-			OutputDirectory=".\latencyRelease"
-			IntermediateDirectory=".\latencyRelease"
+			Name="Latency Release|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC60.vsprops"
 			UseOfMFC="0"
@@ -130,7 +131,7 @@
 			/>
 			<Tool
 				Name="VCMIDLTool"
-				TypeLibraryName=".\latencyRelease/latency.tlb"
+				TypeLibraryName=".\$(OutDir)\latency.tlb"
 				HeaderFileName=""
 			/>
 			<Tool
@@ -142,10 +143,10 @@
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\latencyRelease/latency.pch"
-				AssemblerListingLocation=".\latencyRelease/"
-				ObjectFile=".\latencyRelease/"
-				ProgramDataBaseFileName=".\latencyRelease/"
+				PrecompiledHeaderFile=".\$(OutDir)\latency.pch"
+				AssemblerListingLocation=".\$(OutDir)\"
+				ObjectFile=".\$(OutDir)\"
+				ProgramDataBaseFileName=".\$(OutDir)\"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -162,12 +163,15 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="..\pm_win\Release\portmidi.lib ..\porttime\Release\porttime.lib winmm.lib"
-				OutputFile=".\latencyRelease/latency.exe"
+				AdditionalDependencies="portmidi.lib porttime.lib winmm.lib"
+				OutputFile=".\$(OutDir)\latency.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				ProgramDatabaseFile=".\latencyRelease/latency.pdb"
+				AdditionalLibraryDirectories="&quot;..\pm_win\Release&quot;;&quot;..\porttime\Release&quot;"
+				ProgramDatabaseFile=".\$(OutDir)\latency.pdb"
 				SubSystem="1"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -182,16 +186,13 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\latencyRelease/latency.bsc"
+				OutputFile=".\$(OutDir)\latency.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -201,43 +202,10 @@
 	<References>
 	</References>
 	<Files>
-		<Filter
-			Name="Source Files"
-			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+		<File
+			RelativePath="latency.c"
 			>
-			<File
-				RelativePath="latency.c"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl"
-			>
-		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
-			>
-		</Filter>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
-	Name="PortMidi"
+	Version="8.00"
+	Name="portmidi"
 	ProjectGUID="{33E3B196-B9F4-4D0A-85E1-31C7BBD4967A}"
-	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -46,11 +45,11 @@
 				PreprocessorDefinitions="_LIB;DEBUG;PM_CHECK_ERRORS;WIN32;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				PrecompiledHeaderFile=".\$(OutDir)\portmidi.pch"
-				AssemblerListingLocation=".\$(OutDir)\"
-				ObjectFile=".\$(OutDir)\"
-				ProgramDataBaseFileName=".\$(OutDir)\"
+				RuntimeLibrary="1"
+				PrecompiledHeaderFile=".\pm_win\Debug/portmidi.pch"
+				AssemblerListingLocation=".\pm_win\Debug/"
+				ObjectFile=".\pm_win\Debug/"
+				ProgramDataBaseFileName=".\pm_win\Debug/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
@@ -68,7 +67,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\$(OutDir)\portmidi.lib"
+				OutputFile=".\pm_win\Debug\portmidi.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -80,7 +79,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\$(OutDir)\portmidi.bsc"
+				OutputFile=".\pm_win\Debug/portmidi.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -123,10 +122,10 @@
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\$(OutDir)\portmidi.pch"
-				AssemblerListingLocation=".\$(OutDir)\"
-				ObjectFile=".\$(OutDir)\"
-				ProgramDataBaseFileName=".\$(OutDir)\"
+				PrecompiledHeaderFile=".\Release/portmidi.pch"
+				AssemblerListingLocation=".\pm_win\Release/"
+				ObjectFile=".\pm_win\Release/"
+				ProgramDataBaseFileName=".\pm_win\Release/"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 			/>
@@ -143,7 +142,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\$(OutDir)\portmidi.lib"
+				OutputFile=".\pm_win\Release\portmidi.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -155,7 +154,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile=".\$(OutDir)\portmidi.bsc"
+				OutputFile=".\pm_win\Release/portmidi.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -168,38 +167,120 @@
 	<References>
 	</References>
 	<Files>
-		<File
-			RelativePath=".\pm_common\pminternal.h"
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
-		</File>
-		<File
-			RelativePath=".\pm_common\pmutil.c"
+			<File
+				RelativePath="pm_common\pmutil.c"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="pm_win\pmwin.c"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="pm_win\pmwinmm.c"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="pm_common\portmidi.c"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+					/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl"
 			>
-		</File>
-		<File
-			RelativePath=".\pm_common\pmutil.h"
-			>
-		</File>
-		<File
-			RelativePath=".\pm_win\pmwin.c"
-			>
-		</File>
-		<File
-			RelativePath=".\pm_win\pmwinmm.c"
-			>
-		</File>
-		<File
-			RelativePath=".\pm_win\pmwinmm.h"
-			>
-		</File>
-		<File
-			RelativePath=".\pm_common\portmidi.c"
-			>
-		</File>
-		<File
-			RelativePath=".\pm_common\portmidi.h"
-			>
-		</File>
+			<File
+				RelativePath="pm_common\pminternal.h"
+				>
+			</File>
+			<File
+				RelativePath="pm_common\pmutil.h"
+				>
+			</File>
+			<File
+				RelativePath="pm_win\pmwinmm.h"
+				>
+			</File>
+			<File
+				RelativePath="pm_common\portmidi.h"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

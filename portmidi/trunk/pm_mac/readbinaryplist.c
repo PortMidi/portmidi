@@ -81,6 +81,18 @@ memory requested or calls longjmp, so callers don't have to check.
 #define BOOL int
 
 #define MAXPATHLEN 256
+
+/* there are 2 levels of error logging/printing:
+ *   BPLIST_LOG and BPLIST_LOG_VERBOSE
+ * either or both can be set to non-zero to turn on
+ * If BPLIST_LOG_VERBOSE is true, then BPLIST_LOG 
+ * is also true.
+ * 
+ * In the code, logging is done by calling either
+ * bplist_log() or bplist_log_verbose(), which take
+ * parameters like printf but might be a no-op.
+ */
+ 
 /* #define BPLIST_LOG_VERBOSE 1 */
 
 #if BPLIST_LOG_VERBOSE
@@ -324,7 +336,9 @@ value_ptr bplist_read_file(char *filename)
     value_ptr value;
     int rslt = stat(filename, &stbuf);
     if (rslt) {
-        perror("in stat: ");
+        #if BPLIST_LOG
+            perror("in stat");
+        #endif
         bplist_log("Could not stat %s, error %d\n", filename, rslt);
         return NULL;
     }

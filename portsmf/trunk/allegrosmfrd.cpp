@@ -13,13 +13,13 @@
 
 using namespace std;
 
-typedef class Alg_pending {
+typedef class Alg_note_list {
 public:
     Alg_note_ptr note;
-    class Alg_pending *next;
-    Alg_pending(Alg_note_ptr n, class Alg_pending *list) { 
+    class Alg_note_list *next;
+    Alg_note_list(Alg_note_ptr n, class Alg_note_list *list) { 
         note = n; next = list; }
-} *Alg_pending_ptr;
+} *Alg_note_list_ptr;
 
 
 class Alg_midifile_reader: public Midifile_reader {
@@ -27,7 +27,7 @@ public:
     istream *file;
     Alg_seq_ptr seq;
     int divisions;
-    Alg_pending_ptr pending;
+    Alg_note_list_ptr note_list;
     Alg_track_ptr track;
     int track_number; // the number of the (current) track
     // chan is actual_channel + channel_offset_per_track * track_num +
@@ -41,7 +41,7 @@ public:
 
     Alg_midifile_reader(istream &f, Alg_seq_ptr new_seq) {
         file = &f;
-        pending = NULL;
+        note_list = NULL;
         seq = new_seq;
         channel_offset_per_track = 0;
         channel_offset_per_port = 16;
@@ -99,9 +99,9 @@ protected:
 
 Alg_midifile_reader::~Alg_midifile_reader()
 {
-    while (pending) {
-        Alg_pending_ptr to_be_freed = pending;
-        pending = pending->next;
+    while (note_list) {
+        Alg_note_list_ptr to_be_freed = note_list;
+        note_list = note_list->next;
         delete to_be_freed;
     }
     finalize(); // free Mf reader memory
@@ -203,7 +203,7 @@ void Alg_midifile_reader::Mf_on(int chan, int key, int vel)
         return;
     }
     Alg_note_ptr note = new Alg_note();
-    pending = new Alg_pending(note, pending);
+    note_list = new Alg_note_list(note, note_list);
     /*    trace("on: %d at %g\n", key, get_time()); */
     note->time = get_time();
     note->chan = chan + channel_offset + port * channel_offset_per_port;
@@ -219,14 +219,14 @@ void Alg_midifile_reader::Mf_on(int chan, int key, int vel)
 void Alg_midifile_reader::Mf_off(int chan, int key, int vel)
 {
     double time = get_time();
-    Alg_pending_ptr *p = &pending;
+    Alg_note_list_ptr *p = &note_list;
     while (*p) {
         if ((*p)->note->get_identifier() == key &&
             (*p)->note->chan == 
                     chan + channel_offset + port * channel_offset_per_port) {
             (*p)->note->dur = time - (*p)->note->time;
             // trace("updated %d dur %g\n", (*p)->note->key, (*p)->note->dur);
-            Alg_pending_ptr to_be_freed = *p;
+            Alg_note_list_ptr to_be_freed = *p;
             *p = to_be_freed->next;
             delete to_be_freed;
         } else {

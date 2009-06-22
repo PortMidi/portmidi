@@ -34,7 +34,7 @@ public:
     // chan is actual_channel + channels_per_track * track_number
     // default is 100, set this to 0 to merge all tracks to 16 channels
 
-    void write(ofstream &file /* , midiFileFormat = 1 */);
+    void write(ostream &file /* , midiFileFormat = 1 */);
 
 private:
     long previous_divs; // time in ticks of most recently written event
@@ -162,7 +162,7 @@ void Alg_smf_write::write_note(Alg_note_ptr note, bool on)
 
     //printf("deltaDivisions: %d, beats elapsed: %g, on? %c\n", deltaDivisions, note->time, on);
 
-    char chan = (note->chan & 15);
+    char chan = char(note->chan & 15);
     int pitch = int(note->pitch + 0.5);
     if (pitch < 0) {
           pitch = pitch % 12;
@@ -213,7 +213,7 @@ void Alg_smf_write::write_smpteoffset(Alg_update_ptr update, char *s)
     write_midi_channel_prefix(update);
     write_delta(update->time);
     out_file->put('\xFF'); // meta event
-    out_file->put(0x54); // smpte offset type code
+    out_file->put('\x54'); // smpte offset type code
     out_file->put(5); // length
     for (int i = 0; i < 5; i++) *out_file << s[i];
 }
@@ -532,7 +532,7 @@ void Alg_smf_write::write_time_signature(int i)
 
 
 
-void Alg_smf_write::write(ofstream &file)
+void Alg_smf_write::write(ostream &file)
 {
     int track_len_offset;
     int track_end_offset;
@@ -632,7 +632,7 @@ void Alg_smf_write::write_varinum(int value)
 }
 
 
-void Alg_seq::smf_write(ofstream &file)
+void Alg_seq::smf_write(ostream &file)
 {
     Alg_smf_write writer(this);
     writer.write(file);

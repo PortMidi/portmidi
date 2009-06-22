@@ -1,11 +1,6 @@
 // seq2midi.cpp -- simple sequence player, intended to help test/demo
 // the allegro code
 
-//#include "stdlib.h"
-//#include "string.h"
-//#include "assert.h"
-//#include "stdio.h" // for debugging
-//#include "memory.h"
 #include <fstream>
 #include "allegro.h"
 #include "porttime.h"
@@ -84,35 +79,6 @@ static void midi_channel_message(PortMidiStream *midi, double when,
 }
 
 
-typedef class Work {
-public:
-    char type; // 'n' for note, 'o' for off
-    double time; // when to do it
-    Alg_event_ptr event;
-    // long track_num; // which track
-    // long index; // of event
-    Work *next;
-    Work(char t, double when, Alg_event_ptr e, Work *n) {
-        type = t; time = when; event = e; next = n; }
-} *Work_ptr;
-
-
-// walk down the list and insert work in time order, return 
-// the resulting list (which may have work at the front now)
-//
-static Work_ptr insert(Work_ptr pending, Work_ptr work)
-{
-    if (pending == NULL) {
-        return work;
-    } else if (pending->time < work->time) {
-        pending->next = insert(pending->next, work);
-        return pending;
-    } else {
-        work->next = pending;
-        return work;
-    }
-}
-
 static char *pressure_attr;
 static char *bend_attr;
 static char *program_attr;
@@ -154,45 +120,29 @@ void seq2midi(Alg_seq &seq, PortMidiStream *midi)
     bend_attr = symbol_table.insert_string("bendr") + 1;
     program_attr = symbol_table.insert_string("programi") + 1;
 
-    bool done = false;
-    seq.iteration_begin();
-    Work_ptr pending = NULL;
-    Alg_event_ptr e = seq.iteration_next();
-    if (e) {
-        pending = new Work('n', e->time, e, NULL);
-    }
+    Alg_iterator iterator(&seq, true);
+    iterator.begin();
+    bool note_on;
+    Alg_event_ptr e = iterator.next(&note_on);
     Pt_Start(1, NULL, NULL); // initialize time
-    while (pending) {
-        double next_time = pending->time;
+    while (e) {
+        double next_time = (note_on ? e->time : e->get_end_time());
         wait_until(next_time);
-        Work_ptr w = pending;
-        pending = pending->next;
-        Alg_note_ptr n = (Alg_note_ptr) (w->event);
-        if (w->type == 'n') { // turn it on
-            if (n->is_note()) { // process notes here
-                // printf("Note at %g: chan %d key %d loud %d\n",
-                //        next_time, n->chan, n->key, (int) n->loud);
-                midi_note_on(midi, next_time, n->chan, n->get_identifier(),
-                             (int) n->get_loud());
-                // add pending note-off
-                pending = insert(pending, 
-                                 new Work('o', n->time + n->dur, n, NULL));
-            } else if (n->is_update()) { // process updates here
-                Alg_update_ptr u = (Alg_update_ptr) n; // coerce to proper type
-                send_midi_update(u, midi);
-            } 
-            // add next note
-            e = seq.iteration_next();
-            if (e) {
-                pending = insert(pending,
-                                 new Work('n', e->time, e, NULL));
-            }
-        } else { // a note-off
-            midi_note_on(midi, next_time, n->chan, n->get_identifier(), 0);
-        }
-        delete w;
+        if (e->is_note() && note_on) { // process notes here
+            // printf("Note at %g: chan %d key %d loud %d\n",
+            //        next_time, e->chan, e->key, (int) e->loud);
+            midi_note_on(midi, next_time, e->chan, e->get_identifier(),
+                         (int) e->get_loud());
+        } else if (e->is_note()) { // must be a note off
+            midi_note_on(midi, next_time, e->chan, e->get_identifier(), 0);
+        } else if (e->is_update()) { // process updates here
+            Alg_update_ptr u = (Alg_update_ptr) e; // coerce to proper type
+            send_midi_update(u, midi);
+        } 
+        // add next note
+        e = iterator.next(&note_on);
     }
-    seq.iteration_end();
+    iterator.end();
 }
 
 

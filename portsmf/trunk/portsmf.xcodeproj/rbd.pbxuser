@@ -2,8 +2,8 @@
 {
 	08FB7793FE84155DC02AAC07 /* Project object */ = {
 		activeBuildConfigurationName = Debug;
-		activeExecutable = 3D84C8C20C73C66E00DB0C03 /* allegroconvert */;
-		activeTarget = 3D84C8C00C73C66E00DB0C03 /* allegroconvert */;
+		activeExecutable = 3D6906C30E1BC42D00CD7F1A /* portsmf_test */;
+		activeTarget = 3D6906C10E1BC42D00CD7F1A /* portsmf_test */;
 		addToTargets = (
 			3D84C8C50C73C67E00DB0C03 /* allegroplay */,
 		);
@@ -50,8 +50,11 @@
 			3D69081D0E1D69D300CD7F1A /* allegrord.cpp:260 */,
 			3D69081F0E1D69F900CD7F1A /* allegrord.cpp:627 */,
 			3D08FDFC0E2E5CA800A8F29A /* allegrord.cpp:578 */,
+			3D786DC80FEFE21F006A7FC9 /* allegroconvert.cpp:62 */,
+			3D786DDD0FEFE3E2006A7FC9 /* seq2midi.cpp:203 */,
+			3D786DE20FEFE5D7006A7FC9 /* allegro.cpp:228 */,
+			3D786DE50FEFE60F006A7FC9 /* seq2midi.cpp:123 */,
 		);
-		breakpointsGroup = 3D84C9310C74E63E00DB0C03 /* XCBreakpointsBucket */;
 		codeSenseManager = 3D84C8B00C73C5B100DB0C03 /* Code sense */;
 		executables = (
 			3D84C8C20C73C66E00DB0C03 /* allegroconvert */,
@@ -98,12 +101,26 @@
 					PBXBookmarksDataSource_CommentsID,
 				);
 			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXExecutablesDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXExecutablesDataSource_NameID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					22,
+					300,
+					71,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXExecutablesDataSource_ActiveFlagID,
+					PBXExecutablesDataSource_NameID,
+					PBXExecutablesDataSource_CommentsID,
+				);
+			};
 			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
 				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					183,
+					454,
 					20,
 					48,
 					43,
@@ -125,8 +142,8 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					200,
-					10,
+					143,
+					60,
 					20,
 					48,
 					43,
@@ -142,62 +159,73 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 238041474;
-			PBXWorkspaceStateSaveDate = 238041474;
+			PBXPerProjectTemplateStateSaveDate = 267378447;
+			PBXWorkspaceStateSaveDate = 267378447;
 		};
 		perUserProjectItems = {
-			3D08FE140E2E6DB700A8F29A = 3D08FE140E2E6DB700A8F29A /* PBXTextBookmark */;
-			3D08FEC40E2E7F0A00A8F29A = 3D08FEC40E2E7F0A00A8F29A /* PBXTextBookmark */;
-			3D5D3B140E303A2500BDC7A7 /* PBXTextBookmark */ = 3D5D3B140E303A2500BDC7A7 /* PBXTextBookmark */;
-			3D5D3B150E303A2500BDC7A7 /* PBXTextBookmark */ = 3D5D3B150E303A2500BDC7A7 /* PBXTextBookmark */;
-			3D5D3B180E303A2500BDC7A7 /* PBXTextBookmark */ = 3D5D3B180E303A2500BDC7A7 /* PBXTextBookmark */;
-			3D5D3B190E303A2500BDC7A7 /* PBXTextBookmark */ = 3D5D3B190E303A2500BDC7A7 /* PBXTextBookmark */;
-			3D5D3B1A0E303A2500BDC7A7 /* PBXTextBookmark */ = 3D5D3B1A0E303A2500BDC7A7 /* PBXTextBookmark */;
-			3D5D3B1F0E303B3D00BDC7A7 /* PBXTextBookmark */ = 3D5D3B1F0E303B3D00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B200E303B3D00BDC7A7 /* PBXTextBookmark */ = 3D5D3B200E303B3D00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B210E303B3D00BDC7A7 /* PBXTextBookmark */ = 3D5D3B210E303B3D00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B250E303B6B00BDC7A7 /* PBXTextBookmark */ = 3D5D3B250E303B6B00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B260E303B6B00BDC7A7 /* PBXTextBookmark */ = 3D5D3B260E303B6B00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B270E303B6B00BDC7A7 /* PBXTextBookmark */ = 3D5D3B270E303B6B00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B2A0E30ECD500BDC7A7 /* PBXTextBookmark */ = 3D5D3B2A0E30ECD500BDC7A7 /* PBXTextBookmark */;
-			3D5D3B2B0E30ECD500BDC7A7 /* PBXTextBookmark */ = 3D5D3B2B0E30ECD500BDC7A7 /* PBXTextBookmark */;
-			3D5D3B2C0E30ECD500BDC7A7 /* PBXTextBookmark */ = 3D5D3B2C0E30ECD500BDC7A7 /* PBXTextBookmark */;
-			3D5D3B2D0E30ECD500BDC7A7 /* PBXTextBookmark */ = 3D5D3B2D0E30ECD500BDC7A7 /* PBXTextBookmark */;
-			3D5D3B310E31270700BDC7A7 /* PBXTextBookmark */ = 3D5D3B310E31270700BDC7A7 /* PBXTextBookmark */;
-			3D5D3B320E31270700BDC7A7 /* PBXTextBookmark */ = 3D5D3B320E31270700BDC7A7 /* PBXTextBookmark */;
-			3D5D3B330E31270700BDC7A7 /* PBXTextBookmark */ = 3D5D3B330E31270700BDC7A7 /* PBXTextBookmark */;
-			3D5D3B360E31274C00BDC7A7 /* PBXTextBookmark */ = 3D5D3B360E31274C00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B370E31274C00BDC7A7 /* PBXTextBookmark */ = 3D5D3B370E31274C00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B380E31275A00BDC7A7 /* PBXTextBookmark */ = 3D5D3B380E31275A00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B390E31275A00BDC7A7 /* PBXTextBookmark */ = 3D5D3B390E31275A00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B3A0E31275A00BDC7A7 /* PBXTextBookmark */ = 3D5D3B3A0E31275A00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B470E31279F00BDC7A7 /* PBXTextBookmark */ = 3D5D3B470E31279F00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B480E31279F00BDC7A7 /* PBXTextBookmark */ = 3D5D3B480E31279F00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B490E31279F00BDC7A7 /* PBXTextBookmark */ = 3D5D3B490E31279F00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B4C0E3127FA00BDC7A7 /* PBXTextBookmark */ = 3D5D3B4C0E3127FA00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B4D0E3127FA00BDC7A7 /* PBXTextBookmark */ = 3D5D3B4D0E3127FA00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B4E0E3127FA00BDC7A7 /* PBXTextBookmark */ = 3D5D3B4E0E3127FA00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B5E0E313A3900BDC7A7 /* PBXTextBookmark */ = 3D5D3B5E0E313A3900BDC7A7 /* PBXTextBookmark */;
-			3D5D3B5F0E313A3900BDC7A7 /* PBXTextBookmark */ = 3D5D3B5F0E313A3900BDC7A7 /* PBXTextBookmark */;
-			3D5D3B630E313CBD00BDC7A7 /* PBXTextBookmark */ = 3D5D3B630E313CBD00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B640E313CBD00BDC7A7 /* PBXTextBookmark */ = 3D5D3B640E313CBD00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B650E313DE500BDC7A7 /* PBXTextBookmark */ = 3D5D3B650E313DE500BDC7A7 /* PBXTextBookmark */;
-			3D5D3B660E313DE500BDC7A7 /* PBXTextBookmark */ = 3D5D3B660E313DE500BDC7A7 /* PBXTextBookmark */;
-			3D5D3B680E313E5900BDC7A7 /* PBXTextBookmark */ = 3D5D3B680E313E5900BDC7A7 /* PBXTextBookmark */;
-			3D5D3B690E313E5900BDC7A7 /* PBXTextBookmark */ = 3D5D3B690E313E5900BDC7A7 /* PBXTextBookmark */;
-			3D5D3B6B0E313F1A00BDC7A7 /* PBXBookmark */ = 3D5D3B6B0E313F1A00BDC7A7 /* PBXBookmark */;
-			3D5D3B730E3140BE00BDC7A7 /* PBXTextBookmark */ = 3D5D3B730E3140BE00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B740E3140BE00BDC7A7 /* PBXTextBookmark */ = 3D5D3B740E3140BE00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B750E3140BE00BDC7A7 /* PBXTextBookmark */ = 3D5D3B750E3140BE00BDC7A7 /* PBXTextBookmark */;
-			3D5D3B7A0E31B19800BDC7A7 /* PBXTextBookmark */ = 3D5D3B7A0E31B19800BDC7A7 /* PBXTextBookmark */;
-			3D5D3B7B0E31B19800BDC7A7 /* PBXTextBookmark */ = 3D5D3B7B0E31B19800BDC7A7 /* PBXTextBookmark */;
-			3D5D3B7C0E31B19800BDC7A7 /* PBXTextBookmark */ = 3D5D3B7C0E31B19800BDC7A7 /* PBXTextBookmark */;
-			3D5D3B800E32066700BDC7A7 /* PBXTextBookmark */ = 3D5D3B800E32066700BDC7A7 /* PBXTextBookmark */;
-			3D5D3B810E32066700BDC7A7 /* PBXTextBookmark */ = 3D5D3B810E32066700BDC7A7 /* PBXTextBookmark */;
-			3D5D3B820E32066700BDC7A7 /* PBXTextBookmark */ = 3D5D3B820E32066700BDC7A7 /* PBXTextBookmark */;
-			3D5D3B840E3206C600BDC7A7 /* PBXTextBookmark */ = 3D5D3B840E3206C600BDC7A7 /* PBXTextBookmark */;
-			3D5D3B850E3206C600BDC7A7 /* PBXTextBookmark */ = 3D5D3B850E3206C600BDC7A7 /* PBXTextBookmark */;
-			3D5D3B860E3206C600BDC7A7 /* PBXTextBookmark */ = 3D5D3B860E3206C600BDC7A7 /* PBXTextBookmark */;
+			3D786D9C0FEFE08C006A7FC9 /* PBXBookmark */ = 3D786D9C0FEFE08C006A7FC9 /* PBXBookmark */;
+			3D786DA50FEFE177006A7FC9 /* PBXTextBookmark */ = 3D786DA50FEFE177006A7FC9 /* PBXTextBookmark */;
+			3D786DA60FEFE177006A7FC9 /* PBXTextBookmark */ = 3D786DA60FEFE177006A7FC9 /* PBXTextBookmark */;
+			3D786DA70FEFE177006A7FC9 /* PBXTextBookmark */ = 3D786DA70FEFE177006A7FC9 /* PBXTextBookmark */;
+			3D786DA80FEFE177006A7FC9 /* PBXTextBookmark */ = 3D786DA80FEFE177006A7FC9 /* PBXTextBookmark */;
+			3D786DAE0FEFE177006A7FC9 /* PBXTextBookmark */ = 3D786DAE0FEFE177006A7FC9 /* PBXTextBookmark */;
+			3D786DBB0FEFE200006A7FC9 /* PBXTextBookmark */ = 3D786DBB0FEFE200006A7FC9 /* PBXTextBookmark */;
+			3D786DBC0FEFE200006A7FC9 /* PBXTextBookmark */ = 3D786DBC0FEFE200006A7FC9 /* PBXTextBookmark */;
+			3D786DBD0FEFE200006A7FC9 /* PBXTextBookmark */ = 3D786DBD0FEFE200006A7FC9 /* PBXTextBookmark */;
+			3D786DBE0FEFE200006A7FC9 /* PBXTextBookmark */ = 3D786DBE0FEFE200006A7FC9 /* PBXTextBookmark */;
+			3D786DBF0FEFE200006A7FC9 /* PBXTextBookmark */ = 3D786DBF0FEFE200006A7FC9 /* PBXTextBookmark */;
+			3D786DC00FEFE200006A7FC9 /* PBXTextBookmark */ = 3D786DC00FEFE200006A7FC9 /* PBXTextBookmark */;
+			3D786DC10FEFE200006A7FC9 /* PBXTextBookmark */ = 3D786DC10FEFE200006A7FC9 /* PBXTextBookmark */;
+			3D786DC20FEFE200006A7FC9 /* PBXTextBookmark */ = 3D786DC20FEFE200006A7FC9 /* PBXTextBookmark */;
+			3D786DC30FEFE200006A7FC9 /* PBXTextBookmark */ = 3D786DC30FEFE200006A7FC9 /* PBXTextBookmark */;
+			3D786DC40FEFE200006A7FC9 /* PBXTextBookmark */ = 3D786DC40FEFE200006A7FC9 /* PBXTextBookmark */;
+			3D786DCF0FEFE2C0006A7FC9 /* PBXTextBookmark */ = 3D786DCF0FEFE2C0006A7FC9 /* PBXTextBookmark */;
+			3D786DD00FEFE2C0006A7FC9 /* PBXTextBookmark */ = 3D786DD00FEFE2C0006A7FC9 /* PBXTextBookmark */;
+			3D786DD10FEFE2C0006A7FC9 /* PBXTextBookmark */ = 3D786DD10FEFE2C0006A7FC9 /* PBXTextBookmark */;
+			3D786DD20FEFE2C0006A7FC9 /* PBXTextBookmark */ = 3D786DD20FEFE2C0006A7FC9 /* PBXTextBookmark */;
+			3D786DD30FEFE2C0006A7FC9 /* PBXTextBookmark */ = 3D786DD30FEFE2C0006A7FC9 /* PBXTextBookmark */;
+			3D786DD40FEFE2C0006A7FC9 /* PBXTextBookmark */ = 3D786DD40FEFE2C0006A7FC9 /* PBXTextBookmark */;
+			3D786DD50FEFE342006A7FC9 /* PBXTextBookmark */ = 3D786DD50FEFE342006A7FC9 /* PBXTextBookmark */;
+			3D786DD60FEFE342006A7FC9 /* PBXTextBookmark */ = 3D786DD60FEFE342006A7FC9 /* PBXTextBookmark */;
+			3D786DD70FEFE359006A7FC9 /* PBXTextBookmark */ = 3D786DD70FEFE359006A7FC9 /* PBXTextBookmark */;
+			3D786DD80FEFE359006A7FC9 /* PBXTextBookmark */ = 3D786DD80FEFE359006A7FC9 /* PBXTextBookmark */;
+			3D786DD90FEFE37C006A7FC9 /* PBXTextBookmark */ = 3D786DD90FEFE37C006A7FC9 /* PBXTextBookmark */;
+			3D786DDA0FEFE37C006A7FC9 /* PBXTextBookmark */ = 3D786DDA0FEFE37C006A7FC9 /* PBXTextBookmark */;
+			3D786DDE0FEFE406006A7FC9 /* PBXTextBookmark */ = 3D786DDE0FEFE406006A7FC9 /* PBXTextBookmark */;
+			3D786DDF0FEFE406006A7FC9 /* PBXTextBookmark */ = 3D786DDF0FEFE406006A7FC9 /* PBXTextBookmark */;
+			3D786DE90FEFED12006A7FC9 /* PBXTextBookmark */ = 3D786DE90FEFED12006A7FC9 /* PBXTextBookmark */;
+			3D786DEA0FEFED12006A7FC9 /* PBXTextBookmark */ = 3D786DEA0FEFED12006A7FC9 /* PBXTextBookmark */;
+			3D786DEB0FEFED12006A7FC9 /* PBXTextBookmark */ = 3D786DEB0FEFED12006A7FC9 /* PBXTextBookmark */;
+			3D786DEC0FEFED12006A7FC9 /* PBXTextBookmark */ = 3D786DEC0FEFED12006A7FC9 /* PBXTextBookmark */;
+			3D786DED0FEFED12006A7FC9 /* PBXTextBookmark */ = 3D786DED0FEFED12006A7FC9 /* PBXTextBookmark */;
+			3D786DEE0FEFED12006A7FC9 /* PBXTextBookmark */ = 3D786DEE0FEFED12006A7FC9 /* PBXTextBookmark */;
+			3D786DEF0FEFED12006A7FC9 /* PBXTextBookmark */ = 3D786DEF0FEFED12006A7FC9 /* PBXTextBookmark */;
+			3D786DF00FEFED12006A7FC9 /* PBXTextBookmark */ = 3D786DF00FEFED12006A7FC9 /* PBXTextBookmark */;
+			3D786DFC0FEFF5B9006A7FC9 /* PBXTextBookmark */ = 3D786DFC0FEFF5B9006A7FC9 /* PBXTextBookmark */;
+			3D786DFF0FEFF5B9006A7FC9 /* PBXTextBookmark */ = 3D786DFF0FEFF5B9006A7FC9 /* PBXTextBookmark */;
+			3D786E000FEFF5B9006A7FC9 /* PBXTextBookmark */ = 3D786E000FEFF5B9006A7FC9 /* PBXTextBookmark */;
+			3D786E010FEFF5B9006A7FC9 /* PBXTextBookmark */ = 3D786E010FEFF5B9006A7FC9 /* PBXTextBookmark */;
+			3D786E030FEFF630006A7FC9 /* PBXTextBookmark */ = 3D786E030FEFF630006A7FC9 /* PBXTextBookmark */;
+			3D786E040FEFF630006A7FC9 /* PBXTextBookmark */ = 3D786E040FEFF630006A7FC9 /* PBXTextBookmark */;
+			3D786E050FEFF630006A7FC9 /* PBXTextBookmark */ = 3D786E050FEFF630006A7FC9 /* PBXTextBookmark */;
+			3D786E070FEFF655006A7FC9 /* PBXTextBookmark */ = 3D786E070FEFF655006A7FC9 /* PBXTextBookmark */;
+			3D786E080FEFF655006A7FC9 /* PBXTextBookmark */ = 3D786E080FEFF655006A7FC9 /* PBXTextBookmark */;
+			3D786E090FEFF655006A7FC9 /* PBXTextBookmark */ = 3D786E090FEFF655006A7FC9 /* PBXTextBookmark */;
+			3D786E0B0FEFF673006A7FC9 /* PBXTextBookmark */ = 3D786E0B0FEFF673006A7FC9 /* PBXTextBookmark */;
+			3D786E0C0FEFF673006A7FC9 /* PBXTextBookmark */ = 3D786E0C0FEFF673006A7FC9 /* PBXTextBookmark */;
+			3D786E0D0FEFF673006A7FC9 /* PBXTextBookmark */ = 3D786E0D0FEFF673006A7FC9 /* PBXTextBookmark */;
+			3D786E0E0FEFF689006A7FC9 /* PBXTextBookmark */ = 3D786E0E0FEFF689006A7FC9 /* PBXTextBookmark */;
+			3D786E0F0FEFF689006A7FC9 /* PBXTextBookmark */ = 3D786E0F0FEFF689006A7FC9 /* PBXTextBookmark */;
+			3D786E100FEFF689006A7FC9 /* PBXTextBookmark */ = 3D786E100FEFF689006A7FC9 /* PBXTextBookmark */;
+			3D786E140FEFF6E6006A7FC9 /* PBXTextBookmark */ = 3D786E140FEFF6E6006A7FC9 /* PBXTextBookmark */;
+			3D786E150FEFF6E6006A7FC9 /* PBXTextBookmark */ = 3D786E150FEFF6E6006A7FC9 /* PBXTextBookmark */;
+			3D786E160FEFF6E6006A7FC9 /* PBXTextBookmark */ = 3D786E160FEFF6E6006A7FC9 /* PBXTextBookmark */;
+			3D786E180FEFF700006A7FC9 /* PBXTextBookmark */ = 3D786E180FEFF700006A7FC9 /* PBXTextBookmark */;
+			3D786E190FEFF700006A7FC9 /* PBXTextBookmark */ = 3D786E190FEFF700006A7FC9 /* PBXTextBookmark */;
+			3D786E1A0FEFF700006A7FC9 /* PBXTextBookmark */ = 3D786E1A0FEFF700006A7FC9 /* PBXTextBookmark */;
+			3D786E1D0FEFF7BD006A7FC9 /* PBXTextBookmark */ = 3D786E1D0FEFF7BD006A7FC9 /* PBXTextBookmark */;
+			3D786E1E0FEFF7BD006A7FC9 /* PBXTextBookmark */ = 3D786E1E0FEFF7BD006A7FC9 /* PBXTextBookmark */;
+			3D786E1F0FEFF7BD006A7FC9 /* PBXTextBookmark */ = 3D786E1F0FEFF7BD006A7FC9 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 3D84C8AF0C73C5B100DB0C03 /* Source Control */;
 		userBuildSettings = {
@@ -209,519 +237,16 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D20C73C6B600DB0C03 /* allegrord.cpp */;
 		functionName = "Alg_reader::parse_key()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 578;
 		location = scorealign;
-		modificationTime = 238162934.296169;
+		modificationTime = 267384761.027511;
 		state = 2;
-	};
-	3D08FE140E2E6DB700A8F29A /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2841";
-		rLen = 0;
-		rLoc = 85650;
-		rType = 0;
-		vrLen = 1174;
-		vrLoc = 0;
-	};
-	3D08FEC40E2E7F0A00A8F29A /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2841";
-		rLen = 0;
-		rLoc = 85650;
-		rType = 0;
-		vrLen = 1174;
-		vrLoc = 0;
-	};
-	3D5D3B140E303A2500BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		comments = "error: 'smpteoffsets' was not declared in this scope";
-		fRef = 3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */;
-		rLen = 1;
-		rLoc = 305;
-		rType = 1;
-	};
-	3D5D3B150E303A2500BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */;
-		name = "allegrosmfrd.cpp: 306";
-		rLen = 0;
-		rLoc = 8152;
-		rType = 0;
-		vrLen = 1252;
-		vrLoc = 7432;
-	};
-	3D5D3B180E303A2500BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		comments = "error: 'char* Midifile_reader::msg()' is private";
-		fRef = 3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */;
-		rLen = 1;
-		rLoc = 73;
-		rType = 1;
-	};
-	3D5D3B190E303A2500BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */;
-		name = "char *msg();";
-		rLen = 18;
-		rLoc = 2716;
-		rType = 0;
-		vrLen = 1264;
-		vrLoc = 1892;
-	};
-	3D5D3B1A0E303A2500BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2821";
-		rLen = 0;
-		rLoc = 85650;
-		rType = 0;
-		vrLen = 1174;
-		vrLoc = 0;
-	};
-	3D5D3B1F0E303B3D00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */;
-		name = "allegrosmfrd.cpp: 302";
-		rLen = 0;
-		rLoc = 7962;
-		rType = 0;
-		vrLen = 1258;
-		vrLoc = 7432;
-	};
-	3D5D3B200E303B3D00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */;
-		name = "char *msg();";
-		rLen = 18;
-		rLoc = 2716;
-		rType = 0;
-		vrLen = 1264;
-		vrLoc = 1892;
-	};
-	3D5D3B210E303B3D00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2821";
-		rLen = 0;
-		rLoc = 85650;
-		rType = 0;
-		vrLen = 1174;
-		vrLoc = 0;
-	};
-	3D5D3B250E303B6B00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */;
-		name = "allegrosmfrd.cpp: 302";
-		rLen = 0;
-		rLoc = 7962;
-		rType = 0;
-		vrLen = 1257;
-		vrLoc = 7432;
-	};
-	3D5D3B260E303B6B00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */;
-		name = "char *msg();";
-		rLen = 18;
-		rLoc = 2716;
-		rType = 0;
-		vrLen = 1264;
-		vrLoc = 1892;
-	};
-	3D5D3B270E303B6B00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2821";
-		rLen = 0;
-		rLoc = 85650;
-		rType = 0;
-		vrLen = 1174;
-		vrLoc = 0;
-	};
-	3D5D3B2A0E30ECD500BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		comments = "error: prototype for 'void Alg_midifile_reader::Mf_chanprefix(int)' does not match any in class 'Alg_midifile_reader'";
-		fRef = 3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */;
-		rLen = 1;
-		rLoc = 139;
-		rType = 1;
-	};
-	3D5D3B2B0E30ECD500BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */;
-		name = "void Alg_midifile_reader::Mf_chanprefix(int chan)";
-		rLen = 50;
-		rLoc = 3915;
-		rType = 0;
-		vrLen = 1001;
-		vrLoc = 3374;
-	};
-	3D5D3B2C0E30ECD500BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */;
-		name = "mfmidi.h: 98";
-		rLen = 0;
-		rLoc = 3198;
-		rType = 0;
-		vrLen = 1347;
-		vrLoc = 1849;
-	};
-	3D5D3B2D0E30ECD500BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2821";
-		rLen = 0;
-		rLoc = 85650;
-		rType = 0;
-		vrLen = 1174;
-		vrLoc = 0;
-	};
-	3D5D3B310E31270700BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */;
-		name = "allegrosmfrd.cpp: 427";
-		rLen = 0;
-		rLoc = 11564;
-		rType = 0;
-		vrLen = 1010;
-		vrLoc = 3538;
-	};
-	3D5D3B320E31270700BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */;
-		name = "mfmidi.h: 99";
-		rLen = 0;
-		rLoc = 3240;
-		rType = 0;
-		vrLen = 1391;
-		vrLoc = 1845;
-	};
-	3D5D3B330E31270700BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2861";
-		rLen = 0;
-		rLoc = 86459;
-		rType = 0;
-		vrLen = 1174;
-		vrLoc = 0;
-	};
-	3D5D3B360E31274C00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */;
-		rLen = 10;
-		rLoc = 1975;
-		rType = 0;
-	};
-	3D5D3B370E31274C00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */;
-		name = "allegrosmfrd.cpp: 427";
-		rLen = 0;
-		rLoc = 11564;
-		rType = 0;
-		vrLen = 537;
-		vrLoc = 1806;
-	};
-	3D5D3B380E31275A00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */;
-		name = "allegrosmfrd.cpp: 121";
-		rLen = 0;
-		rLoc = 3585;
-		rType = 0;
-		vrLen = 1010;
-		vrLoc = 3538;
-	};
-	3D5D3B390E31275A00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */;
-		name = "mfmidi.h: 99";
-		rLen = 0;
-		rLoc = 3240;
-		rType = 0;
-		vrLen = 1391;
-		vrLoc = 1845;
-	};
-	3D5D3B3A0E31275A00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2861";
-		rLen = 0;
-		rLoc = 86459;
-		rType = 0;
-		vrLen = 1174;
-		vrLoc = 0;
-	};
-	3D5D3B470E31279F00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */;
-		name = "allegrosmfrd.cpp: 161";
-		rLen = 0;
-		rLoc = 4545;
-		rType = 0;
-		vrLen = 1080;
-		vrLoc = 3542;
-	};
-	3D5D3B480E31279F00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */;
-		name = "mfmidi.h: 99";
-		rLen = 0;
-		rLoc = 3240;
-		rType = 0;
-		vrLen = 1391;
-		vrLoc = 1845;
-	};
-	3D5D3B490E31279F00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2861";
-		rLen = 0;
-		rLoc = 86459;
-		rType = 0;
-		vrLen = 1174;
-		vrLoc = 0;
-	};
-	3D5D3B4C0E3127FA00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */;
-		name = "allegrosmfrd.cpp: 127";
-		rLen = 0;
-		rLoc = 3848;
-		rType = 0;
-		vrLen = 1080;
-		vrLoc = 3542;
-	};
-	3D5D3B4D0E3127FA00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */;
-		name = "mfmidi.h: 99";
-		rLen = 0;
-		rLoc = 3240;
-		rType = 0;
-		vrLen = 1391;
-		vrLoc = 1845;
-	};
-	3D5D3B4E0E3127FA00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2861";
-		rLen = 0;
-		rLoc = 86459;
-		rType = 0;
-		vrLen = 1174;
-		vrLoc = 0;
-	};
-	3D5D3B5E0E313A3900BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */;
-		name = "mfmidi.h: 99";
-		rLen = 0;
-		rLoc = 3240;
-		rType = 0;
-		vrLen = 1391;
-		vrLoc = 1845;
-	};
-	3D5D3B5F0E313A3900BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2861";
-		rLen = 0;
-		rLoc = 86459;
-		rType = 0;
-		vrLen = 1174;
-		vrLoc = 0;
-	};
-	3D5D3B630E313CBD00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */;
-		name = "mfmidi.h: 99";
-		rLen = 0;
-		rLoc = 3240;
-		rType = 0;
-		vrLen = 1391;
-		vrLoc = 1845;
-	};
-	3D5D3B640E313CBD00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2861";
-		rLen = 0;
-		rLoc = 86459;
-		rType = 0;
-		vrLen = 1174;
-		vrLoc = 0;
-	};
-	3D5D3B650E313DE500BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */;
-		name = "mfmidi.h: 99";
-		rLen = 0;
-		rLoc = 3240;
-		rType = 0;
-		vrLen = 1391;
-		vrLoc = 1845;
-	};
-	3D5D3B660E313DE500BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2861";
-		rLen = 0;
-		rLoc = 86459;
-		rType = 0;
-		vrLen = 1174;
-		vrLoc = 0;
-	};
-	3D5D3B680E313E5900BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */;
-		name = "mfmidi.h: 99";
-		rLen = 0;
-		rLoc = 3240;
-		rType = 0;
-		vrLen = 1391;
-		vrLoc = 1845;
-	};
-	3D5D3B690E313E5900BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2861";
-		rLen = 0;
-		rLoc = 86459;
-		rType = 0;
-		vrLen = 1174;
-		vrLoc = 0;
-	};
-	3D5D3B6B0E313F1A00BDC7A7 /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = 3D84C8D50C73C6B600DB0C03 /* allegrosmfwr.cpp */;
-	};
-	3D5D3B730E3140BE00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8D50C73C6B600DB0C03 /* allegrosmfwr.cpp */;
-		name = "allegrosmfwr.cpp: 258";
-		rLen = 0;
-		rLoc = 7849;
-		rType = 0;
-		vrLen = 1581;
-		vrLoc = 9218;
-	};
-	3D5D3B740E3140BE00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */;
-		name = "mfmidi.h: 99";
-		rLen = 0;
-		rLoc = 3240;
-		rType = 0;
-		vrLen = 1391;
-		vrLoc = 1845;
-	};
-	3D5D3B750E3140BE00BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2861";
-		rLen = 0;
-		rLoc = 86459;
-		rType = 0;
-		vrLen = 1174;
-		vrLoc = 0;
-	};
-	3D5D3B7A0E31B19800BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8D50C73C6B600DB0C03 /* allegrosmfwr.cpp */;
-		name = "allegrosmfwr.cpp: 638";
-		rLen = 0;
-		rLoc = 20710;
-		rType = 0;
-		vrLen = 1559;
-		vrLoc = 9248;
-	};
-	3D5D3B7B0E31B19800BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */;
-		name = "mfmidi.h: 99";
-		rLen = 0;
-		rLoc = 3240;
-		rType = 0;
-		vrLen = 1391;
-		vrLoc = 1845;
-	};
-	3D5D3B7C0E31B19800BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2861";
-		rLen = 0;
-		rLoc = 86459;
-		rType = 0;
-		vrLen = 1174;
-		vrLoc = 0;
-	};
-	3D5D3B800E32066700BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8D50C73C6B600DB0C03 /* allegrosmfwr.cpp */;
-		name = "allegrosmfwr.cpp: 638";
-		rLen = 0;
-		rLoc = 20710;
-		rType = 0;
-		vrLen = 1559;
-		vrLoc = 9248;
-	};
-	3D5D3B810E32066700BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */;
-		name = "mfmidi.h: 99";
-		rLen = 0;
-		rLoc = 3240;
-		rType = 0;
-		vrLen = 1391;
-		vrLoc = 1845;
-	};
-	3D5D3B820E32066700BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2861";
-		rLen = 0;
-		rLoc = 86459;
-		rType = 0;
-		vrLen = 1174;
-		vrLoc = 0;
-	};
-	3D5D3B840E3206C600BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8D50C73C6B600DB0C03 /* allegrosmfwr.cpp */;
-		name = "allegrosmfwr.cpp: 638";
-		rLen = 0;
-		rLoc = 20710;
-		rType = 0;
-		vrLen = 1559;
-		vrLoc = 9248;
-	};
-	3D5D3B850E3206C600BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8DD0C73C6C900DB0C03 /* mfmidi.h */;
-		name = "mfmidi.h: 99";
-		rLen = 0;
-		rLoc = 3240;
-		rType = 0;
-		vrLen = 1391;
-		vrLoc = 1845;
-	};
-	3D5D3B860E3206C600BDC7A7 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		name = "allegro.cpp: 2861";
-		rLen = 0;
-		rLoc = 86465;
-		rType = 0;
-		vrLen = 1180;
-		vrLoc = 0;
 	};
 	3D6906C10E1BC42D00CD7F1A /* portsmf_test */ = {
 		activeExec = 0;
@@ -731,12 +256,12 @@
 	};
 	3D6906C30E1BC42D00CD7F1A /* portsmf_test */ = {
 		isa = PBXExecutable;
-		activeArgIndex = 2147483647;
 		activeArgIndices = (
 		);
 		argumentStrings = (
 		);
 		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
 		configStateDict = {
 			"PBXLSLaunchAction-0" = {
 				PBXLSLaunchAction = 0;
@@ -761,9 +286,18 @@
 		executableUserSymbolLevel = 0;
 		libgmallocEnabled = 0;
 		name = portsmf_test;
+		savedGlobals = {
+		};
 		sourceDirectories = (
 		);
 		startupPath = /Users/rbd/portmedia/portsmf/portsmf_test;
+	};
+	3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {600, 12272}}";
+			sepNavSelRange = "{18530, 0}";
+			sepNavVisRange = "{17656, 981}";
+		};
 	};
 	3D6907880E1BE45A00CD7F1A /* allegroconvert.cpp:75 */ = {
 		isa = PBXFileBreakpoint;
@@ -771,13 +305,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
 		functionName = "main()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 75;
 		location = allegroconvert;
-		modificationTime = 238162934.295977;
+		modificationTime = 267384761.024598;
 		state = 2;
 	};
 	3D69078D0E1BE81600CD7F1A /* allegroconvert.cpp:115 */ = {
@@ -786,13 +322,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
 		functionName = "main()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 115;
 		location = allegroconvert;
-		modificationTime = 238162934.295984;
+		modificationTime = 267384761.024742;
 		state = 2;
 	};
 	3D69078F0E1BE90600CD7F1A /* allegrord.cpp:94 */ = {
@@ -801,13 +339,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D20C73C6B600DB0C03 /* allegrord.cpp */;
 		functionName = "Alg_reader::readline()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 94;
 		location = allegroconvert;
-		modificationTime = 238162934.295988;
+		modificationTime = 267384761.024826;
 		state = 2;
 	};
 	3D6907910E1BE90B00CD7F1A /* allegrord.cpp:96 */ = {
@@ -816,13 +356,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D20C73C6B600DB0C03 /* allegrord.cpp */;
 		functionName = "Alg_reader::readline()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 96;
 		location = allegroconvert;
-		modificationTime = 238162934.295992;
+		modificationTime = 267384761.024909;
 		state = 2;
 	};
 	3D6907930E1C139700CD7F1A /* allegrord.cpp:630 */ = {
@@ -831,13 +373,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D20C73C6B600DB0C03 /* allegrord.cpp */;
 		functionName = "Alg_reader::parse_attribute()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 630;
 		location = allegroconvert;
-		modificationTime = 238162934.296008;
+		modificationTime = 267384761.024992;
 		state = 2;
 	};
 	3D6907B00E1C1B4C00CD7F1A /* allegroconvert.cpp:113 */ = {
@@ -846,12 +390,14 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
 		functionName = "main()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 113;
-		modificationTime = 238162934.296051;
+		modificationTime = 267384761.025074;
 		state = 2;
 	};
 	3D6907B20E1C1B5400CD7F1A /* allegroconvert.cpp:106 */ = {
@@ -860,13 +406,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
 		functionName = "main()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 106;
 		location = allegroconvert;
-		modificationTime = 238162934.296056;
+		modificationTime = 267384761.025156;
 		state = 2;
 	};
 	3D6907B40E1C1B8000CD7F1A /* allegroconvert.cpp:105 */ = {
@@ -875,13 +423,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
 		functionName = "main()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 105;
 		location = allegroconvert;
-		modificationTime = 238162934.296077;
+		modificationTime = 267384761.025239;
 		state = 2;
 	};
 	3D6907B60E1C1BA500CD7F1A /* allegrosmfrd.cpp:159 */ = {
@@ -890,13 +440,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */;
 		functionName = "Alg_midifile_reader::Mf_endtrack()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 159;
 		location = allegroconvert;
-		modificationTime = 238162934.296083;
+		modificationTime = 267384761.025321;
 		state = 2;
 	};
 	3D6907C20E1C555600CD7F1A /* allegrosmfwr.cpp:281 */ = {
@@ -905,12 +457,14 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D50C73C6B600DB0C03 /* allegrosmfwr.cpp */;
 		functionName = "Alg_smf_write::write_update()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 281;
-		modificationTime = 238162934.296087;
+		modificationTime = 267384761.025565;
 		state = 2;
 	};
 	3D6907C50E1C55ED00CD7F1A /* allegrosmfwr.cpp:280 */ = {
@@ -919,13 +473,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D50C73C6B600DB0C03 /* allegrosmfwr.cpp */;
 		functionName = "Alg_smf_write::write_update()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 280;
 		location = allegroconvert;
-		modificationTime = 238162934.296091;
+		modificationTime = 267384761.025659;
 		state = 2;
 	};
 	3D6907DC0E1C81F200CD7F1A /* allegrosmfwr.cpp:323 */ = {
@@ -934,13 +490,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D50C73C6B600DB0C03 /* allegrosmfwr.cpp */;
 		functionName = "Alg_smf_write::write_track()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 323;
 		location = allegroconvert;
-		modificationTime = 238162934.296096;
+		modificationTime = 267384761.025743;
 		state = 2;
 	};
 	3D6907FD0E1D5A2300CD7F1A /* allegrosmfrd.cpp:305 */ = {
@@ -949,13 +507,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */;
 		functionName = "Alg_midifile_reader::Mf_tempo()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 305;
 		location = allegroconvert;
-		modificationTime = 238162934.2961;
+		modificationTime = 267384761.025825;
 		state = 2;
 	};
 	3D6908020E1D5C7600CD7F1A /* allegrord.cpp:112 */ = {
@@ -964,13 +524,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D20C73C6B600DB0C03 /* allegrord.cpp */;
 		functionName = "Alg_reader::process_attributes()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 112;
 		location = allegroconvert;
-		modificationTime = 238162934.296104;
+		modificationTime = 267384761.025908;
 		state = 2;
 	};
 	3D6908040E1D5C8900CD7F1A /* allegrord.cpp:113 */ = {
@@ -979,13 +541,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D20C73C6B600DB0C03 /* allegrord.cpp */;
 		functionName = "Alg_reader::process_attributes()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 113;
 		location = allegroconvert;
-		modificationTime = 238162934.296108;
+		modificationTime = 267384761.026017;
 		state = 2;
 	};
 	3D6908060E1D5E3500CD7F1A /* allegro.cpp:2646 */ = {
@@ -994,13 +558,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
 		functionName = "Alg_seq::insert_tempo()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 2646;
 		location = allegroconvert;
-		modificationTime = 238162934.296112;
+		modificationTime = 267384761.026111;
 		state = 2;
 	};
 	3D6908080E1D5FA900CD7F1A /* allegrosmfwr.cpp:395 */ = {
@@ -1009,13 +575,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D50C73C6B600DB0C03 /* allegrosmfwr.cpp */;
 		functionName = "Alg_smf_write::write_tempo()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 395;
 		location = allegroconvert;
-		modificationTime = 238162934.296124;
+		modificationTime = 267384761.026398;
 		state = 2;
 	};
 	3D69080A0E1D5FE200CD7F1A /* allegrosmfwr.cpp:367 */ = {
@@ -1024,13 +592,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D50C73C6B600DB0C03 /* allegrosmfwr.cpp */;
 		functionName = "Alg_smf_write::write_track()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 367;
 		location = allegroconvert;
-		modificationTime = 238162934.296144;
+		modificationTime = 267384761.026487;
 		state = 2;
 	};
 	3D69080C0E1D602300CD7F1A /* allegrosmfwr.cpp:408 */ = {
@@ -1039,13 +609,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D50C73C6B600DB0C03 /* allegrosmfwr.cpp */;
 		functionName = "Alg_smf_write::write_tempo_change()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 408;
 		location = allegroconvert;
-		modificationTime = 238162934.296148;
+		modificationTime = 267384761.02663;
 		state = 2;
 	};
 	3D6908160E1D685800CD7F1A /* allegrosmfwr.cpp:316 */ = {
@@ -1054,13 +626,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D50C73C6B600DB0C03 /* allegrosmfwr.cpp */;
 		functionName = "Alg_smf_write::write_update()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 316;
 		location = allegroconvert;
-		modificationTime = 238162934.296153;
+		modificationTime = 267384761.026734;
 		state = 2;
 	};
 	3D69081B0E1D68BA00CD7F1A /* allegrord.cpp:107 */ = {
@@ -1069,13 +643,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D20C73C6B600DB0C03 /* allegrord.cpp */;
 		functionName = "Alg_reader::process_attributes()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 107;
 		location = allegroconvert;
-		modificationTime = 238162934.296157;
+		modificationTime = 267384761.026992;
 		state = 2;
 	};
 	3D69081D0E1D69D300CD7F1A /* allegrord.cpp:260 */ = {
@@ -1084,13 +660,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D20C73C6B600DB0C03 /* allegrord.cpp */;
 		functionName = "Alg_reader::parse()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 260;
 		location = allegroconvert;
-		modificationTime = 238162934.296161;
+		modificationTime = 267384761.027336;
 		state = 2;
 	};
 	3D69081F0E1D69F900CD7F1A /* allegrord.cpp:627 */ = {
@@ -1099,14 +677,701 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D20C73C6B600DB0C03 /* allegrord.cpp */;
 		functionName = "Alg_reader::parse_attribute()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 627;
 		location = allegroconvert;
-		modificationTime = 238162934.296165;
+		modificationTime = 267384761.027428;
 		state = 2;
+	};
+	3D786D9C0FEFE08C006A7FC9 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+	};
+	3D786DA50FEFE177006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8D50C73C6B600DB0C03 /* allegrosmfwr.cpp */;
+		name = "allegrosmfwr.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
+	};
+	3D786DA60FEFE177006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "error: 'ptr' was not declared in this scope";
+		fRef = 3D84C8CF0C73C6A000DB0C03 /* allegro.h */;
+		rLen = 1;
+		rLoc = 532;
+		rType = 1;
+	};
+	3D786DA70FEFE177006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8D50C73C6B600DB0C03 /* allegrosmfwr.cpp */;
+		name = "allegrosmfwr.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
+	};
+	3D786DA80FEFE177006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CF0C73C6A000DB0C03 /* allegro.h */;
+		name = "allegro.h: 533";
+		rLen = 55;
+		rLoc = 21421;
+		rType = 0;
+		vrLen = 0;
+		vrLoc = 0;
+	};
+	3D786DAE0FEFE177006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		name = "portsmf_test.cpp: 762";
+		rLen = 0;
+		rLoc = 18552;
+		rType = 0;
+		vrLen = 887;
+		vrLoc = 17753;
+	};
+	3D786DBB0FEFE200006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 1296";
+		rLen = 52;
+		rLoc = 36220;
+		rType = 0;
+		vrLen = 368;
+		vrLoc = 36107;
+	};
+	3D786DBC0FEFE200006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8D50C73C6B600DB0C03 /* allegrosmfwr.cpp */;
+		name = "allegrosmfwr.cpp: 635";
+		rLen = 0;
+		rLoc = 20855;
+		rType = 0;
+		vrLen = 140;
+		vrLoc = 20794;
+	};
+	3D786DBD0FEFE200006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CF0C73C6A000DB0C03 /* allegro.h */;
+		name = "allegro.h: 930";
+		rLen = 40;
+		rLoc = 38243;
+		rType = 0;
+		vrLen = 454;
+		vrLoc = 37908;
+	};
+	3D786DBE0FEFE200006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "warning: unused variable 'cut'";
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		rLen = 1;
+		rLoc = 748;
+		rType = 1;
+	};
+	3D786DBF0FEFE200006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CF0C73C6A000DB0C03 /* allegro.h */;
+		name = "allegro.h: 565";
+		rLen = 0;
+		rLoc = 22980;
+		rType = 0;
+		vrLen = 658;
+		vrLoc = 22560;
+	};
+	3D786DC00FEFE200006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 1296";
+		rLen = 52;
+		rLoc = 36220;
+		rType = 0;
+		vrLen = 368;
+		vrLoc = 36107;
+	};
+	3D786DC10FEFE200006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CF0C73C6A000DB0C03 /* allegro.h */;
+		name = "allegro.h: 565";
+		rLen = 37;
+		rLoc = 22954;
+		rType = 0;
+		vrLen = 658;
+		vrLoc = 22560;
+	};
+	3D786DC20FEFE200006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8D50C73C6B600DB0C03 /* allegrosmfwr.cpp */;
+		name = "allegrosmfwr.cpp: 635";
+		rLen = 0;
+		rLoc = 20855;
+		rType = 0;
+		vrLen = 140;
+		vrLoc = 20794;
+	};
+	3D786DC30FEFE200006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CF0C73C6A000DB0C03 /* allegro.h */;
+		name = "allegro.h: 930";
+		rLen = 40;
+		rLoc = 38243;
+		rType = 0;
+		vrLen = 454;
+		vrLoc = 37908;
+	};
+	3D786DC40FEFE200006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		name = "portsmf_test.cpp: 749";
+		rLen = 50;
+		rLoc = 18203;
+		rType = 0;
+		vrLen = 393;
+		vrLoc = 18089;
+	};
+	3D786DC80FEFE21F006A7FC9 /* allegroconvert.cpp:62 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
+		functionName = "main(int argc, char *argv[])";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 62;
+		location = allegroconvert;
+		modificationTime = 267384761.027596;
+		state = 2;
+	};
+	3D786DCF0FEFE2C0006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CF0C73C6A000DB0C03 /* allegro.h */;
+		name = "allegro.h: 533";
+		rLen = 55;
+		rLoc = 21421;
+		rType = 0;
+		vrLen = 369;
+		vrLoc = 21393;
+	};
+	3D786DD00FEFE2C0006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
+		name = "allegroconvert.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 256;
+		vrLoc = 0;
+	};
+	3D786DD10FEFE2C0006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CF0C73C6A000DB0C03 /* allegro.h */;
+		name = "allegro.h: 533";
+		rLen = 55;
+		rLoc = 21421;
+		rType = 0;
+		vrLen = 369;
+		vrLoc = 21393;
+	};
+	3D786DD20FEFE2C0006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
+		name = "allegroconvert.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 931;
+		vrLoc = 1129;
+	};
+	3D786DD30FEFE2C0006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		name = "portsmf_test.cpp: 762";
+		rLen = 0;
+		rLoc = 18552;
+		rType = 0;
+		vrLen = 887;
+		vrLoc = 17753;
+	};
+	3D786DD40FEFE2C0006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		name = "portsmf_test.cpp: 762";
+		rLen = 0;
+		rLoc = 18552;
+		rType = 0;
+		vrLen = 887;
+		vrLoc = 17753;
+	};
+	3D786DD50FEFE342006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
+		name = "allegroconvert.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 931;
+		vrLoc = 1129;
+	};
+	3D786DD60FEFE342006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		name = "portsmf_test.cpp: 762";
+		rLen = 0;
+		rLoc = 18552;
+		rType = 0;
+		vrLen = 887;
+		vrLoc = 17753;
+	};
+	3D786DD70FEFE359006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
+		name = "allegroconvert.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 931;
+		vrLoc = 1129;
+	};
+	3D786DD80FEFE359006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		name = "portsmf_test.cpp: 762";
+		rLen = 0;
+		rLoc = 18552;
+		rType = 0;
+		vrLen = 887;
+		vrLoc = 17753;
+	};
+	3D786DD90FEFE37C006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
+		name = "allegroconvert.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 931;
+		vrLoc = 1129;
+	};
+	3D786DDA0FEFE37C006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		name = "portsmf_test.cpp: 762";
+		rLen = 0;
+		rLoc = 18552;
+		rType = 0;
+		vrLen = 887;
+		vrLoc = 17753;
+	};
+	3D786DDD0FEFE3E2006A7FC9 /* seq2midi.cpp:203 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */;
+		functionName = "seq_play(Alg_seq &seq)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 203;
+		modificationTime = 267384761.027683;
+		state = 2;
+	};
+	3D786DDE0FEFE406006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
+		name = "allegroconvert.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 931;
+		vrLoc = 1129;
+	};
+	3D786DDF0FEFE406006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		name = "portsmf_test.cpp: 762";
+		rLen = 0;
+		rLoc = 18552;
+		rType = 0;
+		vrLen = 887;
+		vrLoc = 17753;
+	};
+	3D786DE20FEFE5D7006A7FC9 /* allegro.cpp:228 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		functionName = "Alg_event::get_type_code()";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 228;
+		location = portsmf_test;
+		modificationTime = 267384761.033018;
+		state = 1;
+	};
+	3D786DE50FEFE60F006A7FC9 /* seq2midi.cpp:123 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = 3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */;
+		functionName = "send_midi_update(Alg_update_ptr u, PortMidiStream *midi)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 123;
+		location = allegroplay;
+		modificationTime = 267384761.033259;
+		state = 2;
+	};
+	3D786DE90FEFED12006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
+		name = "allegroconvert.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 931;
+		vrLoc = 1129;
+	};
+	3D786DEA0FEFED12006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */;
+		name = "seq2midi.cpp: 123";
+		rLen = 13;
+		rLoc = 3137;
+		rType = 0;
+		vrLen = 763;
+		vrLoc = 2738;
+	};
+	3D786DEB0FEFED12006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 314";
+		rLen = 0;
+		rLoc = 8392;
+		rType = 0;
+		vrLen = 1148;
+		vrLoc = 5333;
+	};
+	3D786DEC0FEFED12006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
+		name = "allegroconvert.cpp: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 931;
+		vrLoc = 1129;
+	};
+	3D786DED0FEFED12006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 314";
+		rLen = 0;
+		rLoc = 8392;
+		rType = 0;
+		vrLen = 1148;
+		vrLoc = 5333;
+	};
+	3D786DEE0FEFED12006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */;
+		name = "seq2midi.cpp: 123";
+		rLen = 13;
+		rLoc = 3137;
+		rType = 0;
+		vrLen = 763;
+		vrLoc = 2738;
+	};
+	3D786DEF0FEFED12006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 247";
+		rLen = 0;
+		rLoc = 6525;
+		rType = 0;
+		vrLen = 988;
+		vrLoc = 5997;
+	};
+	3D786DF00FEFED12006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		name = "portsmf_test.cpp: 762";
+		rLen = 0;
+		rLoc = 18552;
+		rType = 0;
+		vrLen = 887;
+		vrLoc = 17753;
+	};
+	3D786DFC0FEFF5B9006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 3009";
+		rLen = 0;
+		rLoc = 91620;
+		rType = 0;
+		vrLen = 964;
+		vrLoc = 6100;
+	};
+	3D786DFF0FEFF5B9006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "error: 'class Alg_seq' has no member named 'iteration_begin'";
+		fRef = 3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */;
+		rLen = 1;
+		rLoc = 157;
+		rType = 1;
+	};
+	3D786E000FEFF5B9006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */;
+		name = "seq2midi.cpp: 199";
+		rLen = 0;
+		rLoc = 6274;
+		rType = 0;
+		vrLen = 1294;
+		vrLoc = 4343;
+	};
+	3D786E010FEFF5B9006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		name = "portsmf_test.cpp: 762";
+		rLen = 0;
+		rLoc = 18552;
+		rType = 0;
+		vrLen = 984;
+		vrLoc = 17656;
+	};
+	3D786E030FEFF630006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 3009";
+		rLen = 0;
+		rLoc = 91620;
+		rType = 0;
+		vrLen = 964;
+		vrLoc = 6100;
+	};
+	3D786E040FEFF630006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */;
+		name = "seq2midi.cpp: 199";
+		rLen = 0;
+		rLoc = 6308;
+		rType = 0;
+		vrLen = 1408;
+		vrLoc = 4229;
+	};
+	3D786E050FEFF630006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		name = "portsmf_test.cpp: 762";
+		rLen = 0;
+		rLoc = 18552;
+		rType = 0;
+		vrLen = 984;
+		vrLoc = 17656;
+	};
+	3D786E070FEFF655006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 3009";
+		rLen = 0;
+		rLoc = 91620;
+		rType = 0;
+		vrLen = 964;
+		vrLoc = 6100;
+	};
+	3D786E080FEFF655006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */;
+		name = "seq2midi.cpp: 168";
+		rLen = 0;
+		rLoc = 5486;
+		rType = 0;
+		vrLen = 1537;
+		vrLoc = 3949;
+	};
+	3D786E090FEFF655006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		name = "portsmf_test.cpp: 762";
+		rLen = 0;
+		rLoc = 18552;
+		rType = 0;
+		vrLen = 984;
+		vrLoc = 17656;
+	};
+	3D786E0B0FEFF673006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 3009";
+		rLen = 0;
+		rLoc = 91620;
+		rType = 0;
+		vrLen = 964;
+		vrLoc = 6100;
+	};
+	3D786E0C0FEFF673006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */;
+		name = "seq2midi.cpp: 168";
+		rLen = 0;
+		rLoc = 5486;
+		rType = 0;
+		vrLen = 1666;
+		vrLoc = 3820;
+	};
+	3D786E0D0FEFF673006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		name = "portsmf_test.cpp: 762";
+		rLen = 0;
+		rLoc = 18552;
+		rType = 0;
+		vrLen = 984;
+		vrLoc = 17656;
+	};
+	3D786E0E0FEFF689006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 3009";
+		rLen = 0;
+		rLoc = 91620;
+		rType = 0;
+		vrLen = 964;
+		vrLoc = 6100;
+	};
+	3D786E0F0FEFF689006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */;
+		name = "seq2midi.cpp: 168";
+		rLen = 0;
+		rLoc = 5486;
+		rType = 0;
+		vrLen = 1666;
+		vrLoc = 3820;
+	};
+	3D786E100FEFF689006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		name = "portsmf_test.cpp: 762";
+		rLen = 0;
+		rLoc = 18552;
+		rType = 0;
+		vrLen = 984;
+		vrLoc = 17656;
+	};
+	3D786E140FEFF6E6006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 3009";
+		rLen = 0;
+		rLoc = 91620;
+		rType = 0;
+		vrLen = 941;
+		vrLoc = 6100;
+	};
+	3D786E150FEFF6E6006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */;
+		name = "seq2midi.cpp: 167";
+		rLen = 0;
+		rLoc = 5435;
+		rType = 0;
+		vrLen = 1726;
+		vrLoc = 3380;
+	};
+	3D786E160FEFF6E6006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		name = "portsmf_test.cpp: 762";
+		rLen = 0;
+		rLoc = 18552;
+		rType = 0;
+		vrLen = 984;
+		vrLoc = 17656;
+	};
+	3D786E180FEFF700006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 3009";
+		rLen = 0;
+		rLoc = 91620;
+		rType = 0;
+		vrLen = 941;
+		vrLoc = 6100;
+	};
+	3D786E190FEFF700006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */;
+		name = "seq2midi.cpp: 167";
+		rLen = 0;
+		rLoc = 5435;
+		rType = 0;
+		vrLen = 1726;
+		vrLoc = 3380;
+	};
+	3D786E1A0FEFF700006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		name = "portsmf_test.cpp: 762";
+		rLen = 0;
+		rLoc = 18552;
+		rType = 0;
+		vrLen = 984;
+		vrLoc = 17656;
+	};
+	3D786E1D0FEFF7BD006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
+		name = "allegro.cpp: 3009";
+		rLen = 0;
+		rLoc = 91620;
+		rType = 0;
+		vrLen = 941;
+		vrLoc = 6100;
+	};
+	3D786E1E0FEFF7BD006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D6906ED0E1BC84300CD7F1A /* portsmf_test.cpp */;
+		name = "portsmf_test.cpp: 757";
+		rLen = 0;
+		rLoc = 18530;
+		rType = 0;
+		vrLen = 981;
+		vrLoc = 17656;
+	};
+	3D786E1F0FEFF7BD006A7FC9 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */;
+		name = "seq2midi.cpp: 167";
+		rLen = 0;
+		rLoc = 5435;
+		rType = 0;
+		vrLen = 1726;
+		vrLoc = 3380;
 	};
 	3D84C8AF0C73C5B100DB0C03 /* Source Control */ = {
 		isa = PBXSourceControlManager;
@@ -1131,8 +1396,8 @@
 	};
 	3D84C8C20C73C66E00DB0C03 /* allegroconvert */ = {
 		isa = PBXExecutable;
-		activeArgIndex = 9;
 		activeArgIndices = (
+			NO,
 			NO,
 			NO,
 			NO,
@@ -1155,8 +1420,10 @@
 			" AStrangersJustaFriend.mid",
 			" cde.gro",
 			test.gro,
+			"jsb-wtc-c-f.mid",
 		);
 		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
 		configStateDict = {
 			"PBXLSLaunchAction-0" = {
 				PBXLSLaunchAction = 0;
@@ -1164,7 +1431,11 @@
 				PBXLSLaunchStdioStyle = 2;
 				PBXLSLaunchStyle = 0;
 				class = PBXLSRunLaunchConfig;
+				commandLineArgs = (
+				);
 				displayName = "Executable Runner";
+				environment = {
+				};
 				identifier = com.apple.Xcode.launch.runConfig;
 				remoteHostInfo = "";
 				startActionInfo = "";
@@ -1185,7 +1456,7 @@
 		};
 		sourceDirectories = (
 		);
-		startupPath = "/Users/rbd/allegro-test";
+		startupPath = /Users/rbd/portmedia/portsmf/portsmf_test;
 		variableFormatDictionary = {
 			"(unsigned char) *msg-unsigned char-Alg_midifile_reader::Mf_sysex" = 1;
 		};
@@ -1198,14 +1469,14 @@
 	};
 	3D84C8C70C73C67E00DB0C03 /* allegroplay */ = {
 		isa = PBXExecutable;
-		activeArgIndex = 0;
 		activeArgIndices = (
 			YES,
 		);
 		argumentStrings = (
-			"-m HOTELCAL.MID -n",
+			"-m jsb-wtc-c-f.mid -n",
 		);
 		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
 		configStateDict = {
 			"PBXLSLaunchAction-0" = {
 				PBXLSLaunchAction = 0;
@@ -1213,7 +1484,11 @@
 				PBXLSLaunchStdioStyle = 2;
 				PBXLSLaunchStyle = 0;
 				class = PBXLSRunLaunchConfig;
+				commandLineArgs = (
+				);
 				displayName = "Executable Runner";
+				environment = {
+				};
 				identifier = com.apple.Xcode.launch.runConfig;
 				remoteHostInfo = "";
 				startActionInfo = "";
@@ -1234,22 +1509,24 @@
 		};
 		sourceDirectories = (
 		);
-		startupPath = "/Users/rbd/allegro-test";
+		startupPath = /Users/rbd/portmedia/portsmf/portsmf_test;
 		variableFormatDictionary = {
 		};
 	};
 	3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {639, 45776}}";
-			sepNavSelRange = "{86465, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {632, 48736}}";
+			sepNavSelRange = "{91620, 0}";
+			sepNavVisRange = "{6100, 941}";
 			sepNavVisRect = "{{0, 0}, {639, 744}}";
 			sepNavWindowFrame = "{{20, 2}, {678, 873}}";
 		};
 	};
 	3D84C8CF0C73C6A000DB0C03 /* allegro.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {699, 14944}}";
-			sepNavSelRange = "{38480, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {361, 16176}}";
+			sepNavSelRange = "{21421, 55}";
+			sepNavVisRange = "{21393, 369}";
 			sepNavVisRect = "{{0, 13193}, {682, 318}}";
 			sepNavWindowFrame = "{{11, 5}, {678, 873}}";
 		};
@@ -1264,17 +1541,18 @@
 	};
 	3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {682, 6992}}";
-			sepNavSelRange = "{11373, 0}";
-			sepNavVisRect = "{{0, 6505}, {682, 318}}";
+			sepNavIntBoundsRect = "{{0, 0}, {740, 7136}}";
+			sepNavSelRange = "{12284, 0}";
+			sepNavVisRect = "{{0, 928}, {740, 180}}";
 			sepNavWindowFrame = "{{707, -8}, {678, 873}}";
 		};
 	};
 	3D84C8D50C73C6B600DB0C03 /* allegrosmfwr.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {692, 10208}}";
-			sepNavSelRange = "{20710, 0}";
-			sepNavVisRect = "{{0, 4656}, {579, 668}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1101, 10620}}";
+			sepNavSelRange = "{20855, 0}";
+			sepNavVisRange = "{20794, 192}";
+			sepNavVisRect = "{{0, 5097}, {682, 318}}";
 			sepNavWindowFrame = "{{19, 76}, {618, 797}}";
 		};
 	};
@@ -1303,8 +1581,9 @@
 	};
 	3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {639, 2208}}";
-			sepNavSelRange = "{4246, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {558, 2288}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{1129, 931}";
 			sepNavVisRect = "{{0, 528}, {639, 744}}";
 			sepNavWindowFrame = "{{676, 3}, {678, 873}}";
 		};
@@ -1337,13 +1616,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
 		functionName = "main()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 137;
 		location = allegroconvert.ob;
-		modificationTime = 238162934.29572;
+		modificationTime = 267384761.016074;
 		state = 2;
 	};
 	3D84C91C0C74E07E00DB0C03 /* allegroconvert.cpp:78 */ = {
@@ -1352,13 +1633,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
 		functionName = "process()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 78;
 		location = allegroconvert.ob;
-		modificationTime = 238162934.295757;
+		modificationTime = 267384761.016227;
 		state = 2;
 	};
 	3D84C91F0C74E0F500DB0C03 /* allegroconvert.cpp:136 */ = {
@@ -1367,13 +1650,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
 		functionName = "main()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 136;
 		location = allegroconvert.ob;
-		modificationTime = 238162934.295763;
+		modificationTime = 267384761.016311;
 		state = 2;
 	};
 	3D84C9220C74E28900DB0C03 /* allegrosmfrd.cpp:138 */ = {
@@ -1382,13 +1667,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */;
 		functionName = "Alg_midifile_reader::parse()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 138;
 		location = libportsmf.ab;
-		modificationTime = 238162934.295767;
+		modificationTime = 267384761.016409;
 		state = 2;
 	};
 	3D84C9260C74E30D00DB0C03 /* allegro.cpp:2228 */ = {
@@ -1397,13 +1684,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
 		functionName = "";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 2228;
 		location = libportsmf.ab;
-		modificationTime = 238162934.295772;
+		modificationTime = 267384761.016494;
 		state = 2;
 	};
 	3D84C9280C74E33C00DB0C03 /* allegro.cpp:2241 */ = {
@@ -1412,13 +1701,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
 		functionName = "";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 2241;
 		location = libportsmf.ab;
-		modificationTime = 238162934.295776;
+		modificationTime = 267384761.016757;
 		state = 2;
 	};
 	3D84C92A0C74E44C00DB0C03 /* allegrosmfrd.cpp:210 */ = {
@@ -1427,13 +1718,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */;
 		functionName = "Alg_midifile_reader::Mf_on()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 210;
 		location = libportsmf.ab;
-		modificationTime = 238162934.29578;
+		modificationTime = 267384761.016945;
 		state = 2;
 	};
 	3D84C92D0C74E5D600DB0C03 /* allegrosmfrd.cpp:152 */ = {
@@ -1442,13 +1735,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8D40C73C6B600DB0C03 /* allegrosmfrd.cpp */;
 		functionName = "Alg_midifile_reader::Mf_endtrack()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 152;
 		location = libportsmf.ab;
-		modificationTime = 238162934.295784;
+		modificationTime = 267384761.01703;
 		state = 2;
 	};
 	3D84C92F0C74E5E800DB0C03 /* allegro.cpp:1554 */ = {
@@ -1457,62 +1752,16 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
 		functionName = "Alg_track::convert_to_beats()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 1554;
 		location = libportsmf.ab;
-		modificationTime = 238162934.295788;
+		modificationTime = 267384761.017112;
 		state = 2;
-	};
-	3D84C9310C74E63E00DB0C03 /* XCBreakpointsBucket */ = {
-		isa = XCBreakpointsBucket;
-		name = "Project Breakpoints";
-		objects = (
-			3D84C91A0C74E03700DB0C03 /* allegroconvert.cpp:137 */,
-			3D84C91C0C74E07E00DB0C03 /* allegroconvert.cpp:78 */,
-			3D84C91F0C74E0F500DB0C03 /* allegroconvert.cpp:136 */,
-			3D84C9220C74E28900DB0C03 /* allegrosmfrd.cpp:138 */,
-			3D84C9260C74E30D00DB0C03 /* allegro.cpp:2228 */,
-			3D84C9280C74E33C00DB0C03 /* allegro.cpp:2241 */,
-			3D84C92A0C74E44C00DB0C03 /* allegrosmfrd.cpp:210 */,
-			3D84C92D0C74E5D600DB0C03 /* allegrosmfrd.cpp:152 */,
-			3D84C92F0C74E5E800DB0C03 /* allegro.cpp:1554 */,
-			3D84C9470C74E77A00DB0C03 /* allegro.cpp:2229 */,
-			3D84C9490C74E77C00DB0C03 /* allegro.cpp:2244 */,
-			3D84C9740C74EFF000DB0C03 /* allegro.cpp:2246 */,
-			3D84C9760C74F00300DB0C03 /* allegro.cpp:1574 */,
-			3D84C99C0C7526D000DB0C03 /* allegro.cpp:1577 */,
-			3D84C99E0C7526D500DB0C03 /* allegro.cpp:1575 */,
-			3D84C9A00C7527F800DB0C03 /* allegroconvert.cpp:138 */,
-			3D84CA190C7540A600DB0C03 /* allegroplay.cpp:95 */,
-			3D84CA1B0C7540D900DB0C03 /* seq2midi.cpp:200 */,
-			3D6907880E1BE45A00CD7F1A /* allegroconvert.cpp:75 */,
-			3D69078D0E1BE81600CD7F1A /* allegroconvert.cpp:115 */,
-			3D69078F0E1BE90600CD7F1A /* allegrord.cpp:94 */,
-			3D6907910E1BE90B00CD7F1A /* allegrord.cpp:96 */,
-			3D6907930E1C139700CD7F1A /* allegrord.cpp:630 */,
-			3D6907B00E1C1B4C00CD7F1A /* allegroconvert.cpp:113 */,
-			3D6907B20E1C1B5400CD7F1A /* allegroconvert.cpp:106 */,
-			3D6907B40E1C1B8000CD7F1A /* allegroconvert.cpp:105 */,
-			3D6907B60E1C1BA500CD7F1A /* allegrosmfrd.cpp:159 */,
-			3D6907C20E1C555600CD7F1A /* allegrosmfwr.cpp:281 */,
-			3D6907C50E1C55ED00CD7F1A /* allegrosmfwr.cpp:280 */,
-			3D6907DC0E1C81F200CD7F1A /* allegrosmfwr.cpp:323 */,
-			3D6907FD0E1D5A2300CD7F1A /* allegrosmfrd.cpp:305 */,
-			3D6908020E1D5C7600CD7F1A /* allegrord.cpp:112 */,
-			3D6908040E1D5C8900CD7F1A /* allegrord.cpp:113 */,
-			3D6908060E1D5E3500CD7F1A /* allegro.cpp:2646 */,
-			3D6908080E1D5FA900CD7F1A /* allegrosmfwr.cpp:395 */,
-			3D69080A0E1D5FE200CD7F1A /* allegrosmfwr.cpp:367 */,
-			3D69080C0E1D602300CD7F1A /* allegrosmfwr.cpp:408 */,
-			3D6908160E1D685800CD7F1A /* allegrosmfwr.cpp:316 */,
-			3D69081B0E1D68BA00CD7F1A /* allegrord.cpp:107 */,
-			3D69081D0E1D69D300CD7F1A /* allegrord.cpp:260 */,
-			3D69081F0E1D69F900CD7F1A /* allegrord.cpp:627 */,
-			3D08FDFC0E2E5CA800A8F29A /* allegrord.cpp:578 */,
-		);
 	};
 	3D84C9470C74E77A00DB0C03 /* allegro.cpp:2229 */ = {
 		isa = PBXFileBreakpoint;
@@ -1520,12 +1769,14 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 2229;
 		location = libportsmf.ab;
-		modificationTime = 238162934.295813;
+		modificationTime = 267384761.017295;
 		state = 2;
 	};
 	3D84C9490C74E77C00DB0C03 /* allegro.cpp:2244 */ = {
@@ -1534,12 +1785,14 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 2244;
 		location = libportsmf.ab;
-		modificationTime = 238162934.295817;
+		modificationTime = 267384761.017492;
 		state = 2;
 	};
 	3D84C9740C74EFF000DB0C03 /* allegro.cpp:2246 */ = {
@@ -1548,13 +1801,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
 		functionName = "Alg_seq::convert_to_seconds()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 2246;
 		location = libportsmf.ab;
-		modificationTime = 238162934.295822;
+		modificationTime = 267384761.017678;
 		state = 2;
 	};
 	3D84C9760C74F00300DB0C03 /* allegro.cpp:1574 */ = {
@@ -1563,13 +1818,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
 		functionName = "Alg_track::convert_to_seconds()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 1574;
 		location = libportsmf.ab;
-		modificationTime = 238162934.295892;
+		modificationTime = 267384761.017862;
 		state = 2;
 	};
 	3D84C99C0C7526D000DB0C03 /* allegro.cpp:1577 */ = {
@@ -1578,12 +1835,14 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
 		functionName = "Alg_track::convert_to_seconds()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 1577;
-		modificationTime = 238162934.295898;
+		modificationTime = 267384761.018046;
 		state = 2;
 	};
 	3D84C99E0C7526D500DB0C03 /* allegro.cpp:1575 */ = {
@@ -1592,13 +1851,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8CE0C73C6A000DB0C03 /* allegro.cpp */;
 		functionName = "Alg_track::convert_to_seconds()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 1575;
 		location = libportsmf.ab;
-		modificationTime = 238162934.295902;
+		modificationTime = 267384761.01823;
 		state = 2;
 	};
 	3D84C9A00C7527F800DB0C03 /* allegroconvert.cpp:138 */ = {
@@ -1607,19 +1868,22 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8E00C73C6F900DB0C03 /* allegroconvert.cpp */;
 		functionName = "main()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 138;
 		location = allegroconvert.ob;
-		modificationTime = 238162934.295906;
+		modificationTime = 267384761.018413;
 		state = 2;
 	};
 	3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {856, 2996}}";
-			sepNavSelRange = "{6399, 14}";
+			sepNavIntBoundsRect = "{{0, 0}, {619, 2416}}";
+			sepNavSelRange = "{5435, 0}";
+			sepNavVisRange = "{3380, 1726}";
 			sepNavVisRect = "{{0, 2645}, {856, 323}}";
 			sepNavWindowFrame = "{{590, 5}, {678, 873}}";
 		};
@@ -1630,13 +1894,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C8E20C73C71900DB0C03 /* allegroplay.cpp */;
 		functionName = "main()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 95;
-		modificationTime = 238162936.356158;
-		state = 1;
+		modificationTime = 267384761.177348;
+		state = 0;
 	};
 	3D84CA1B0C7540D900DB0C03 /* seq2midi.cpp:200 */ = {
 		isa = PBXFileBreakpoint;
@@ -1644,12 +1910,15 @@
 		);
 		breakpointStyle = 0;
 		continueAfterActions = 0;
+		countType = 0;
 		delayBeforeContinue = 0;
 		fileReference = 3D84C9DA0C75388500DB0C03 /* seq2midi.cpp */;
 		functionName = "seq_play()";
-		hitCount = 1;
+		hitCount = 0;
+		ignoreCount = 0;
 		lineNumber = 200;
-		modificationTime = 238162936.356141;
-		state = 1;
+		location = allegroplay;
+		modificationTime = 267384761.01861;
+		state = 2;
 	};
 }

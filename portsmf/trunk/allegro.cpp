@@ -1467,16 +1467,16 @@ Alg_track *Alg_track::unserialize(void *buffer, long len)
 #pragma warning(disable: 4800) // long to bool performance warning
 
 /* Note: this Alg_seq must have a default initialized Alg_time_map.
- * It will be filled in with data from teh ser_read_buf buffer.
+ * It will be filled in with data from the ser_read_buf buffer.
  */
 void Alg_seq::unserialize_seq()
 {
-    ser_read_buf.check_input_buffer(32);
-    bool algt = (ser_read_buf.get_char() == 'A') &&
+    ser_read_buf.check_input_buffer(48);
+    bool algs = (ser_read_buf.get_char() == 'A') &&
                 (ser_read_buf.get_char() == 'L') &&
                 (ser_read_buf.get_char() == 'G') &&
                 (ser_read_buf.get_char() == 'S');
-    assert(algt);
+    assert(algs);
     long len = ser_read_buf.get_int32();
     assert(ser_read_buf.get_len() >= len);
     channel_offset_per_track = ser_read_buf.get_int32();

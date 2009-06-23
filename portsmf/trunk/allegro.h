@@ -541,6 +541,7 @@ public:
         len = n;
     }
     char get_char() { return *ptr++; }
+    void unget_chars(int n) { ptr -= n; } // undo n get_char() calls
     long get_int32() { long i = *((long *) ptr); ptr += 4; return i; }
     float get_float() { float f = *((float *) ptr); ptr += 4; return f; }
     double get_double() { double d = *((double *) ptr); ptr += sizeof(double); 

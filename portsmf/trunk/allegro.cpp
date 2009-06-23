@@ -1451,11 +1451,13 @@ Alg_track *Alg_track::unserialize(void *buffer, long len)
     char c = ser_read_buf.get_char();
     if (c == 'S') {
         Alg_seq *seq = new Alg_seq;
+        ser_read_buf.unget_chars(4); // undo get_char() of A,L,G,S
         seq->unserialize_seq();
         return seq;
     } else {
         assert(c == 'T');
         Alg_track *track = new Alg_track;
+        ser_read_buf.unget_chars(4); // undo get_char() of A,L,G,T
         track->unserialize_track();
         return track;
     }
@@ -1469,7 +1471,12 @@ Alg_track *Alg_track::unserialize(void *buffer, long len)
  */
 void Alg_seq::unserialize_seq()
 {
-    ser_read_buf.check_input_buffer(28);
+    ser_read_buf.check_input_buffer(32);
+    bool algt = (ser_read_buf.get_char() == 'A') &&
+                (ser_read_buf.get_char() == 'L') &&
+                (ser_read_buf.get_char() == 'G') &&
+                (ser_read_buf.get_char() == 'S');
+    assert(algt);
     long len = ser_read_buf.get_int32();
     assert(ser_read_buf.get_len() >= len);
     channel_offset_per_track = ser_read_buf.get_int32();
@@ -1513,10 +1520,11 @@ void Alg_seq::unserialize_seq()
 void Alg_track::unserialize_track()
 {
     ser_read_buf.check_input_buffer(32);
-    assert(ser_read_buf.get_char() == 'A');
-    assert(ser_read_buf.get_char() == 'L');
-    assert(ser_read_buf.get_char() == 'G');
-    assert(ser_read_buf.get_char() == 'T');
+    bool algt = (ser_read_buf.get_char() == 'A') &&
+                (ser_read_buf.get_char() == 'L') &&
+                (ser_read_buf.get_char() == 'G') &&
+                (ser_read_buf.get_char() == 'T');
+    assert(algt);
     long offset = ser_read_buf.get_posn(); // stored length does not include 'ALGT'
     long bytes = ser_read_buf.get_int32();
     assert(bytes <= ser_read_buf.get_len() - offset);

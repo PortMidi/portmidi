@@ -55,16 +55,16 @@ protected:
     virtual void Mf_pitchbend(int,int,int) = 0;
     virtual void Mf_program(int,int) = 0;
     virtual void Mf_chanpressure(int,int) = 0;
-    virtual void Mf_sysex(int,char*) = 0;
-    virtual void Mf_arbitrary(int,char*) = 0;
-    virtual void Mf_metamisc(int,int,char*) = 0;
+    virtual void Mf_sysex(int,unsigned char*) = 0;
+    virtual void Mf_arbitrary(int,unsigned char*) = 0;
+    virtual void Mf_metamisc(int,int,unsigned char*) = 0;
     virtual void Mf_seqnum(int) = 0;
     virtual void Mf_smpte(int,int,int,int,int) = 0;
     virtual void Mf_timesig(int,int,int,int) = 0;
     virtual void Mf_tempo(int) = 0;
     virtual void Mf_keysig(int,int) = 0;
-    virtual void Mf_sqspecific(int,char*) = 0;
-    virtual void Mf_text(int,int,char*) = 0;
+    virtual void Mf_sqspecific(int,unsigned char*) = 0;
+    virtual void Mf_text(int,int,unsigned char*) = 0;
 
 private:
     long Mf_toberead;
@@ -73,7 +73,7 @@ private:
     long read32bit();
     int read16bit();
     void msgenlarge();
-    char *msg();
+    unsigned char *msg();
     int readheader();
     void readtrack();
     void sysex();
@@ -90,7 +90,7 @@ private:
     void msgadd(int);
     void chanmessage(int,int,int);
 
-    char *Msgbuff;
+    unsigned char *Msgbuff;
     long Msgsize;
     long Msgindex;
 };

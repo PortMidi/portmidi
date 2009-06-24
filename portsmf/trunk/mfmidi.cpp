@@ -193,7 +193,7 @@ void Midifile_reader::readtrack()
             msginit();
 
             while ( Mf_toberead > lookfor ) {
-                char c = egetc();
+                unsigned char c = egetc();
                 if (midifile_error) return;
                 msgadd(c);
             }
@@ -266,7 +266,8 @@ void Midifile_reader::badbyte(int c)
 void Midifile_reader::metaevent(int type)
 {
     int leng = msgleng();
-    char *m = msg();
+    // made this unsigned to avoid sign extend
+    unsigned char *m = msg();
 
     switch ( type ) {
     case 0x00:
@@ -449,7 +450,7 @@ void Midifile_reader::msginit()
     Msgindex = 0;
 }
 
-char *Midifile_reader::msg()
+unsigned char *Midifile_reader::msg()
 {
     return(Msgbuff);
 }
@@ -469,21 +470,16 @@ void Midifile_reader::msgadd(int c)
 
 void Midifile_reader::msgenlarge()
 {
-    char *newmess;
-    char *oldmess = Msgbuff;
+    unsigned char *newmess;
+    unsigned char *oldmess = Msgbuff;
     int oldleng = Msgsize;
 
     Msgsize += MSGINCREMENT;
-    newmess = (char *) Mf_malloc((sizeof(char) * Msgsize) );
+    newmess = (unsigned char *) Mf_malloc((sizeof(unsigned char) * Msgsize) );
 
     /* copy old message into larger new one */
     if ( oldmess != 0 ) {
-        register char *p = newmess;
-        register char *q = oldmess;
-        register char *endq = &oldmess[oldleng];
-
-        for ( ; q!=endq ; p++,q++ )
-            *p = *q;
+        memcpy(newmess, oldmess, oldleng);
         Mf_free(oldmess, oldleng);
     }
     Msgbuff = newmess;

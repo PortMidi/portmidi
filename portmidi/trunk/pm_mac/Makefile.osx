@@ -128,7 +128,8 @@ backup: cleanest
 dylib: pm_mac/libportmidi.dylib
 
 pm_mac/libportmidi.dylib: $(PMSRC) $(PTSRC)
-	cc -single_module -g $(PMDLFLAGS) -Iporttime -Ipm_common $(ARCH) \
+	cc -single_module -g $(PMDLFLAGS) -Iporttime -Ipm_common \
+          -I/Developer/Headers/FlatCarbon $(ARCH) \
           -dynamiclib $(PMSRC) $(PTSRC) -o pm_mac/libportmidi.dylib \
 	  -flat_namespace -undefined suppress \
 	  -framework CoreMIDI -framework CoreFoundation \

@@ -828,15 +828,20 @@ static value_ptr extract_uid(bplist_info_ptr bplist, uint64_t offset)
         return NULL;
     }
         
-    assert(NO); // original code suggests using a string for a key
+    // assert(NO); // original code suggests using a string for a key
     // but our dictionaries all use big ints for keys, so I don't know
     // what to do here
+    
+    // In practice, I believe this code is never executed by PortMidi.
+    // I changed it to do something and not raise compiler warnings, but
+    // not sure what the code should do.
 
     value = value_create();
     value_set_uid(value, uid);
     // return [NSDictionary dictionaryWithObject:
     //         [NSNumber numberWithUnsignedLongLong:value] 
     //         forKey:"CF$UID"];
+    return value;
 }
 
 

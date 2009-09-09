@@ -24,6 +24,7 @@
 				D8684BA20ACBFB9D009F6478 /* PBXTargetDependency */,
 				3D4799F50F0EE7D10006C842 /* PBXTargetDependency */,
 				D8E738E20ACDA3BD0030B95B /* PBXTargetDependency */,
+				3D3B2826104D8B740043A026 /* PBXTargetDependency */,
 				3D3534900F0D2DB30059CD05 /* PBXTargetDependency */,
 			);
 			name = "everything suite";
@@ -123,6 +124,11 @@
 		3D17A2290E13EF8000930576 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D17A2280E13EF8000930576 /* CoreServices.framework */; };
 		3D17A22D0E13EF9300930576 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D17A2280E13EF8000930576 /* CoreServices.framework */; };
 		3D17A4C40E14079000930576 /* pmdefaults.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3D17A4C30E14079000930576 /* pmdefaults.icns */; };
+		3D3B2815104D8AF90043A026 /* test.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DA774260663E9DA0002CE69 /* test.c */; };
+		3D3B2818104D8AF90043A026 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DA774480663EAE60002CE69 /* CoreMIDI.framework */; };
+		3D3B2819104D8AF90043A026 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DA7744E0663EBB20002CE69 /* CoreFoundation.framework */; };
+		3D3B281A104D8AF90043A026 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DA774500663EBBF0002CE69 /* CoreAudio.framework */; };
+		3D3B281B104D8AF90043A026 /* CoreServices in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D65FEE20ECB7548008083A3 /* CoreServices */; };
 		3D4713310FC8B28D00D6DABB /* libpmjni.jnilib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D17A1910E13E25E00930576 /* libpmjni.jnilib */; };
 		3D65FEE30ECB7548008083A3 /* CoreServices in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D65FEE20ECB7548008083A3 /* CoreServices */; };
 		3D65FEE40ECB7548008083A3 /* CoreServices in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D65FEE20ECB7548008083A3 /* CoreServices */; };
@@ -149,6 +155,7 @@
 		3DBF24780B59691800DAD93B /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DA7744E0663EBB20002CE69 /* CoreFoundation.framework */; };
 		3DBF24A10B59691B00DAD93B /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DA774500663EBBF0002CE69 /* CoreAudio.framework */; };
 		3DBF24A90B59692C00DAD93B /* libportmidi.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D81440D40ACB36E100515C41 /* libportmidi.a */; };
+		3DC7B4AE10582B36003DB808 /* libportmidi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D84A40DA0ACD4A08001FC716 /* libportmidi.dylib */; };
 		D814404E0ACB2C1200515C41 /* pmutil.h in Headers */ = {isa = PBXBuildFile; fileRef = 5851D525047955C800EE98CD /* pmutil.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D814404F0ACB2C1200515C41 /* portmidi.h in Headers */ = {isa = PBXBuildFile; fileRef = 5851D527047955C800EE98CD /* portmidi.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D81440510ACB2C1200515C41 /* porttime.h in Headers */ = {isa = PBXBuildFile; fileRef = 5851D51F047955B800EE98CD /* porttime.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -210,6 +217,13 @@
 			remoteGlobalIDString = 3D9D57CD0E12E22800C4C68D;
 			remoteInfo = PmDefaults;
 		};
+		3D3B2825104D8B740043A026 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5851D5180479552300EE98CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D3B2811104D8AF90043A026;
+			remoteInfo = "test-dylib";
+		};
 		3D4799D30F0E87350006C842 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5851D5180479552300EE98CD /* Project object */;
@@ -251,6 +265,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = D814404B0ACB2C1200515C41;
 			remoteInfo = libportmidi.a;
+		};
+		3DC7B4B310582F79003DB808 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5851D5180479552300EE98CD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D84A40D90ACD4A08001FC716 /* portmidi.dylib */;
+			remoteInfo = portmidi.dylib;
 		};
 		D8684B080ACBF996009F6478 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -359,6 +380,7 @@
 		3D17A1E70E13E57700930576 /* JavaVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaVM.framework; path = /System/Library/Frameworks/JavaVM.framework; sourceTree = "<absolute>"; };
 		3D17A2280E13EF8000930576 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		3D17A4C30E14079000930576 /* pmdefaults.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = pmdefaults.icns; path = ../pm_java/pmdefaults/pmdefaults.icns; sourceTree = SOURCE_ROOT; };
+		3D3B2820104D8AF90043A026 /* test-dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "test-dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D65FEE20ECB7548008083A3 /* CoreServices */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = CoreServices; path = /System/Library/Frameworks/CoreServices.framework/CoreServices; sourceTree = "<absolute>"; };
 		3D9D57C30E12E1CF00C4C68D /* finddefault.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = finddefault.c; sourceTree = "<group>"; };
 		3D9D57C50E12E1E500C4C68D /* readbinaryplist.c */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.c; path = readbinaryplist.c; sourceTree = "<group>"; };
@@ -425,6 +447,18 @@
 				3D17A1A90E13E3B300930576 /* CoreMIDI.framework in Frameworks */,
 				3D17A1E80E13E57700930576 /* JavaVM.framework in Frameworks */,
 				3D17A2290E13EF8000930576 /* CoreServices.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3D3B2816104D8AF90043A026 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3D3B2818104D8AF90043A026 /* CoreMIDI.framework in Frameworks */,
+				3D3B2819104D8AF90043A026 /* CoreFoundation.framework in Frameworks */,
+				3D3B281A104D8AF90043A026 /* CoreAudio.framework in Frameworks */,
+				3D3B281B104D8AF90043A026 /* CoreServices in Frameworks */,
+				3DC7B4AE10582B36003DB808 /* libportmidi.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -671,6 +705,7 @@
 				3D17A13D0E13D47F00930576 /* JPortMidiHeaders.jar */,
 				3D17A18C0E13E1EF00930576 /* jportmidi_JportMidiApi.h */,
 				3D17A1910E13E25E00930576 /* libpmjni.jnilib */,
+				3D3B2820104D8AF90043A026 /* test-dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -761,6 +796,24 @@
 			productName = libpmjni.jnilib;
 			productReference = 3D17A1910E13E25E00930576 /* libpmjni.jnilib */;
 			productType = "com.apple.product-type.library.dynamic";
+		};
+		3D3B2811104D8AF90043A026 /* test-dylib */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D3B281C104D8AF90043A026 /* Build configuration list for PBXNativeTarget "test-dylib" */;
+			buildPhases = (
+				3D3B2814104D8AF90043A026 /* Sources */,
+				3D3B2816104D8AF90043A026 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			comments = "A PortMidi test program";
+			dependencies = (
+				3DC7B4B410582F79003DB808 /* PBXTargetDependency */,
+			);
+			name = "test-dylib";
+			productName = test;
+			productReference = 3D3B2820104D8AF90043A026 /* test-dylib */;
+			productType = "com.apple.product-type.tool";
 		};
 		3DA60D5E0D3FBEA40036B654 /* midiclock */ = {
 			isa = PBXNativeTarget;
@@ -950,6 +1003,7 @@
 				D8684B960ACBFB93009F6478 /* everything suite */,
 				3D9D57CD0E12E22800C4C68D /* PmDefaults */,
 				3D17A13C0E13D47F00930576 /* JPortMidiHeaders */,
+				3D3B2811104D8AF90043A026 /* test-dylib */,
 			);
 		};
 /* End PBXProject section */
@@ -1024,6 +1078,14 @@
 				3D17A2120E13E88100930576 /* readbinaryplist.c in Sources */,
 				3D17A2130E13E88100930576 /* finddefault.c in Sources */,
 				3D17A1A20E13E30100930576 /* pmjni.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3D3B2814104D8AF90043A026 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3D3B2815104D8AF90043A026 /* test.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1136,6 +1198,11 @@
 			target = 3D9D57CD0E12E22800C4C68D /* PmDefaults */;
 			targetProxy = 3D35348F0F0D2DB30059CD05 /* PBXContainerItemProxy */;
 		};
+		3D3B2826104D8B740043A026 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3D3B2811104D8AF90043A026 /* test-dylib */;
+			targetProxy = 3D3B2825104D8B740043A026 /* PBXContainerItemProxy */;
+		};
 		3D4799D40F0E87350006C842 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3DBF24630B5967A500DAD93B /* mm */;
@@ -1165,6 +1232,11 @@
 			isa = PBXTargetDependency;
 			target = D814404B0ACB2C1200515C41 /* libportmidi.a */;
 			targetProxy = 3DBF24700B5968BC00DAD93B /* PBXContainerItemProxy */;
+		};
+		3DC7B4B410582F79003DB808 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D84A40D90ACD4A08001FC716 /* portmidi.dylib */;
+			targetProxy = 3DC7B4B310582F79003DB808 /* PBXContainerItemProxy */;
 		};
 		D8684B090ACBF996009F6478 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1373,6 +1445,66 @@
 				INSTALL_PATH = /usr/local/lib;
 				PREBINDING = NO;
 				PRODUCT_NAME = pmjni;
+				ZERO_LINK = YES;
+			};
+			name = Default;
+		};
+		3D3B281D104D8AF90043A026 /* Development */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
+				PREBINDING = NO;
+				PRODUCT_NAME = "test-dylib";
+				ZERO_LINK = YES;
+			};
+			name = Development;
+		};
+		3D3B281E104D8AF90043A026 /* Deployment */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
+				PREBINDING = NO;
+				PRODUCT_NAME = "test-dylib";
+				ZERO_LINK = NO;
+			};
+			name = Deployment;
+		};
+		3D3B281F104D8AF90043A026 /* Default */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				INSTALL_PATH = "$(HOME)/bin";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+				);
+				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
+				PREBINDING = NO;
+				PRODUCT_NAME = "test-dylib";
 				ZERO_LINK = YES;
 			};
 			name = Default;
@@ -1777,7 +1909,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = NEWBUFFER;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INSTALL_PATH = "$(HOME)/bin";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1837,7 +1969,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = NEWBUFFER;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INSTALL_PATH = "$(HOME)/bin";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1897,7 +2029,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = NEWBUFFER;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INSTALL_PATH = "$(HOME)/bin";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2014,7 +2146,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = NEWBUFFER;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INSTALL_PATH = "$(HOME)/bin";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2113,6 +2245,16 @@
 				3D17A19C0E13E29800930576 /* Development */,
 				3D17A19D0E13E29800930576 /* Deployment */,
 				3D17A19E0E13E29800930576 /* Default */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Default;
+		};
+		3D3B281C104D8AF90043A026 /* Build configuration list for PBXNativeTarget "test-dylib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D3B281D104D8AF90043A026 /* Development */,
+				3D3B281E104D8AF90043A026 /* Deployment */,
+				3D3B281F104D8AF90043A026 /* Default */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Default;

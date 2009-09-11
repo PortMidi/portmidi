@@ -58,7 +58,7 @@ void loopback_test()
     PmStream *midi_out;
     unsigned char msg[1024];
     char line[80];
-    long len;
+    int32_t len;
     int i;
     int data;
     PmEvent event;
@@ -88,10 +88,10 @@ void loopback_test()
 
     while (1) {
         PmError count;
-        long start_time;
-        long error_position = -1; /* 0; -1; -1 for continuous */ 
-        long expected = 0;
-        long actual = 0;
+        int32_t start_time;
+        int error_position = -1; /* 0; -1; -1 for continuous */ 
+        int expected = 0;
+        int actual = 0;
         /* this modification will run until an error is detected */
         /* set error_position above to 0 for interactive, -1 for */
         /* continuous */
@@ -228,11 +228,11 @@ void send_multiple_test()
 
 #define MAX_MSG_LEN 1024
 static unsigned char receive_msg[MAX_MSG_LEN];
-static long receive_msg_index;
-static long receive_msg_length;
-static long receive_msg_count;
-static long receive_msg_error;
-static long receive_msg_messages;
+static int receive_msg_index;
+static int receive_msg_length;
+static int receive_msg_count;
+static int receive_msg_error;
+static int receive_msg_messages;
 static PmStream *receive_msg_midi_in;
 static int receive_poll_running;
 

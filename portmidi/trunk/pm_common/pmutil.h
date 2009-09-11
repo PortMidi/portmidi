@@ -44,7 +44,7 @@ typedef void PmQueue;
     Pm_QueueDestroy() destroys the queue and frees its storage.
  */
 
-PmQueue *Pm_QueueCreate(long num_msgs, long bytes_per_msg);
+PmQueue *Pm_QueueCreate(long num_msgs, int32_t bytes_per_msg);
 PmError Pm_QueueDestroy(PmQueue *queue);
 
 /* 

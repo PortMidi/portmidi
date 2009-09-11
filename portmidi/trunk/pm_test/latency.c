@@ -93,9 +93,9 @@ PtTimestamp previous_callback_time = 0;
 
 int period;            /* milliseconds per callback */
 
-long histogram[HIST_LEN];
-long max_latency = 0;  /* worst latency observed */
-long out_of_range = 0; /* how many points outside of HIST_LEN? */
+int histogram[HIST_LEN];
+int max_latency = 0;  /* worst latency observed */
+int out_of_range = 0; /* how many points outside of HIST_LEN? */
 
 int test_in, test_out; /* test MIDI in and/or out? */
 int output_period;     /* output MIDI every __ iterations if test_out true */
@@ -199,7 +199,7 @@ int main()
                   i,
                   NULL, 
                   INPUT_BUFFER_SIZE, 
-                  (long (*)(void *)) Pt_Time, 
+                  (PmTimestamp (*)(void *)) Pt_Time, 
                   NULL);
             /* turn on filtering; otherwise, input might overflow in the 
                5-second period before timer callback starts reading midi */
@@ -212,7 +212,7 @@ int main()
                   i,
                   NULL,
                   OUTPUT_BUFFER_SIZE,
-                  (long (*)(void *)) Pt_Time,
+                  (PmTimestamp (*)(void *)) Pt_Time,
                   NULL, 
                   0); /* no latency scheduling */
 

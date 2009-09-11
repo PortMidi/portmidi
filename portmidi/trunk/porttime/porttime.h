@@ -21,7 +21,7 @@ typedef enum {
 } PtError;
 
 
-typedef long PtTimestamp;
+typedef int32_t PtTimestamp;
 
 typedef void (PtCallback)( PtTimestamp timestamp, void *userData );
 
@@ -65,7 +65,7 @@ PtTimestamp Pt_Time();
     of the pause may be rounded to the nearest or next clock tick
     as determined by resolution in Pt_Start().
 */
-void Pt_Sleep(long duration);
+void Pt_Sleep(int32_t duration);
 
 #ifdef __cplusplus
 }

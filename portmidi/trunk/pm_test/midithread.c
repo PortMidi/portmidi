@@ -73,7 +73,7 @@ int active = FALSE;
 int monitor = FALSE;
 int midi_thru = TRUE;
 
-long transpose;
+int transpose;
 PmStream *midi_in;
 PmStream *midi_out;
 
@@ -94,7 +94,7 @@ void process_midi(PtTimestamp timestamp, void *userData)
 {
     PmError result;
     PmEvent buffer; /* just one message at a time */
-    long msg;
+    int32_t msg;
 
     /* do nothing until initialization completes */
     if (!active) 
@@ -127,7 +127,7 @@ void process_midi(PtTimestamp timestamp, void *userData)
     do {
 		result = Pm_Poll(midi_in);
         if (result) {
-            long status, data1, data2;
+            int status, data1, data2;
             if (Pm_Read(midi_in, &buffer, 1) == pmBufferOverflow) 
                 continue;
             if (midi_thru) 
@@ -173,7 +173,7 @@ void exit_with_message(char *msg)
 int main()
 {
     int id;
-    long n;
+    int_32_t n;
     const PmDeviceInfo *info;
     char line[STRING_MAX];
     int spin;
@@ -190,12 +190,12 @@ int main()
 
     /* make the message queues */
     /* messages can be of any size and any type, but all messages in
-     * a given queue must have the same size. We'll just use long's
+     * a given queue must have the same size. We'll just use int32_t's
      * for our messages in this simple example
      */
-    midi_to_main = Pm_QueueCreate(32, sizeof(long));
+    midi_to_main = Pm_QueueCreate(32, sizeof(int32_t));
     assert(midi_to_main != NULL);
-    main_to_midi = Pm_QueueCreate(32, sizeof(long));
+    main_to_midi = Pm_QueueCreate(32, sizeof(int32_t));
     assert(main_to_midi != NULL);
 
     /* a little test of enqueue and dequeue operations. Ordinarily, 
@@ -263,7 +263,7 @@ int main()
 		   "Must terminate with [ENTER]");
 
     while (!done) {
-        long msg;
+        int32_t msg;
         int len;
         fgets(line, STRING_MAX, stdin);
         /* remove the newline: */

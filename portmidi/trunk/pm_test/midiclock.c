@@ -23,7 +23,7 @@ typedef int boolean;
 
 #define OUTPUT_BUFFER_SIZE 0
 #define DRIVER_INFO NULL
-#define TIME_PROC ((long (*)(void *)) Pt_Time)
+#define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
 #define TIME_INFO NULL
 #define LATENCY 0
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
@@ -63,7 +63,7 @@ float tempo = 60.0F;
 void timer_poll(PtTimestamp timestamp, void *userData)
 {
     static int callback_owns_portmidi = false;
-    static long clock_start_time = 0;
+    static PmTimestamp clock_start_time = 0;
     static double next_clock_time = 0;
     /* SMPTE time */
     static int frames = 0;

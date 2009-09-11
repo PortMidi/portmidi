@@ -8,13 +8,13 @@
 #define INPUT_BUFFER_SIZE 100
 #define OUTPUT_BUFFER_SIZE 0
 #define DRIVER_INFO NULL
-#define TIME_PROC ((long (*)(void *)) Pt_Time)
+#define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
 #define TIME_INFO NULL
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
 
 #define STRING_MAX 80 /* used for console input */
 
-long latency = 0;
+int32_t latency = 0;
 
 /* crash the program to test whether midi ports are closed */
 /**/
@@ -116,7 +116,7 @@ void main_test_input(unsigned int somethingStupid) {
 void main_test_output() {
     PmStream * midi;
 	char line[80];
-    long off_time;
+    int32_t off_time;
     int chord[] = { 60, 67, 76, 83, 90 };
     #define chord_size 5 
     PmEvent buffer[chord_size];
@@ -385,6 +385,11 @@ int main(int argc, char *argv[])
     int test_input = 0, test_output = 0, test_both = 0, somethingStupid = 0;
     int stream_test = 0;
     int latency_valid = FALSE;
+    
+    if (sizeof(void *) == 8) 
+        printf("Apparently this is a 64-bit machine.\n");
+    else if (sizeof(void *) == 4) 
+        printf ("Apparently this is a 32-bit machine.\n");
     
     for (i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-h") == 0) {

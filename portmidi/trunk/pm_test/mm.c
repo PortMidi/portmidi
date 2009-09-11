@@ -83,12 +83,12 @@ boolean chmode = true;      /* show channel mode messages */
 boolean pgchanges = true;   /* show program changes */
 boolean flush = false;	    /* flush all pending MIDI data */
 
-long filter = 0;            /* remember state of midi filter */
+uint32_t filter = 0;            /* remember state of midi filter */
 
-long clockcount = 0;        /* count of clocks */
-long actsensecount = 0;     /* cout of active sensing bytes */
-long notescount = 0;        /* #notes since last request */
-long notestotal = 0;        /* total #notes */
+uint32_t clockcount = 0;        /* count of clocks */
+uint32_t actsensecount = 0;     /* cout of active sensing bytes */
+uint32_t notescount = 0;        /* #notes since last request */
+uint32_t notestotal = 0;        /* total #notes */
 
 char val_format[] = "    Val %d\n";
 
@@ -106,7 +106,7 @@ private    void    mmexit();
 private    void    output(PmMessage data);
 private    int     put_pitch(int p);
 private    void    showhelp();
-private    void    showbytes(long data, int len, boolean newline);
+private    void    showbytes(PmMessage data, int len, boolean newline);
 private    void    showstatus(boolean flag);
 private    void    doascii(char c);
 private    int     get_number(char *prompt);
@@ -304,7 +304,7 @@ private void output(PmMessage data)
     if (in_sysex || Pm_MessageStatus(data) == MIDI_SYSEX) {
 #define sysex_max 16
         int i;
-        long data_copy = data;
+        PmMessage data_copy = data;
         in_sysex = true;
         /* look for MIDI_EOX in first 3 bytes 
          * if realtime messages are embedded in sysex message, they will
@@ -491,7 +491,7 @@ private int put_pitch(int p)
 
 char nib_to_hex[] = "0123456789ABCDEF";
 
-private void showbytes(long data, int len, boolean newline)
+private void showbytes(PmMessage data, int len, boolean newline)
 {
     int count = 0;
     int i;

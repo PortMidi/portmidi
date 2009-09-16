@@ -27,3 +27,22 @@ add_subdirectory(pm_test)
 
 # Cannot figure out how to make an xcode Java application with CMake
 # add_subdirectory(pm_java)
+
+# ---- Just for reference, here's what I had in pm_java/CMakeLists.txt ---
+
+## pm_java
+#
+#PROJECT(pmdefaults Java)
+#
+#set(JAVA_SRC jportmidi/JPortMidiException.java
+#             jportmidi/JPortMidi.java
+#             jportmidi/JPortMidiApi.java
+#             pmdefaults/PmDefaults.java
+#             pmdefaults/PmDefaultsFrame.java)
+#
+#set(MACOSX_BUNDLE_ICON_FILE pmdefaults/pmdefaults.icns)
+#set_source_files_properties(pmdefaults/pmdefaults.icns PROPERTIES
+#           MACOSX_PACKAGE_LOCATION Resources)
+#add_executable(PmDefaults MACOSX_BUNDLE ${JAVA_SRC})
+#set_target_properties(PmDefaults PROPERTIES LINKER_LANGUAGE Java)
+#

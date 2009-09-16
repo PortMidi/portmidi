@@ -173,7 +173,7 @@ void exit_with_message(char *msg)
 int main()
 {
     int id;
-    int_32_t n;
+    int32_t n;
     const PmDeviceInfo *info;
     char line[STRING_MAX];
     int spin;
@@ -264,6 +264,7 @@ int main()
 
     while (!done) {
         int32_t msg;
+        int input;
         int len;
         fgets(line, STRING_MAX, stdin);
         /* remove the newline: */
@@ -284,7 +285,8 @@ int main()
             do {
                 spin = Pm_Dequeue(midi_to_main, &msg);
             } while (spin == 0); /* spin */ ;
-            printf("... pitch is %ld\n", msg);
+            // convert int32_t to long for safe printing
+            printf("... pitch is %ld\n", (long) msg);
         } else if (strcmp(line, "t") == 0) {
             /* reading midi_thru asynchronously could give incorrect results,
                e.g. if you type "t" twice before the midi thread responds to
@@ -294,10 +296,11 @@ int main()
             printf("Setting THRU %s\n", (midi_thru ? "off" : "on"));
             msg = THRU_MSG;
             Pm_Enqueue(main_to_midi, &msg);
-        } else if (sscanf(line, "%ld", &msg) == 1) {
-            if (msg >= -127 && msg <= 127) {
-                /* send transposition value */
-                printf("Transposing by %ld\n", msg);
+        } else if (sscanf(line, "%d", &input) == 1) {
+            if (input >= -127 && input <= 127) {
+                /* send transposition value, make sur */
+                printf("Transposing by %d\n", input);
+                msg = (int32_t) input;
                 Pm_Enqueue(main_to_midi, &msg);
             } else {
                 printf("Transposition must be within -127...127\n");

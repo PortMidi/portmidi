@@ -2,7 +2,7 @@ package jportmidi;
 
 public class JPortMidiApi {
     public static class PortMidiStream {
-        private int address;
+        private long address;
     }
     public static class PmEvent {
         public int message;

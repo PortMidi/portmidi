@@ -17,6 +17,7 @@
 // need to get declaration for Sleep()
 #include "windows.h"
 #else
+#include <unistd.h>
 #define Sleep(n) usleep(n * 1000)
 #endif
 
@@ -124,7 +125,7 @@ void loopback_test()
 		}
 
         /* send the message */
-        printf("Sending %ld byte sysex message.\n", len + 2);
+        printf("Sending %d byte sysex message.\n", len + 2);
         Pm_WriteSysEx(midi_out, 0, msg);
 
         /* receive the message and compare to msg[] */
@@ -156,7 +157,7 @@ void loopback_test()
             }
         }
         if (error_position >= 0) {
-            printf("Error at byte %ld: sent %lx recd %lx\n", error_position, 
+            printf("Error at byte %d: sent %x recd %x\n", error_position, 
                    expected, actual);
         } else if (i != len + 2) {
             printf("Error: byte %d not received\n", i);

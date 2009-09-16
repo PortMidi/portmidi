@@ -252,11 +252,11 @@ int main()
     /* avoid printing beyond last non-zero histogram entry */
     len = min(HIST_LEN, max_latency + 1);
     for (i = 0; i < len; i++) {
-        printf("%2d      %10ld\n", i, histogram[i]);
+        printf("%2d      %10d\n", i, histogram[i]);
     }
-    printf("Number of points greater than %dms: %ld\n", 
+    printf("Number of points greater than %dms: %d\n", 
            HIST_LEN - 1, out_of_range);
-    printf("Maximum latency: %ld milliseconds\n", max_latency);
+    printf("Maximum latency: %d milliseconds\n", max_latency);
     printf("\nNote that due to rounding, actual latency can be 1ms higher\n");
     printf("than the numbers reported here.\n");
     printf("Type return to exit...");

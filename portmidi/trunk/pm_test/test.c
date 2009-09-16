@@ -87,10 +87,10 @@ void main_test_input(unsigned int somethingStupid) {
             if (length > 0) {
                 printf("Got message %d: time %ld, %2lx %2lx %2lx\n",
                        i,
-                       buffer[0].timestamp,
-                       Pm_MessageStatus(buffer[0].message),
-                       Pm_MessageData1(buffer[0].message),
-                       Pm_MessageData2(buffer[0].message));
+                       (long) buffer[0].timestamp,
+                       (long) Pm_MessageStatus(buffer[0].message),
+                       (long) Pm_MessageData1(buffer[0].message),
+                       (long) Pm_MessageData2(buffer[0].message));
                 i++;
             } else {
                 assert(0);
@@ -139,7 +139,7 @@ void main_test_output() {
                   (latency == 0 ? NULL : TIME_PROC),
                   (latency == 0 ? NULL : TIME_INFO), 
                   latency);
-    printf("Midi Output opened with %ld ms latency.\n", latency);
+    printf("Midi Output opened with %ld ms latency.\n", (long) latency);
 
     /* output note on/off w/latency offset; hold until user prompts */
     printf("ready to send program 1 change... (type RETURN):");
@@ -230,7 +230,7 @@ void main_test_both()
                   TIME_PROC,
                   TIME_INFO, 
                   latency);
-    printf("Midi Output opened with %ld ms latency.\n", latency);
+    printf("Midi Output opened with %ld ms latency.\n", (long) latency);
     /* open input device */
     Pm_OpenInput(&midi, 
                  in,
@@ -253,11 +253,11 @@ void main_test_both()
             if (length > 0) {
                 Pm_Write(midiOut, buffer, 1);
                 printf("Got message %d: time %ld, %2lx %2lx %2lx\n",
-					   i,
-                       buffer[0].timestamp,
-                       Pm_MessageStatus(buffer[0].message),
-                       Pm_MessageData1(buffer[0].message),
-                       Pm_MessageData2(buffer[0].message));
+                       i,
+                       (long) buffer[0].timestamp,
+                       (long) Pm_MessageStatus(buffer[0].message),
+                       (long) Pm_MessageData1(buffer[0].message),
+                       (long) Pm_MessageData2(buffer[0].message));
                 i++;
             } else {
                 assert(0);
@@ -301,7 +301,7 @@ void main_test_stream() {
                   TIME_PROC,
                   TIME_INFO, 
                   latency);
-    printf("Midi Output opened with %ld ms latency.\n", latency);
+    printf("Midi Output opened with %ld ms latency.\n", (long) latency);
 
     /* output note on/off w/latency offset; hold until user prompts */
     printf("ready to send output... (type RETURN):");
@@ -397,19 +397,21 @@ int main(int argc, char *argv[])
         } else if (strcmp(argv[i], "-l") == 0 && (i + 1 < argc)) {
             i = i + 1;
             latency = atoi(argv[i]);
-            printf("Latency will be %ld\n", latency);
-			latency_valid = TRUE;
+            printf("Latency will be %ld\n", (long) latency);
+            latency_valid = TRUE;
         } else {
             show_usage();
         }
     }
 
-	while (!latency_valid) {
-		printf("Latency in ms: ");
-		if (scanf("%ld", &latency) == 1) {
-			latency_valid = TRUE;
-		}
-	}
+    while (!latency_valid) {
+        int lat; // declared int to match "%d"
+        printf("Latency in ms: ");
+        if (scanf("%d", &lat) == 1) {
+            latency = (int32_t) lat; // coerce from "%d" to known size
+	    latency_valid = TRUE;
+        }
+    }
 
     /* determine what type of test to run */
     printf("begin portMidi test...\n");
@@ -418,7 +420,7 @@ int main(int argc, char *argv[])
            "    2: test input (fail w/assert)\n",
            "    3: test input (fail w/NULL assign)\n",
            "    4: test output\n    5: test both\n",
-	       "    6: stream test\n");
+           "    6: stream test\n");
     while (n != 1) {
         n = scanf("%d", &i);
         fgets(line, STRING_MAX, stdin);

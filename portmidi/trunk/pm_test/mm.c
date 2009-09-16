@@ -102,7 +102,7 @@ extern  int     abort_flag;
 *    Routines local to this module
 *****************************************************************************/
 
-private    void    mmexit();
+private    void    mmexit(int code);
 private    void    output(PmMessage data);
 private    int     put_pitch(int p);
 private    void    showhelp();
@@ -169,7 +169,7 @@ int main(int argc, char **argv)
     if (err) {
         printf(Pm_GetErrorText(err));
         Pt_Stop();
-        exit(1);
+        mmexit(1);
     }
     Pm_SetFilter(midi_in, filter);
     inited = true; /* now can document changes, set filter */
@@ -185,7 +185,8 @@ int main(int argc, char **argv)
     Pm_Close(midi_in);
     Pt_Stop();
     Pm_Terminate();
-    exit(0);
+    mmexit(0);
+    return 0; // make the compiler happy be returning a value
 }
 
 
@@ -240,7 +241,7 @@ private void doascii(char c)
         if (clksencnt) {
             if (inited)
                 printf("Clock Count %ld\nActive Sense Count %ld\n", 
-                        clockcount, actsensecount);
+                        (long) clockcount, (long) actsensecount);
         } else if (inited) {
             printf("Clock Counting not on\n");
         }
@@ -248,7 +249,7 @@ private void doascii(char c)
         notestotal+=notescount;
         if (inited)
             printf("This Note Count %ld\nTotal Note Count %ld\n",
-                    notescount, notestotal);
+                    (long) notescount, (long) notestotal);
         notescount=0;
     } else if (c == 'v') {
         verbose = !verbose;
@@ -272,12 +273,12 @@ private void doascii(char c)
 
 
 
-private void mmexit()
+private void mmexit(int code)
 {
     /* if this is not being run from a console, maybe we should wait for
      * the user to read error messages before exiting
      */
-    exit(1);
+    exit(code);
 }
 
 

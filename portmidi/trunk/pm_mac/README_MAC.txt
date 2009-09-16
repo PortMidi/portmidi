@@ -33,14 +33,47 @@ make -f pm_mac/Makefile.osx help
 
 ==== USING XCODE ====
 
-Open portmidi/pm_mac/pm_mac.xcode with Xcode and 
-build what you need: if you are just exploring, start with 
-the lib+test suite.
+(1) Open portmidi/portmidi.xcodeproj with Xcode and 
+build what you need. The simplest thing is to build the
+ALL_BUILD target. The default will be to build the Debug
+version, but you may want to change this to Release. 
 
-[pm_mac.xcodeproj courtesy of Leigh Smith]
+The Debug version is compiled with PM_CHECK_ERRORS, and the
+Release version is not. PM_CHECK_ERRORS will print an error
+message and exit your program if any error is returned from
+a call into PortMidi.
+
+CMake (currently) also creates MinSizRel and RelWithDebInfo
+versions, but only because I cannot figure out how to disable
+them.
+
+You will probably want the application PmDefaults, which sets
+default MIDI In and Out devices for PortMidi. You may also
+want to build a Java application using PortMidi. Since I have
+not figured out how to use CMake to make an OS X Java application,
+use pm_mac/pm_mac.xcodeproj.
+
+(2) open pm_mac/pm_mac.xcodeproj
+
+(3) For completeness, the JPortMidiHeaders project makes
+pm_java/pmjni/portmidi_JportmidiApi.h, a header that is needed
+by libpmjni.jnilib, the Java native interface library. Since
+portmidi_JportmidiApi.h is included with PortMidi, you can skip
+this step.
+
+(4) If you did not build libpmjni.dylib using portmidi.xcodeproj,
+do it now. (It depends on portmidi_JportmidiApi.h, and the 
+PmDefaults project depends on libpmjni.dylib.
+
+(5) Returning to pm_mac.xcodeproj, build the PmDefaults program.
+
+(6) If you wish, copy pm_mac/build/Deployment/PmDefaults.app to
+your applications folder.
 
 CHANGELOG
 
+14-Sep-2009 Roger B. Dannenberg
+    Modifications for using CMake
 17-Jan-2007 Roger B. Dannenberg
     Explicit instructions for Xcode
 15-Jan-2007 Roger B. Dannenberg

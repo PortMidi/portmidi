@@ -2,10 +2,11 @@
 
 #include "portmidi.h"
 #include "porttime.h"
-#include "stdlib.h"
-#include "stdio.h"
-#include "string.h"
-#include "assert.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <assert.h>
+#include <ctype.h>
 
 #ifndef false
 #define false 0
@@ -214,7 +215,7 @@ private void doascii(char c)
             printf("Changing tempo to %d\n", input_tempo);
             tempo = input_tempo;
         } else {
-            printf("Tempo range is 1 to 300, current tempo is %d bpm\n", 
+            printf("Tempo range is 1 to 300, current tempo is %g bpm\n", 
                    tempo);
         }
     } else {

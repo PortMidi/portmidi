@@ -104,7 +104,7 @@ void timer_poll(PtTimestamp timestamp, void *userData)
         }
     }
     if (time_code_running) {
-        int data;
+        int data = 0; // initialization avoids compiler warning
         if ((timestamp - smpte_start_time) < next_smpte_time) 
             return;
         switch (mtc_count) {

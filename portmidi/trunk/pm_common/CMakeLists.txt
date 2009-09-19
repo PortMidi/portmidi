@@ -7,6 +7,9 @@ macro(prepend_path RESULT PATH)
   endforeach(FILE)
 endmacro(prepend_path)
 
+set(CMAKE_C_FLAGS_DEBUG "-g -DPM_CHECK_ERRORS=1"
+    CACHE STRING "enable extra checks for debugging" FORCE)
+
 # first include the appropriate system-dependent file:
 if(UNIX)
   if(APPLE)

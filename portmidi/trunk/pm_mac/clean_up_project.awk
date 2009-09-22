@@ -56,6 +56,9 @@ state == "normal" {
     if (index($0, "sourceTree = \"<absolute>\";") > 0) {
         sub("\"<absolute>\"", "SOURCE_ROOT", $0)
     };
+    if (index($0, "SYMROOT =") > 0) {
+        sub(base_path, "\"\"", $0)
+    };
     if (index($0, "buildPhases = (") > 0) {
         state = "build_phases"
     } else if (index($0, "/* CMake ReRun */ = {") > 0) {

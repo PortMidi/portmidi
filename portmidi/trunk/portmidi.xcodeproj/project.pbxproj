@@ -822,7 +822,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithru;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -870,7 +870,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithru;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -918,7 +918,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = test;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -979,7 +979,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1040,7 +1040,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1088,7 +1088,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midiclock;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1136,7 +1136,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = sysex;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1184,7 +1184,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = sysex;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1232,7 +1232,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = sysex;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1280,7 +1280,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = sysex;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1328,7 +1328,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = test;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1376,7 +1376,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = test;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1424,7 +1424,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = test;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1484,7 +1484,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = pmjni;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1532,7 +1532,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = latency;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1580,7 +1580,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midiclock;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1656,7 +1656,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = latency;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1704,7 +1704,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithread;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1752,7 +1752,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithread;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1800,7 +1800,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = mm;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1848,7 +1848,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = mm;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1896,7 +1896,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = mm;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1944,7 +1944,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = mm;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2007,7 +2007,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = pmjni;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2055,7 +2055,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithru;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2118,7 +2118,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = pmjni;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2166,7 +2166,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithru;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2227,7 +2227,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2290,7 +2290,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = pmjni;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2338,7 +2338,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midiclock;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2372,7 +2372,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2406,7 +2406,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2440,7 +2440,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2474,7 +2474,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2522,7 +2522,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = latency;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2570,7 +2570,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = latency;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2657,7 +2657,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midiclock;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2705,7 +2705,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithread;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2753,7 +2753,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithread;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2867,7 +2867,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+				SYMROOT = "";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",

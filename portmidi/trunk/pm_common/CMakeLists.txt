@@ -1,5 +1,12 @@
 # pm_common
 
+# set the build directory for libportmidi.a to be in portmidi, not in 
+#    portmidi/pm_common
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+# set the build directory for .dylib libraries
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+
 macro(prepend_path RESULT PATH)
   set(${RESULT})
   foreach(FILE ${ARGN})

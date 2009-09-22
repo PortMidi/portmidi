@@ -39,7 +39,7 @@
 			name = PmDefaults;
 			productInstallPath = "$(USER_APPS_DIR)";
 			productName = pmdefaults;
-			productReference = 3D9D57CE0E12E22800C4C68D /* pmdefaults.app */;
+			productReference = 3D9D57CE0E12E22800C4C68D /* PmDefaults.app */;
 			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">
 <plist version=\"1.0\">
@@ -98,11 +98,10 @@
 		3D17A16F0E13D70E00930576 /* PmDefaultsFrame.java in Sources */ = {isa = PBXBuildFile; fileRef = 3D9D57F50E12E3DE00C4C68D /* PmDefaultsFrame.java */; };
 		3D17A4C40E14079000930576 /* pmdefaults.icns in Resources */ = {isa = PBXBuildFile; fileRef = 3D17A4C30E14079000930576 /* pmdefaults.icns */; };
 		3D29FEC2105EDCFA009417D8 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D17A2280E13EF8000930576 /* CoreServices.framework */; };
-		3D29FF2F105F1959009417D8 /* libpmjni.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D29FF2E105F1959009417D8 /* libpmjni.dylib */; };
-		3D29FF30105F1970009417D8 /* libpmjni.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D29FF2E105F1959009417D8 /* libpmjni.dylib */; };
 		3D3B2818104D8AF90043A026 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DA774480663EAE60002CE69 /* CoreMIDI.framework */; };
 		3D3B2819104D8AF90043A026 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DA7744E0663EBB20002CE69 /* CoreFoundation.framework */; };
 		3D3B281A104D8AF90043A026 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DA774500663EBBF0002CE69 /* CoreAudio.framework */; };
+		3D85B13E10672F59003F6706 /* libpmjni.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3D85B13D10672F59003F6706 /* libpmjni.dylib */; };
 		3D9D57E60E12E39B00C4C68D /* JPortMidi.java in Sources */ = {isa = PBXBuildFile; fileRef = 3D9D57DE0E12E39B00C4C68D /* JPortMidi.java */; };
 		3D9D57EA0E12E39B00C4C68D /* JPortMidiApi.java in Sources */ = {isa = PBXBuildFile; fileRef = 3D9D57E20E12E39B00C4C68D /* JPortMidiApi.java */; };
 		3D9D57EC0E12E39B00C4C68D /* JPortMidiException.java in Sources */ = {isa = PBXBuildFile; fileRef = 3D9D57E40E12E39B00C4C68D /* JPortMidiException.java */; };
@@ -137,7 +136,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 15;
 			files = (
-				3D29FF30105F1970009417D8 /* libpmjni.dylib in CopyFiles */,
+				3D85B13E10672F59003F6706 /* libpmjni.dylib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,9 +148,9 @@
 		3D17A1E70E13E57700930576 /* JavaVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaVM.framework; path = /System/Library/Frameworks/JavaVM.framework; sourceTree = "<absolute>"; };
 		3D17A2280E13EF8000930576 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = /System/Library/Frameworks/CoreServices.framework; sourceTree = "<absolute>"; };
 		3D17A4C30E14079000930576 /* pmdefaults.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = pmdefaults.icns; path = ../pm_java/pmdefaults/pmdefaults.icns; sourceTree = SOURCE_ROOT; };
-		3D29FF2E105F1959009417D8 /* libpmjni.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpmjni.dylib; path = ../pm_common/Release/libpmjni.dylib; sourceTree = SOURCE_ROOT; };
 		3D3B2820104D8AF90043A026 /* test-dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "test-dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3D9D57CE0E12E22800C4C68D /* pmdefaults.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pmdefaults.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D85B13D10672F59003F6706 /* libpmjni.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libpmjni.dylib; path = ../Release/libpmjni.dylib; sourceTree = SOURCE_ROOT; };
+		3D9D57CE0E12E22800C4C68D /* PmDefaults.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PmDefaults.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D9D57DE0E12E39B00C4C68D /* JPortMidi.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = JPortMidi.java; sourceTree = "<group>"; };
 		3D9D57E20E12E39B00C4C68D /* JPortMidiApi.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = JPortMidiApi.java; sourceTree = "<group>"; };
 		3D9D57E40E12E39B00C4C68D /* JPortMidiException.java */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.java; path = JPortMidiException.java; sourceTree = "<group>"; };
@@ -162,7 +161,7 @@
 		3DA7744E0663EBB20002CE69 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
 		3DA774500663EBBF0002CE69 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = /System/Library/Frameworks/CoreAudio.framework; sourceTree = "<absolute>"; };
 		3DB8DD8710614B7700CD6802 /* test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = test.c; path = ../pm_test/test.c; sourceTree = SOURCE_ROOT; };
-		3DB8DD9110614E0900CD6802 /* libportmidi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libportmidi.dylib; path = ../pm_common/Release/libportmidi.dylib; sourceTree = SOURCE_ROOT; };
+		3DB8DD9110614E0900CD6802 /* libportmidi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libportmidi.dylib; path = ../Release/libportmidi.dylib; sourceTree = SOURCE_ROOT; };
 		3DB8DDB8106189B200CD6802 /* JPortMidiHeaders.jar */ = {isa = PBXFileReference; explicitFileType = archive.jar; includeInIndex = 0; path = JPortMidiHeaders.jar; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -190,7 +189,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3D29FF2F105F1959009417D8 /* libpmjni.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,8 +230,8 @@
 			isa = PBXGroup;
 			children = (
 				3DB8DD9110614E0900CD6802 /* libportmidi.dylib */,
+				3D85B13D10672F59003F6706 /* libpmjni.dylib */,
 				3DB8DD8710614B7700CD6802 /* test.c */,
-				3D29FF2E105F1959009417D8 /* libpmjni.dylib */,
 				3D17A4C30E14079000930576 /* pmdefaults.icns */,
 				3D17A2280E13EF8000930576 /* CoreServices.framework */,
 				3D17A1E70E13E57700930576 /* JavaVM.framework */,
@@ -249,7 +247,7 @@
 		5851D5390479562300EE98CD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3D9D57CE0E12E22800C4C68D /* pmdefaults.app */,
+				3D9D57CE0E12E22800C4C68D /* PmDefaults.app */,
 				3D17A18C0E13E1EF00930576 /* jportmidi_JportMidiApi.h */,
 				3D3B2820104D8AF90043A026 /* test-dylib */,
 				3DB8DDB8106189B200CD6802 /* JPortMidiHeaders.jar */,
@@ -516,9 +514,9 @@
 				);
 				INSTALL_PATH = "$(HOME)/bin";
 				LIBRARY_SEARCH_PATHS = (
+					../Debug,
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../pm_common/Release\"";
@@ -544,7 +542,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
-					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					../Release/,
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../pm_common/Release\"";
@@ -600,6 +598,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../pm_java/pmjni",
 					"$(SRCROOT)/../pm_common/Release",
+					"$(SRCROOT)/../Release",
 				);
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
@@ -629,6 +628,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../pm_java/pmjni",
 					"$(SRCROOT)/../pm_common/Release",
+					"$(SRCROOT)/../Release",
 				);
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
@@ -656,6 +656,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/../pm_java/pmjni",
 					"$(SRCROOT)/../pm_common/Release",
+					"$(SRCROOT)/../Release",
 				);
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
@@ -676,6 +677,7 @@
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH)";
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+				SYMROOT = /Users/rbd/portmedia/portmidi;
 				WARNING_CFLAGS = (
 					"-Wshorten-64-to-32",
 					"-Wformat",

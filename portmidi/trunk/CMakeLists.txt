@@ -7,6 +7,14 @@ cmake_minimum_required(VERSION 2.6)
 # this does not seem to work for xcode:
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING 
     "Semicolon-separate list of supported configuration types" FORCE)
+#set(CMAKE_RELATIVE_PATHS ON CACHE STRING "avoid absolute paths" FORCE)
+
+# for Makefile (more stuff that doesn't work)
+#set(EXECUTABLE_OUTPUT_PATH pm_test/${CMAKE_BUILD_TYPE}
+#                           CACHE STRING "executables go here" FORCE)
+#set(LIBRARY_OUTPUT_PATH ${CMAKE_BUILD_TYPE}
+#                        CACHE STRING "libraries go here" FORCE)
+
 # Clear out the built-in C++ compiler and link flags for each of the 
 # unused configurations.
 set(CMAKE_CXX_FLAGS_MINSIZEREL "" CACHE INTERNAL "Unused")

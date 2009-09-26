@@ -269,25 +269,3 @@ JNIEXPORT jboolean JNICALL Java_jportmidi_JPortMidiApi_Pt_1TimeStarted
 }
 #endif
 #endif
-/* Header for class jportmidi_JPortMidiApi_PmEvent */
-
-#ifndef _Included_jportmidi_JPortMidiApi_PmEvent
-#define _Included_jportmidi_JPortMidiApi_PmEvent
-#ifdef __cplusplus
-extern "C" {
-#endif
-#ifdef __cplusplus
-}
-#endif
-#endif
-/* Header for class jportmidi_JPortMidiApi_PortMidiStream */
-
-#ifndef _Included_jportmidi_JPortMidiApi_PortMidiStream
-#define _Included_jportmidi_JPortMidiApi_PortMidiStream
-#ifdef __cplusplus
-extern "C" {
-#endif
-#ifdef __cplusplus
-}
-#endif
-#endif

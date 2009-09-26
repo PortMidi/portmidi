@@ -2,38 +2,47 @@ README_MAC.txt for PortMidi
 Roger Dannenberg
 20 sep 2009
 
-To build PortMidi for Mac OS X, you can use make, Xcode, or CMake.
-These approaches are described in separate sections below.
+To build PortMidi for Mac OS X, you must install Xcode, and
+if you want to build from the command line, you should install
+CMake.
 
-==== USING MAKE ====
+CMake can build either Makefiles or Xcode projects, or you
+can use the pre-built Xcode project. These approaches are 
+described in separate sections below.
 
-(warning: this needs to be tested and revised after introducing
-CMake to PortMidi -- I'm using xcode at the moment to build. -RBD)
+==== CLEANING UP ====
+You can remove previously built apps, object code, and libraries by
+running "cd pm_mac; sh cleanslate.sh"
 
-go back up to the portmidi
-directory and type 
+==== USING CMAKE (AND COMMAND LINE TOOLS) ====
+
+Start in the portmedia/portmidi directory.
 
 make -f pm_mac/Makefile.osx
 
-(You can also copy pm_mac/Makefile.osx to Makfile in the 
-portmidi directory and just type "make".)
+Release version executables and libraries are now in
+    portmedia/portmidi/Release
+Optionally, you can build the Debug versions:
 
-The Makefile.osx will build all test programs and the portmidi
-library. You may want to modify the Makefile.osx to remove the
-PM_CHECK_ERRORS definition. For experimental software,
-especially programs running from the command line, we 
-recommend using PM_CHECK_ERRORS -- it will terminate your
-program and print a helpful message if any PortMidi 
-function returns an error code.
+make -f pm_mac/Makefile.osx configuration=Debug
 
-If you do not compile with PM_CHECK_ERRORS, you should 
-check for errors yourself.
+Debug version executables and libraries are now in
+    portmedia/portmidi/Debug
+The Debug versions are compiled with PM_CHECK_ERRORS which
+prints an error message and aborts when an error code is returned
+by PortMidi functions. This is useful for small command line 
+applications. Otherwise, you should check and handle error returns
+in your program.
 
-The make file will also build an OS X Universal (ppc and i386)
-dynamic link library using xcode. For instructions about this
-and other options, type
+You should now make the pmdefaults.app:
 
-make -f pm_mac/Makefile.osx help
+make -f pm_mac/Makefile.osx pmdefaults
+
+NOTES: xcode is likely to crash after building pmdefaults, but
+       pmdefaults should be OK (it will be in Release)
+   Once you get started, you can run make directly in the 
+       Debug or Release directories
+
 
 ==== USING XCODE ====
 
@@ -74,7 +83,7 @@ PmDefaults project depends on libpmjni.dylib.)
 (6) If you wish, copy pm_mac/build/Deployment/PmDefaults.app to
 your applications folder.
 
-==== USING CMAKE ====
+==== USING CMAKE TO BUILD Xcode PROJECT ====
 
 (1) Install CMake if you do not have it already.
 
@@ -104,6 +113,8 @@ the portmidi.xcodeproj you get with the distribution.
 
 CHANGELOG
 
+26-Sep-2009 Roger B. Dannenberg
+    More changes for using CMake, Makefiles, XCode
 20-Sep-2009 Roger B. Dannenberg
     Modifications for using CMake
 14-Sep-2009 Roger B. Dannenberg

@@ -37,7 +37,6 @@ if(UNIX)
     set(JAVAVM_LIB "${FRAMEWORK_PATH}/JavaVM.framework")
     message(STATUS "SYSROOT: " ${CMAKE_OSX_SYSROOT})
     set(JNI_EXTRA_LIBS ${PM_NEEDED_FRAMEWORKS} ${JAVAVM_LIB})
-    #set(JNI_EXTRA_LIBS CoreAudio.framework CoreFoundation.framework CoreMIDI.framework CoreServices.framework JavaVM.framework)
   endif(APPLE)
 endif(UNIX)
 
@@ -46,10 +45,13 @@ list(APPEND LIBSRC pmutil portmidi)
 
 # now add the shared files to make the complete list of library sources
 add_library(portmidi-static ${LIBSRC})
-set_target_properties(portmidi-static PROPERTIES OUTPUT_NAME "portmidi")
+set_target_properties(portmidi-static PROPERTIES OUTPUT_NAME "portmidi_s")
+target_link_libraries(portmidi-static ${PM_NEEDED_FRAMEWORKS})
 
-add_library(portmidi SHARED ${LIBSRC})
-target_link_libraries(portmidi ${PM_NEEDED_FRAMEWORKS})
+add_library(portmidi-dynamic SHARED ${LIBSRC})
+set_target_properties(portmidi-dynamic PROPERTIES OUTPUT_NAME "portmidi_d")
+target_link_libraries(portmidi-dynamic ${PM_NEEDED_FRAMEWORKS})
+
 
 # define the jni library
 if(APPLE)

@@ -50,14 +50,15 @@ state == "normal" {
     gsub(base_path_slash, "", $0); 
     # change projectRoot to empty string: ""
     if (index($0, "projectRoot = /") > 0) { 
-        sub(base_path, "\"\"", $0) 
-    }
+        sub(base_path, "\"\"", $0);
+    };
     # change <absolute> file references to SOURCE_ROOT:
     if (index($0, "sourceTree = \"<absolute>\";") > 0) {
         sub("\"<absolute>\"", "SOURCE_ROOT", $0)
     };
     if (index($0, "SYMROOT =") > 0) {
-        sub(base_path, "\"\"", $0)
+        sub(base_path, "\".\"", $0);
+        print "FOUND SYMROOT: "
     };
     if (index($0, "buildPhases = (") > 0) {
         state = "build_phases"

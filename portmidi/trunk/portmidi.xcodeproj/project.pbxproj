@@ -11,8 +11,6 @@
 			isa = PBXAggregateTarget;
 			buildConfigurationList = 1755DB301755DB301755DB30 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
 			buildPhases = (
-				1755BEF01755BEF01755BEF0 /* CMake ReRun */,
-				1755C9801755C9801755C980 /* CMake Rules */,
 			);
 			dependencies = (
 				175D6180175D6180175D6180 /* PBXTargetDependency */,
@@ -137,33 +135,30 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1755C8201755C8201755C820 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CMakeLists.txt; path = /Users/rbd/portmedia/portmidi/CMakeLists.txt; sourceTree = "<absolute>"; };
-		175633701756337017563370 /* pmmacosxcm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pmmacosxcm.c; path = /Users/rbd/portmedia/portmidi/pm_mac/pmmacosxcm.c; sourceTree = "<absolute>"; };
-		17563C7017563C7017563C70 /* pmmac.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pmmac.c; path = /Users/rbd/portmedia/portmidi/pm_mac/pmmac.c; sourceTree = "<absolute>"; };
-		175646A0175646A0175646A0 /* readbinaryplist.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = readbinaryplist.c; path = /Users/rbd/portmedia/portmidi/pm_mac/readbinaryplist.c; sourceTree = "<absolute>"; };
-		175651601756516017565160 /* finddefault.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = finddefault.c; path = /Users/rbd/portmedia/portmidi/pm_mac/finddefault.c; sourceTree = "<absolute>"; };
-		17565BB017565BB017565BB0 /* ptmacosx_mach.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ptmacosx_mach.c; path = /Users/rbd/portmedia/portmidi/porttime/ptmacosx_mach.c; sourceTree = "<absolute>"; };
-		175666901756669017566690 /* pmutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pmutil.c; path = /Users/rbd/portmedia/portmidi/pm_common/pmutil.c; sourceTree = "<absolute>"; };
-		175671101756711017567110 /* portmidi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = portmidi.c; path = /Users/rbd/portmedia/portmidi/pm_common/portmidi.c; sourceTree = "<absolute>"; };
-		17567B5017567B5017567B50 /* pmjni.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pmjni.c; path = /Users/rbd/portmedia/portmidi/pm_java/pmjni/pmjni.c; sourceTree = "<absolute>"; };
-		175685D0175685D0175685D0 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CMakeLists.txt; path = /Users/rbd/portmedia/portmidi/pm_common/CMakeLists.txt; sourceTree = "<absolute>"; };
+		175633701756337017563370 /* pmmacosxcm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pmmacosxcm.c; path = pm_mac/pmmacosxcm.c; sourceTree = SOURCE_ROOT; };
+		17563C7017563C7017563C70 /* pmmac.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pmmac.c; path = pm_mac/pmmac.c; sourceTree = SOURCE_ROOT; };
+		175646A0175646A0175646A0 /* readbinaryplist.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = readbinaryplist.c; path = pm_mac/readbinaryplist.c; sourceTree = SOURCE_ROOT; };
+		175651601756516017565160 /* finddefault.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = finddefault.c; path = pm_mac/finddefault.c; sourceTree = SOURCE_ROOT; };
+		17565BB017565BB017565BB0 /* ptmacosx_mach.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ptmacosx_mach.c; path = porttime/ptmacosx_mach.c; sourceTree = SOURCE_ROOT; };
+		175666901756669017566690 /* pmutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pmutil.c; path = pm_common/pmutil.c; sourceTree = SOURCE_ROOT; };
+		175671101756711017567110 /* portmidi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = portmidi.c; path = pm_common/portmidi.c; sourceTree = SOURCE_ROOT; };
+		17567B5017567B5017567B50 /* pmjni.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pmjni.c; path = pm_java/pmjni/pmjni.c; sourceTree = SOURCE_ROOT; };
 		17571FC017571FC017571FC0 /* libpmjni.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libpmjni.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		175802F0175802F0175802F0 /* libportmidi_d.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libportmidi_d.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		1758E5601758E5601758E560 /* libportmidi_s.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libportmidi_s.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		1758EC301758EC301758EC30 /* latency.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = latency.c; path = /Users/rbd/portmedia/portmidi/pm_test/latency.c; sourceTree = "<absolute>"; };
-		1758F6501758F6501758F650 /* CMakeLists.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = CMakeLists.txt; path = /Users/rbd/portmedia/portmidi/pm_test/CMakeLists.txt; sourceTree = "<absolute>"; };
+		1758EC301758EC301758EC30 /* latency.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = latency.c; path = pm_test/latency.c; sourceTree = SOURCE_ROOT; };
 		17598A7017598A7017598A70 /* latency */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = latency; sourceTree = BUILT_PRODUCTS_DIR; };
-		175991901759919017599190 /* midiclock.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = midiclock.c; path = /Users/rbd/portmedia/portmidi/pm_test/midiclock.c; sourceTree = "<absolute>"; };
+		175991901759919017599190 /* midiclock.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = midiclock.c; path = pm_test/midiclock.c; sourceTree = SOURCE_ROOT; };
 		175A2CE0175A2CE0175A2CE0 /* midiclock */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = midiclock; sourceTree = BUILT_PRODUCTS_DIR; };
-		175A3400175A3400175A3400 /* midithread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = midithread.c; path = /Users/rbd/portmedia/portmidi/pm_test/midithread.c; sourceTree = "<absolute>"; };
+		175A3400175A3400175A3400 /* midithread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = midithread.c; path = pm_test/midithread.c; sourceTree = SOURCE_ROOT; };
 		175ACF30175ACF30175ACF30 /* midithread */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = midithread; sourceTree = BUILT_PRODUCTS_DIR; };
-		175AD650175AD650175AD650 /* midithru.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = midithru.c; path = /Users/rbd/portmedia/portmidi/pm_test/midithru.c; sourceTree = "<absolute>"; };
+		175AD650175AD650175AD650 /* midithru.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = midithru.c; path = pm_test/midithru.c; sourceTree = SOURCE_ROOT; };
 		175B7170175B7170175B7170 /* midithru */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = midithru; sourceTree = BUILT_PRODUCTS_DIR; };
-		175B7890175B7890175B7890 /* mm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mm.c; path = /Users/rbd/portmedia/portmidi/pm_test/mm.c; sourceTree = "<absolute>"; };
+		175B7890175B7890175B7890 /* mm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mm.c; path = pm_test/mm.c; sourceTree = SOURCE_ROOT; };
 		175C1250175C1250175C1250 /* mm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = mm; sourceTree = BUILT_PRODUCTS_DIR; };
-		175C1950175C1950175C1950 /* sysex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sysex.c; path = /Users/rbd/portmedia/portmidi/pm_test/sysex.c; sourceTree = "<absolute>"; };
+		175C1950175C1950175C1950 /* sysex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sysex.c; path = pm_test/sysex.c; sourceTree = SOURCE_ROOT; };
 		175CB450175CB450175CB450 /* sysex */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = sysex; sourceTree = BUILT_PRODUCTS_DIR; };
-		175CBB70175CBB70175CBB70 /* test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = test.c; path = /Users/rbd/portmedia/portmidi/pm_test/test.c; sourceTree = "<absolute>"; };
+		175CBB70175CBB70175CBB70 /* test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = test.c; path = pm_test/test.c; sourceTree = SOURCE_ROOT; };
 		175D5650175D5650175D5650 /* test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = test; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -172,7 +167,6 @@
 			isa = PBXGroup;
 			children = (
 				175511701755117017551170 /* Source Files */,
-				1758F6501758F6501758F650 /* CMakeLists.txt */,
 			);
 			name = midithread;
 			sourceTree = "<group>";
@@ -240,7 +234,6 @@
 			isa = PBXGroup;
 			children = (
 				175533E0175533E0175533E0 /* CMake Rules */,
-				1755C8201755C8201755C820 /* CMakeLists.txt */,
 			);
 			name = ALL_BUILD;
 			sourceTree = "<group>";
@@ -264,7 +257,6 @@
 			isa = PBXGroup;
 			children = (
 				17553C4017553C4017553C40 /* Source Files */,
-				175685D0175685D0175685D0 /* CMakeLists.txt */,
 			);
 			name = pmjni;
 			sourceTree = "<group>";
@@ -288,7 +280,6 @@
 			isa = PBXGroup;
 			children = (
 				17554BC017554BC017554BC0 /* Source Files */,
-				175685D0175685D0175685D0 /* CMakeLists.txt */,
 			);
 			name = "portmidi-dynamic";
 			sourceTree = "<group>";
@@ -319,7 +310,6 @@
 			isa = PBXGroup;
 			children = (
 				17555D4017555D4017555D40 /* Source Files */,
-				175685D0175685D0175685D0 /* CMakeLists.txt */,
 			);
 			name = "portmidi-static";
 			sourceTree = "<group>";
@@ -342,7 +332,6 @@
 			isa = PBXGroup;
 			children = (
 				17552FF017552FF017552FF0 /* Source Files */,
-				1758F6501758F6501758F650 /* CMakeLists.txt */,
 			);
 			name = latency;
 			sourceTree = "<group>";
@@ -351,7 +340,6 @@
 			isa = PBXGroup;
 			children = (
 				175554D0175554D0175554D0 /* Source Files */,
-				1758F6501758F6501758F650 /* CMakeLists.txt */,
 			);
 			name = midiclock;
 			sourceTree = "<group>";
@@ -360,7 +348,6 @@
 			isa = PBXGroup;
 			children = (
 				17557B4017557B4017557B40 /* Source Files */,
-				1758F6501758F6501758F650 /* CMakeLists.txt */,
 			);
 			name = midithru;
 			sourceTree = "<group>";
@@ -369,7 +356,6 @@
 			isa = PBXGroup;
 			children = (
 				175581801755818017558180 /* Source Files */,
-				1758F6501758F6501758F650 /* CMakeLists.txt */,
 			);
 			name = mm;
 			sourceTree = "<group>";
@@ -394,7 +380,6 @@
 			isa = PBXGroup;
 			children = (
 				17558BB017558BB017558BB0 /* Source Files */,
-				1758F6501758F6501758F650 /* CMakeLists.txt */,
 			);
 			name = sysex;
 			sourceTree = "<group>";
@@ -411,7 +396,6 @@
 			isa = PBXGroup;
 			children = (
 				175597901755979017559790 /* Source Files */,
-				1758F6501758F6501758F650 /* CMakeLists.txt */,
 			);
 			name = test;
 			sourceTree = "<group>";
@@ -431,9 +415,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1756A6201756A6201756A620 /* Build configuration list for PBXNativeTarget "libpmjni.dylib" */;
 			buildPhases = (
-				175694D0175694D0175694D0 /* CMake ReRun */,
 				175690201756902017569020 /* Sources */,
-				17569BA017569BA017569BA0 /* CMake PostBuild Rules */,
 			);
 			buildRules = (
 			);
@@ -448,9 +430,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 175788201757882017578820 /* Build configuration list for PBXNativeTarget "libportmidi_d.dylib" */;
 			buildPhases = (
-				175776D0175776D0175776D0 /* CMake ReRun */,
 				175772401757724017577240 /* Sources */,
-				17577DB017577DB017577DB0 /* CMake PostBuild Rules */,
 			);
 			buildRules = (
 			);
@@ -465,9 +445,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 17586B0017586B0017586B00 /* Build configuration list for PBXNativeTarget "libportmidi_s.a" */;
 			buildPhases = (
-				175859C0175859C0175859C0 /* CMake ReRun */,
 				175855A0175855A0175855A0 /* Sources */,
-				175860901758609017586090 /* CMake PostBuild Rules */,
 			);
 			buildRules = (
 			);
@@ -482,9 +460,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 175916301759163017591630 /* Build configuration list for PBXNativeTarget "latency" */;
 			buildPhases = (
-				175904F0175904F0175904F0 /* CMake ReRun */,
 				175901101759011017590110 /* Sources */,
-				17590BC017590BC017590BC0 /* CMake PostBuild Rules */,
 			);
 			buildRules = (
 			);
@@ -500,9 +476,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1759B8801759B8801759B880 /* Build configuration list for PBXNativeTarget "midiclock" */;
 			buildPhases = (
-				1759A7201759A7201759A720 /* CMake ReRun */,
 				1759A3601759A3601759A360 /* Sources */,
-				1759AE201759AE201759AE20 /* CMake PostBuild Rules */,
 			);
 			buildRules = (
 			);
@@ -518,9 +492,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 175A5AD0175A5AD0175A5AD0 /* Build configuration list for PBXNativeTarget "midithread" */;
 			buildPhases = (
-				175A4970175A4970175A4970 /* CMake ReRun */,
 				175A45B0175A45B0175A45B0 /* Sources */,
-				175A5070175A5070175A5070 /* CMake PostBuild Rules */,
 			);
 			buildRules = (
 			);
@@ -536,9 +508,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 175AFD10175AFD10175AFD10 /* Build configuration list for PBXNativeTarget "midithru" */;
 			buildPhases = (
-				175AEBB0175AEBB0175AEBB0 /* CMake ReRun */,
 				175AE7F0175AE7F0175AE7F0 /* Sources */,
-				175AF2B0175AF2B0175AF2B0 /* CMake PostBuild Rules */,
 			);
 			buildRules = (
 			);
@@ -554,9 +524,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 175B9F30175B9F30175B9F30 /* Build configuration list for PBXNativeTarget "mm" */;
 			buildPhases = (
-				175B8DC0175B8DC0175B8DC0 /* CMake ReRun */,
 				175B8A00175B8A00175B8A00 /* Sources */,
-				175B94C0175B94C0175B94C0 /* CMake PostBuild Rules */,
 			);
 			buildRules = (
 			);
@@ -572,9 +540,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 175C4010175C4010175C4010 /* Build configuration list for PBXNativeTarget "sysex" */;
 			buildPhases = (
-				175C2EE0175C2EE0175C2EE0 /* CMake ReRun */,
 				175C2B00175C2B00175C2B00 /* Sources */,
-				175C35B0175C35B0175C35B0 /* CMake PostBuild Rules */,
 			);
 			buildRules = (
 			);
@@ -590,9 +556,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 175CE200175CE200175CE200 /* Build configuration list for PBXNativeTarget "test" */;
 			buildPhases = (
-				175CD0D0175CD0D0175CD0D0 /* CMake ReRun */,
 				175CCCF0175CCCF0175CCCF0 /* Sources */,
-				175CD7A0175CD7A0175CD7A0 /* CMake PostBuild Rules */,
 			);
 			buildRules = (
 			);
@@ -614,7 +578,7 @@
 			hasScannedForEncodings = 0;
 			mainGroup = 175523001755230017552300;
 			projectDirPath = "";
-			projectRoot = /Users/rbd/portmedia/portmidi;
+			projectRoot = "";
 			targets = (
 				1755B9401755B9401755B940 /* ALL_BUILD */,
 				1756A2601756A2601756A260 /* libpmjni.dylib */,
@@ -632,16 +596,6 @@
 /* End PBXProject section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1755BEF01755BEF01755BEF0 /* CMake ReRun */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake ReRun";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi -f /Users/rbd/portmedia/portmidi/CMakeScripts/ReRunCMake.make";
-		};
 		1755C9801755C9801755C980 /* CMake Rules */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -650,17 +604,7 @@
 			name = "CMake Rules";
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi -f /Users/rbd/portmedia/portmidi/CMakeScripts/ALL_BUILD_cmakeRulesBuildPhase.make$CONFIGURATION all";
-		};
-		175694D0175694D0175694D0 /* CMake ReRun */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake ReRun";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi -f /Users/rbd/portmedia/portmidi/CMakeScripts/ReRunCMake.make";
+			shellScript = "make -C /Users/rbd/portmedia/portmidi -f CMakeScripts/ALL_BUILD_cmakeRulesBuildPhase.make$CONFIGURATION all";
 		};
 		17569BA017569BA017569BA0 /* CMake PostBuild Rules */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -670,17 +614,7 @@
 			name = "CMake PostBuild Rules";
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi/pm_common -f /Users/rbd/portmedia/portmidi/pm_common/CMakeScripts/pmjni_postBuildPhase.make$CONFIGURATION all";
-		};
-		175776D0175776D0175776D0 /* CMake ReRun */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake ReRun";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi -f /Users/rbd/portmedia/portmidi/CMakeScripts/ReRunCMake.make";
+			shellScript = "make -C pm_common -f pm_common/CMakeScripts/pmjni_postBuildPhase.make$CONFIGURATION all";
 		};
 		17577DB017577DB017577DB0 /* CMake PostBuild Rules */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -690,17 +624,7 @@
 			name = "CMake PostBuild Rules";
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi/pm_common -f /Users/rbd/portmedia/portmidi/pm_common/CMakeScripts/portmidi-dynamic_postBuildPhase.make$CONFIGURATION all";
-		};
-		175859C0175859C0175859C0 /* CMake ReRun */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake ReRun";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi -f /Users/rbd/portmedia/portmidi/CMakeScripts/ReRunCMake.make";
+			shellScript = "make -C pm_common -f pm_common/CMakeScripts/portmidi-dynamic_postBuildPhase.make$CONFIGURATION all";
 		};
 		175860901758609017586090 /* CMake PostBuild Rules */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -710,17 +634,7 @@
 			name = "CMake PostBuild Rules";
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi/pm_common -f /Users/rbd/portmedia/portmidi/pm_common/CMakeScripts/portmidi-static_postBuildPhase.make$CONFIGURATION all";
-		};
-		175904F0175904F0175904F0 /* CMake ReRun */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake ReRun";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi -f /Users/rbd/portmedia/portmidi/CMakeScripts/ReRunCMake.make";
+			shellScript = "make -C pm_common -f pm_common/CMakeScripts/portmidi-static_postBuildPhase.make$CONFIGURATION all";
 		};
 		17590BC017590BC017590BC0 /* CMake PostBuild Rules */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -730,17 +644,7 @@
 			name = "CMake PostBuild Rules";
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi/pm_test -f /Users/rbd/portmedia/portmidi/pm_test/CMakeScripts/latency_postBuildPhase.make$CONFIGURATION all";
-		};
-		1759A7201759A7201759A720 /* CMake ReRun */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake ReRun";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi -f /Users/rbd/portmedia/portmidi/CMakeScripts/ReRunCMake.make";
+			shellScript = "make -C pm_test -f pm_test/CMakeScripts/latency_postBuildPhase.make$CONFIGURATION all";
 		};
 		1759AE201759AE201759AE20 /* CMake PostBuild Rules */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -750,17 +654,7 @@
 			name = "CMake PostBuild Rules";
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi/pm_test -f /Users/rbd/portmedia/portmidi/pm_test/CMakeScripts/midiclock_postBuildPhase.make$CONFIGURATION all";
-		};
-		175A4970175A4970175A4970 /* CMake ReRun */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake ReRun";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi -f /Users/rbd/portmedia/portmidi/CMakeScripts/ReRunCMake.make";
+			shellScript = "make -C pm_test -f pm_test/CMakeScripts/midiclock_postBuildPhase.make$CONFIGURATION all";
 		};
 		175A5070175A5070175A5070 /* CMake PostBuild Rules */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -770,17 +664,7 @@
 			name = "CMake PostBuild Rules";
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi/pm_test -f /Users/rbd/portmedia/portmidi/pm_test/CMakeScripts/midithread_postBuildPhase.make$CONFIGURATION all";
-		};
-		175AEBB0175AEBB0175AEBB0 /* CMake ReRun */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake ReRun";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi -f /Users/rbd/portmedia/portmidi/CMakeScripts/ReRunCMake.make";
+			shellScript = "make -C pm_test -f pm_test/CMakeScripts/midithread_postBuildPhase.make$CONFIGURATION all";
 		};
 		175AF2B0175AF2B0175AF2B0 /* CMake PostBuild Rules */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -790,17 +674,7 @@
 			name = "CMake PostBuild Rules";
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi/pm_test -f /Users/rbd/portmedia/portmidi/pm_test/CMakeScripts/midithru_postBuildPhase.make$CONFIGURATION all";
-		};
-		175B8DC0175B8DC0175B8DC0 /* CMake ReRun */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake ReRun";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi -f /Users/rbd/portmedia/portmidi/CMakeScripts/ReRunCMake.make";
+			shellScript = "make -C pm_test -f pm_test/CMakeScripts/midithru_postBuildPhase.make$CONFIGURATION all";
 		};
 		175B94C0175B94C0175B94C0 /* CMake PostBuild Rules */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -810,17 +684,7 @@
 			name = "CMake PostBuild Rules";
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi/pm_test -f /Users/rbd/portmedia/portmidi/pm_test/CMakeScripts/mm_postBuildPhase.make$CONFIGURATION all";
-		};
-		175C2EE0175C2EE0175C2EE0 /* CMake ReRun */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake ReRun";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi -f /Users/rbd/portmedia/portmidi/CMakeScripts/ReRunCMake.make";
+			shellScript = "make -C pm_test -f pm_test/CMakeScripts/mm_postBuildPhase.make$CONFIGURATION all";
 		};
 		175C35B0175C35B0175C35B0 /* CMake PostBuild Rules */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -830,17 +694,7 @@
 			name = "CMake PostBuild Rules";
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi/pm_test -f /Users/rbd/portmedia/portmidi/pm_test/CMakeScripts/sysex_postBuildPhase.make$CONFIGURATION all";
-		};
-		175CD0D0175CD0D0175CD0D0 /* CMake ReRun */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake ReRun";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi -f /Users/rbd/portmedia/portmidi/CMakeScripts/ReRunCMake.make";
+			shellScript = "make -C pm_test -f pm_test/CMakeScripts/sysex_postBuildPhase.make$CONFIGURATION all";
 		};
 		175CD7A0175CD7A0175CD7A0 /* CMake PostBuild Rules */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -850,7 +704,7 @@
 			name = "CMake PostBuild Rules";
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi/pm_test -f /Users/rbd/portmedia/portmidi/pm_test/CMakeScripts/test_postBuildPhase.make$CONFIGURATION all";
+			shellScript = "make -C pm_test -f pm_test/CMakeScripts/test_postBuildPhase.make$CONFIGURATION all";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1063,8 +917,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				OTHER_CFLAGS = (
@@ -1092,8 +946,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				OTHER_CFLAGS = (
@@ -1121,8 +975,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				OTHER_CFLAGS = (
@@ -1150,8 +1004,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				OTHER_CFLAGS = (
@@ -1192,12 +1046,12 @@
 				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2 = "'pmjni_EXPORTS'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
 					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
 				);
-				INSTALL_PATH = /Users/rbd/portmedia/portmidi/Debug;
+				INSTALL_PATH = Debug;
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
@@ -1223,7 +1077,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = pmjni;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1255,12 +1111,12 @@
 				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2 = "'pmjni_EXPORTS'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
 					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
 				);
-				INSTALL_PATH = /Users/rbd/portmedia/portmidi/Release;
+				INSTALL_PATH = Release;
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
@@ -1286,7 +1142,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = pmjni;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1318,12 +1176,12 @@
 				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2 = "'pmjni_EXPORTS'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
 					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
 				);
-				INSTALL_PATH = /Users/rbd/portmedia/portmidi/MinSizeRel;
+				INSTALL_PATH = MinSizeRel;
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
@@ -1349,7 +1207,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = pmjni;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1381,12 +1241,12 @@
 				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2 = "'pmjni_EXPORTS'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
 					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
 				);
-				INSTALL_PATH = /Users/rbd/portmedia/portmidi/RelWithDebInfo;
+				INSTALL_PATH = RelWithDebInfo;
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
@@ -1411,7 +1271,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = pmjni;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1443,12 +1305,12 @@
 				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2 = "'portmidi_dynamic_EXPORTS'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
 					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
 				);
-				INSTALL_PATH = /Users/rbd/portmedia/portmidi/Debug;
+				INSTALL_PATH = Debug;
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
@@ -1472,7 +1334,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi_d;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1504,12 +1368,12 @@
 				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2 = "'portmidi_dynamic_EXPORTS'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
 					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
 				);
-				INSTALL_PATH = /Users/rbd/portmedia/portmidi/Release;
+				INSTALL_PATH = Release;
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
@@ -1533,7 +1397,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi_d;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1565,12 +1431,12 @@
 				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2 = "'portmidi_dynamic_EXPORTS'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
 					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
 				);
-				INSTALL_PATH = /Users/rbd/portmedia/portmidi/MinSizeRel;
+				INSTALL_PATH = MinSizeRel;
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
@@ -1594,7 +1460,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi_d;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1626,12 +1494,12 @@
 				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2 = "'portmidi_dynamic_EXPORTS'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
 					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
 				);
-				INSTALL_PATH = /Users/rbd/portmedia/portmidi/RelWithDebInfo;
+				INSTALL_PATH = RelWithDebInfo;
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
@@ -1654,7 +1522,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi_d;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1678,8 +1548,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
 					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
 				);
@@ -1693,7 +1563,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi_s;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1717,8 +1589,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
 					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
 				);
@@ -1732,7 +1604,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi_s;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1756,8 +1630,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
 					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
 				);
@@ -1771,7 +1645,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi_s;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1795,8 +1671,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
 					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
 				);
@@ -1809,7 +1685,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi_s;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1834,8 +1712,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -1845,7 +1723,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/Debug/libportmidi_s.a,
+					Debug/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -1859,7 +1737,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = latency;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1884,8 +1764,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -1895,7 +1775,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/Release/libportmidi_s.a,
+					Release/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -1909,7 +1789,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = latency;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1934,8 +1816,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -1945,7 +1827,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/MinSizeRel/libportmidi_s.a,
+					MinSizeRel/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -1959,7 +1841,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = latency;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1984,8 +1868,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -1994,7 +1878,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/RelWithDebInfo/libportmidi_s.a,
+					RelWithDebInfo/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2008,7 +1892,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = latency;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2033,8 +1919,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2044,7 +1930,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/Debug/libportmidi_s.a,
+					Debug/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2058,7 +1944,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midiclock;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2083,8 +1971,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2094,7 +1982,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/Release/libportmidi_s.a,
+					Release/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2108,7 +1996,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midiclock;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2133,8 +2023,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2144,7 +2034,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/MinSizeRel/libportmidi_s.a,
+					MinSizeRel/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2158,7 +2048,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midiclock;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2183,8 +2075,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2193,7 +2085,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/RelWithDebInfo/libportmidi_s.a,
+					RelWithDebInfo/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2207,7 +2099,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midiclock;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2232,8 +2126,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2243,7 +2137,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/Debug/libportmidi_s.a,
+					Debug/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2257,7 +2151,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithread;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2282,8 +2178,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2293,7 +2189,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/Release/libportmidi_s.a,
+					Release/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2307,7 +2203,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithread;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2332,8 +2230,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2343,7 +2241,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/MinSizeRel/libportmidi_s.a,
+					MinSizeRel/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2357,7 +2255,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithread;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2382,8 +2282,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2392,7 +2292,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/RelWithDebInfo/libportmidi_s.a,
+					RelWithDebInfo/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2406,7 +2306,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithread;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2431,8 +2333,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2442,7 +2344,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/Debug/libportmidi_s.a,
+					Debug/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2456,7 +2358,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithru;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2481,8 +2385,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2492,7 +2396,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/Release/libportmidi_s.a,
+					Release/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2506,7 +2410,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithru;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2531,8 +2437,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2542,7 +2448,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/MinSizeRel/libportmidi_s.a,
+					MinSizeRel/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2556,7 +2462,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithru;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2581,8 +2489,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2591,7 +2499,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/RelWithDebInfo/libportmidi_s.a,
+					RelWithDebInfo/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2605,7 +2513,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithru;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2630,8 +2540,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2641,7 +2551,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/Debug/libportmidi_s.a,
+					Debug/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2655,7 +2565,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = mm;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2680,8 +2592,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2691,7 +2603,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/Release/libportmidi_s.a,
+					Release/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2705,7 +2617,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = mm;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2730,8 +2644,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2741,7 +2655,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/MinSizeRel/libportmidi_s.a,
+					MinSizeRel/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2755,7 +2669,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = mm;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2780,8 +2696,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2790,7 +2706,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/RelWithDebInfo/libportmidi_s.a,
+					RelWithDebInfo/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2804,7 +2720,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = mm;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2829,8 +2747,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2840,7 +2758,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/Debug/libportmidi_s.a,
+					Debug/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2854,7 +2772,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = sysex;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2879,8 +2799,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2890,7 +2810,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/Release/libportmidi_s.a,
+					Release/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2904,7 +2824,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = sysex;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2929,8 +2851,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2940,7 +2862,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/MinSizeRel/libportmidi_s.a,
+					MinSizeRel/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -2954,7 +2876,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = sysex;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2979,8 +2903,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -2989,7 +2913,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/RelWithDebInfo/libportmidi_s.a,
+					RelWithDebInfo/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -3003,7 +2927,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = sysex;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -3028,8 +2954,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -3039,7 +2965,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/Debug/libportmidi_s.a,
+					Debug/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -3053,7 +2979,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = test;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -3078,8 +3006,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -3089,7 +3017,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/Release/libportmidi_s.a,
+					Release/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -3103,7 +3031,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = test;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -3128,8 +3058,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -3139,7 +3069,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/MinSizeRel/libportmidi_s.a,
+					MinSizeRel/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -3153,7 +3083,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = test;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -3178,8 +3110,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
-					/Users/rbd/portmedia/portmidi/pm_common,
-					/Users/rbd/portmedia/portmidi/porttime,
+					pm_common,
+					porttime,
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
@@ -3188,7 +3120,7 @@
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
-					/Users/rbd/portmedia/portmidi/RelWithDebInfo/libportmidi_s.a,
+					RelWithDebInfo/libportmidi_s.a,
 					"-framework",
 					CoreAudio,
 					"-framework",
@@ -3202,7 +3134,9 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = test;
 				SECTORDER_FLAGS = "";
-				SYMROOT = /Users/rbd/portmedia/portmidi;
+FOUND SYMROOT: 
+FOUND SYMROOT: 
+				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",

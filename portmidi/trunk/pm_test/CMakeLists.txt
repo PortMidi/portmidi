@@ -8,7 +8,7 @@ message(STATUS "pm_test: EXECUTABLE_OUTPUT_PATH " ${EXECUTABLE_OUTPUT_PATH}
 
 macro(make_a_test name)
   add_executable(${name} ${name})
-  target_link_libraries(${name} portmidi-static ${PM_NEEDED_FRAMEWORKS})
+  target_link_libraries(${name} portmidi-static ${PM_NEEDED_LIBS})
 endmacro(make_a_test)
 
 make_a_test(test)

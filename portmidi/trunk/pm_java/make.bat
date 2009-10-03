@@ -14,13 +14,13 @@ mkdir win32
 
 rem Attempt to copy the interface DLL to the distribution directory.
 
-if exist "pmjni\release\pmjni.dll"  goto have-dll
+if exist "..\release\pmjni.dll"  goto have-dll
 
 echo "ERROR: pmjni.dll not found!"
 exit /b 1
 
 :have-dll
-copy "pmjni\release\pmjni.dll" win32\pmjni.dll > nul
+copy "..\release\pmjni.dll" win32\pmjni.dll > nul
 
 rem Create a java archive (jar) file of the distribution.
 jar cmf pmdefaults\manifest.txt win32\pmdefaults.jar pmdefaults\*.class portmusic_logo.png jportmidi\*.class

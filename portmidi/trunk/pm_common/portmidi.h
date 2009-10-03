@@ -91,8 +91,13 @@ extern "C" {
  *        stopping your program and printing error messages when an error
  *        occurs. This also uses stdio for console text I/O.
  */
- 
+
+#ifndef WIN32
+// Linux and OS X have stdint.h
 #include <stdint.h>
+#else
+#include "win32_stdint.h"
+#endif
 
 #ifndef FALSE
     #define FALSE 0

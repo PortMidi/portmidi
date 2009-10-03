@@ -23,7 +23,6 @@
 /* asserts used to verify portMidi code logic is sound; later may want
     something more graceful */
 #include <assert.h>
-#define DEBUG 1
 #ifdef DEBUG
 /* this printf stuff really important for debugging client app w/host errors.
     probably want to do something else besides read/write from/to console
@@ -1340,7 +1339,7 @@ static void CALLBACK winmm_streamout_callback(HMIDIOUT hmo, UINT wMsg,
     /* printf("streamout_callback: hdr %x, wMsg %x, MOM_DONE %x\n", 
            hdr, wMsg, MOM_DONE); */
     if (wMsg == MOM_DONE) {
-        MMRETURN ret = midiOutUnprepareHeader(m->handle.out, hdr, 
+        MMRESULT ret = midiOutUnprepareHeader(m->handle.out, hdr, 
                                               sizeof(MIDIHDR));
         assert(ret == MMSYSERR_NOERROR);
     }

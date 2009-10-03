@@ -217,7 +217,7 @@ static PmError none_open(PmInternal *midi, void *driverInfo) {
     return pmBadPtr;
 }
 static void none_get_host_error(PmInternal * midi, char * msg, unsigned int len) {
-    strcpy(msg, "");
+    *msg = 0; // empty string
 }
 static unsigned int none_has_host_error(PmInternal * midi) {
     return FALSE;

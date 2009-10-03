@@ -7,7 +7,11 @@
 
 /* Should there be a way to choose the source of time here? */
 
+#ifdef WIN32
+#include "win32_stdint.h"
+#else
 #include <stdint.h> // needed for int32_t
+#endif
 
 #ifdef __cplusplus
 extern "C" {

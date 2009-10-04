@@ -213,7 +213,7 @@ private void doascii(char c)
         int input_tempo = get_number("Enter new tempo (bpm): ");
         if (input_tempo >= 1 && input_tempo <= 300) {
             printf("Changing tempo to %d\n", input_tempo);
-            tempo = input_tempo;
+            tempo = (float) input_tempo;
         } else {
             printf("Tempo range is 1 to 300, current tempo is %g bpm\n", 
                    tempo);

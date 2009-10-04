@@ -14,11 +14,14 @@ macro(prepend_path RESULT PATH)
   endforeach(FILE)
 endmacro(prepend_path)
 
-set(CMAKE_C_FLAGS_DEBUG "-g -DPM_CHECK_ERRORS=1 -DDEBUG"
+set(CMAKE_C_FLAGS_DEBUG "-DPM_CHECK_ERRORS=1 -DDEBUG"
     CACHE STRING "enable extra checks for debugging" FORCE)
 
 # first include the appropriate system-dependent file:
 if(UNIX)
+  # add the -g switch for Linux and Mac OS X (not used in Win32)
+  set (CMAKE_C_FLAGS_DEBUG "-g ${CMAKE_C_FLAGS_DEBUG}" 
+       CACHE STRING "enable extra checks for debugging" FORCE)
   if(APPLE)
     set(MACSRC pmmacosxcm pmmac readbinaryplist finddefault)
     prepend_path(LIBSRC ../pm_mac/ ${MACSRC})

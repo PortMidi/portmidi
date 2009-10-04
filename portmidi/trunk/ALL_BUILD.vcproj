@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="ALL_BUILD"
-	ProjectGUID="{AFA363C0-CE39-44CC-8852-6DB0853DC339}"
+	ProjectGUID="{8764849E-4A2C-4726-92BD-9576C7B711D5}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -20,7 +20,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="C:\Users\rbd\portmidi\pm_common;C:\Users\rbd\portmidi\porttime;"
+				AdditionalIncludeDirectories=".\pm_common;.\porttime;"
 				ExceptionHandling="0"
 				PreprocessorDefinitions="CMAKE_INTDIR=\&quot;Debug\&quot;"
 				AssemblerListingLocation="Debug"
@@ -30,7 +30,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories="C:\Users\rbd\portmidi\pm_common;C:\Users\rbd\portmidi\porttime;"
+				AdditionalIncludeDirectories=".\pm_common;.\porttime;"
 				PreprocessorDefinitions="CMAKE_INTDIR=\&quot;Debug\&quot;"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -61,7 +61,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="C:\Users\rbd\portmidi\pm_common;C:\Users\rbd\portmidi\porttime;"
+				AdditionalIncludeDirectories=".\pm_common;.\porttime;"
 				ExceptionHandling="0"
 				PreprocessorDefinitions="CMAKE_INTDIR=\&quot;Release\&quot;"
 				AssemblerListingLocation="Release"
@@ -71,7 +71,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories="C:\Users\rbd\portmidi\pm_common;C:\Users\rbd\portmidi\porttime;"
+				AdditionalIncludeDirectories=".\pm_common;.\porttime;"
 				PreprocessorDefinitions="CMAKE_INTDIR=\&quot;Release\&quot;"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -95,42 +95,21 @@
 	</Configurations>
 	<Files>
 			<File
-				RelativePath="C:\Users\rbd\portmidi\CMakeFiles\ALL_BUILD">
-			</File>
-			<File
-				RelativePath="C:\Users\rbd\portmidi\CMakeLists.txt">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-					Name="VCCustomBuildTool"
-					Description="Building Custom Rule C:/Users/rbd/portmidi/CMakeLists.txt"
-					CommandLine="&quot;C:\Program Files\CMake 2.6\bin\cmake.exe&quot; -HC:/Users/rbd/portmidi -BC:/Users/rbd/portmidi --check-stamp-file CMakeFiles/generate.stamp"
-					AdditionalDependencies="C:\Users\rbd\portmidi\CMakeLists.txt;C:\Users\rbd\portmidi\CMakeFiles\CMakeSystem.cmake;C:\Users\rbd\portmidi\CMakeFiles\CMakeCCompiler.cmake;C:\Users\rbd\portmidi\CMakeFiles\CMakeCXXCompiler.cmake;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\CMakeSystemSpecificInformation.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\CMakeGenericSystem.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\Platform\gcc.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\Platform\WindowsPaths.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\CMakeCInformation.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake&quot;;C:\Users\rbd\portmidi\CMakeFiles\CMakeCPlatform.cmake;C:\Users\rbd\portmidi\CMakeFiles\CMakeCXXPlatform.cmake;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\Platform\cl.cmake&quot;;C:\Users\rbd\portmidi\CMakeFiles\CMakeRCCompiler.cmake;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\CMakeRCInformation.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXInformation.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;C:\Users\rbd\portmidi\CMakeLists.txt;"
-					Outputs="CMakeFiles\generate.stamp"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-					Name="VCCustomBuildTool"
-					Description="Building Custom Rule C:/Users/rbd/portmidi/CMakeLists.txt"
-					CommandLine="&quot;C:\Program Files\CMake 2.6\bin\cmake.exe&quot; -HC:/Users/rbd/portmidi -BC:/Users/rbd/portmidi --check-stamp-file CMakeFiles/generate.stamp"
-					AdditionalDependencies="C:\Users\rbd\portmidi\CMakeLists.txt;C:\Users\rbd\portmidi\CMakeFiles\CMakeSystem.cmake;C:\Users\rbd\portmidi\CMakeFiles\CMakeCCompiler.cmake;C:\Users\rbd\portmidi\CMakeFiles\CMakeCXXCompiler.cmake;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\CMakeSystemSpecificInformation.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\CMakeGenericSystem.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\Platform\gcc.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\Platform\WindowsPaths.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\CMakeCInformation.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\Platform\Windows-cl.cmake&quot;;C:\Users\rbd\portmidi\CMakeFiles\CMakeCPlatform.cmake;C:\Users\rbd\portmidi\CMakeFiles\CMakeCXXPlatform.cmake;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\Platform\cl.cmake&quot;;C:\Users\rbd\portmidi\CMakeFiles\CMakeRCCompiler.cmake;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\CMakeRCInformation.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\CMakeCXXInformation.cmake&quot;;&quot;C:\Program Files\CMake 2.6\share\cmake-2.6\Modules\CMakeCommonLanguageInclude.cmake&quot;;C:\Users\rbd\portmidi\CMakeLists.txt;"
-					Outputs="CMakeFiles\generate.stamp"/>
-				</FileConfiguration>
+				RelativePath=".\CMakeFiles\ALL_BUILD">
 			</File>
 		<Filter
 			Name="CMake Rules"
 			Filter="">
 			<File
-				RelativePath="C:\Users\rbd\portmidi\CMakeFiles\ALL_BUILD.rule">
+				RelativePath=".\CMakeFiles\ALL_BUILD.rule">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
 					Name="VCCustomBuildTool"
 					Description="Build all projects"
 					CommandLine=""
-					AdditionalDependencies="C:\Users\rbd\portmidi\CMakeFiles\ALL_BUILD.rule"
-					Outputs="C:\Users\rbd\portmidi\CMakeFiles\ALL_BUILD"/>
+					AdditionalDependencies=".\CMakeFiles\ALL_BUILD.rule"
+					Outputs=".\CMakeFiles\ALL_BUILD"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
@@ -138,8 +117,8 @@
 					Name="VCCustomBuildTool"
 					Description="Build all projects"
 					CommandLine=""
-					AdditionalDependencies="C:\Users\rbd\portmidi\CMakeFiles\ALL_BUILD.rule"
-					Outputs="C:\Users\rbd\portmidi\CMakeFiles\ALL_BUILD"/>
+					AdditionalDependencies=".\CMakeFiles\ALL_BUILD.rule"
+					Outputs=".\CMakeFiles\ALL_BUILD"/>
 				</FileConfiguration>
 			</File>
 		</Filter>

@@ -541,7 +541,7 @@ PmError Pm_Write( PortMidiStream *stream, PmEvent *buffer, int32_t length)
                     unsigned char *ptr = midi->fill_base + 
                                          *(midi->fill_offset_ptr);
                     ptr[0] = msg; ptr[1] = msg >> 8; 
-                    ptr[2] = msg >> 18; ptr[3] = msg >> 24;
+                    ptr[2] = msg >> 16; ptr[3] = msg >> 24;
                     (*midi->fill_offset_ptr) += 4;
                      continue;
             }

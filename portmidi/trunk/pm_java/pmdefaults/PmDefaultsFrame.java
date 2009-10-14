@@ -18,6 +18,7 @@ import jportmidi.*;
 import jportmidi.JPortMidiApi.*;
 import java.util.ArrayList;
 import java.util.prefs.*;
+import java.net.*;
 
 public class PmDefaultsFrame extends JFrame 
         implements ActionListener, ComponentListener {
@@ -363,7 +364,10 @@ public class PmDefaultsFrame extends JFrame
         closeButton.addActionListener(this);
         wholePanel.add(closeButton);
 
-        ImageIcon icon = new ImageIcon("portmusic_logo.png");
+	// load the logo from the jar file
+	ClassLoader cldr = this.getClass().getClassLoader();
+	URL logoURL = cldr.getResource("portmusic_logo.png");
+        ImageIcon icon = new ImageIcon(logoURL);
         logo = new JLabel(icon);
         logo.setSize(logo.getPreferredSize());
         wholePanel.add(logo);

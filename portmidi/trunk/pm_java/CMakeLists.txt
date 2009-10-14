@@ -36,13 +36,12 @@ if(UNIX)
     add_custom_target(pmdefaults_target ALL 
         DEPENDS ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/pmdefaults.jar)
     message(STATUS "add_custom_target: pmdefaults.jar")
-#    set(JAVA_SRC jportmidi/JPortMidiException.java
-#                 jportmidi/JPortMidi.java
-#		 jportmidi/JPortMidiApi.java
-#		 pmdefaults/PmDefaults.java
-#                 pmdefaults/PmDefaultsFrame.java)
-#    add_executable(PmDefaults ${JAVA_SRC})
-#    set_target_properties(PmDefaults PROPERTIES LINKER_LANGUAGE Java)
+
+    # install the libraries (Linux only)
+    INSTALL(FILES ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/pmdefaults.jar
+      DESTINATION /usr/share/java)
+    INSTALL(PROGRAMS ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/pmdefaults
+      DESTINATION /usr/local/bin)
   endif(APPLE)
 endif(UNIX)
 # In windows, use pm_java/make.bat

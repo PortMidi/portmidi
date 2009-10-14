@@ -120,4 +120,9 @@ add_library(pmjni SHARED ${JNISRC})
 target_link_libraries(pmjni ${JNI_EXTRA_LIBS})
 set_target_properties(pmjni PROPERTIES EXECUTABLE_EXTENSION "jnilib")
 
-
+# install the libraries (Linux only)
+if(UNIX AND NOT APPLE)
+  INSTALL(TARGETS portmidi-static portmidi-dynamic pmjni
+    LIBRARY DESTINATION /usr/local/lib
+    ARCHIVE DESTINATION /usr/local/lib)
+endif(UNIX AND NOT APPLE)

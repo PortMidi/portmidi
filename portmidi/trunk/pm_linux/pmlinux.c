@@ -48,7 +48,6 @@ void pm_init()
     pm_default_output_device_id = find_default_device(
         "/PortMidi/PM_RECOMMENDED_OUTPUT_DEVICE", FALSE,
         pm_default_output_device_id);
-    return pmNoError;
 }
 
 void pm_term(void)

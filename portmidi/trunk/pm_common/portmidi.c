@@ -1039,7 +1039,7 @@ void pm_read_short(PmInternal *midi, PmEvent *event)
 /*
  * returns how many bytes processed
  */
-unsigned int pm_read_bytes(PmInternal *midi, unsigned char *data, 
+unsigned int pm_read_bytes(PmInternal *midi, const unsigned char *data, 
                     int len, PmTimestamp timestamp)
 {
     int i = 0; /* index into data, must not be unsigned (!) */

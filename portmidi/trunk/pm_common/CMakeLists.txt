@@ -2,10 +2,18 @@
 
 # set the build directory for libportmidi.a to be in portmidi, not in 
 #    portmidi/pm_common
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-# set the build directory for .dylib libraries
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+if(APPLE OR WIN32)
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+  # set the build directory for .dylib libraries
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+else(APPLE OR WIN32)
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}
+      CACHE STRING "libraries go here")
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE}
+      CACHE STRING "libraries go here")
+  set(LINUX_FLAGS "-DPMALSA")
+endif(APPLE OR WIN32)
 
 macro(prepend_path RESULT PATH)
   set(${RESULT})
@@ -14,8 +22,15 @@ macro(prepend_path RESULT PATH)
   endforeach(FILE)
 endmacro(prepend_path)
 
-set(CMAKE_C_FLAGS_DEBUG "-DPM_CHECK_ERRORS=1 -DDEBUG"
+message(STATUS "Flags before setting, debug: " ${CMAKE_C_FLAGS_DEBUG}
+	       " release " ${CMAKE_C_FLAGS_RELEASE} " general "
+	       ${CMAKE_C_FLAGS})
+
+set(CMAKE_C_FLAGS_DEBUG "-DPM_CHECK_ERRORS=1 -DDEBUG ${LINUX_FLAGS}"
     CACHE STRING "enable extra checks for debugging" FORCE)
+
+set(CMAKE_C_FLAGS_RELEASE ${LINUX_FLAGS}
+    CACHE STRING "flags for release version" FORCE)
 
 # first include the appropriate system-dependent file:
 if(UNIX)
@@ -38,8 +53,33 @@ if(UNIX)
         CACHE INTERNAL "")
 
     set(JAVAVM_LIB "${FRAMEWORK_PATH}/JavaVM.framework")
-    set(JAVA_INCLUDE_PATH ${JAVAVM_LIB}/Headers)
+    set(JAVA_INCLUDE_PATHS ${JAVAVM_LIB}/Headers)
     message(STATUS "SYSROOT: " ${CMAKE_OSX_SYSROOT})
+  else(APPLE)
+    # LINUX settings...
+    include(FindJNI)
+    # message(STATUS "JAVA_JVM_LIB_PATH is " ${JAVA_JVM_LIB_PATH})
+    # message(STATUS "JAVA_INCLUDE_PATH is " ${JAVA_INCLUDE_PATH})
+    # note: should use JAVA_JVM_LIB_PATH, but it is not set properly
+    # note: user might need to set JAVA_INCLUDE_PATH manually
+    #
+    # this will probably break on BSD and other Unix systems; the fix
+    # depends on whether FindJNI can find Java or not. If yes, then
+    # we should try to rely on automatically set JAVA_INCLUDE_PATH and
+    # JAVA_INCLUDE_PATH2; if no, then we need to make both JAVA_INCLUDE_PATH
+    # and JAVA_INCLUDE_PATH2 set by user (will need clear documentation
+    # because JAVA_INCLUDE_PATH2 is pretty obscure)
+    set(JAVA_INCLUDE_PATH  ${JAVA_INCLUDE_PATH-UNKNOWN}
+        CACHE STRING "where to find Java SDK include directory")
+    set(JAVA_INCLUDE_PATHS ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH}/linux)
+    # libjvm.so is found relative to JAVA_INCLUDE_PATH:
+    set(JAVAVM_LIB ${JAVA_INCLUDE_PATH}/../jre/lib/i386/client/libjvm.so)
+
+    set(LINUXSRC pmlinuxalsa pmlinux finddefault)
+    prepend_path(LIBSRC ../pm_linux/ ${LINUXSRC})
+    list(APPEND LIBSRC ../porttime/ptlinux)
+
+    set(PM_NEEDED_LIBS pthread asound)
   endif(APPLE)
 else(UNIX)
   if(WIN32)
@@ -47,8 +87,8 @@ else(UNIX)
     # note: should use JAVA_JVM_LIB_PATH, but it is not set properly
     set(JAVAVM_LIB ${JAVA_INCLUDE_PATH}/../lib/jvm.lib)
 
-    list(APPEND JAVA_INCLUDE_PATH ${JAVA_INCLUDE_PATH2})
-    message(STATUS "JAVA_INCLUDE_PATH: " ${JAVA_INCLUDE_PATH})
+    set(JAVA_INCLUDE_PATHS ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2})
+    message(STATUS "JAVA_INCLUDE_PATHS: " ${JAVA_INCLUDE_PATHS})
 
     set(WINSRC pmwin pmwinmm)
     prepend_path(LIBSRC ../pm_win/ ${WINSRC})
@@ -73,7 +113,7 @@ target_link_libraries(portmidi-dynamic ${PM_NEEDED_LIBS})
 
 
 # define the jni library
-include_directories(${JAVA_INCLUDE_PATH})
+include_directories(${JAVA_INCLUDE_PATHS})
 
 set(JNISRC ${LIBSRC} ../pm_java/pmjni/pmjni.c)
 add_library(pmjni SHARED ${JNISRC})

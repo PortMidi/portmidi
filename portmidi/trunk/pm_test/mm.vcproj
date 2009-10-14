@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="mm"
-	ProjectGUID="{133829BF-36B6-4E3B-A67B-E211D15D7BB4}"
+	ProjectGUID="{E24BC9AA-DE6C-4779-97C6-1C10C86790EE}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -28,7 +28,7 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"
 				AssemblerListingLocation="Debug"
 				ObjectFile="$(IntDir)\"
-				ProgramDataBaseFileName="../Debug/mm.pdb"
+				ProgramDataBaseFileName="../pm_test/Debug/mm.pdb"
 />
 			<Tool
 				Name="VCCustomBuildTool"/>
@@ -58,12 +58,12 @@
 				Name="VCLinkerTool"
 				AdditionalOptions=" /STACK:10000000 /machine:I386 /debug"
 				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  ..\Debug\portmidi_s.lib winmm.lib "
-				OutputFile="..\Debug\mm.exe"
+				OutputFile="..\pm_test\Debug\mm.exe"
 				Version="0.0"
 				GenerateManifest="TRUE"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
-				ProgramDataBaseFile="../Debug/mm.pdb"
+				ProgramDataBaseFile="../pm_test/Debug/mm.pdb"
 				SubSystem="1"
 				ImportLibrary="..\pm_test\Debug\mm.lib"/>
 		</Configuration>
@@ -81,24 +81,21 @@
 				AdditionalIncludeDirectories="..\pm_common;..\porttime;"
 				CompileAs="1"
 				ExceptionHandling="0"
-				InlineFunctionExpansion="2"
-				Optimization="2"
-				RuntimeLibrary="2"
 				WarningLevel="3"
-				PreprocessorDefinitions="WIN32,_WINDOWS,NDEBUG,CMAKE_INTDIR=\&quot;Release\&quot;"
+				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;"
 				AssemblerListingLocation="Release"
 				ObjectFile="$(IntDir)\"
-				ProgramDataBaseFileName="../Release/mm.pdb"
+				ProgramDataBaseFileName="../pm_test/Release/mm.pdb"
 />
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
 				AdditionalIncludeDirectories="..\pm_common;..\porttime;"
-				PreprocessorDefinitions="WIN32,_WINDOWS,NDEBUG,CMAKE_INTDIR=\&quot;Release\&quot;"/>
+				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;"/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="WIN32,_WINDOWS,NDEBUG,CMAKE_INTDIR=\&quot;Release\&quot;"
+				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;"
 				MkTypLibCompatible="FALSE"
 				TargetEnvironment="1"
 				GenerateStublessProxies="TRUE"
@@ -118,12 +115,12 @@
 				Name="VCLinkerTool"
 				AdditionalOptions=" /STACK:10000000 /machine:I386"
 				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  ..\Release\portmidi_s.lib winmm.lib "
-				OutputFile="..\Release\mm.exe"
+				OutputFile="..\pm_test\Release\mm.exe"
 				Version="0.0"
 				GenerateManifest="TRUE"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
-				ProgramDataBaseFile="../Release/mm.pdb"
+				ProgramDataBaseFile="../pm_test/Release/mm.pdb"
 				SubSystem="1"
 				ImportLibrary="..\pm_test\Release\mm.lib"/>
 		</Configuration>

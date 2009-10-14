@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="ZERO_CHECK"
-	ProjectGUID="{CD8798A7-189E-49AE-81A2-6DB6D87FF1DF}"
+	ProjectGUID="{FF112B48-D7EB-4376-BA81-5DA50578E981}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform

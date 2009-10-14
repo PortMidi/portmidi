@@ -125,4 +125,6 @@ if(UNIX AND NOT APPLE)
   INSTALL(TARGETS portmidi-static portmidi-dynamic pmjni
     LIBRARY DESTINATION /usr/local/lib
     ARCHIVE DESTINATION /usr/local/lib)
+  INSTALL(FILES portmidi.h ../porttime/porttime.h
+    DESTINATION /usr/local/include)
 endif(UNIX AND NOT APPLE)

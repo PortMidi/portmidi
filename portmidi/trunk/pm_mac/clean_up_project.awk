@@ -58,7 +58,7 @@ state == "normal" {
     };
     if (index($0, "SYMROOT =") > 0) {
         sub(base_path, "\".\"", $0);
-        print "FOUND SYMROOT: "
+        # print "FOUND SYMROOT: "
     };
     if (index($0, "buildPhases = (") > 0) {
         state = "build_phases"

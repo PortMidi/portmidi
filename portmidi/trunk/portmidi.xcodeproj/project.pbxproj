@@ -7,22 +7,22 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		1755B9401755B9401755B940 /* ALL_BUILD */ = {
+		17503FC017503FC017503FC0 /* ALL_BUILD */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = 1755DB301755DB301755DB30 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
+			buildConfigurationList = 175051901750519017505190 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
 			buildPhases = (
 			);
 			dependencies = (
-				175D6180175D6180175D6180 /* PBXTargetDependency */,
-				175D68E0175D68E0175D68E0 /* PBXTargetDependency */,
-				175D7040175D7040175D7040 /* PBXTargetDependency */,
-				175D77A0175D77A0175D77A0 /* PBXTargetDependency */,
-				175D7E90175D7E90175D7E90 /* PBXTargetDependency */,
-				175D8670175D8670175D8670 /* PBXTargetDependency */,
-				175D8D60175D8D60175D8D60 /* PBXTargetDependency */,
-				175D9510175D9510175D9510 /* PBXTargetDependency */,
-				175D9BE0175D9BE0175D9BE0 /* PBXTargetDependency */,
-				175DA3A0175DA3A0175DA3A0 /* PBXTargetDependency */,
+				175218D0175218D0175218D0 /* PBXTargetDependency */,
+				175220101752201017522010 /* PBXTargetDependency */,
+				175684401756844017568440 /* PBXTargetDependency */,
+				1751CC001751CC001751CC00 /* PBXTargetDependency */,
+				16FB22016FB22016FB220000 /* PBXTargetDependency */,
+				16F491016F491016F4910000 /* PBXTargetDependency */,
+				17569F4017569F4017569F40 /* PBXTargetDependency */,
+				17908C1017908C1017908C10 /* PBXTargetDependency */,
+				179098201790982017909820 /* PBXTargetDependency */,
+				17909F8017909F8017909F80 /* PBXTargetDependency */,
 			);
 			name = ALL_BUILD;
 			productName = ALL_BUILD;
@@ -30,380 +30,380 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		175635F0175635F0175635F0 /* pmmacosxcm.c in Sources */ = {isa = PBXBuildFile; fileRef = 175633701756337017563370 /* pmmacosxcm.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175643F0175643F0175643F0 /* pmmac.c in Sources */ = {isa = PBXBuildFile; fileRef = 17563C7017563C7017563C70 /* pmmac.c */; settings = {COMPILER_FLAGS = ""; }; };
-		17564A5017564A5017564A50 /* readbinaryplist.c in Sources */ = {isa = PBXBuildFile; fileRef = 175646A0175646A0175646A0 /* readbinaryplist.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175659001756590017565900 /* finddefault.c in Sources */ = {isa = PBXBuildFile; fileRef = 175651601756516017565160 /* finddefault.c */; settings = {COMPILER_FLAGS = ""; }; };
-		17565F8017565F8017565F80 /* ptmacosx_mach.c in Sources */ = {isa = PBXBuildFile; fileRef = 17565BB017565BB017565BB0 /* ptmacosx_mach.c */; settings = {COMPILER_FLAGS = ""; }; };
-		17566E6017566E6017566E60 /* pmutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 175666901756669017566690 /* pmutil.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175674601756746017567460 /* portmidi.c in Sources */ = {isa = PBXBuildFile; fileRef = 175671101756711017567110 /* portmidi.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175683201756832017568320 /* pmjni.c in Sources */ = {isa = PBXBuildFile; fileRef = 17567B5017567B5017567B50 /* pmjni.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175737D0175737D0175737D0 /* pmmacosxcm.c in Sources */ = {isa = PBXBuildFile; fileRef = 175633701756337017563370 /* pmmacosxcm.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175741E0175741E0175741E0 /* pmmac.c in Sources */ = {isa = PBXBuildFile; fileRef = 17563C7017563C7017563C70 /* pmmac.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175749701757497017574970 /* readbinaryplist.c in Sources */ = {isa = PBXBuildFile; fileRef = 175646A0175646A0175646A0 /* readbinaryplist.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175751001757510017575100 /* finddefault.c in Sources */ = {isa = PBXBuildFile; fileRef = 175651601756516017565160 /* finddefault.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175758F0175758F0175758F0 /* ptmacosx_mach.c in Sources */ = {isa = PBXBuildFile; fileRef = 17565BB017565BB017565BB0 /* ptmacosx_mach.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175760B0175760B0175760B0 /* pmutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 175666901756669017566690 /* pmutil.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175768301757683017576830 /* portmidi.c in Sources */ = {isa = PBXBuildFile; fileRef = 175671101756711017567110 /* portmidi.c */; settings = {COMPILER_FLAGS = ""; }; };
-		17581A4017581A4017581A40 /* pmmacosxcm.c in Sources */ = {isa = PBXBuildFile; fileRef = 175633701756337017563370 /* pmmacosxcm.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175824F0175824F0175824F0 /* pmmac.c in Sources */ = {isa = PBXBuildFile; fileRef = 17563C7017563C7017563C70 /* pmmac.c */; settings = {COMPILER_FLAGS = ""; }; };
-		17582C9017582C9017582C90 /* readbinaryplist.c in Sources */ = {isa = PBXBuildFile; fileRef = 175646A0175646A0175646A0 /* readbinaryplist.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175831001758310017583100 /* finddefault.c in Sources */ = {isa = PBXBuildFile; fileRef = 175651601756516017565160 /* finddefault.c */; settings = {COMPILER_FLAGS = ""; }; };
-		17583BE017583BE017583BE0 /* ptmacosx_mach.c in Sources */ = {isa = PBXBuildFile; fileRef = 17565BB017565BB017565BB0 /* ptmacosx_mach.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175843A0175843A0175843A0 /* pmutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 175666901756669017566690 /* pmutil.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175848601758486017584860 /* portmidi.c in Sources */ = {isa = PBXBuildFile; fileRef = 175671101756711017567110 /* portmidi.c */; settings = {COMPILER_FLAGS = ""; }; };
-		1758F3A01758F3A01758F3A0 /* latency.c in Sources */ = {isa = PBXBuildFile; fileRef = 1758EC301758EC301758EC30 /* latency.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175998F0175998F0175998F0 /* midiclock.c in Sources */ = {isa = PBXBuildFile; fileRef = 175991901759919017599190 /* midiclock.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175A3B30175A3B30175A3B30 /* midithread.c in Sources */ = {isa = PBXBuildFile; fileRef = 175A3400175A3400175A3400 /* midithread.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175ADD80175ADD80175ADD80 /* midithru.c in Sources */ = {isa = PBXBuildFile; fileRef = 175AD650175AD650175AD650 /* midithru.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175B7F90175B7F90175B7F90 /* mm.c in Sources */ = {isa = PBXBuildFile; fileRef = 175B7890175B7890175B7890 /* mm.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175C20A0175C20A0175C20A0 /* sysex.c in Sources */ = {isa = PBXBuildFile; fileRef = 175C1950175C1950175C1950 /* sysex.c */; settings = {COMPILER_FLAGS = ""; }; };
-		175CC290175CC290175CC290 /* test.c in Sources */ = {isa = PBXBuildFile; fileRef = 175CBB70175CBB70175CBB70 /* test.c */; settings = {COMPILER_FLAGS = ""; }; };
+		16F3DC016F3DC016F3DC0000 /* pmutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 16D4B2016D4B2016D4B20000 /* pmutil.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175027001750270017502700 /* ptmacosx_mach.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E3900175E3900175E3900 /* ptmacosx_mach.c */; settings = {COMPILER_FLAGS = ""; }; };
+		17575F6017575F6017575F60 /* test.c in Sources */ = {isa = PBXBuildFile; fileRef = 17575C6017575C6017575C60 /* test.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175826401758264017582640 /* sysex.c in Sources */ = {isa = PBXBuildFile; fileRef = 175823401758234017582340 /* sysex.c */; settings = {COMPILER_FLAGS = ""; }; };
+		17594B3017594B3017594B30 /* midithread.c in Sources */ = {isa = PBXBuildFile; fileRef = 175948201759482017594820 /* midithread.c */; settings = {COMPILER_FLAGS = ""; }; };
+		1759F4B01759F4B01759F4B0 /* midithru.c in Sources */ = {isa = PBXBuildFile; fileRef = 1759F1A01759F1A01759F1A0 /* midithru.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175A2250175A2250175A2250 /* ptmacosx_mach.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E3900175E3900175E3900 /* ptmacosx_mach.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175A2FB0175A2FB0175A2FB0 /* mm.c in Sources */ = {isa = PBXBuildFile; fileRef = 175ABC20175ABC20175ABC20 /* mm.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175AA1C0175AA1C0175AA1C0 /* midiclock.c in Sources */ = {isa = PBXBuildFile; fileRef = 175A9E80175A9E80175A9E80 /* midiclock.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175AFEE0175AFEE0175AFEE0 /* latency.c in Sources */ = {isa = PBXBuildFile; fileRef = 175AFBF0175AFBF0175AFBF0 /* latency.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175BE2B0175BE2B0175BE2B0 /* pmmacosxcm.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E2110175E2110175E2110 /* pmmacosxcm.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175C9270175C9270175C9270 /* pmutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 16D4B2016D4B2016D4B20000 /* pmutil.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175C9660175C9660175C9660 /* portmidi.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E7210175E7210175E7210 /* portmidi.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175CAD00175CAD00175CAD00 /* pmmac.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E52C0175E52C0175E52C0 /* pmmac.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175CB4D0175CB4D0175CB4D0 /* readbinaryplist.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E5A10175E5A10175E5A10 /* readbinaryplist.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175CCF40175CCF40175CCF40 /* finddefault.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E6690175E6690175E6690 /* finddefault.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175CFEA0175CFEA0175CFEA0 /* pmmacosxcm.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E2110175E2110175E2110 /* pmmacosxcm.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175D0910175D0910175D0910 /* pmmac.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E52C0175E52C0175E52C0 /* pmmac.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175D10D0175D10D0175D10D0 /* readbinaryplist.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E5A10175E5A10175E5A10 /* readbinaryplist.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175D1850175D1850175D1850 /* finddefault.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E6690175E6690175E6690 /* finddefault.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175D1D20175D1D20175D1D20 /* ptmacosx_mach.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E3900175E3900175E3900 /* ptmacosx_mach.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175D2800175D2800175D2800 /* pmutil.c in Sources */ = {isa = PBXBuildFile; fileRef = 16D4B2016D4B2016D4B20000 /* pmutil.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175D5950175D5950175D5950 /* portmidi.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E7210175E7210175E7210 /* portmidi.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175D7770175D7770175D7770 /* pmjni.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E7BA0175E7BA0175E7BA0 /* pmjni.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175E45B0175E45B0175E45B0 /* finddefault.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E6690175E6690175E6690 /* finddefault.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175E4DE0175E4DE0175E4DE0 /* pmmacosxcm.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E2110175E2110175E2110 /* pmmacosxcm.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175E5880175E5880175E5880 /* pmmac.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E52C0175E52C0175E52C0 /* pmmac.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175E5F70175E5F70175E5F70 /* readbinaryplist.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E5A10175E5A10175E5A10 /* readbinaryplist.c */; settings = {COMPILER_FLAGS = ""; }; };
+		175E7570175E7570175E7570 /* portmidi.c in Sources */ = {isa = PBXBuildFile; fileRef = 175E7210175E7210175E7210 /* portmidi.c */; settings = {COMPILER_FLAGS = ""; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		175D5CE0175D5CE0175D5CE0 /* PBXContainerItemProxy */ = {
+		16FB55016FB55016FB550000 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 17559DD017559DD017559DD0 /* Project object */;
+			containerPortal = 175730D0175730D0175730D0 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1756A2601756A2601756A260;
-			remoteInfo = pmjni;
-		};
-		175D6400175D6400175D6400 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 17559DD017559DD017559DD0 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 175866A0175866A0175866A0;
-			remoteInfo = "portmidi-static";
-		};
-		175D6B20175D6B20175D6B20 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 17559DD017559DD017559DD0 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 175C3BC0175C3BC0175C3BC0;
+			remoteGlobalIDString = 17584D5017584D5017584D50;
 			remoteInfo = sysex;
 		};
-		175D7280175D7280175D7280 /* PBXContainerItemProxy */ = {
+		175068F0175068F0175068F0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 17559DD017559DD017559DD0 /* Project object */;
+			containerPortal = 175730D0175730D0175730D0 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 175783C0175783C0175783C0;
-			remoteInfo = "portmidi-dynamic";
-		};
-		175D7A00175D7A00175D7A00 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 17559DD017559DD017559DD0 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 175911C0175911C0175911C0;
-			remoteInfo = latency;
-		};
-		175D8160175D8160175D8160 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 17559DD017559DD017559DD0 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 175CDDB0175CDDB0175CDDB0;
-			remoteInfo = test;
-		};
-		175D88D0175D88D0175D88D0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 17559DD017559DD017559DD0 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 175A5680175A5680175A5680;
-			remoteInfo = midithread;
-		};
-		175D9030175D9030175D9030 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 17559DD017559DD017559DD0 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 175AF8C0175AF8C0175AF8C0;
-			remoteInfo = midithru;
-		};
-		175D9770175D9770175D9770 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 17559DD017559DD017559DD0 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 175B9AC0175B9AC0175B9AC0;
+			remoteGlobalIDString = 175A1E90175A1E90175A1E90;
 			remoteInfo = mm;
 		};
-		175D9F20175D9F20175D9F20 /* PBXContainerItemProxy */ = {
+		1751CE601751CE601751CE60 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 17559DD017559DD017559DD0 /* Project object */;
+			containerPortal = 175730D0175730D0175730D0 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1759B4301759B4301759B430;
+			remoteGlobalIDString = 175786701757867017578670;
+			remoteInfo = test;
+		};
+		175214201752142017521420 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 175730D0175730D0175730D0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 175B8E20175B8E20175B8E20;
+			remoteInfo = midithru;
+		};
+		17521B3017521B3017521B30 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 175730D0175730D0175730D0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 175972201759722017597220;
+			remoteInfo = midithread;
+		};
+		175222501752225017522250 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 175730D0175730D0175730D0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 175D53C0175D53C0175D53C0;
+			remoteInfo = "portmidi-dynamic";
+		};
+		175686F0175686F0175686F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 175730D0175730D0175730D0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 175DAEF0175DAEF0175DAEF0;
+			remoteInfo = pmjni;
+		};
+		1756C2C01756C2C01756C2C0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 175730D0175730D0175730D0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 175C4880175C4880175C4880;
+			remoteInfo = "portmidi-static";
+		};
+		17908E7017908E7017908E70 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 175730D0175730D0175730D0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 175BEA80175BEA80175BEA80;
 			remoteInfo = midiclock;
+		};
+		17909AC017909AC017909AC0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 175730D0175730D0175730D0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 175B2890175B2890175B2890;
+			remoteInfo = latency;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		175633701756337017563370 /* pmmacosxcm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pmmacosxcm.c; path = pm_mac/pmmacosxcm.c; sourceTree = SOURCE_ROOT; };
-		17563C7017563C7017563C70 /* pmmac.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pmmac.c; path = pm_mac/pmmac.c; sourceTree = SOURCE_ROOT; };
-		175646A0175646A0175646A0 /* readbinaryplist.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = readbinaryplist.c; path = pm_mac/readbinaryplist.c; sourceTree = SOURCE_ROOT; };
-		175651601756516017565160 /* finddefault.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = finddefault.c; path = pm_mac/finddefault.c; sourceTree = SOURCE_ROOT; };
-		17565BB017565BB017565BB0 /* ptmacosx_mach.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ptmacosx_mach.c; path = porttime/ptmacosx_mach.c; sourceTree = SOURCE_ROOT; };
-		175666901756669017566690 /* pmutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pmutil.c; path = pm_common/pmutil.c; sourceTree = SOURCE_ROOT; };
-		175671101756711017567110 /* portmidi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = portmidi.c; path = pm_common/portmidi.c; sourceTree = SOURCE_ROOT; };
-		17567B5017567B5017567B50 /* pmjni.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pmjni.c; path = pm_java/pmjni/pmjni.c; sourceTree = SOURCE_ROOT; };
-		17571FC017571FC017571FC0 /* libpmjni.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libpmjni.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		175802F0175802F0175802F0 /* libportmidi_d.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libportmidi_d.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
-		1758E5601758E5601758E560 /* libportmidi_s.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libportmidi_s.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		1758EC301758EC301758EC30 /* latency.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = latency.c; path = pm_test/latency.c; sourceTree = SOURCE_ROOT; };
-		17598A7017598A7017598A70 /* latency */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = latency; sourceTree = BUILT_PRODUCTS_DIR; };
-		175991901759919017599190 /* midiclock.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = midiclock.c; path = pm_test/midiclock.c; sourceTree = SOURCE_ROOT; };
-		175A2CE0175A2CE0175A2CE0 /* midiclock */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = midiclock; sourceTree = BUILT_PRODUCTS_DIR; };
-		175A3400175A3400175A3400 /* midithread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = midithread.c; path = pm_test/midithread.c; sourceTree = SOURCE_ROOT; };
-		175ACF30175ACF30175ACF30 /* midithread */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = midithread; sourceTree = BUILT_PRODUCTS_DIR; };
-		175AD650175AD650175AD650 /* midithru.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = midithru.c; path = pm_test/midithru.c; sourceTree = SOURCE_ROOT; };
-		175B7170175B7170175B7170 /* midithru */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = midithru; sourceTree = BUILT_PRODUCTS_DIR; };
-		175B7890175B7890175B7890 /* mm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mm.c; path = pm_test/mm.c; sourceTree = SOURCE_ROOT; };
-		175C1250175C1250175C1250 /* mm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = mm; sourceTree = BUILT_PRODUCTS_DIR; };
-		175C1950175C1950175C1950 /* sysex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sysex.c; path = pm_test/sysex.c; sourceTree = SOURCE_ROOT; };
-		175CB450175CB450175CB450 /* sysex */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = sysex; sourceTree = BUILT_PRODUCTS_DIR; };
-		175CBB70175CBB70175CBB70 /* test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = test.c; path = pm_test/test.c; sourceTree = SOURCE_ROOT; };
-		175D5650175D5650175D5650 /* test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = test; sourceTree = BUILT_PRODUCTS_DIR; };
+		16D4B2016D4B2016D4B20000 /* pmutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pmutil.c; path = pm_common/pmutil.c; sourceTree = SOURCE_ROOT; };
+		17520D8017520D8017520D80 /* test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = test; sourceTree = BUILT_PRODUCTS_DIR; };
+		175755801757558017575580 /* sysex */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = sysex; sourceTree = BUILT_PRODUCTS_DIR; };
+		17575C6017575C6017575C60 /* test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = test.c; path = pm_test/test.c; sourceTree = SOURCE_ROOT; };
+		17581C6017581C6017581C60 /* mm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = mm; sourceTree = BUILT_PRODUCTS_DIR; };
+		175823401758234017582340 /* sysex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sysex.c; path = pm_test/sysex.c; sourceTree = SOURCE_ROOT; };
+		175941401759414017594140 /* midiclock */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = midiclock; sourceTree = BUILT_PRODUCTS_DIR; };
+		175948201759482017594820 /* midithread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = midithread.c; path = pm_test/midithread.c; sourceTree = SOURCE_ROOT; };
+		1759EAC01759EAC01759EAC0 /* midithread */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = midithread; sourceTree = BUILT_PRODUCTS_DIR; };
+		1759F1A01759F1A01759F1A0 /* midithru.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = midithru.c; path = pm_test/midithru.c; sourceTree = SOURCE_ROOT; };
+		175A97A0175A97A0175A97A0 /* latency */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = latency; sourceTree = BUILT_PRODUCTS_DIR; };
+		175A9E80175A9E80175A9E80 /* midiclock.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = midiclock.c; path = pm_test/midiclock.c; sourceTree = SOURCE_ROOT; };
+		175ABC20175ABC20175ABC20 /* mm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mm.c; path = pm_test/mm.c; sourceTree = SOURCE_ROOT; };
+		175ACB50175ACB50175ACB50 /* midithru */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = midithru; sourceTree = BUILT_PRODUCTS_DIR; };
+		175AF530175AF530175AF530 /* libportmidi_s.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libportmidi_s.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		175AFBF0175AFBF0175AFBF0 /* latency.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = latency.c; path = pm_test/latency.c; sourceTree = SOURCE_ROOT; };
+		175BCB40175BCB40175BCB40 /* libportmidi_d.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libportmidi_d.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		175CE700175CE700175CE700 /* libpmjni.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libpmjni.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		175E2110175E2110175E2110 /* pmmacosxcm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pmmacosxcm.c; path = pm_mac/pmmacosxcm.c; sourceTree = SOURCE_ROOT; };
+		175E3900175E3900175E3900 /* ptmacosx_mach.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ptmacosx_mach.c; path = porttime/ptmacosx_mach.c; sourceTree = SOURCE_ROOT; };
+		175E52C0175E52C0175E52C0 /* pmmac.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pmmac.c; path = pm_mac/pmmac.c; sourceTree = SOURCE_ROOT; };
+		175E5A10175E5A10175E5A10 /* readbinaryplist.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = readbinaryplist.c; path = pm_mac/readbinaryplist.c; sourceTree = SOURCE_ROOT; };
+		175E6690175E6690175E6690 /* finddefault.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = finddefault.c; path = pm_mac/finddefault.c; sourceTree = SOURCE_ROOT; };
+		175E7210175E7210175E7210 /* portmidi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = portmidi.c; path = pm_common/portmidi.c; sourceTree = SOURCE_ROOT; };
+		175E7BA0175E7BA0175E7BA0 /* pmjni.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pmjni.c; path = pm_java/pmjni/pmjni.c; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		175504301755043017550430 /* midithread */ = {
+		1622F601622F601622F60000 /* Source Files */ = {
 			isa = PBXGroup;
 			children = (
-				175511701755117017551170 /* Source Files */,
-			);
-			name = midithread;
-			sourceTree = "<group>";
-		};
-		175511701755117017551170 /* Source Files */ = {
-			isa = PBXGroup;
-			children = (
-				175A3400175A3400175A3400 /* midithread.c */,
+				175A9E80175A9E80175A9E80 /* midiclock.c */,
 			);
 			name = "Source Files";
 			sourceTree = "<group>";
 		};
-		175523001755230017552300 = {
+		162340016234001623400000 /* midithread */ = {
 			isa = PBXGroup;
 			children = (
-				175524B0175524B0175524B0 /* Sources */,
-				175527A0175527A0175527A0 /* Resources */,
-				17552BA017552BA017552BA0 /* Products */,
+				16E7B6016E7B6016E7B60000 /* Source Files */,
+			);
+			name = midithread;
+			sourceTree = "<group>";
+		};
+		162594016259401625940000 = {
+			isa = PBXGroup;
+			children = (
+				1625A401625A401625A40000 /* Sources */,
+				1625D501625D501625D50000 /* Resources */,
+				1625EF01625EF01625EF0000 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		175524B0175524B0175524B0 /* Sources */ = {
+		1625A401625A401625A40000 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				17552D7017552D7017552D70 /* ALL_BUILD */,
-				175538701755387017553870 /* pmjni */,
-				175544A0175544A0175544A0 /* portmidi-dynamic */,
-				175555601755556017555560 /* portmidi-static */,
-				175567001755670017556700 /* latency */,
-				175573201755732017557320 /* midiclock */,
-				175504301755043017550430 /* midithread */,
-				175575601755756017557560 /* midithru */,
-				175579501755795017557950 /* mm */,
-				175587701755877017558770 /* sysex */,
-				175593401755934017559340 /* test */,
+				162606016260601626060000 /* ALL_BUILD */,
+				162630016263001626300000 /* pmjni */,
+				1626FD01626FD01626FD0000 /* portmidi-dynamic */,
+				1627A301627A301627A30000 /* portmidi-static */,
+				162891016289101628910000 /* latency */,
+				162928016292801629280000 /* midiclock */,
+				162340016234001623400000 /* midithread */,
+				175470901754709017547090 /* midithru */,
+				1751DE101751DE101751DE10 /* mm */,
+				17571C5017571C5017571C50 /* sysex */,
+				175722801757228017572280 /* test */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
 		};
-		175527A0175527A0175527A0 /* Resources */ = {
+		1625D501625D501625D50000 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		17552BA017552BA017552BA0 /* Products */ = {
+		1625EF01625EF01625EF0000 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				17571FC017571FC017571FC0 /* libpmjni.dylib */,
-				175802F0175802F0175802F0 /* libportmidi_d.dylib */,
-				1758E5601758E5601758E560 /* libportmidi_s.a */,
-				17598A7017598A7017598A70 /* latency */,
-				175A2CE0175A2CE0175A2CE0 /* midiclock */,
-				175ACF30175ACF30175ACF30 /* midithread */,
-				175B7170175B7170175B7170 /* midithru */,
-				175C1250175C1250175C1250 /* mm */,
-				175CB450175CB450175CB450 /* sysex */,
-				175D5650175D5650175D5650 /* test */,
+				175CE700175CE700175CE700 /* libpmjni.dylib */,
+				175BCB40175BCB40175BCB40 /* libportmidi_d.dylib */,
+				175AF530175AF530175AF530 /* libportmidi_s.a */,
+				175A97A0175A97A0175A97A0 /* latency */,
+				175941401759414017594140 /* midiclock */,
+				1759EAC01759EAC01759EAC0 /* midithread */,
+				175ACB50175ACB50175ACB50 /* midithru */,
+				17581C6017581C6017581C60 /* mm */,
+				175755801757558017575580 /* sysex */,
+				17520D8017520D8017520D80 /* test */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		17552D7017552D7017552D70 /* ALL_BUILD */ = {
+		162606016260601626060000 /* ALL_BUILD */ = {
 			isa = PBXGroup;
 			children = (
-				175533E0175533E0175533E0 /* CMake Rules */,
+				162622016262201626220000 /* CMake Rules */,
 			);
 			name = ALL_BUILD;
 			sourceTree = "<group>";
 		};
-		17552FF017552FF017552FF0 /* Source Files */ = {
-			isa = PBXGroup;
-			children = (
-				1758EC301758EC301758EC30 /* latency.c */,
-			);
-			name = "Source Files";
-			sourceTree = "<group>";
-		};
-		175533E0175533E0175533E0 /* CMake Rules */ = {
+		162622016262201626220000 /* CMake Rules */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = "CMake Rules";
 			sourceTree = "<group>";
 		};
-		175538701755387017553870 /* pmjni */ = {
+		162630016263001626300000 /* pmjni */ = {
 			isa = PBXGroup;
 			children = (
-				17553C4017553C4017553C40 /* Source Files */,
+				162656016265601626560000 /* Source Files */,
 			);
 			name = pmjni;
 			sourceTree = "<group>";
 		};
-		17553C4017553C4017553C40 /* Source Files */ = {
+		162656016265601626560000 /* Source Files */ = {
 			isa = PBXGroup;
 			children = (
-				175633701756337017563370 /* pmmacosxcm.c */,
-				17563C7017563C7017563C70 /* pmmac.c */,
-				175646A0175646A0175646A0 /* readbinaryplist.c */,
-				175651601756516017565160 /* finddefault.c */,
-				17565BB017565BB017565BB0 /* ptmacosx_mach.c */,
-				175666901756669017566690 /* pmutil.c */,
-				175671101756711017567110 /* portmidi.c */,
-				17567B5017567B5017567B50 /* pmjni.c */,
+				175E2110175E2110175E2110 /* pmmacosxcm.c */,
+				175E52C0175E52C0175E52C0 /* pmmac.c */,
+				175E5A10175E5A10175E5A10 /* readbinaryplist.c */,
+				175E6690175E6690175E6690 /* finddefault.c */,
+				175E3900175E3900175E3900 /* ptmacosx_mach.c */,
+				16D4B2016D4B2016D4B20000 /* pmutil.c */,
+				175E7210175E7210175E7210 /* portmidi.c */,
+				175E7BA0175E7BA0175E7BA0 /* pmjni.c */,
 			);
 			name = "Source Files";
 			sourceTree = "<group>";
 		};
-		175544A0175544A0175544A0 /* portmidi-dynamic */ = {
+		1626FD01626FD01626FD0000 /* portmidi-dynamic */ = {
 			isa = PBXGroup;
 			children = (
-				17554BC017554BC017554BC0 /* Source Files */,
+				16273D016273D016273D0000 /* Source Files */,
 			);
 			name = "portmidi-dynamic";
 			sourceTree = "<group>";
 		};
-		17554BC017554BC017554BC0 /* Source Files */ = {
+		16273D016273D016273D0000 /* Source Files */ = {
 			isa = PBXGroup;
 			children = (
-				175633701756337017563370 /* pmmacosxcm.c */,
-				17563C7017563C7017563C70 /* pmmac.c */,
-				175646A0175646A0175646A0 /* readbinaryplist.c */,
-				175651601756516017565160 /* finddefault.c */,
-				17565BB017565BB017565BB0 /* ptmacosx_mach.c */,
-				175666901756669017566690 /* pmutil.c */,
-				175671101756711017567110 /* portmidi.c */,
+				175E2110175E2110175E2110 /* pmmacosxcm.c */,
+				175E52C0175E52C0175E52C0 /* pmmac.c */,
+				175E5A10175E5A10175E5A10 /* readbinaryplist.c */,
+				175E6690175E6690175E6690 /* finddefault.c */,
+				175E3900175E3900175E3900 /* ptmacosx_mach.c */,
+				16D4B2016D4B2016D4B20000 /* pmutil.c */,
+				175E7210175E7210175E7210 /* portmidi.c */,
 			);
 			name = "Source Files";
 			sourceTree = "<group>";
 		};
-		175554D0175554D0175554D0 /* Source Files */ = {
+		1627A301627A301627A30000 /* portmidi-static */ = {
 			isa = PBXGroup;
 			children = (
-				175991901759919017599190 /* midiclock.c */,
-			);
-			name = "Source Files";
-			sourceTree = "<group>";
-		};
-		175555601755556017555560 /* portmidi-static */ = {
-			isa = PBXGroup;
-			children = (
-				17555D4017555D4017555D40 /* Source Files */,
+				16280F016280F016280F0000 /* Source Files */,
 			);
 			name = "portmidi-static";
 			sourceTree = "<group>";
 		};
-		17555D4017555D4017555D40 /* Source Files */ = {
+		16280F016280F016280F0000 /* Source Files */ = {
 			isa = PBXGroup;
 			children = (
-				175633701756337017563370 /* pmmacosxcm.c */,
-				17563C7017563C7017563C70 /* pmmac.c */,
-				175646A0175646A0175646A0 /* readbinaryplist.c */,
-				175651601756516017565160 /* finddefault.c */,
-				17565BB017565BB017565BB0 /* ptmacosx_mach.c */,
-				175666901756669017566690 /* pmutil.c */,
-				175671101756711017567110 /* portmidi.c */,
+				175E2110175E2110175E2110 /* pmmacosxcm.c */,
+				175E52C0175E52C0175E52C0 /* pmmac.c */,
+				175E5A10175E5A10175E5A10 /* readbinaryplist.c */,
+				175E6690175E6690175E6690 /* finddefault.c */,
+				175E3900175E3900175E3900 /* ptmacosx_mach.c */,
+				16D4B2016D4B2016D4B20000 /* pmutil.c */,
+				175E7210175E7210175E7210 /* portmidi.c */,
 			);
 			name = "Source Files";
 			sourceTree = "<group>";
 		};
-		175567001755670017556700 /* latency */ = {
+		162891016289101628910000 /* latency */ = {
 			isa = PBXGroup;
 			children = (
-				17552FF017552FF017552FF0 /* Source Files */,
+				1628D201628D201628D20000 /* Source Files */,
 			);
 			name = latency;
 			sourceTree = "<group>";
 		};
-		175573201755732017557320 /* midiclock */ = {
+		1628D201628D201628D20000 /* Source Files */ = {
 			isa = PBXGroup;
 			children = (
-				175554D0175554D0175554D0 /* Source Files */,
+				175AFBF0175AFBF0175AFBF0 /* latency.c */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		162928016292801629280000 /* midiclock */ = {
+			isa = PBXGroup;
+			children = (
+				1622F601622F601622F60000 /* Source Files */,
 			);
 			name = midiclock;
 			sourceTree = "<group>";
 		};
-		175575601755756017557560 /* midithru */ = {
+		16E7B6016E7B6016E7B60000 /* Source Files */ = {
 			isa = PBXGroup;
 			children = (
-				17557B4017557B4017557B40 /* Source Files */,
+				175948201759482017594820 /* midithread.c */,
 			);
-			name = midithru;
+			name = "Source Files";
 			sourceTree = "<group>";
 		};
-		175579501755795017557950 /* mm */ = {
+		1751D9D01751D9D01751D9D0 /* Source Files */ = {
 			isa = PBXGroup;
 			children = (
-				175581801755818017558180 /* Source Files */,
+				1759F1A01759F1A01759F1A0 /* midithru.c */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		1751DE101751DE101751DE10 /* mm */ = {
+			isa = PBXGroup;
+			children = (
+				175716101757161017571610 /* Source Files */,
 			);
 			name = mm;
 			sourceTree = "<group>";
 		};
-		17557B4017557B4017557B40 /* Source Files */ = {
+		175470901754709017547090 /* midithru */ = {
 			isa = PBXGroup;
 			children = (
-				175AD650175AD650175AD650 /* midithru.c */,
+				1751D9D01751D9D01751D9D0 /* Source Files */,
+			);
+			name = midithru;
+			sourceTree = "<group>";
+		};
+		175716101757161017571610 /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				175ABC20175ABC20175ABC20 /* mm.c */,
 			);
 			name = "Source Files";
 			sourceTree = "<group>";
 		};
-		175581801755818017558180 /* Source Files */ = {
+		17571C5017571C5017571C50 /* sysex */ = {
 			isa = PBXGroup;
 			children = (
-				175B7890175B7890175B7890 /* mm.c */,
-			);
-			name = "Source Files";
-			sourceTree = "<group>";
-		};
-		175587701755877017558770 /* sysex */ = {
-			isa = PBXGroup;
-			children = (
-				17558BB017558BB017558BB0 /* Source Files */,
+				17571FA017571FA017571FA0 /* Source Files */,
 			);
 			name = sysex;
 			sourceTree = "<group>";
 		};
-		17558BB017558BB017558BB0 /* Source Files */ = {
+		17571FA017571FA017571FA0 /* Source Files */ = {
 			isa = PBXGroup;
 			children = (
-				175C1950175C1950175C1950 /* sysex.c */,
+				175823401758234017582340 /* sysex.c */,
 			);
 			name = "Source Files";
 			sourceTree = "<group>";
 		};
-		175593401755934017559340 /* test */ = {
+		175722801757228017572280 /* test */ = {
 			isa = PBXGroup;
 			children = (
-				175597901755979017559790 /* Source Files */,
+				175727901757279017572790 /* Source Files */,
 			);
 			name = test;
 			sourceTree = "<group>";
 		};
-		175597901755979017559790 /* Source Files */ = {
+		175727901757279017572790 /* Source Files */ = {
 			isa = PBXGroup;
 			children = (
-				175CBB70175CBB70175CBB70 /* test.c */,
+				17575C6017575C6017575C60 /* test.c */,
 			);
 			name = "Source Files";
 			sourceTree = "<group>";
@@ -411,41 +411,123 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1756A2601756A2601756A260 /* libpmjni.dylib */ = {
+		175786701757867017578670 /* test */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1756A6201756A6201756A620 /* Build configuration list for PBXNativeTarget "libpmjni.dylib" */;
+			buildConfigurationList = 17578B0017578B0017578B00 /* Build configuration list for PBXNativeTarget "test" */;
 			buildPhases = (
-				175690201756902017569020 /* Sources */,
+				175775701757757017577570 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				17908C1017908C1017908C10 /* PBXTargetDependency */,
 			);
-			name = libpmjni.dylib;
-			productName = libpmjni.dylib;
-			productReference = 17571FC017571FC017571FC0 /* libpmjni.dylib */;
-			productType = "com.apple.product-type.library.dynamic";
+			name = test;
+			productName = test;
+			productReference = 17520D8017520D8017520D80 /* test */;
+			productType = "com.apple.product-type.tool";
 		};
-		175783C0175783C0175783C0 /* libportmidi_d.dylib */ = {
+		17584D5017584D5017584D50 /* sysex */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 175788201757882017578820 /* Build configuration list for PBXNativeTarget "libportmidi_d.dylib" */;
+			buildConfigurationList = 175851E0175851E0175851E0 /* Build configuration list for PBXNativeTarget "sysex" */;
 			buildPhases = (
-				175772401757724017577240 /* Sources */,
+				17583C5017583C5017583C50 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				17908C1017908C1017908C10 /* PBXTargetDependency */,
 			);
-			name = libportmidi_d.dylib;
-			productName = libportmidi_d.dylib;
-			productReference = 175802F0175802F0175802F0 /* libportmidi_d.dylib */;
-			productType = "com.apple.product-type.library.dynamic";
+			name = sysex;
+			productName = sysex;
+			productReference = 175755801757558017575580 /* sysex */;
+			productType = "com.apple.product-type.tool";
 		};
-		175866A0175866A0175866A0 /* libportmidi_s.a */ = {
+		175972201759722017597220 /* midithread */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 17586B0017586B0017586B00 /* Build configuration list for PBXNativeTarget "libportmidi_s.a" */;
+			buildConfigurationList = 175976C0175976C0175976C0 /* Build configuration list for PBXNativeTarget "midithread" */;
 			buildPhases = (
-				175855A0175855A0175855A0 /* Sources */,
+				175961201759612017596120 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				17908C1017908C1017908C10 /* PBXTargetDependency */,
+			);
+			name = midithread;
+			productName = midithread;
+			productReference = 1759EAC01759EAC01759EAC0 /* midithread */;
+			productType = "com.apple.product-type.tool";
+		};
+		175A1E90175A1E90175A1E90 /* mm */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 175A05A0175A05A0175A05A0 /* Build configuration list for PBXNativeTarget "mm" */;
+			buildPhases = (
+				175A3A40175A3A40175A3A40 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				17908C1017908C1017908C10 /* PBXTargetDependency */,
+			);
+			name = mm;
+			productName = mm;
+			productReference = 17581C6017581C6017581C60 /* mm */;
+			productType = "com.apple.product-type.tool";
+		};
+		175B2890175B2890175B2890 /* latency */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 175B2D20175B2D20175B2D20 /* Build configuration list for PBXNativeTarget "latency" */;
+			buildPhases = (
+				175B1790175B1790175B1790 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				17908C1017908C1017908C10 /* PBXTargetDependency */,
+			);
+			name = latency;
+			productName = latency;
+			productReference = 175A97A0175A97A0175A97A0 /* latency */;
+			productType = "com.apple.product-type.tool";
+		};
+		175B8E20175B8E20175B8E20 /* midithru */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 175B7C90175B7C90175B7C90 /* Build configuration list for PBXNativeTarget "midithru" */;
+			buildPhases = (
+				175B57F0175B57F0175B57F0 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				17908C1017908C1017908C10 /* PBXTargetDependency */,
+			);
+			name = midithru;
+			productName = midithru;
+			productReference = 175ACB50175ACB50175ACB50 /* midithru */;
+			productType = "com.apple.product-type.tool";
+		};
+		175BEA80175BEA80175BEA80 /* midiclock */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 175BEED0175BEED0175BEED0 /* Build configuration list for PBXNativeTarget "midiclock" */;
+			buildPhases = (
+				175C0CD0175C0CD0175C0CD0 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				17908C1017908C1017908C10 /* PBXTargetDependency */,
+			);
+			name = midiclock;
+			productName = midiclock;
+			productReference = 175941401759414017594140 /* midiclock */;
+			productType = "com.apple.product-type.tool";
+		};
+		175C4880175C4880175C4880 /* libportmidi_s.a */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 175C4D10175C4D10175C4D10 /* Build configuration list for PBXNativeTarget "libportmidi_s.a" */;
+			buildPhases = (
+				175C3750175C3750175C3750 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -453,440 +535,223 @@
 			);
 			name = libportmidi_s.a;
 			productName = libportmidi_s.a;
-			productReference = 1758E5601758E5601758E560 /* libportmidi_s.a */;
+			productReference = 175AF530175AF530175AF530 /* libportmidi_s.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		175911C0175911C0175911C0 /* latency */ = {
+		175D53C0175D53C0175D53C0 /* libportmidi_d.dylib */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 175916301759163017591630 /* Build configuration list for PBXNativeTarget "latency" */;
+			buildConfigurationList = 175D4230175D4230175D4230 /* Build configuration list for PBXNativeTarget "libportmidi_d.dylib" */;
 			buildPhases = (
-				175901101759011017590110 /* Sources */,
+				175D66D0175D66D0175D66D0 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				175D68E0175D68E0175D68E0 /* PBXTargetDependency */,
 			);
-			name = latency;
-			productName = latency;
-			productReference = 17598A7017598A7017598A70 /* latency */;
-			productType = "com.apple.product-type.tool";
+			name = libportmidi_d.dylib;
+			productName = libportmidi_d.dylib;
+			productReference = 175BCB40175BCB40175BCB40 /* libportmidi_d.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
 		};
-		1759B4301759B4301759B430 /* midiclock */ = {
+		175DAEF0175DAEF0175DAEF0 /* libpmjni.dylib */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1759B8801759B8801759B880 /* Build configuration list for PBXNativeTarget "midiclock" */;
+			buildConfigurationList = 175DB100175DB100175DB100 /* Build configuration list for PBXNativeTarget "libpmjni.dylib" */;
 			buildPhases = (
-				1759A3601759A3601759A360 /* Sources */,
+				175D8E70175D8E70175D8E70 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				175D68E0175D68E0175D68E0 /* PBXTargetDependency */,
 			);
-			name = midiclock;
-			productName = midiclock;
-			productReference = 175A2CE0175A2CE0175A2CE0 /* midiclock */;
-			productType = "com.apple.product-type.tool";
-		};
-		175A5680175A5680175A5680 /* midithread */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 175A5AD0175A5AD0175A5AD0 /* Build configuration list for PBXNativeTarget "midithread" */;
-			buildPhases = (
-				175A45B0175A45B0175A45B0 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				175D68E0175D68E0175D68E0 /* PBXTargetDependency */,
-			);
-			name = midithread;
-			productName = midithread;
-			productReference = 175ACF30175ACF30175ACF30 /* midithread */;
-			productType = "com.apple.product-type.tool";
-		};
-		175AF8C0175AF8C0175AF8C0 /* midithru */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 175AFD10175AFD10175AFD10 /* Build configuration list for PBXNativeTarget "midithru" */;
-			buildPhases = (
-				175AE7F0175AE7F0175AE7F0 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				175D68E0175D68E0175D68E0 /* PBXTargetDependency */,
-			);
-			name = midithru;
-			productName = midithru;
-			productReference = 175B7170175B7170175B7170 /* midithru */;
-			productType = "com.apple.product-type.tool";
-		};
-		175B9AC0175B9AC0175B9AC0 /* mm */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 175B9F30175B9F30175B9F30 /* Build configuration list for PBXNativeTarget "mm" */;
-			buildPhases = (
-				175B8A00175B8A00175B8A00 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				175D68E0175D68E0175D68E0 /* PBXTargetDependency */,
-			);
-			name = mm;
-			productName = mm;
-			productReference = 175C1250175C1250175C1250 /* mm */;
-			productType = "com.apple.product-type.tool";
-		};
-		175C3BC0175C3BC0175C3BC0 /* sysex */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 175C4010175C4010175C4010 /* Build configuration list for PBXNativeTarget "sysex" */;
-			buildPhases = (
-				175C2B00175C2B00175C2B00 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				175D68E0175D68E0175D68E0 /* PBXTargetDependency */,
-			);
-			name = sysex;
-			productName = sysex;
-			productReference = 175CB450175CB450175CB450 /* sysex */;
-			productType = "com.apple.product-type.tool";
-		};
-		175CDDB0175CDDB0175CDDB0 /* test */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 175CE200175CE200175CE200 /* Build configuration list for PBXNativeTarget "test" */;
-			buildPhases = (
-				175CCCF0175CCCF0175CCCF0 /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				175D68E0175D68E0175D68E0 /* PBXTargetDependency */,
-			);
-			name = test;
-			productName = test;
-			productReference = 175D5650175D5650175D5650 /* test */;
-			productType = "com.apple.product-type.tool";
+			name = libpmjni.dylib;
+			productName = libpmjni.dylib;
+			productReference = 175CE700175CE700175CE700 /* libpmjni.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		17559DD017559DD017559DD0 /* Project object */ = {
+		175730D0175730D0175730D0 /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = 1755A2D01755A2D01755A2D0 /* Build configuration list for PBXProject "portmidi" */;
+			buildConfigurationList = 16F36D016F36D016F36D0000 /* Build configuration list for PBXProject "portmidi" */;
 			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 0;
-			mainGroup = 175523001755230017552300;
+			mainGroup = 162594016259401625940000;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1755B9401755B9401755B940 /* ALL_BUILD */,
-				1756A2601756A2601756A260 /* libpmjni.dylib */,
-				175783C0175783C0175783C0 /* libportmidi_d.dylib */,
-				175866A0175866A0175866A0 /* libportmidi_s.a */,
-				175911C0175911C0175911C0 /* latency */,
-				1759B4301759B4301759B430 /* midiclock */,
-				175A5680175A5680175A5680 /* midithread */,
-				175AF8C0175AF8C0175AF8C0 /* midithru */,
-				175B9AC0175B9AC0175B9AC0 /* mm */,
-				175C3BC0175C3BC0175C3BC0 /* sysex */,
-				175CDDB0175CDDB0175CDDB0 /* test */,
+				17503FC017503FC017503FC0 /* ALL_BUILD */,
+				175DAEF0175DAEF0175DAEF0 /* libpmjni.dylib */,
+				175D53C0175D53C0175D53C0 /* libportmidi_d.dylib */,
+				175C4880175C4880175C4880 /* libportmidi_s.a */,
+				175B2890175B2890175B2890 /* latency */,
+				175BEA80175BEA80175BEA80 /* midiclock */,
+				175972201759722017597220 /* midithread */,
+				175B8E20175B8E20175B8E20 /* midithru */,
+				175A1E90175A1E90175A1E90 /* mm */,
+				17584D5017584D5017584D50 /* sysex */,
+				175786701757867017578670 /* test */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		1755C9801755C9801755C980 /* CMake Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi -f CMakeScripts/ALL_BUILD_cmakeRulesBuildPhase.make$CONFIGURATION all";
-		};
-		17569BA017569BA017569BA0 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_common -f pm_common/CMakeScripts/pmjni_postBuildPhase.make$CONFIGURATION all";
-		};
-		17577DB017577DB017577DB0 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_common -f pm_common/CMakeScripts/portmidi-dynamic_postBuildPhase.make$CONFIGURATION all";
-		};
-		175860901758609017586090 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_common -f pm_common/CMakeScripts/portmidi-static_postBuildPhase.make$CONFIGURATION all";
-		};
-		17590BC017590BC017590BC0 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_test -f pm_test/CMakeScripts/latency_postBuildPhase.make$CONFIGURATION all";
-		};
-		1759AE201759AE201759AE20 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_test -f pm_test/CMakeScripts/midiclock_postBuildPhase.make$CONFIGURATION all";
-		};
-		175A5070175A5070175A5070 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_test -f pm_test/CMakeScripts/midithread_postBuildPhase.make$CONFIGURATION all";
-		};
-		175AF2B0175AF2B0175AF2B0 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_test -f pm_test/CMakeScripts/midithru_postBuildPhase.make$CONFIGURATION all";
-		};
-		175B94C0175B94C0175B94C0 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_test -f pm_test/CMakeScripts/mm_postBuildPhase.make$CONFIGURATION all";
-		};
-		175C35B0175C35B0175C35B0 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_test -f pm_test/CMakeScripts/sysex_postBuildPhase.make$CONFIGURATION all";
-		};
-		175CD7A0175CD7A0175CD7A0 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_test -f pm_test/CMakeScripts/test_postBuildPhase.make$CONFIGURATION all";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		175690201756902017569020 /* Sources */ = {
+		175775701757757017577570 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				175635F0175635F0175635F0 /* pmmacosxcm.c in Sources */,
-				175643F0175643F0175643F0 /* pmmac.c in Sources */,
-				17564A5017564A5017564A50 /* readbinaryplist.c in Sources */,
-				175659001756590017565900 /* finddefault.c in Sources */,
-				17565F8017565F8017565F80 /* ptmacosx_mach.c in Sources */,
-				17566E6017566E6017566E60 /* pmutil.c in Sources */,
-				175674601756746017567460 /* portmidi.c in Sources */,
-				175683201756832017568320 /* pmjni.c in Sources */,
+				17575F6017575F6017575F60 /* test.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		175772401757724017577240 /* Sources */ = {
+		17583C5017583C5017583C50 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				175737D0175737D0175737D0 /* pmmacosxcm.c in Sources */,
-				175741E0175741E0175741E0 /* pmmac.c in Sources */,
-				175749701757497017574970 /* readbinaryplist.c in Sources */,
-				175751001757510017575100 /* finddefault.c in Sources */,
-				175758F0175758F0175758F0 /* ptmacosx_mach.c in Sources */,
-				175760B0175760B0175760B0 /* pmutil.c in Sources */,
-				175768301757683017576830 /* portmidi.c in Sources */,
+				175826401758264017582640 /* sysex.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		175855A0175855A0175855A0 /* Sources */ = {
+		175961201759612017596120 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				17581A4017581A4017581A40 /* pmmacosxcm.c in Sources */,
-				175824F0175824F0175824F0 /* pmmac.c in Sources */,
-				17582C9017582C9017582C90 /* readbinaryplist.c in Sources */,
-				175831001758310017583100 /* finddefault.c in Sources */,
-				17583BE017583BE017583BE0 /* ptmacosx_mach.c in Sources */,
-				175843A0175843A0175843A0 /* pmutil.c in Sources */,
-				175848601758486017584860 /* portmidi.c in Sources */,
+				17594B3017594B3017594B30 /* midithread.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		175901101759011017590110 /* Sources */ = {
+		175A3A40175A3A40175A3A40 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1758F3A01758F3A01758F3A0 /* latency.c in Sources */,
+				175A2FB0175A2FB0175A2FB0 /* mm.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1759A3601759A3601759A360 /* Sources */ = {
+		175B1790175B1790175B1790 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				175998F0175998F0175998F0 /* midiclock.c in Sources */,
+				175AFEE0175AFEE0175AFEE0 /* latency.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		175A45B0175A45B0175A45B0 /* Sources */ = {
+		175B57F0175B57F0175B57F0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				175A3B30175A3B30175A3B30 /* midithread.c in Sources */,
+				1759F4B01759F4B01759F4B0 /* midithru.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		175AE7F0175AE7F0175AE7F0 /* Sources */ = {
+		175C0CD0175C0CD0175C0CD0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				175ADD80175ADD80175ADD80 /* midithru.c in Sources */,
+				175AA1C0175AA1C0175AA1C0 /* midiclock.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		175B8A00175B8A00175B8A00 /* Sources */ = {
+		175C3750175C3750175C3750 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				175B7F90175B7F90175B7F90 /* mm.c in Sources */,
+				175BE2B0175BE2B0175BE2B0 /* pmmacosxcm.c in Sources */,
+				175CAD00175CAD00175CAD00 /* pmmac.c in Sources */,
+				175CB4D0175CB4D0175CB4D0 /* readbinaryplist.c in Sources */,
+				175CCF40175CCF40175CCF40 /* finddefault.c in Sources */,
+				175A2250175A2250175A2250 /* ptmacosx_mach.c in Sources */,
+				175C9270175C9270175C9270 /* pmutil.c in Sources */,
+				175C9660175C9660175C9660 /* portmidi.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		175C2B00175C2B00175C2B00 /* Sources */ = {
+		175D66D0175D66D0175D66D0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				175C20A0175C20A0175C20A0 /* sysex.c in Sources */,
+				175CFEA0175CFEA0175CFEA0 /* pmmacosxcm.c in Sources */,
+				175D0910175D0910175D0910 /* pmmac.c in Sources */,
+				175D10D0175D10D0175D10D0 /* readbinaryplist.c in Sources */,
+				175D1850175D1850175D1850 /* finddefault.c in Sources */,
+				175D1D20175D1D20175D1D20 /* ptmacosx_mach.c in Sources */,
+				175D2800175D2800175D2800 /* pmutil.c in Sources */,
+				175D5950175D5950175D5950 /* portmidi.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		175CCCF0175CCCF0175CCCF0 /* Sources */ = {
+		175D8E70175D8E70175D8E70 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				175CC290175CC290175CC290 /* test.c in Sources */,
+				175E4DE0175E4DE0175E4DE0 /* pmmacosxcm.c in Sources */,
+				175E5880175E5880175E5880 /* pmmac.c in Sources */,
+				175E5F70175E5F70175E5F70 /* readbinaryplist.c in Sources */,
+				175E45B0175E45B0175E45B0 /* finddefault.c in Sources */,
+				175027001750270017502700 /* ptmacosx_mach.c in Sources */,
+				16F3DC016F3DC016F3DC0000 /* pmutil.c in Sources */,
+				175E7570175E7570175E7570 /* portmidi.c in Sources */,
+				175D7770175D7770175D7770 /* pmjni.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		175D6180175D6180175D6180 /* PBXTargetDependency */ = {
+		16F491016F491016F4910000 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 1756A2601756A2601756A260 /* libpmjni.dylib */;
-			targetProxy = 175D5CE0175D5CE0175D5CE0 /* PBXContainerItemProxy */;
+			target = 17584D5017584D5017584D50 /* sysex */;
+			targetProxy = 16FB55016FB55016FB550000 /* PBXContainerItemProxy */;
 		};
-		175D68E0175D68E0175D68E0 /* PBXTargetDependency */ = {
+		16FB22016FB22016FB220000 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 175866A0175866A0175866A0 /* libportmidi_s.a */;
-			targetProxy = 175D6400175D6400175D6400 /* PBXContainerItemProxy */;
+			target = 175786701757867017578670 /* test */;
+			targetProxy = 1751CE601751CE601751CE60 /* PBXContainerItemProxy */;
 		};
-		175D7040175D7040175D7040 /* PBXTargetDependency */ = {
+		1751CC001751CC001751CC00 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 175C3BC0175C3BC0175C3BC0 /* sysex */;
-			targetProxy = 175D6B20175D6B20175D6B20 /* PBXContainerItemProxy */;
+			target = 175DAEF0175DAEF0175DAEF0 /* libpmjni.dylib */;
+			targetProxy = 175686F0175686F0175686F0 /* PBXContainerItemProxy */;
 		};
-		175D77A0175D77A0175D77A0 /* PBXTargetDependency */ = {
+		175218D0175218D0175218D0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 175783C0175783C0175783C0 /* libportmidi_d.dylib */;
-			targetProxy = 175D7280175D7280175D7280 /* PBXContainerItemProxy */;
+			target = 175B8E20175B8E20175B8E20 /* midithru */;
+			targetProxy = 175214201752142017521420 /* PBXContainerItemProxy */;
 		};
-		175D7E90175D7E90175D7E90 /* PBXTargetDependency */ = {
+		175220101752201017522010 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 175911C0175911C0175911C0 /* latency */;
-			targetProxy = 175D7A00175D7A00175D7A00 /* PBXContainerItemProxy */;
+			target = 175972201759722017597220 /* midithread */;
+			targetProxy = 17521B3017521B3017521B30 /* PBXContainerItemProxy */;
 		};
-		175D8670175D8670175D8670 /* PBXTargetDependency */ = {
+		175684401756844017568440 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 175CDDB0175CDDB0175CDDB0 /* test */;
-			targetProxy = 175D8160175D8160175D8160 /* PBXContainerItemProxy */;
+			target = 175D53C0175D53C0175D53C0 /* libportmidi_d.dylib */;
+			targetProxy = 175222501752225017522250 /* PBXContainerItemProxy */;
 		};
-		175D8D60175D8D60175D8D60 /* PBXTargetDependency */ = {
+		17569F4017569F4017569F40 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 175A5680175A5680175A5680 /* midithread */;
-			targetProxy = 175D88D0175D88D0175D88D0 /* PBXContainerItemProxy */;
+			target = 175A1E90175A1E90175A1E90 /* mm */;
+			targetProxy = 175068F0175068F0175068F0 /* PBXContainerItemProxy */;
 		};
-		175D9510175D9510175D9510 /* PBXTargetDependency */ = {
+		17908C1017908C1017908C10 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 175AF8C0175AF8C0175AF8C0 /* midithru */;
-			targetProxy = 175D9030175D9030175D9030 /* PBXContainerItemProxy */;
+			target = 175C4880175C4880175C4880 /* libportmidi_s.a */;
+			targetProxy = 1756C2C01756C2C01756C2C0 /* PBXContainerItemProxy */;
 		};
-		175D9BE0175D9BE0175D9BE0 /* PBXTargetDependency */ = {
+		179098201790982017909820 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 175B9AC0175B9AC0175B9AC0 /* mm */;
-			targetProxy = 175D9770175D9770175D9770 /* PBXContainerItemProxy */;
+			target = 175BEA80175BEA80175BEA80 /* midiclock */;
+			targetProxy = 17908E7017908E7017908E70 /* PBXContainerItemProxy */;
 		};
-		175DA3A0175DA3A0175DA3A0 /* PBXTargetDependency */ = {
+		17909F8017909F8017909F80 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 1759B4301759B4301759B430 /* midiclock */;
-			targetProxy = 175D9F20175D9F20175D9F20 /* PBXContainerItemProxy */;
+			target = 175B2890175B2890175B2890 /* latency */;
+			targetProxy = 17909AC017909AC017909AC0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		1755A4401755A4401755A440 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
-			};
-			name = Debug;
-		};
-		1755A6001755A6001755A600 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
-			};
-			name = Release;
-		};
-		1755A7C01755A7C01755A7C0 /* MinSizeRel */ = {
+		16F393016F393016F3930000 /* MinSizeRel */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = (
@@ -897,18 +762,7 @@
 			};
 			name = MinSizeRel;
 		};
-		1755A9801755A9801755A980 /* RelWithDebInfo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = (
-					i386,
-					ppc,
-				);
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
-			};
-			name = RelWithDebInfo;
-		};
-		1755DE901755DE901755DE90 /* Debug */ = {
+		16F3EB016F3EB016F3EB0000 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -921,8 +775,7 @@
 					porttime,
 				);
 				INSTALL_PATH = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
@@ -937,7 +790,7 @@
 			};
 			name = Debug;
 		};
-		1755F0701755F0701755F070 /* Release */ = {
+		16F4A8016F4A8016F4A80000 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
@@ -950,8 +803,7 @@
 					porttime,
 				);
 				INSTALL_PATH = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
@@ -966,12 +818,29 @@
 			};
 			name = Release;
 		};
-		1755FBF01755FBF01755FBF0 /* MinSizeRel */ = {
+		175047301750473017504730 /* RelWithDebInfo */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+			};
+			name = RelWithDebInfo;
+		};
+		17522A8017522A8017522A80 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
@@ -979,13 +848,26 @@
 					porttime,
 				);
 				INSTALL_PATH = "";
-				OTHER_CFLAGS = (
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "-DNDEBUG";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					MinSizeRel/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
 				);
-				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = ALL_BUILD;
+				PRODUCT_NAME = test;
 				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -995,9 +877,63 @@
 			};
 			name = MinSizeRel;
 		};
-		175613801756138017561380 /* RelWithDebInfo */ = {
+		175240A0175240A0175240A0 /* RelWithDebInfo */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					RelWithDebInfo/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = test;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = RelWithDebInfo;
+		};
+		17566CF017566CF017566CF0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1008,13 +944,147 @@
 					porttime,
 				);
 				INSTALL_PATH = "";
-				OTHER_CFLAGS = (
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					Release/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
 				);
-				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = ALL_BUILD;
+				PRODUCT_NAME = test;
 				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Release;
+		};
+		17572D7017572D7017572D70 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+			};
+			name = Release;
+		};
+		17572E5017572E5017572E50 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+				);
+				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+			};
+			name = Debug;
+		};
+		17578E2017578E2017578E20 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = (
+					"-DPM_CHECK_ERRORS=1",
+					"-DDEBUG",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					Debug/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = test;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Debug;
+		};
+		1757BD601757BD601757BD60 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					RelWithDebInfo/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = sysex;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1024,7 +1094,1511 @@
 			};
 			name = RelWithDebInfo;
 		};
-		1756A9501756A9501756A950 /* Debug */ = {
+		1757D1401757D1401757D140 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "-DNDEBUG";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					MinSizeRel/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = sysex;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = MinSizeRel;
+		};
+		1757E2901757E2901757E290 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1.0.0;
+				DYLIB_CURRENT_VERSION = 1.0.0;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .dylib;
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_1)",
+					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_1 = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2 = "'portmidi_dynamic_EXPORTS'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
+				);
+				INSTALL_PATH = Release;
+				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_STYLE = DYNAMIC;
+				MACH_O_TYPE = mh_dylib;
+				OTHER_CFLAGS = "-fPIC";
+				OTHER_LDFLAGS = (
+					"-dynamiclib",
+					"-headerpad_max_install_names",
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = portmidi_d;
+				SECTORDER_FLAGS = "";
+				SYMROOT = .;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Release;
+		};
+		175855101758551017585510 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = (
+					"-DPM_CHECK_ERRORS=1",
+					"-DDEBUG",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					Debug/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = sysex;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Debug;
+		};
+		17585E5017585E5017585E50 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					Release/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = sysex;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Release;
+		};
+		175874B0175874B0175874B0 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					RelWithDebInfo/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = mm;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = RelWithDebInfo;
+		};
+		175890601758906017589060 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				FRAMEWORK_SEARCH_PATHS = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = portmidi_s;
+				SECTORDER_FLAGS = "";
+				SYMROOT = .;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = RelWithDebInfo;
+		};
+		1758B8501758B8501758B850 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "-DNDEBUG";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					MinSizeRel/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = mm;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = MinSizeRel;
+		};
+		1758CCA01758CCA01758CCA0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					Release/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = mm;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Release;
+		};
+		1758D0701758D0701758D070 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = (
+					"-DPM_CHECK_ERRORS=1",
+					"-DDEBUG",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					Debug/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = midiclock;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Debug;
+		};
+		1758D9B01758D9B01758D9B0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					Release/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = midiclock;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Release;
+		};
+		1758EFB01758EFB01758EFB0 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "-DNDEBUG";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					MinSizeRel/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = midiclock;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = MinSizeRel;
+		};
+		175906001759060017590600 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					RelWithDebInfo/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = midiclock;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = RelWithDebInfo;
+		};
+		175979F0175979F0175979F0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = (
+					"-DPM_CHECK_ERRORS=1",
+					"-DDEBUG",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					Debug/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = midithread;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Debug;
+		};
+		175983301759833017598330 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					Release/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = midithread;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Release;
+		};
+		175999301759993017599930 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "-DNDEBUG";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					MinSizeRel/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = midithread;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = MinSizeRel;
+		};
+		1759AF801759AF801759AF80 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					RelWithDebInfo/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = midithread;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = RelWithDebInfo;
+		};
+		175A08C0175A08C0175A08C0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = (
+					"-DPM_CHECK_ERRORS=1",
+					"-DDEBUG",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					Debug/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = mm;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Debug;
+		};
+		175A1080175A1080175A1080 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					RelWithDebInfo/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = midithru;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = RelWithDebInfo;
+		};
+		175A5C60175A5C60175A5C60 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					RelWithDebInfo/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = latency;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = RelWithDebInfo;
+		};
+		175B3050175B3050175B3050 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = (
+					"-DPM_CHECK_ERRORS=1",
+					"-DDEBUG",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					Debug/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = latency;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Debug;
+		};
+		175B3990175B3990175B3990 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					Release/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = latency;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Release;
+		};
+		175B5CA0175B5CA0175B5CA0 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "-DNDEBUG";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					MinSizeRel/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = midithru;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = MinSizeRel;
+		};
+		175B6480175B6480175B6480 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					Release/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = midithru;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Release;
+		};
+		175B7FC0175B7FC0175B7FC0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = (
+					"-DPM_CHECK_ERRORS=1",
+					"-DDEBUG",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					Debug/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = midithru;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Debug;
+		};
+		175BA740175BA740175BA740 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1.0.0;
+				DYLIB_CURRENT_VERSION = 1.0.0;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .dylib;
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_1)",
+					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_1 = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2 = "'portmidi_dynamic_EXPORTS'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
+				);
+				INSTALL_PATH = RelWithDebInfo;
+				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_STYLE = DYNAMIC;
+				MACH_O_TYPE = mh_dylib;
+				OTHER_CFLAGS = "-fPIC";
+				OTHER_LDFLAGS = (
+					"-dynamiclib",
+					"-headerpad_max_install_names",
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = portmidi_d;
+				SECTORDER_FLAGS = "";
+				SYMROOT = .;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = RelWithDebInfo;
+		};
+		175C2D00175C2D00175C2D00 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_SEARCH_PATHS = "";
+				OTHER_CFLAGS = "-DNDEBUG";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-headerpad_max_install_names",
+					MinSizeRel/libportmidi_s.a,
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = latency;
+				SECTORDER_FLAGS = "";
+				SYMROOT = pm_test/pm_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = MinSizeRel;
+		};
+		175C5080175C5080175C5080 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				FRAMEWORK_SEARCH_PATHS = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				OTHER_CFLAGS = (
+					"-DPM_CHECK_ERRORS=1",
+					"-DDEBUG",
+				);
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = portmidi_s;
+				SECTORDER_FLAGS = "";
+				SYMROOT = .;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Debug;
+		};
+		175C5AD0175C5AD0175C5AD0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				FRAMEWORK_SEARCH_PATHS = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = portmidi_s;
+				SECTORDER_FLAGS = "";
+				SYMROOT = .;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Release;
+		};
+		175C7440175C7440175C7440 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .a;
+				FRAMEWORK_SEARCH_PATHS = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
+				);
+				INSTALL_PATH = "";
+				LIBRARY_STYLE = STATIC;
+				OTHER_CFLAGS = "-DNDEBUG";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = portmidi_s;
+				SECTORDER_FLAGS = "";
+				SYMROOT = .;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = MinSizeRel;
+		};
+		175CC1C0175CC1C0175CC1C0 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1.0.0;
+				DYLIB_CURRENT_VERSION = 1.0.0;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .dylib;
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_1)",
+					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_1 = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2 = "'portmidi_dynamic_EXPORTS'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
+				);
+				INSTALL_PATH = MinSizeRel;
+				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_STYLE = DYNAMIC;
+				MACH_O_TYPE = mh_dylib;
+				OTHER_CFLAGS = (
+					"-DNDEBUG",
+					"-fPIC",
+				);
+				OTHER_LDFLAGS = (
+					"-dynamiclib",
+					"-headerpad_max_install_names",
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = portmidi_d;
+				SECTORDER_FLAGS = "";
+				SYMROOT = .;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = MinSizeRel;
+		};
+		175D45A0175D45A0175D45A0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1.0.0;
+				DYLIB_CURRENT_VERSION = 1.0.0;
+				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_SUFFIX = .dylib;
+				FRAMEWORK_SEARCH_PATHS = (
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_1)",
+					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_1 = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
+				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2 = "'portmidi_dynamic_EXPORTS'";
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					pm_common,
+					porttime,
+					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
+					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
+				);
+				INSTALL_PATH = Debug;
+				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_STYLE = DYNAMIC;
+				MACH_O_TYPE = mh_dylib;
+				OTHER_CFLAGS = (
+					"-DPM_CHECK_ERRORS=1",
+					"-DDEBUG",
+					"-fPIC",
+				);
+				OTHER_LDFLAGS = (
+					"-dynamiclib",
+					"-headerpad_max_install_names",
+					"-framework",
+					CoreAudio,
+					"-framework",
+					CoreFoundation,
+					"-framework",
+					CoreMIDI,
+					"-framework",
+					CoreServices,
+				);
+				OTHER_REZFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = portmidi_d;
+				SECTORDER_FLAGS = "";
+				SYMROOT = .;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wmost",
+					"-Wno-four-char-constants",
+					"-Wno-unknown-pragmas",
+				);
+			};
+			name = Debug;
+		};
+		175DB430175DB430175DB430 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1.0.0;
@@ -1057,6 +2631,7 @@
 				MACH_O_TYPE = mh_dylib;
 				OTHER_CFLAGS = (
 					"-DPM_CHECK_ERRORS=1",
+					"-DDEBUG",
 					"-fPIC",
 				);
 				OTHER_LDFLAGS = (
@@ -1077,9 +2652,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = pmjni;
 				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1089,7 +2662,7 @@ FOUND SYMROOT:
 			};
 			name = Debug;
 		};
-		1756B4501756B4501756B450 /* Release */ = {
+		175DBEB0175DBEB0175DBEB0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1.0.0;
@@ -1102,7 +2675,7 @@ FOUND SYMROOT:
 				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_1)",
 					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2)",
@@ -1120,10 +2693,7 @@ FOUND SYMROOT:
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-					"-fPIC",
-				);
+				OTHER_CFLAGS = "-fPIC";
 				OTHER_LDFLAGS = (
 					"-dynamiclib",
 					"-headerpad_max_install_names",
@@ -1142,9 +2712,7 @@ FOUND SYMROOT:
 				PREBINDING = NO;
 				PRODUCT_NAME = pmjni;
 				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1154,7 +2722,7 @@ FOUND SYMROOT:
 			};
 			name = Release;
 		};
-		1756CE001756CE001756CE00 /* MinSizeRel */ = {
+		175DE140175DE140175DE140 /* MinSizeRel */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1.0.0;
@@ -1207,9 +2775,7 @@ FOUND SYMROOT:
 				PREBINDING = NO;
 				PRODUCT_NAME = pmjni;
 				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1219,7 +2785,7 @@ FOUND SYMROOT:
 			};
 			name = MinSizeRel;
 		};
-		1756E5F01756E5F01756E5F0 /* RelWithDebInfo */ = {
+		175DEED0175DEED0175DEED0 /* RelWithDebInfo */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1.0.0;
@@ -1250,9 +2816,7 @@ FOUND SYMROOT:
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
-				OTHER_CFLAGS = (
-					"-fPIC",
-				);
+				OTHER_CFLAGS = "-fPIC";
 				OTHER_LDFLAGS = (
 					"-dynamiclib",
 					"-headerpad_max_install_names",
@@ -1271,9 +2835,7 @@ FOUND SYMROOT:
 				PREBINDING = NO;
 				PRODUCT_NAME = pmjni;
 				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1283,266 +2845,10 @@ FOUND SYMROOT:
 			};
 			name = RelWithDebInfo;
 		};
-		17578B9017578B9017578B90 /* Debug */ = {
+		175E0AB0175E0AB0175E0AB0 /* RelWithDebInfo */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DYLIB_COMPATIBILITY_VERSION = 1.0.0;
-				DYLIB_CURRENT_VERSION = 1.0.0;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .dylib;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_1)",
-					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_1 = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2 = "'portmidi_dynamic_EXPORTS'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
-				);
-				INSTALL_PATH = Debug;
-				LIBRARY_SEARCH_PATHS = "";
-				LIBRARY_STYLE = DYNAMIC;
-				MACH_O_TYPE = mh_dylib;
-				OTHER_CFLAGS = (
-					"-DPM_CHECK_ERRORS=1",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = (
-					"-dynamiclib",
-					"-headerpad_max_install_names",
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = portmidi_d;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Debug;
-		};
-		175796B0175796B0175796B0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DYLIB_COMPATIBILITY_VERSION = 1.0.0;
-				DYLIB_CURRENT_VERSION = 1.0.0;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .dylib;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_1)",
-					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_1 = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2 = "'portmidi_dynamic_EXPORTS'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
-				);
-				INSTALL_PATH = Release;
-				LIBRARY_SEARCH_PATHS = "";
-				LIBRARY_STYLE = DYNAMIC;
-				MACH_O_TYPE = mh_dylib;
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = (
-					"-dynamiclib",
-					"-headerpad_max_install_names",
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = portmidi_d;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Release;
-		};
-		1757B0C01757B0C01757B0C0 /* MinSizeRel */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DYLIB_COMPATIBILITY_VERSION = 1.0.0;
-				DYLIB_CURRENT_VERSION = 1.0.0;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .dylib;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_1)",
-					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_1 = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2 = "'portmidi_dynamic_EXPORTS'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
-				);
-				INSTALL_PATH = MinSizeRel;
-				LIBRARY_SEARCH_PATHS = "";
-				LIBRARY_STYLE = DYNAMIC;
-				MACH_O_TYPE = mh_dylib;
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = (
-					"-dynamiclib",
-					"-headerpad_max_install_names",
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = portmidi_d;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = MinSizeRel;
-		};
-		1757CB401757CB401757CB40 /* RelWithDebInfo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DYLIB_COMPATIBILITY_VERSION = 1.0.0;
-				DYLIB_CURRENT_VERSION = 1.0.0;
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .dylib;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 2;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_1)",
-					"$(GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_1 = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_PREPROCESSOR_DEFINITIONS_QUOTED_FOR_TARGET_2 = "'portmidi_dynamic_EXPORTS'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
-				);
-				INSTALL_PATH = RelWithDebInfo;
-				LIBRARY_SEARCH_PATHS = "";
-				LIBRARY_STYLE = DYNAMIC;
-				MACH_O_TYPE = mh_dylib;
-				OTHER_CFLAGS = (
-					"-fPIC",
-				);
-				OTHER_LDFLAGS = (
-					"-dynamiclib",
-					"-headerpad_max_install_names",
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = portmidi_d;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = RelWithDebInfo;
-		};
-		17586E7017586E7017586E70 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .a;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
@@ -1550,22 +2856,14 @@ FOUND SYMROOT:
 				HEADER_SEARCH_PATHS = (
 					pm_common,
 					porttime,
-					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
 				);
 				INSTALL_PATH = "";
-				LIBRARY_STYLE = STATIC;
-				OTHER_CFLAGS = (
-					"-DPM_CHECK_ERRORS=1",
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = portmidi_s;
+				PRODUCT_NAME = ALL_BUILD;
 				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1573,81 +2871,27 @@ FOUND SYMROOT:
 					"-Wno-unknown-pragmas",
 				);
 			};
-			name = Debug;
+			name = RelWithDebInfo;
 		};
-		175878B0175878B0175878B0 /* Release */ = {
+		175E8030175E8030175E8030 /* MinSizeRel */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .a;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					pm_common,
 					porttime,
-					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
 				);
 				INSTALL_PATH = "";
-				LIBRARY_STYLE = STATIC;
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
-				PRODUCT_NAME = portmidi_s;
+				PRODUCT_NAME = ALL_BUILD;
 				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Release;
-		};
-		175890201758902017589020 /* MinSizeRel */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .a;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_STYLE = STATIC;
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = portmidi_s;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1656,1632 +2900,143 @@ FOUND SYMROOT:
 				);
 			};
 			name = MinSizeRel;
-		};
-		1758A7901758A7901758A790 /* RelWithDebInfo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = lib;
-				EXECUTABLE_SUFFIX = .a;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 2;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-					/Developer/SDKs/MacOSX10.5.sdk/Developer/Headers/FlatCarbon,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks/JavaVM.framework/Headers,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_STYLE = STATIC;
-				OTHER_CFLAGS = (
-				);
-				OTHER_LDFLAGS = "";
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = portmidi_s;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = RelWithDebInfo;
-		};
-		175919601759196017591960 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DPM_CHECK_ERRORS=1",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					Debug/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = latency;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Debug;
-		};
-		175931C0175931C0175931C0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					Release/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = latency;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Release;
-		};
-		175938C0175938C0175938C0 /* MinSizeRel */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					MinSizeRel/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = latency;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = MinSizeRel;
-		};
-		17595E3017595E3017595E30 /* RelWithDebInfo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 2;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					RelWithDebInfo/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = latency;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = RelWithDebInfo;
-		};
-		1759BBC01759BBC01759BBC0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DPM_CHECK_ERRORS=1",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					Debug/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = midiclock;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Debug;
-		};
-		1759D4201759D4201759D420 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					Release/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = midiclock;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Release;
-		};
-		1759DB201759DB201759DB20 /* MinSizeRel */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					MinSizeRel/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = midiclock;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = MinSizeRel;
-		};
-		175A0090175A0090175A0090 /* RelWithDebInfo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 2;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					RelWithDebInfo/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = midiclock;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = RelWithDebInfo;
-		};
-		175A5E10175A5E10175A5E10 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DPM_CHECK_ERRORS=1",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					Debug/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = midithread;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Debug;
-		};
-		175A7670175A7670175A7670 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					Release/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = midithread;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Release;
-		};
-		175A7D70175A7D70175A7D70 /* MinSizeRel */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					MinSizeRel/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = midithread;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = MinSizeRel;
-		};
-		175AA2E0175AA2E0175AA2E0 /* RelWithDebInfo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 2;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					RelWithDebInfo/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = midithread;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = RelWithDebInfo;
-		};
-		175B0050175B0050175B0050 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DPM_CHECK_ERRORS=1",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					Debug/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = midithru;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Debug;
-		};
-		175B18B0175B18B0175B18B0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					Release/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = midithru;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Release;
-		};
-		175B1FB0175B1FB0175B1FB0 /* MinSizeRel */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					MinSizeRel/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = midithru;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = MinSizeRel;
-		};
-		175B4520175B4520175B4520 /* RelWithDebInfo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 2;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					RelWithDebInfo/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = midithru;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = RelWithDebInfo;
-		};
-		175BA250175BA250175BA250 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DPM_CHECK_ERRORS=1",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					Debug/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = mm;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Debug;
-		};
-		175BAB20175BAB20175BAB20 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					Release/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = mm;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Release;
-		};
-		175BD070175BD070175BD070 /* MinSizeRel */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					MinSizeRel/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = mm;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = MinSizeRel;
-		};
-		175BD750175BD750175BD750 /* RelWithDebInfo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 2;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					RelWithDebInfo/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = mm;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = RelWithDebInfo;
-		};
-		175C4340175C4340175C4340 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DPM_CHECK_ERRORS=1",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					Debug/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = sysex;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Debug;
-		};
-		175C5BA0175C5BA0175C5BA0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					Release/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = sysex;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Release;
-		};
-		175C62A0175C62A0175C62A0 /* MinSizeRel */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					MinSizeRel/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = sysex;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = MinSizeRel;
-		};
-		175C8810175C8810175C8810 /* RelWithDebInfo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 2;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					RelWithDebInfo/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = sysex;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = RelWithDebInfo;
-		};
-		175CE530175CE530175CE530 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DPM_CHECK_ERRORS=1",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					Debug/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = test;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Debug;
-		};
-		175CFD90175CFD90175CFD90 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					Release/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = test;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = Release;
-		};
-		175D0490175D0490175D0490 /* MinSizeRel */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					MinSizeRel/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = test;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = MinSizeRel;
-		};
-		175D2A00175D2A00175D2A00 /* RelWithDebInfo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				EXECUTABLE_PREFIX = "";
-				EXECUTABLE_SUFFIX = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_OPTIMIZATION_LEVEL = 2;
-				GCC_PREPROCESSOR_DEFINITIONS = "'CMAKE_INTDIR=\"$(CONFIGURATION)\"'";
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				HEADER_SEARCH_PATHS = (
-					pm_common,
-					porttime,
-				);
-				INSTALL_PATH = "";
-				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
-				OTHER_LDFLAGS = (
-					"-Wl,-search_paths_first",
-					"-headerpad_max_install_names",
-					RelWithDebInfo/libportmidi_s.a,
-					"-framework",
-					CoreAudio,
-					"-framework",
-					CoreFoundation,
-					"-framework",
-					CoreMIDI,
-					"-framework",
-					CoreServices,
-				);
-				OTHER_REZFLAGS = "";
-				PREBINDING = NO;
-				PRODUCT_NAME = test;
-				SECTORDER_FLAGS = "";
-FOUND SYMROOT: 
-FOUND SYMROOT: 
-				SYMROOT = ".";
-				USE_HEADERMAP = NO;
-				WARNING_CFLAGS = (
-					"-Wmost",
-					"-Wno-four-char-constants",
-					"-Wno-unknown-pragmas",
-				);
-			};
-			name = RelWithDebInfo;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1755A2D01755A2D01755A2D0 /* Build configuration list for PBXProject "portmidi" */ = {
+		16F36D016F36D016F36D0000 /* Build configuration list for PBXProject "portmidi" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1755A4401755A4401755A440 /* Debug */,
-				1755A6001755A6001755A600 /* Release */,
-				1755A7C01755A7C01755A7C0 /* MinSizeRel */,
-				1755A9801755A9801755A980 /* RelWithDebInfo */,
+				17572E5017572E5017572E50 /* Debug */,
+				17572D7017572D7017572D70 /* Release */,
+				16F393016F393016F3930000 /* MinSizeRel */,
+				175047301750473017504730 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		1755DB301755DB301755DB30 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
+		175051901750519017505190 /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1755DE901755DE901755DE90 /* Debug */,
-				1755F0701755F0701755F070 /* Release */,
-				1755FBF01755FBF01755FBF0 /* MinSizeRel */,
-				175613801756138017561380 /* RelWithDebInfo */,
+				16F3EB016F3EB016F3EB0000 /* Debug */,
+				16F4A8016F4A8016F4A80000 /* Release */,
+				175E8030175E8030175E8030 /* MinSizeRel */,
+				175E0AB0175E0AB0175E0AB0 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		1756A6201756A6201756A620 /* Build configuration list for PBXNativeTarget "libpmjni.dylib" */ = {
+		17578B0017578B0017578B00 /* Build configuration list for PBXNativeTarget "test" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1756A9501756A9501756A950 /* Debug */,
-				1756B4501756B4501756B450 /* Release */,
-				1756CE001756CE001756CE00 /* MinSizeRel */,
-				1756E5F01756E5F01756E5F0 /* RelWithDebInfo */,
+				17578E2017578E2017578E20 /* Debug */,
+				17566CF017566CF017566CF0 /* Release */,
+				17522A8017522A8017522A80 /* MinSizeRel */,
+				175240A0175240A0175240A0 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		175788201757882017578820 /* Build configuration list for PBXNativeTarget "libportmidi_d.dylib" */ = {
+		175851E0175851E0175851E0 /* Build configuration list for PBXNativeTarget "sysex" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				17578B9017578B9017578B90 /* Debug */,
-				175796B0175796B0175796B0 /* Release */,
-				1757B0C01757B0C01757B0C0 /* MinSizeRel */,
-				1757CB401757CB401757CB40 /* RelWithDebInfo */,
+				175855101758551017585510 /* Debug */,
+				17585E5017585E5017585E50 /* Release */,
+				1757D1401757D1401757D140 /* MinSizeRel */,
+				1757BD601757BD601757BD60 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		17586B0017586B0017586B00 /* Build configuration list for PBXNativeTarget "libportmidi_s.a" */ = {
+		175976C0175976C0175976C0 /* Build configuration list for PBXNativeTarget "midithread" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				17586E7017586E7017586E70 /* Debug */,
-				175878B0175878B0175878B0 /* Release */,
-				175890201758902017589020 /* MinSizeRel */,
-				1758A7901758A7901758A790 /* RelWithDebInfo */,
+				175979F0175979F0175979F0 /* Debug */,
+				175983301759833017598330 /* Release */,
+				175999301759993017599930 /* MinSizeRel */,
+				1759AF801759AF801759AF80 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		175916301759163017591630 /* Build configuration list for PBXNativeTarget "latency" */ = {
+		175A05A0175A05A0175A05A0 /* Build configuration list for PBXNativeTarget "mm" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				175919601759196017591960 /* Debug */,
-				175931C0175931C0175931C0 /* Release */,
-				175938C0175938C0175938C0 /* MinSizeRel */,
-				17595E3017595E3017595E30 /* RelWithDebInfo */,
+				175A08C0175A08C0175A08C0 /* Debug */,
+				1758CCA01758CCA01758CCA0 /* Release */,
+				1758B8501758B8501758B850 /* MinSizeRel */,
+				175874B0175874B0175874B0 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		1759B8801759B8801759B880 /* Build configuration list for PBXNativeTarget "midiclock" */ = {
+		175B2D20175B2D20175B2D20 /* Build configuration list for PBXNativeTarget "latency" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1759BBC01759BBC01759BBC0 /* Debug */,
-				1759D4201759D4201759D420 /* Release */,
-				1759DB201759DB201759DB20 /* MinSizeRel */,
-				175A0090175A0090175A0090 /* RelWithDebInfo */,
+				175B3050175B3050175B3050 /* Debug */,
+				175B3990175B3990175B3990 /* Release */,
+				175C2D00175C2D00175C2D00 /* MinSizeRel */,
+				175A5C60175A5C60175A5C60 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		175A5AD0175A5AD0175A5AD0 /* Build configuration list for PBXNativeTarget "midithread" */ = {
+		175B7C90175B7C90175B7C90 /* Build configuration list for PBXNativeTarget "midithru" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				175A5E10175A5E10175A5E10 /* Debug */,
-				175A7670175A7670175A7670 /* Release */,
-				175A7D70175A7D70175A7D70 /* MinSizeRel */,
-				175AA2E0175AA2E0175AA2E0 /* RelWithDebInfo */,
+				175B7FC0175B7FC0175B7FC0 /* Debug */,
+				175B6480175B6480175B6480 /* Release */,
+				175B5CA0175B5CA0175B5CA0 /* MinSizeRel */,
+				175A1080175A1080175A1080 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		175AFD10175AFD10175AFD10 /* Build configuration list for PBXNativeTarget "midithru" */ = {
+		175BEED0175BEED0175BEED0 /* Build configuration list for PBXNativeTarget "midiclock" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				175B0050175B0050175B0050 /* Debug */,
-				175B18B0175B18B0175B18B0 /* Release */,
-				175B1FB0175B1FB0175B1FB0 /* MinSizeRel */,
-				175B4520175B4520175B4520 /* RelWithDebInfo */,
+				1758D0701758D0701758D070 /* Debug */,
+				1758D9B01758D9B01758D9B0 /* Release */,
+				1758EFB01758EFB01758EFB0 /* MinSizeRel */,
+				175906001759060017590600 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		175B9F30175B9F30175B9F30 /* Build configuration list for PBXNativeTarget "mm" */ = {
+		175C4D10175C4D10175C4D10 /* Build configuration list for PBXNativeTarget "libportmidi_s.a" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				175BA250175BA250175BA250 /* Debug */,
-				175BAB20175BAB20175BAB20 /* Release */,
-				175BD070175BD070175BD070 /* MinSizeRel */,
-				175BD750175BD750175BD750 /* RelWithDebInfo */,
+				175C5080175C5080175C5080 /* Debug */,
+				175C5AD0175C5AD0175C5AD0 /* Release */,
+				175C7440175C7440175C7440 /* MinSizeRel */,
+				175890601758906017589060 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		175C4010175C4010175C4010 /* Build configuration list for PBXNativeTarget "sysex" */ = {
+		175D4230175D4230175D4230 /* Build configuration list for PBXNativeTarget "libportmidi_d.dylib" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				175C4340175C4340175C4340 /* Debug */,
-				175C5BA0175C5BA0175C5BA0 /* Release */,
-				175C62A0175C62A0175C62A0 /* MinSizeRel */,
-				175C8810175C8810175C8810 /* RelWithDebInfo */,
+				175D45A0175D45A0175D45A0 /* Debug */,
+				1757E2901757E2901757E290 /* Release */,
+				175CC1C0175CC1C0175CC1C0 /* MinSizeRel */,
+				175BA740175BA740175BA740 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		175CE200175CE200175CE200 /* Build configuration list for PBXNativeTarget "test" */ = {
+		175DB100175DB100175DB100 /* Build configuration list for PBXNativeTarget "libpmjni.dylib" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				175CE530175CE530175CE530 /* Debug */,
-				175CFD90175CFD90175CFD90 /* Release */,
-				175D0490175D0490175D0490 /* MinSizeRel */,
-				175D2A00175D2A00175D2A00 /* RelWithDebInfo */,
+				175DB430175DB430175DB430 /* Debug */,
+				175DBEB0175DBEB0175DBEB0 /* Release */,
+				175DE140175DE140175DE140 /* MinSizeRel */,
+				175DEED0175DEED0175DEED0 /* RelWithDebInfo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 17559DD017559DD017559DD0 /* Project object */;
+	rootObject = 175730D0175730D0175730D0 /* Project object */;
 }

@@ -364,10 +364,16 @@ public class PmDefaultsFrame extends JFrame
         closeButton.addActionListener(this);
         wholePanel.add(closeButton);
 
-	// load the logo from the jar file
+	// load the logo from the jar file (on Linux and Windows)
 	ClassLoader cldr = this.getClass().getClassLoader();
-	URL logoURL = cldr.getResource("portmusic_logo.png");
-        ImageIcon icon = new ImageIcon(logoURL);
+        ImageIcon icon;
+        URL logoURL = cldr.getResource("portmusic_logo.png");
+        if (logoURL == null) {
+            // on Mac, load from bundle
+            icon = new ImageIcon("portmusic_logo.png");
+        } else {
+            icon = new ImageIcon(logoURL);
+        }
         logo = new JLabel(icon);
         logo.setSize(logo.getPreferredSize());
         wholePanel.add(logo);

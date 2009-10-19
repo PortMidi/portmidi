@@ -44,7 +44,6 @@ if(UNIX)
   #  CMAKE_BUILD_TYPE to Release, then the OUTPUT_DIRECTORY's will
   #  still be Debug. Try to fix this by checking if the DIRECTORY's
   #  look wrong, and if so, force them to the defaults:
-  string(COMPARE EQUAL ${CMAKE_BUILD_TYPE} "Release" IS_RELEASE)
   if(CMAKE_BUILD_TYPE MATCHES "Debug")
     set(BAD_DIR "Release")
   else(CMAKE_BUILD_TYPE MATCHES "Debug")

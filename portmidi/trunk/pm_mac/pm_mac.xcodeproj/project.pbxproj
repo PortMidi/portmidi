@@ -109,7 +109,7 @@
 		3D9D57FE0E12E3DE00C4C68D /* PmDefaultsFrame.java in Sources */ = {isa = PBXBuildFile; fileRef = 3D9D57F50E12E3DE00C4C68D /* PmDefaultsFrame.java */; };
 		3D9D57FF0E12E3DE00C4C68D /* portmusic_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D9D57F60E12E3DE00C4C68D /* portmusic_logo.png */; };
 		3DB8DD8810614B7700CD6802 /* test.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DB8DD8710614B7700CD6802 /* test.c */; };
-		3DB8DD9210614E0900CD6802 /* libportmidi_d.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DB8DD9110614E0900CD6802 /* libportmidi_d.dylib */; };
+		3DEEAAE3108CA7B40005BF4F /* libportmidi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DEEAAE2108CA7B40005BF4F /* libportmidi.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -161,8 +161,8 @@
 		3DA7744E0663EBB20002CE69 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = /System/Library/Frameworks/CoreFoundation.framework; sourceTree = "<absolute>"; };
 		3DA774500663EBBF0002CE69 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = /System/Library/Frameworks/CoreAudio.framework; sourceTree = "<absolute>"; };
 		3DB8DD8710614B7700CD6802 /* test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = test.c; path = ../pm_test/test.c; sourceTree = SOURCE_ROOT; };
-		3DB8DD9110614E0900CD6802 /* libportmidi_d.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libportmidi_d.dylib; path = ../Release/libportmidi_d.dylib; sourceTree = SOURCE_ROOT; };
 		3DB8DDB8106189B200CD6802 /* JPortMidiHeaders.jar */ = {isa = PBXFileReference; explicitFileType = archive.jar; includeInIndex = 0; path = JPortMidiHeaders.jar; sourceTree = BUILT_PRODUCTS_DIR; };
+		3DEEAAE2108CA7B40005BF4F /* libportmidi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libportmidi.dylib; path = ../Release/libportmidi.dylib; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,7 +181,7 @@
 				3D3B2819104D8AF90043A026 /* CoreFoundation.framework in Frameworks */,
 				3D3B281A104D8AF90043A026 /* CoreAudio.framework in Frameworks */,
 				3D29FEC2105EDCFA009417D8 /* CoreServices.framework in Frameworks */,
-				3DB8DD9210614E0900CD6802 /* libportmidi_d.dylib in Frameworks */,
+				3DEEAAE3108CA7B40005BF4F /* libportmidi.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,7 +229,7 @@
 		5851D5140479552300EE98CD = {
 			isa = PBXGroup;
 			children = (
-				3DB8DD9110614E0900CD6802 /* libportmidi_d.dylib */,
+				3DEEAAE2108CA7B40005BF4F /* libportmidi.dylib */,
 				3D85B13D10672F59003F6706 /* libpmjni.dylib */,
 				3DB8DD8710614B7700CD6802 /* test.c */,
 				3D17A4C30E14079000930576 /* pmdefaults.icns */,
@@ -517,9 +517,11 @@
 					../Debug,
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../pm_common/Release\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../Release\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = "test-dylib";
 				ZERO_LINK = YES;
@@ -543,9 +545,11 @@
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
 					../Release/,
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../pm_common/Release\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../Release\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = "test-dylib";
 				ZERO_LINK = NO;
@@ -569,9 +573,11 @@
 					"$(inherited)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_1)",
 					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+					"$(LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2)",
 				);
 				LIBRARY_SEARCH_PATHS_QUOTED_1 = "\"$(SYSTEM_LIBRARY_DIR)/Frameworks/CoreServices.framework\"";
 				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../pm_common/Release\"";
+				LIBRARY_SEARCH_PATHS_QUOTED_FOR_TARGET_2 = "\"$(SRCROOT)/../Release\"";
 				PREBINDING = NO;
 				PRODUCT_NAME = "test-dylib";
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;

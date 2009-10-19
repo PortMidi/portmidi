@@ -74,7 +74,7 @@ backup: cleanest
 	cd ..; zip -r portmidi.zip portmidi
 
 install: porttime/porttime.h pm_common/portmidi.h \
-	   $(CONFIG)/libportmidi_d.dylib
+	   $(CONFIG)/libportmidi.dylib
 	install porttime/porttime.h  $(PF)/include/
 	install pm_common/portmidi.h $(PF)/include
 	install $(CONFIG)/libportmidi.dylib $(PF)/lib/

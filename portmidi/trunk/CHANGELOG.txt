@@ -1,5 +1,10 @@
 /* CHANGELOG FOR PORTMIDI
  *
+ * 19Oct09 Roger Dannenberg
+ * - Changes dynamic library names from portmidi_d to portmidi to
+ *   be backward-compatible with programs expecting a library by
+ *   the old name.
+ *
  * 04Oct09 Roger Dannenberg
  * - Converted to using Cmake.
  * - Renamed static and dynamic library files to portmidi_s and portmidi_d

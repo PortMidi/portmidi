@@ -108,7 +108,7 @@ set_target_properties(portmidi-static PROPERTIES OUTPUT_NAME "portmidi_s")
 target_link_libraries(portmidi-static ${PM_NEEDED_LIBS})
 
 add_library(portmidi-dynamic SHARED ${LIBSRC})
-set_target_properties(portmidi-dynamic PROPERTIES OUTPUT_NAME "portmidi_d")
+set_target_properties(portmidi-dynamic PROPERTIES OUTPUT_NAME "portmidi")
 target_link_libraries(portmidi-dynamic ${PM_NEEDED_LIBS})
 
 

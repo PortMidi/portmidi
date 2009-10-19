@@ -2,7 +2,9 @@
 
 # set the build directory to be in portmidi, not in portmidi/pm_test
 # this is required for Xcode:
+if(APPLE)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+endif(APPLE)
 
 macro(make_a_test name)
   add_executable(${name} ${name}.c)

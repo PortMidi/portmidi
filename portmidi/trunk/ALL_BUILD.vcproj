@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="ALL_BUILD"
-	ProjectGUID="{0536522F-F2F2-4293-94FA-950B5C56445F}"
+	ProjectGUID="{4D4213EE-A3E5-4BD3-B3ED-D3724FBFC533}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -20,7 +20,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".\pm_common;.\porttime;"
+				AdditionalIncludeDirectories="C:\Users\rbd\portmedia\portmidi\pm_common;C:\Users\rbd\portmedia\portmidi\porttime;"
 				ExceptionHandling="0"
 				PreprocessorDefinitions="CMAKE_INTDIR=\&quot;Debug\&quot;"
 				AssemblerListingLocation="Debug"
@@ -30,7 +30,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories=".\pm_common;.\porttime;"
+				AdditionalIncludeDirectories="C:\Users\rbd\portmedia\portmidi\pm_common;C:\Users\rbd\portmedia\portmidi\porttime;"
 				PreprocessorDefinitions="CMAKE_INTDIR=\&quot;Debug\&quot;"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -61,7 +61,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".\pm_common;.\porttime;"
+				AdditionalIncludeDirectories="C:\Users\rbd\portmedia\portmidi\pm_common;C:\Users\rbd\portmedia\portmidi\porttime;"
 				ExceptionHandling="0"
 				PreprocessorDefinitions="CMAKE_INTDIR=\&quot;Release\&quot;"
 				AssemblerListingLocation="Release"
@@ -71,7 +71,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories=".\pm_common;.\porttime;"
+				AdditionalIncludeDirectories="C:\Users\rbd\portmedia\portmidi\pm_common;C:\Users\rbd\portmedia\portmidi\porttime;"
 				PreprocessorDefinitions="CMAKE_INTDIR=\&quot;Release\&quot;"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -95,21 +95,24 @@
 	</Configurations>
 	<Files>
 			<File
-				RelativePath=".\CMakeFiles\ALL_BUILD">
+				RelativePath="C:\Users\rbd\portmedia\portmidi\CMakeFiles\ALL_BUILD">
+			</File>
+			<File
+				RelativePath="C:\Users\rbd\portmedia\portmidi\CMakeFiles\ALL_BUILD">
 			</File>
 		<Filter
 			Name="CMake Rules"
 			Filter="">
 			<File
-				RelativePath=".\CMakeFiles\ALL_BUILD.rule">
+				RelativePath="C:\Users\rbd\portmedia\portmidi\CMakeFiles\ALL_BUILD.rule">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
 					Name="VCCustomBuildTool"
 					Description="Build all projects"
 					CommandLine=""
-					AdditionalDependencies=".\CMakeFiles\ALL_BUILD.rule"
-					Outputs=".\CMakeFiles\ALL_BUILD"/>
+					AdditionalDependencies="C:\Users\rbd\portmedia\portmidi\CMakeFiles\ALL_BUILD.rule"
+					Outputs="C:\Users\rbd\portmedia\portmidi\CMakeFiles\ALL_BUILD"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
@@ -117,8 +120,8 @@
 					Name="VCCustomBuildTool"
 					Description="Build all projects"
 					CommandLine=""
-					AdditionalDependencies=".\CMakeFiles\ALL_BUILD.rule"
-					Outputs=".\CMakeFiles\ALL_BUILD"/>
+					AdditionalDependencies="C:\Users\rbd\portmedia\portmidi\CMakeFiles\ALL_BUILD.rule"
+					Outputs="C:\Users\rbd\portmedia\portmidi\CMakeFiles\ALL_BUILD"/>
 				</FileConfiguration>
 			</File>
 		</Filter>

@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="test"
-	ProjectGUID="{34A1CEA8-8971-40EE-9D11-B034A26B134C}"
+	ProjectGUID="{65CB4C61-69AE-4336-80C7-6A781F2AA4E3}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -21,20 +21,20 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions=" /Zm1000"
-				AdditionalIncludeDirectories="..\pm_common;..\porttime;"
+				AdditionalIncludeDirectories="C:\Users\rbd\portmedia\portmidi\pm_common;C:\Users\rbd\portmedia\portmidi\porttime;"
 				CompileAs="1"
 				ExceptionHandling="0"
 				WarningLevel="3"
 				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"
 				AssemblerListingLocation="Debug"
 				ObjectFile="$(IntDir)\"
-				ProgramDataBaseFileName="../pm_test/Debug/test.pdb"
+				ProgramDataBaseFileName="C:/Users/rbd/portmedia/portmidi/pm_test/Debug/test.pdb"
 />
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories="..\pm_common;..\porttime;"
+				AdditionalIncludeDirectories="C:\Users\rbd\portmedia\portmidi\pm_common;C:\Users\rbd\portmedia\portmidi\porttime;"
 				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -58,14 +58,14 @@
 				Name="VCLinkerTool"
 				AdditionalOptions=" /STACK:10000000 /machine:I386 /debug"
 				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  ..\Debug\portmidi_s.lib winmm.lib "
-				OutputFile="..\pm_test\Debug\test.exe"
+				OutputFile="C:\Users\rbd\portmedia\portmidi\pm_test\Debug\test.exe"
 				Version="0.0"
 				GenerateManifest="TRUE"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
-				ProgramDataBaseFile="../pm_test/Debug/test.pdb"
+				ProgramDataBaseFile="C:/Users/rbd/portmedia/portmidi/pm_test/Debug/test.pdb"
 				SubSystem="1"
-				ImportLibrary="..\pm_test\Debug\test.lib"/>
+				ImportLibrary="C:\Users\rbd\portmedia\portmidi\pm_test\Debug\test.lib"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
@@ -78,20 +78,20 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions=" /Zm1000"
-				AdditionalIncludeDirectories="..\pm_common;..\porttime;"
+				AdditionalIncludeDirectories="C:\Users\rbd\portmedia\portmidi\pm_common;C:\Users\rbd\portmedia\portmidi\porttime;"
 				CompileAs="1"
 				ExceptionHandling="0"
 				WarningLevel="3"
 				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;"
 				AssemblerListingLocation="Release"
 				ObjectFile="$(IntDir)\"
-				ProgramDataBaseFileName="../pm_test/Release/test.pdb"
+				ProgramDataBaseFileName="C:/Users/rbd/portmedia/portmidi/pm_test/Release/test.pdb"
 />
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories="..\pm_common;..\porttime;"
+				AdditionalIncludeDirectories="C:\Users\rbd\portmedia\portmidi\pm_common;C:\Users\rbd\portmedia\portmidi\porttime;"
 				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -115,14 +115,14 @@
 				Name="VCLinkerTool"
 				AdditionalOptions=" /STACK:10000000 /machine:I386"
 				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  ..\Release\portmidi_s.lib winmm.lib "
-				OutputFile="..\pm_test\Release\test.exe"
+				OutputFile="C:\Users\rbd\portmedia\portmidi\pm_test\Release\test.exe"
 				Version="0.0"
 				GenerateManifest="TRUE"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
-				ProgramDataBaseFile="../pm_test/Release/test.pdb"
+				ProgramDataBaseFile="C:/Users/rbd/portmedia/portmidi/pm_test/Release/test.pdb"
 				SubSystem="1"
-				ImportLibrary="..\pm_test\Release\test.lib"/>
+				ImportLibrary="C:\Users\rbd\portmedia\portmidi\pm_test\Release\test.lib"/>
 		</Configuration>
 	</Configurations>
 	<Files>
@@ -130,7 +130,7 @@
 			Name="Source Files"
 			Filter="">
 			<File
-				RelativePath="..\pm_test\test.c">
+				RelativePath="C:\Users\rbd\portmedia\portmidi\pm_test\test.c">
 			</File>
 		</Filter>
 	</Files>

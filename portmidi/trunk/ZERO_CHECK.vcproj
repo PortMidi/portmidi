@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="ZERO_CHECK"
-	ProjectGUID="{FF112B48-D7EB-4376-BA81-5DA50578E981}"
+	ProjectGUID="{1667E016-94DB-4104-8E86-E2C190D47FF5}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -20,7 +20,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".\pm_common;.\porttime;"
+				AdditionalIncludeDirectories="C:\Users\rbd\portmedia\portmidi\pm_common;C:\Users\rbd\portmedia\portmidi\porttime;"
 				ExceptionHandling="0"
 				PreprocessorDefinitions="CMAKE_INTDIR=\&quot;Debug\&quot;"
 				AssemblerListingLocation="Debug"
@@ -30,7 +30,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories=".\pm_common;.\porttime;"
+				AdditionalIncludeDirectories="C:\Users\rbd\portmedia\portmidi\pm_common;C:\Users\rbd\portmedia\portmidi\porttime;"
 				PreprocessorDefinitions="CMAKE_INTDIR=\&quot;Debug\&quot;"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -61,7 +61,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".\pm_common;.\porttime;"
+				AdditionalIncludeDirectories="C:\Users\rbd\portmedia\portmidi\pm_common;C:\Users\rbd\portmedia\portmidi\porttime;"
 				ExceptionHandling="0"
 				PreprocessorDefinitions="CMAKE_INTDIR=\&quot;Release\&quot;"
 				AssemblerListingLocation="Release"
@@ -71,7 +71,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories=".\pm_common;.\porttime;"
+				AdditionalIncludeDirectories="C:\Users\rbd\portmedia\portmidi\pm_common;C:\Users\rbd\portmedia\portmidi\porttime;"
 				PreprocessorDefinitions="CMAKE_INTDIR=\&quot;Release\&quot;"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -95,21 +95,24 @@
 	</Configurations>
 	<Files>
 			<File
-				RelativePath=".\CMakeFiles\ZERO_CHECK">
+				RelativePath="C:\Users\rbd\portmedia\portmidi\CMakeFiles\ZERO_CHECK">
+			</File>
+			<File
+				RelativePath="C:\Users\rbd\portmedia\portmidi\CMakeFiles\ZERO_CHECK">
 			</File>
 		<Filter
 			Name="CMake Rules"
 			Filter="">
 			<File
-				RelativePath=".\CMakeFiles\ZERO_CHECK.rule">
+				RelativePath="C:\Users\rbd\portmedia\portmidi\CMakeFiles\ZERO_CHECK.rule">
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool
 					Name="VCCustomBuildTool"
 					Description=""
 					CommandLine=""
-					AdditionalDependencies=".\CMakeFiles\ZERO_CHECK.rule"
-					Outputs=".\CMakeFiles\ZERO_CHECK"/>
+					AdditionalDependencies="C:\Users\rbd\portmedia\portmidi\CMakeFiles\ZERO_CHECK.rule"
+					Outputs="C:\Users\rbd\portmedia\portmidi\CMakeFiles\ZERO_CHECK"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
@@ -117,8 +120,8 @@
 					Name="VCCustomBuildTool"
 					Description=""
 					CommandLine=""
-					AdditionalDependencies=".\CMakeFiles\ZERO_CHECK.rule"
-					Outputs=".\CMakeFiles\ZERO_CHECK"/>
+					AdditionalDependencies="C:\Users\rbd\portmedia\portmidi\CMakeFiles\ZERO_CHECK.rule"
+					Outputs="C:\Users\rbd\portmedia\portmidi\CMakeFiles\ZERO_CHECK"/>
 				</FileConfiguration>
 			</File>
 		</Filter>

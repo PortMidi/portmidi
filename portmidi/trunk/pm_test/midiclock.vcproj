@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="sysex"
-	ProjectGUID="{5BC00372-98C1-4AFF-A6EF-E5987E61EF31}"
+	Name="midiclock"
+	ProjectGUID="{AC0D6E75-5A4F-43F7-B564-9AAE1B083158}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -13,7 +13,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="Debug"
-			IntermediateDirectory="sysex.dir\Debug"
+			IntermediateDirectory="midiclock.dir\Debug"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -28,7 +28,7 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"
 				AssemblerListingLocation="Debug"
 				ObjectFile="$(IntDir)\"
-				ProgramDataBaseFileName="../pm_test/Debug/sysex.pdb"
+				ProgramDataBaseFileName="../pm_test/Debug/midiclock.pdb"
 />
 			<Tool
 				Name="VCCustomBuildTool"/>
@@ -58,19 +58,19 @@
 				Name="VCLinkerTool"
 				AdditionalOptions=" /STACK:10000000 /machine:I386 /debug"
 				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  ..\Debug\portmidi_s.lib winmm.lib "
-				OutputFile="..\pm_test\Debug\sysex.exe"
+				OutputFile="..\pm_test\Debug\midiclock.exe"
 				Version="0.0"
 				GenerateManifest="TRUE"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
-				ProgramDataBaseFile="../pm_test/Debug/sysex.pdb"
+				ProgramDataBaseFile="../pm_test/Debug/midiclock.pdb"
 				SubSystem="1"
-				ImportLibrary="..\pm_test\Debug\sysex.lib"/>
+				ImportLibrary="..\pm_test\Debug\midiclock.lib"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="Release"
-			IntermediateDirectory="sysex.dir\Release"
+			IntermediateDirectory="midiclock.dir\Release"
 			ConfigurationType="1"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
@@ -85,7 +85,7 @@
 				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;"
 				AssemblerListingLocation="Release"
 				ObjectFile="$(IntDir)\"
-				ProgramDataBaseFileName="../pm_test/Release/sysex.pdb"
+				ProgramDataBaseFileName="../pm_test/Release/midiclock.pdb"
 />
 			<Tool
 				Name="VCCustomBuildTool"/>
@@ -115,14 +115,14 @@
 				Name="VCLinkerTool"
 				AdditionalOptions=" /STACK:10000000 /machine:I386"
 				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  ..\Release\portmidi_s.lib winmm.lib "
-				OutputFile="..\pm_test\Release\sysex.exe"
+				OutputFile="..\pm_test\Release\midiclock.exe"
 				Version="0.0"
 				GenerateManifest="TRUE"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
-				ProgramDataBaseFile="../pm_test/Release/sysex.pdb"
+				ProgramDataBaseFile="../pm_test/Release/midiclock.pdb"
 				SubSystem="1"
-				ImportLibrary="..\pm_test\Release\sysex.lib"/>
+				ImportLibrary="..\pm_test\Release\midiclock.lib"/>
 		</Configuration>
 	</Configurations>
 	<Files>
@@ -130,7 +130,7 @@
 			Name="Source Files"
 			Filter="">
 			<File
-				RelativePath="..\pm_test\sysex.c">
+				RelativePath="..\pm_test\midiclock.c">
 			</File>
 		</Filter>
 	</Files>

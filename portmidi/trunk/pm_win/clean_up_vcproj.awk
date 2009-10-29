@@ -14,7 +14,7 @@ BEGIN {
     #=================IMPORTANT====================
     # change the following path to the path in which
     # the CMakeLists.txt file resides:
-    base_path = "C:\\\\Users\\\\rbd\\\\portmidi";
+    base_path = "C:\\\\Users\\\\rbd\\\\portmedia\\\\portmidi";
     #==============================================
 
     base_path_2 = base_path;

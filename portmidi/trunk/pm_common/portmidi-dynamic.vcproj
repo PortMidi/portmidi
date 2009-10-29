@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="sysex"
-	ProjectGUID="{5BC00372-98C1-4AFF-A6EF-E5987E61EF31}"
+	Name="portmidi-dynamic"
+	ProjectGUID="{7A9ECC3A-F85B-4DB6-9C6A-DE69E70AC156}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -13,32 +13,32 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="Debug"
-			IntermediateDirectory="sysex.dir\Debug"
-			ConfigurationType="1"
+			IntermediateDirectory="portmidi-dynamic.dir\Debug"
+			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions=" /Zm1000"
-				AdditionalIncludeDirectories="..\pm_common;..\porttime;"
+				AdditionalIncludeDirectories="..\pm_common;..\porttime;&quot;C:\Program Files\Java\jdk1.6.0_16\include&quot;;&quot;C:\Program Files\Java\jdk1.6.0_16\include\win32&quot;;"
 				CompileAs="1"
 				ExceptionHandling="0"
 				WarningLevel="3"
-				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"
+				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;,portmidi_dynamic_EXPORTS"
 				AssemblerListingLocation="Debug"
 				ObjectFile="$(IntDir)\"
-				ProgramDataBaseFileName="../pm_test/Debug/sysex.pdb"
+				ProgramDataBaseFileName="../Debug/portmidi.pdb"
 />
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories="..\pm_common;..\porttime;"
-				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"/>
+				AdditionalIncludeDirectories="..\pm_common;..\porttime;&quot;C:\Program Files\Java\jdk1.6.0_16\include&quot;;&quot;C:\Program Files\Java\jdk1.6.0_16\include\win32&quot;;"
+				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;,portmidi_dynamic_EXPORTS"/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"
+				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;,portmidi_dynamic_EXPORTS"
 				MkTypLibCompatible="FALSE"
 				TargetEnvironment="1"
 				GenerateStublessProxies="TRUE"
@@ -57,45 +57,44 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /STACK:10000000 /machine:I386 /debug"
-				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  ..\Debug\portmidi_s.lib winmm.lib "
-				OutputFile="..\pm_test\Debug\sysex.exe"
+				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  winmm.lib "
+				OutputFile="..\Debug\portmidi.dll"
 				Version="0.0"
 				GenerateManifest="TRUE"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
-				ProgramDataBaseFile="../pm_test/Debug/sysex.pdb"
-				SubSystem="1"
-				ImportLibrary="..\pm_test\Debug\sysex.lib"/>
+				ProgramDataBaseFile="..\Debug\portmidi.pdb"
+				ImportLibrary="..\Debug\portmidi.lib"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="Release"
-			IntermediateDirectory="sysex.dir\Release"
-			ConfigurationType="1"
+			IntermediateDirectory="portmidi-dynamic.dir\Release"
+			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalOptions=" /Zm1000"
-				AdditionalIncludeDirectories="..\pm_common;..\porttime;"
+				AdditionalIncludeDirectories="..\pm_common;..\porttime;&quot;C:\Program Files\Java\jdk1.6.0_16\include&quot;;&quot;C:\Program Files\Java\jdk1.6.0_16\include\win32&quot;;"
 				CompileAs="1"
 				ExceptionHandling="0"
 				WarningLevel="3"
-				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;"
+				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;,portmidi_dynamic_EXPORTS"
 				AssemblerListingLocation="Release"
 				ObjectFile="$(IntDir)\"
-				ProgramDataBaseFileName="../pm_test/Release/sysex.pdb"
+				ProgramDataBaseFileName="../Release/portmidi.pdb"
 />
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCResourceCompilerTool"
-				AdditionalIncludeDirectories="..\pm_common;..\porttime;"
-				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;"/>
+				AdditionalIncludeDirectories="..\pm_common;..\porttime;&quot;C:\Program Files\Java\jdk1.6.0_16\include&quot;;&quot;C:\Program Files\Java\jdk1.6.0_16\include\win32&quot;;"
+				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;,portmidi_dynamic_EXPORTS"/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;"
+				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;,portmidi_dynamic_EXPORTS"
 				MkTypLibCompatible="FALSE"
 				TargetEnvironment="1"
 				GenerateStublessProxies="TRUE"
@@ -114,15 +113,14 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /STACK:10000000 /machine:I386"
-				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  ..\Release\portmidi_s.lib winmm.lib "
-				OutputFile="..\pm_test\Release\sysex.exe"
+				AdditionalDependencies="$(NOINHERIT) kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib  winmm.lib "
+				OutputFile="..\Release\portmidi.dll"
 				Version="0.0"
 				GenerateManifest="TRUE"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
-				ProgramDataBaseFile="../pm_test/Release/sysex.pdb"
-				SubSystem="1"
-				ImportLibrary="..\pm_test\Release\sysex.lib"/>
+				ProgramDataBaseFile="..\Release\portmidi.pdb"
+				ImportLibrary="..\Release\portmidi.lib"/>
 		</Configuration>
 	</Configurations>
 	<Files>
@@ -130,7 +128,19 @@
 			Name="Source Files"
 			Filter="">
 			<File
-				RelativePath="..\pm_test\sysex.c">
+				RelativePath="..\pm_win\pmwin.c">
+			</File>
+			<File
+				RelativePath="..\pm_win\pmwinmm.c">
+			</File>
+			<File
+				RelativePath="..\porttime\ptwinmm.c">
+			</File>
+			<File
+				RelativePath="..\pm_common\pmutil.c">
+			</File>
+			<File
+				RelativePath="..\pm_common\portmidi.c">
 			</File>
 		</Filter>
 	</Files>

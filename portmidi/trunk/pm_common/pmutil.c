@@ -30,7 +30,7 @@ typedef struct {
 } PmQueueRep;
 
 
-PmQueue *Pm_QueueCreate(long num_msgs, int32_t bytes_per_msg)
+PMEXPORT PmQueue *Pm_QueueCreate(long num_msgs, int32_t bytes_per_msg)
 {
     int32_t int32s_per_msg = 
             (int32_t) (((bytes_per_msg + sizeof(int32_t) - 1) &
@@ -67,7 +67,7 @@ PmQueue *Pm_QueueCreate(long num_msgs, int32_t bytes_per_msg)
 }
 
 
-PmError Pm_QueueDestroy(PmQueue *q)
+PMEXPORT PmError Pm_QueueDestroy(PmQueue *q)
 {
     PmQueueRep *queue = (PmQueueRep *) q;
         
@@ -82,7 +82,7 @@ PmError Pm_QueueDestroy(PmQueue *q)
 }
 
 
-PmError Pm_Dequeue(PmQueue *q, void *msg)
+PMEXPORT PmError Pm_Dequeue(PmQueue *q, void *msg)
 {
     long head;
     PmQueueRep *queue = (PmQueueRep *) q;
@@ -161,7 +161,7 @@ PmError Pm_Dequeue(PmQueue *q, void *msg)
 
 
 
-PmError Pm_SetOverflow(PmQueue *q)
+PMEXPORT PmError Pm_SetOverflow(PmQueue *q)
 {
     PmQueueRep *queue = (PmQueueRep *) q;
     long tail;
@@ -176,7 +176,7 @@ PmError Pm_SetOverflow(PmQueue *q)
 }
 
 
-PmError Pm_Enqueue(PmQueue *q, void *msg)
+PMEXPORT PmError Pm_Enqueue(PmQueue *q, void *msg)
 {
     PmQueueRep *queue = (PmQueueRep *) q;
     long tail;
@@ -218,7 +218,7 @@ PmError Pm_Enqueue(PmQueue *q, void *msg)
 }
 
 
-int Pm_QueueEmpty(PmQueue *q)
+PMEXPORT int Pm_QueueEmpty(PmQueue *q)
 {
     PmQueueRep *queue = (PmQueueRep *) q;
     return (!queue) ||  /* null pointer -> return "empty" */
@@ -226,7 +226,7 @@ int Pm_QueueEmpty(PmQueue *q)
 }
 
 
-int Pm_QueueFull(PmQueue *q)
+PMEXPORT int Pm_QueueFull(PmQueue *q)
 {
     long tail;
     int i; 
@@ -245,7 +245,7 @@ int Pm_QueueFull(PmQueue *q)
 }
 
 
-void *Pm_QueuePeek(PmQueue *q)
+PMEXPORT void *Pm_QueuePeek(PmQueue *q)
 {
     PmError rslt;
     int32_t temp;

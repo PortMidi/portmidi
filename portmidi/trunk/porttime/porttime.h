@@ -24,6 +24,13 @@ typedef unsigned int uint32_t;
 extern "C" {
 #endif
 
+#ifndef PMEXPORT
+#ifdef _WINDLL
+#define PMEXPORT __declspec(dllexport)
+#else
+#define PMEXPORT 
+#endif
+#endif
 
 typedef enum {
     ptNoError = 0,         /* success */
@@ -51,7 +58,7 @@ typedef void (PtCallback)( PtTimestamp timestamp, void *userData );
     return value:
     Upon success, returns ptNoError. See PtError for other values.
 */
-PtError Pt_Start(int resolution, PtCallback *callback, void *userData);
+PMEXPORT PtError Pt_Start(int resolution, PtCallback *callback, void *userData);
 
 /*
     Pt_Stop() stops the timer.
@@ -59,17 +66,17 @@ PtError Pt_Start(int resolution, PtCallback *callback, void *userData);
     return value:
     Upon success, returns ptNoError. See PtError for other values.
 */
-PtError Pt_Stop();
+PMEXPORT PtError Pt_Stop();
 
 /*
     Pt_Started() returns true iff the timer is running.
 */
-int Pt_Started();
+PMEXPORT int Pt_Started();
 
 /* 
     Pt_Time() returns the current time in ms.
 */
-PtTimestamp Pt_Time();
+PMEXPORT PtTimestamp Pt_Time();
 
 /*
     Pt_Sleep() pauses, allowing other threads to run.
@@ -78,7 +85,7 @@ PtTimestamp Pt_Time();
     of the pause may be rounded to the nearest or next clock tick
     as determined by resolution in Pt_Start().
 */
-void Pt_Sleep(int32_t duration);
+PMEXPORT void Pt_Sleep(int32_t duration);
 
 #ifdef __cplusplus
 }

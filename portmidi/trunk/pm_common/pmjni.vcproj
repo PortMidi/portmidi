@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="pmjni"
-	ProjectGUID="{C44C2C3C-2AC5-47A7-AFDB-C1593ECE3358}"
+	ProjectGUID="{87B548BD-F5CE-4D1F-9181-390966AC5855}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -22,10 +22,15 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions=" /Zm1000"
 				AdditionalIncludeDirectories="..\pm_common;..\porttime;&quot;C:\Program Files\Java\jdk1.6.0_16\include&quot;;&quot;C:\Program Files\Java\jdk1.6.0_16\include\win32&quot;;"
+				BasicRuntimeChecks="3"
 				CompileAs="1"
+				DebugInformationFormat="3"
 				ExceptionHandling="0"
+				InlineFunctionExpansion="0"
+				Optimization="0"
+				RuntimeLibrary="1"
 				WarningLevel="3"
-				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;,pmjni_EXPORTS"
+				PreprocessorDefinitions="WIN32,_WINDOWS,_DEBUG,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;,pmjni_EXPORTS"
 				AssemblerListingLocation="Debug"
 				ObjectFile="$(IntDir)\"
 				ProgramDataBaseFileName="../Debug/pmjni.pdb"
@@ -35,10 +40,10 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				AdditionalIncludeDirectories="..\pm_common;..\porttime;&quot;C:\Program Files\Java\jdk1.6.0_16\include&quot;;&quot;C:\Program Files\Java\jdk1.6.0_16\include\win32&quot;;"
-				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;,pmjni_EXPORTS"/>
+				PreprocessorDefinitions="WIN32,_WINDOWS,_DEBUG,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;,pmjni_EXPORTS"/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;,pmjni_EXPORTS"
+				PreprocessorDefinitions="WIN32,_WINDOWS,_DEBUG,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;,pmjni_EXPORTS"
 				MkTypLibCompatible="FALSE"
 				TargetEnvironment="1"
 				GenerateStublessProxies="TRUE"
@@ -64,6 +69,7 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
 				ProgramDataBaseFile="..\Debug\pmjni.pdb"
+				GenerateDebugInformation="TRUE"
 				ImportLibrary="..\Debug\pmjni.lib"/>
 		</Configuration>
 		<Configuration
@@ -80,8 +86,11 @@
 				AdditionalIncludeDirectories="..\pm_common;..\porttime;&quot;C:\Program Files\Java\jdk1.6.0_16\include&quot;;&quot;C:\Program Files\Java\jdk1.6.0_16\include\win32&quot;;"
 				CompileAs="1"
 				ExceptionHandling="0"
+				InlineFunctionExpansion="2"
+				Optimization="2"
+				RuntimeLibrary="0"
 				WarningLevel="3"
-				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;,pmjni_EXPORTS"
+				PreprocessorDefinitions="WIN32,_WINDOWS,NDEBUG,CMAKE_INTDIR=\&quot;Release\&quot;,pmjni_EXPORTS"
 				AssemblerListingLocation="Release"
 				ObjectFile="$(IntDir)\"
 				ProgramDataBaseFileName="../Release/pmjni.pdb"
@@ -91,10 +100,10 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				AdditionalIncludeDirectories="..\pm_common;..\porttime;&quot;C:\Program Files\Java\jdk1.6.0_16\include&quot;;&quot;C:\Program Files\Java\jdk1.6.0_16\include\win32&quot;;"
-				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;,pmjni_EXPORTS"/>
+				PreprocessorDefinitions="WIN32,_WINDOWS,NDEBUG,CMAKE_INTDIR=\&quot;Release\&quot;,pmjni_EXPORTS"/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;,pmjni_EXPORTS"
+				PreprocessorDefinitions="WIN32,_WINDOWS,NDEBUG,CMAKE_INTDIR=\&quot;Release\&quot;,pmjni_EXPORTS"
 				MkTypLibCompatible="FALSE"
 				TargetEnvironment="1"
 				GenerateStublessProxies="TRUE"

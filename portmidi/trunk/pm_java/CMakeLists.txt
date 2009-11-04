@@ -11,7 +11,7 @@ if(UNIX)
     prepend_path(JPORTMIDICLASS2 jportmidi/ ${JPORTMIDICLASS})
     prepend_path(PMDEFAULTSCLASS2 pmdefaults/ ${PMDEFAULTSCLASS})
     set(PMDEFAULTS_ALL_CLASSES ${JPORTMIDICLASS2} ${PMDEFAULTSCLASS2})
-    message(STATUS "PMDEFAULTS_ALL_CLASSES is " ${PMDEFAULTS_ALL_CLASSES})
+    # message(STATUS "PMDEFAULTS_ALL_CLASSES is " ${PMDEFAULTS_ALL_CLASSES})
     add_custom_command(OUTPUT pmdefaults/PmDefaultsFrame.class
         COMMAND javac -classpath . pmdefaults/PmDefaultsFrame.java
 	MAIN_DEPENDENCY pmdefaults/PmDefaultsFrame.java
@@ -35,7 +35,7 @@ if(UNIX)
 	WORKING_DIRECTORY pm_java)
     add_custom_target(pmdefaults_target ALL 
         DEPENDS ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/pmdefaults.jar)
-    message(STATUS "add_custom_target: pmdefaults.jar")
+    # message(STATUS "add_custom_target: pmdefaults.jar")
 
     # install the libraries (Linux only)
     INSTALL(FILES ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/pmdefaults.jar

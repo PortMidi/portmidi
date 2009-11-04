@@ -106,6 +106,12 @@ typedef unsigned int uint32_t;
 #endif
 #endif
 
+#ifdef _WINDLL
+#define PMEXPORT __declspec(dllexport)
+#else
+#define PMEXPORT 
+#endif
+
 #ifndef FALSE
     #define FALSE 0
 #endif
@@ -144,13 +150,13 @@ typedef enum {
     Pm_Initialize() is the library initialisation function - call this before
     using the library.
 */
-PmError Pm_Initialize( void );
+PMEXPORT PmError Pm_Initialize( void );
 
 /**
     Pm_Terminate() is the library termination function - call this after
     using the library.
 */
-PmError Pm_Terminate( void );
+PMEXPORT PmError Pm_Terminate( void );
 
 /**  A single PortMidiStream is a descriptor for an open MIDI device.
 */
@@ -171,20 +177,20 @@ typedef void PortMidiStream;
     the stream, e.g. an input or output operation. Until the error is cleared,
     no new error codes will be obtained, even for a different stream.
 */
-int Pm_HasHostError( PortMidiStream * stream );
+PMEXPORT int Pm_HasHostError( PortMidiStream * stream );
 
 
 /**  Translate portmidi error number into human readable message.
     These strings are constants (set at compile time) so client has 
     no need to allocate storage
 */
-const char *Pm_GetErrorText( PmError errnum );
+PMEXPORT const char *Pm_GetErrorText( PmError errnum );
 
 /**  Translate portmidi host error into human readable message.
     These strings are computed at run time, so client has to allocate storage.
     After this routine executes, the host error is cleared. 
 */
-void Pm_GetHostErrorText(char * msg, unsigned int len);
+PMEXPORT void Pm_GetHostErrorText(char * msg, unsigned int len);
 
 #define HDRLENGTH 50
 #define PM_HOST_ERROR_MSG_LEN 256u /* any host error msg will occupy less 
@@ -209,7 +215,7 @@ typedef struct {
 } PmDeviceInfo;
 
 /**  Get devices count, ids range from 0 to Pm_CountDevices()-1. */
-int Pm_CountDevices( void );
+PMEXPORT int Pm_CountDevices( void );
 /**
     Pm_GetDefaultInputDeviceID(), Pm_GetDefaultOutputDeviceID()
 
@@ -252,9 +258,9 @@ int Pm_CountDevices( void );
     On Linux, 
 
 */
-PmDeviceID Pm_GetDefaultInputDeviceID( void );
+PMEXPORT PmDeviceID Pm_GetDefaultInputDeviceID( void );
 /** see PmDeviceID Pm_GetDefaultInputDeviceID() */
-PmDeviceID Pm_GetDefaultOutputDeviceID( void );
+PMEXPORT PmDeviceID Pm_GetDefaultOutputDeviceID( void );
 
 /**
     PmTimestamp is used to represent a millisecond clock with arbitrary
@@ -278,7 +284,7 @@ typedef PmTimestamp (*PmTimeProcPtr)(void *time_info);
     not be manipulated or freed. The pointer is guaranteed to be valid
     between calls to Pm_Initialize() and Pm_Terminate().
 */
-const PmDeviceInfo* Pm_GetDeviceInfo( PmDeviceID id );
+PMEXPORT const PmDeviceInfo* Pm_GetDeviceInfo( PmDeviceID id );
 
 /**
     Pm_OpenInput() and Pm_OpenOutput() open devices.
@@ -344,14 +350,14 @@ const PmDeviceInfo* Pm_GetDeviceInfo( PmDeviceID id );
     by calling Pm_Close().
 
 */
-PmError Pm_OpenInput( PortMidiStream** stream,
+PMEXPORT PmError Pm_OpenInput( PortMidiStream** stream,
                 PmDeviceID inputDevice,
                 void *inputDriverInfo,
                 int32_t bufferSize,
                 PmTimeProcPtr time_proc,
                 void *time_info );
 
-PmError Pm_OpenOutput( PortMidiStream** stream,
+PMEXPORT PmError Pm_OpenOutput( PortMidiStream** stream,
                 PmDeviceID outputDevice,
                 void *outputDriverInfo,
                 int32_t bufferSize,
@@ -425,7 +431,7 @@ PmError Pm_OpenOutput( PortMidiStream** stream,
 #define PM_FILT_SYSTEMCOMMON (PM_FILT_MTC | PM_FILT_SONG_POSITION | PM_FILT_SONG_SELECT | PM_FILT_TUNE)
 
 
-PmError Pm_SetFilter( PortMidiStream* stream, int32_t filters );
+PMEXPORT PmError Pm_SetFilter( PortMidiStream* stream, int32_t filters );
 
 #define Pm_Channel(channel) (1<<(channel))
 /**
@@ -439,7 +445,7 @@ PmError Pm_SetFilter( PortMidiStream* stream, int32_t filters );
 
     All channels are allowed by default
 */
-PmError Pm_SetChannelMask(PortMidiStream *stream, int mask);
+PMEXPORT PmError Pm_SetChannelMask(PortMidiStream *stream, int mask);
 
 /**
     Pm_Abort() terminates outgoing messages immediately
@@ -449,14 +455,14 @@ PmError Pm_SetChannelMask(PortMidiStream *stream, int mask);
     ignore messages in the buffer and close an input device at
     any time.
  */
-PmError Pm_Abort( PortMidiStream* stream );
+PMEXPORT PmError Pm_Abort( PortMidiStream* stream );
      
 /**
     Pm_Close() closes a midi stream, flushing any pending buffers.
     (PortMidi attempts to close open streams when the application 
     exits -- this is particularly difficult under Windows.)
 */
-PmError Pm_Close( PortMidiStream* stream );
+PMEXPORT PmError Pm_Close( PortMidiStream* stream );
 
 /**
     Pm_Message() encodes a short Midi message into a 32-bit word. If data1
@@ -574,13 +580,13 @@ typedef struct {
     message" and will be flushed as well.
 
 */
-int Pm_Read( PortMidiStream *stream, PmEvent *buffer, int32_t length );
+PMEXPORT int Pm_Read( PortMidiStream *stream, PmEvent *buffer, int32_t length );
 
 /**
     Pm_Poll() tests whether input is available, 
     returning TRUE, FALSE, or an error value.
 */
-PmError Pm_Poll( PortMidiStream *stream);
+PMEXPORT PmError Pm_Poll( PortMidiStream *stream);
 
 /** 
     Pm_Write() writes midi data from a buffer. This may contain:
@@ -595,7 +601,7 @@ PmError Pm_Poll( PortMidiStream *stream);
 
     Sysex data may contain embedded real-time messages.
 */
-PmError Pm_Write( PortMidiStream *stream, PmEvent *buffer, int32_t length );
+PMEXPORT PmError Pm_Write( PortMidiStream *stream, PmEvent *buffer, int32_t length );
 
 /**
     Pm_WriteShort() writes a timestamped non-system-exclusive midi message.
@@ -603,12 +609,12 @@ PmError Pm_Write( PortMidiStream *stream, PmEvent *buffer, int32_t length );
     non-decreasing. (But timestamps are ignored if the stream was opened
     with latency = 0.)
 */
-PmError Pm_WriteShort( PortMidiStream *stream, PmTimestamp when, int32_t msg);
+PMEXPORT PmError Pm_WriteShort( PortMidiStream *stream, PmTimestamp when, int32_t msg);
 
 /**
     Pm_WriteSysEx() writes a timestamped system-exclusive midi message.
 */
-PmError Pm_WriteSysEx( PortMidiStream *stream, PmTimestamp when, unsigned char *msg);
+PMEXPORT PmError Pm_WriteSysEx( PortMidiStream *stream, PmTimestamp when, unsigned char *msg);
 
 /** @} */
 

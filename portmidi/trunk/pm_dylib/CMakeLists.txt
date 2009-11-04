@@ -1,12 +1,14 @@
-# pm_common
+# pm_dylib
 
-# set the build directory for libportmidi.a to be in portmidi, not in 
-#    portmidi/pm_common
+# set the build directory for libraries to be in portmidi, not in 
+#    portmidi/pm_dylib
 if(APPLE OR WIN32)
-  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
   # set the build directory for .dylib libraries
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+  # the "archive" output directory says where to put portmidi.lib, the
+  # static part of the lib/dll pair:
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 
   # the first time CMake configures, save off CMake's built-in flags
   if(NOT DEFAULT_DEBUG_FLAGS)
@@ -87,8 +89,7 @@ if(UNIX)
 else(UNIX)
   if(WIN32)
     # /MDd is multithread debug DLL, /MTd is multithread debug
-    # /MD is multithread DLL, /MT is multithread. Change to static:
-    include(../pm_win/static.cmake)
+    # /MD is multithread DLL, /MT is multithread 
     
     include(FindJNI)
     # note: should use JAVA_JVM_LIB_PATH, but it is not set properly
@@ -107,24 +108,17 @@ endif(UNIX)
 set(JNI_EXTRA_LIBS ${PM_NEEDED_LIBS} ${JAVAVM_LIB})
 
 # this completes the list of library sources by adding shared code
-list(APPEND LIBSRC pmutil portmidi)
+set(SHARED_FILES pmutil portmidi)
+prepend_path(SHARED_PATHS ../pm_common/ ${SHARED_FILES})
+list(APPEND LIBSRC ${SHARED_PATHS})
 
-# now add the shared files to make the complete list of library sources
-add_library(portmidi-static ${LIBSRC})
-set_target_properties(portmidi-static PROPERTIES OUTPUT_NAME "portmidi_s")
-target_link_libraries(portmidi-static ${PM_NEEDED_LIBS})
-
-# define the jni library
-include_directories(${JAVA_INCLUDE_PATHS})
-
-set(JNISRC ${LIBSRC} ../pm_java/pmjni/pmjni.c)
-add_library(pmjni SHARED ${JNISRC})
-target_link_libraries(pmjni ${JNI_EXTRA_LIBS})
-set_target_properties(pmjni PROPERTIES EXECUTABLE_EXTENSION "jnilib")
+add_library(portmidi-dynamic SHARED ${LIBSRC})
+set_target_properties(portmidi-dynamic PROPERTIES OUTPUT_NAME "portmidi")
+target_link_libraries(portmidi-dynamic ${PM_NEEDED_LIBS})
 
 # install the libraries (Linux only)
 if(UNIX AND NOT APPLE)
-  INSTALL(TARGETS portmidi-static portmidi-dynamic pmjni
+  INSTALL(TARGETS portmidi-dynamic
     LIBRARY DESTINATION /usr/local/lib
     ARCHIVE DESTINATION /usr/local/lib)
   INSTALL(FILES portmidi.h ../porttime/porttime.h

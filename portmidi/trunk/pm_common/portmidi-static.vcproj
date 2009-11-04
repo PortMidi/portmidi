@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="portmidi-static"
-	ProjectGUID="{C47C12B5-C8D6-4CE0-85EE-CC1B91CAED8A}"
+	ProjectGUID="{2985D5DA-D91E-44E0-924B-E612B6AA33F6}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -22,10 +22,15 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions=" /Zm1000"
 				AdditionalIncludeDirectories="..\pm_common;..\porttime;&quot;C:\Program Files\Java\jdk1.6.0_16\include&quot;;&quot;C:\Program Files\Java\jdk1.6.0_16\include\win32&quot;;"
+				BasicRuntimeChecks="3"
 				CompileAs="1"
+				DebugInformationFormat="3"
 				ExceptionHandling="0"
+				InlineFunctionExpansion="0"
+				Optimization="0"
+				RuntimeLibrary="1"
 				WarningLevel="3"
-				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"
+				PreprocessorDefinitions="WIN32,_WINDOWS,_DEBUG,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"
 				AssemblerListingLocation="Debug"
 				ObjectFile="$(IntDir)\"
 				ProgramDataBaseFileName="../Debug/portmidi_s.pdb"
@@ -35,10 +40,10 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				AdditionalIncludeDirectories="..\pm_common;..\porttime;&quot;C:\Program Files\Java\jdk1.6.0_16\include&quot;;&quot;C:\Program Files\Java\jdk1.6.0_16\include\win32&quot;;"
-				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"/>
+				PreprocessorDefinitions="WIN32,_WINDOWS,_DEBUG,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"
+				PreprocessorDefinitions="WIN32,_WINDOWS,_DEBUG,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"
 				MkTypLibCompatible="FALSE"
 				TargetEnvironment="1"
 				GenerateStublessProxies="TRUE"
@@ -72,8 +77,11 @@
 				AdditionalIncludeDirectories="..\pm_common;..\porttime;&quot;C:\Program Files\Java\jdk1.6.0_16\include&quot;;&quot;C:\Program Files\Java\jdk1.6.0_16\include\win32&quot;;"
 				CompileAs="1"
 				ExceptionHandling="0"
+				InlineFunctionExpansion="2"
+				Optimization="2"
+				RuntimeLibrary="0"
 				WarningLevel="3"
-				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;"
+				PreprocessorDefinitions="WIN32,_WINDOWS,NDEBUG,CMAKE_INTDIR=\&quot;Release\&quot;"
 				AssemblerListingLocation="Release"
 				ObjectFile="$(IntDir)\"
 				ProgramDataBaseFileName="../Release/portmidi_s.pdb"
@@ -83,10 +91,10 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				AdditionalIncludeDirectories="..\pm_common;..\porttime;&quot;C:\Program Files\Java\jdk1.6.0_16\include&quot;;&quot;C:\Program Files\Java\jdk1.6.0_16\include\win32&quot;;"
-				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;"/>
+				PreprocessorDefinitions="WIN32,_WINDOWS,NDEBUG,CMAKE_INTDIR=\&quot;Release\&quot;"/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;"
+				PreprocessorDefinitions="WIN32,_WINDOWS,NDEBUG,CMAKE_INTDIR=\&quot;Release\&quot;"
 				MkTypLibCompatible="FALSE"
 				TargetEnvironment="1"
 				GenerateStublessProxies="TRUE"

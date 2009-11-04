@@ -54,6 +54,16 @@ state == "normal" {
         state = "cmakelists";
         next # do not print this line
     };
+    # THIS CODE WOULD ALLOW portmidi-static and portmidi-dynamic IN
+    # pm_commmon. I DECIDED TO TRY PUTTING THEM IN SEPARATE DIRECTORIES
+    # INSTEAD.
+    # Use static libraries for everything except portmidi-dynamic
+    #if (($0 ~ "RuntimeLibrary=") && (base_relative ~ "dynamic")) {
+    #    if ($0 ~ 2) {
+    #        $0 = "\t\t\t\tRuntimeLibrary=\"0\"";
+    #    } else if ($0 ~ 3) {
+    #        $0 = "\t\t\t\tRuntimeLibrary=\"1\"";
+    #    }
     print $0;
     next
 }

@@ -69,6 +69,8 @@ add_subdirectory(pm_common)
 
 add_subdirectory(pm_test)
 
+add_subdirectory(pm_dylib)
+
 # Cannot figure out how to make an xcode Java application with CMake
 add_subdirectory(pm_java)
 

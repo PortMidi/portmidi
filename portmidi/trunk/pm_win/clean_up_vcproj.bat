@@ -7,15 +7,17 @@ gawk -f ..\pm_win\clean_up_vcproj.awk -v base_relative=.. portmidi-static.vcproj
 del portmidi-static.vcproj-cmake
 echo portmidi-static
 
-rename portmidi-dynamic.vcproj portmidi-dynamic.vcproj-cmake
-gawk -f ..\pm_win\clean_up_vcproj.awk -v base_relative=.. portmidi-dynamic.vcproj-cmake > portmidi-dynamic.vcproj
-del portmidi-dynamic.vcproj-cmake
-echo portmidi-dynamic
-
 rename pmjni.vcproj pmjni.vcproj-cmake
 gawk -f ..\pm_win\clean_up_vcproj.awk -v base_relative=.. pmjni.vcproj-cmake > pmjni.vcproj
 del pmjni.vcproj-cmake
 echo pmjni
+
+cd ../pm_dylib
+
+rename portmidi-dynamic.vcproj portmidi-dynamic.vcproj-cmake
+gawk -f ..\pm_win\clean_up_vcproj.awk -v base_relative=.. portmidi-dynamic.vcproj-cmake > portmidi-dynamic.vcproj
+del portmidi-dynamic.vcproj-cmake
+echo portmidi-dynamic
 
 cd ..\pm_test
 

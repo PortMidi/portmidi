@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9.00"
 	Name="qtest"
-	ProjectGUID="{33E8A9B2-27EC-4785-9267-A14B9483B740}"
+	ProjectGUID="{2204E68C-5C1F-440E-8CE6-7E273D4F6AD1}"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -22,10 +22,15 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions=" /Zm1000"
 				AdditionalIncludeDirectories="..\pm_common;..\porttime;"
+				BasicRuntimeChecks="3"
 				CompileAs="1"
+				DebugInformationFormat="3"
 				ExceptionHandling="0"
+				InlineFunctionExpansion="0"
+				Optimization="0"
+				RuntimeLibrary="1"
 				WarningLevel="3"
-				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"
+				PreprocessorDefinitions="WIN32,_WINDOWS,_DEBUG,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"
 				AssemblerListingLocation="Debug"
 				ObjectFile="$(IntDir)\"
 				ProgramDataBaseFileName="../pm_test/Debug/qtest.pdb"
@@ -35,10 +40,10 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				AdditionalIncludeDirectories="..\pm_common;..\porttime;"
-				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"/>
+				PreprocessorDefinitions="WIN32,_WINDOWS,_DEBUG,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="WIN32,_WINDOWS,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"
+				PreprocessorDefinitions="WIN32,_WINDOWS,_DEBUG,PM_CHECK_ERRORS=1,DEBUG,CMAKE_INTDIR=\&quot;Debug\&quot;"
 				MkTypLibCompatible="FALSE"
 				TargetEnvironment="1"
 				GenerateStublessProxies="TRUE"
@@ -64,6 +69,7 @@
 				LinkIncremental="2"
 				AdditionalLibraryDirectories=""
 				ProgramDataBaseFile="../pm_test/Debug/qtest.pdb"
+				GenerateDebugInformation="TRUE"
 				SubSystem="1"
 				ImportLibrary="..\pm_test\Debug\qtest.lib"/>
 		</Configuration>
@@ -81,8 +87,11 @@
 				AdditionalIncludeDirectories="..\pm_common;..\porttime;"
 				CompileAs="1"
 				ExceptionHandling="0"
+				InlineFunctionExpansion="2"
+				Optimization="2"
+				RuntimeLibrary="0"
 				WarningLevel="3"
-				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;"
+				PreprocessorDefinitions="WIN32,_WINDOWS,NDEBUG,CMAKE_INTDIR=\&quot;Release\&quot;"
 				AssemblerListingLocation="Release"
 				ObjectFile="$(IntDir)\"
 				ProgramDataBaseFileName="../pm_test/Release/qtest.pdb"
@@ -92,10 +101,10 @@
 			<Tool
 				Name="VCResourceCompilerTool"
 				AdditionalIncludeDirectories="..\pm_common;..\porttime;"
-				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;"/>
+				PreprocessorDefinitions="WIN32,_WINDOWS,NDEBUG,CMAKE_INTDIR=\&quot;Release\&quot;"/>
 			<Tool
 				Name="VCMIDLTool"
-				PreprocessorDefinitions="WIN32,_WINDOWS,CMAKE_INTDIR=\&quot;Release\&quot;"
+				PreprocessorDefinitions="WIN32,_WINDOWS,NDEBUG,CMAKE_INTDIR=\&quot;Release\&quot;"
 				MkTypLibCompatible="FALSE"
 				TargetEnvironment="1"
 				GenerateStublessProxies="TRUE"

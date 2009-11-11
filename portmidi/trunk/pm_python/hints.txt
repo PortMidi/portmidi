@@ -1,4 +1,5 @@
-Contributed by Erik Flister (9-Nov-08, MediaAPI mailing list):
+Contributed by Erik Flister (9-Nov-08, MediaAPI mailing list).
+(This may be obsolete -RBD)
 
 Following instructions for OSX at:
 http://cratel.wichita.edu/cratel/cratel_pyportmidi

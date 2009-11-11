@@ -436,12 +436,16 @@ PMEXPORT PmError Pm_SetFilter( PortMidiStream* stream, int32_t filters );
 #define Pm_Channel(channel) (1<<(channel))
 /**
     Pm_SetChannelMask() filters incoming messages based on channel.
-    The mask is a 16-bit bitfield corresponding to appropriate channels
+    The mask is a 16-bit bitfield corresponding to appropriate channels.
     The Pm_Channel macro can assist in calling this function.
     i.e. to set receive only input on channel 1, call with
     Pm_SetChannelMask(Pm_Channel(1));
     Multiple channels should be OR'd together, like
     Pm_SetChannelMask(Pm_Channel(10) | Pm_Channel(11))
+
+    Note that channels are numbered 0 to 15 (not 1 to 16). Most 
+    synthesizer and interfaces number channels starting at 1, but
+    PortMidi numbers channels starting at 0.
 
     All channels are allowed by default
 */

@@ -133,7 +133,7 @@ void receive_poll(PtTimestamp timestamp, void *userData)
     PmEvent event;
     int count;
     if (!active) return;
-    while (count = Pm_Read(midi_in, &event, 1)) {
+    while ((count = Pm_Read(midi_in, &event, 1))) {
         if (count == 1) output(event.message);
         else            printf(Pm_GetErrorText(count));
     }

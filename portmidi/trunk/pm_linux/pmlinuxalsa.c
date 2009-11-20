@@ -420,7 +420,7 @@ static PmError alsa_write(PmInternal *midi, PmEvent *buffer, int32_t length)
     }
     if (desc->error < 0) return pmHostError;
 
-    VERBOSE printf("snd_seq_drain_output: 0x%x\n", seq);
+    VERBOSE printf("snd_seq_drain_output: 0x%x\n", (unsigned int) seq);
     desc->error = snd_seq_drain_output(seq);
     if (desc->error < 0) return pmHostError;
 

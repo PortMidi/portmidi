@@ -20,19 +20,31 @@ Start in the portmedia/portmidi directory.
 
 make -f pm_mac/Makefile.osx
 
-Release version executables and libraries are now in
-    portmedia/portmidi/Release
-Optionally, you can build the Debug versions:
+(Begin note: make will invoke cmake to build a Makefile and then make to
+build portmidi. This extra level allows you to correctly build 
+both Release and Debug versions. Release is the default, so to get
+the Debug version, use:
 
 make -f pm_mac/Makefile.osx configuration=Debug
+)
 
-Debug version executables and libraries are now in
+Release version executables and libraries are now in
+    portmedia/portmidi/Release
+
+Debug version executables and libraries are created in
     portmedia/portmidi/Debug
 The Debug versions are compiled with PM_CHECK_ERRORS which
 prints an error message and aborts when an error code is returned
 by PortMidi functions. This is useful for small command line 
 applications. Otherwise, you should check and handle error returns
 in your program.
+
+You can install portmidi as follows:
+
+cd Release; sudo make install
+
+This will install /usr/local/include/{portmidi.h, porttime.h}
+and /usr/local/lib/libportmidi.dylib
 
 You should now make the pmdefaults.app:
 
@@ -83,6 +95,15 @@ PmDefaults project depends on libpmjni.dylib.)
 (6) If you wish, copy pm_mac/build/Deployment/PmDefaults.app to
 your applications folder.
 
+(7) If you want to install libportmidi.dylib, first make it with 
+Xcode, then
+    sudo make -f pm_mac/Makefile.osx install
+This command will install /usr/local/include/{porttime.h, portmidi.h} 
+and /usr/local/lib/libportmidi.dylib
+Note that the "install" function of xcode creates portmidi/Release
+and does not install the library to /usr/local/lib, so please use
+the command line installer.
+
 ==== USING CMAKE TO BUILD Xcode PROJECT ====
 
 (1) Install CMake if you do not have it already.
@@ -113,6 +134,8 @@ the portmidi.xcodeproj you get with the distribution.
 
 CHANGELOG
 
+20-Nov-2009 Roger B. Dannenberg
+    Added some install instructions
 26-Sep-2009 Roger B. Dannenberg
     More changes for using CMake, Makefiles, XCode
 20-Sep-2009 Roger B. Dannenberg

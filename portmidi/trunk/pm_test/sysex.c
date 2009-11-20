@@ -317,7 +317,7 @@ void receive_multiple_test()
     /* Important: start PortTime first -- if it is not started first, it will
        be started by PortMidi, and then our attempt to open again will fail */
     receive_poll_running = false;
-    if (err = Pt_Start(1, receive_poll, 0)) {
+    if ((err = Pt_Start(1, receive_poll, 0))) {
         printf("PortTime error code: %d\n", err);
         goto cleanup;
     }

@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/rbd/portmedia/portmidi
+# Install script for directory: /Users/rbd/portmedia/portmidi
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  SET(CMAKE_INSTALL_PREFIX "C:/Program Files/portmidi")
+  SET(CMAKE_INSTALL_PREFIX "/usr/local")
 ENDIF(NOT DEFINED CMAKE_INSTALL_PREFIX)
 STRING(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -29,10 +29,10 @@ ENDIF(NOT CMAKE_INSTALL_COMPONENT)
 
 IF(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  INCLUDE("C:/Users/rbd/portmedia/portmidi/pm_common/cmake_install.cmake")
-  INCLUDE("C:/Users/rbd/portmedia/portmidi/pm_test/cmake_install.cmake")
-  INCLUDE("C:/Users/rbd/portmedia/portmidi/pm_dylib/cmake_install.cmake")
-  INCLUDE("C:/Users/rbd/portmedia/portmidi/pm_java/cmake_install.cmake")
+  INCLUDE("/Users/rbd/portmedia/portmidi/pm_common/cmake_install.cmake")
+  INCLUDE("/Users/rbd/portmedia/portmidi/pm_test/cmake_install.cmake")
+  INCLUDE("/Users/rbd/portmedia/portmidi/pm_dylib/cmake_install.cmake")
+  INCLUDE("/Users/rbd/portmedia/portmidi/pm_java/cmake_install.cmake")
 
 ENDIF(NOT CMAKE_INSTALL_LOCAL_ONLY)
 
@@ -42,7 +42,7 @@ ELSE(CMAKE_INSTALL_COMPONENT)
   SET(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 ENDIF(CMAKE_INSTALL_COMPONENT)
 
-FILE(WRITE "C:/Users/rbd/portmedia/portmidi/${CMAKE_INSTALL_MANIFEST}" "")
+FILE(WRITE "/Users/rbd/portmedia/portmidi/${CMAKE_INSTALL_MANIFEST}" "")
 FOREACH(file ${CMAKE_INSTALL_MANIFEST_FILES})
-  FILE(APPEND "C:/Users/rbd/portmedia/portmidi/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
+  FILE(APPEND "/Users/rbd/portmedia/portmidi/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
 ENDFOREACH(file)

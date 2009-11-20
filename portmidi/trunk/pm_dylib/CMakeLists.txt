@@ -59,6 +59,7 @@ if(UNIX)
 
     set(JAVAVM_LIB "${FRAMEWORK_PATH}/JavaVM.framework")
     set(JAVA_INCLUDE_PATHS ${JAVAVM_LIB}/Headers)
+    set(INSTALL_NAME_DIR "/usr/local/lib")
     message(STATUS "SYSROOT: " ${CMAKE_OSX_SYSROOT})
   else(APPLE)
     # LINUX settings...
@@ -116,11 +117,11 @@ add_library(portmidi-dynamic SHARED ${LIBSRC})
 set_target_properties(portmidi-dynamic PROPERTIES OUTPUT_NAME "portmidi")
 target_link_libraries(portmidi-dynamic ${PM_NEEDED_LIBS})
 
-# install the libraries (Linux only)
-if(UNIX AND NOT APPLE)
+# install the libraries (Linux and Mac OS X command line)
+if(UNIX)
   INSTALL(TARGETS portmidi-dynamic
     LIBRARY DESTINATION /usr/local/lib
     ARCHIVE DESTINATION /usr/local/lib)
-  INSTALL(FILES portmidi.h ../porttime/porttime.h
+  INSTALL(FILES ../pm_common/portmidi.h ../porttime/porttime.h
     DESTINATION /usr/local/include)
-endif(UNIX AND NOT APPLE)
+endif(UNIX)

@@ -8,6 +8,8 @@
 # to override the default Debug configuration
 configuration=Release
 
+PF=/usr/local
+
 # For debugging, define PM_CHECK_ERRORS
 ifeq ($(configuration),Release)
     CONFIG = Release

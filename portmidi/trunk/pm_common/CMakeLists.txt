@@ -122,11 +122,12 @@ add_library(pmjni SHARED ${JNISRC})
 target_link_libraries(pmjni ${JNI_EXTRA_LIBS})
 set_target_properties(pmjni PROPERTIES EXECUTABLE_EXTENSION "jnilib")
 
-# install the libraries (Linux only)
-if(UNIX AND NOT APPLE)
-  INSTALL(TARGETS portmidi-static portmidi-dynamic pmjni
+# install the libraries (Linux and Mac OS X command line)
+if(UNIX)
+  INSTALL(TARGETS portmidi-static pmjni
     LIBRARY DESTINATION /usr/local/lib
     ARCHIVE DESTINATION /usr/local/lib)
-  INSTALL(FILES portmidi.h ../porttime/porttime.h
-    DESTINATION /usr/local/include)
-endif(UNIX AND NOT APPLE)
+# .h files installed by pm_dylib/CMakeLists.txt, so don't need them here
+#  INSTALL(FILES portmidi.h ../porttime/porttime.h
+#    DESTINATION /usr/local/include)
+endif(UNIX)

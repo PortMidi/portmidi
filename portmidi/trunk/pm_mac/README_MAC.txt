@@ -1,6 +1,6 @@
 README_MAC.txt for PortMidi
 Roger Dannenberg
-20 sep 2009
+20 nov 2009
 
 To build PortMidi for Mac OS X, you must install Xcode, and
 if you want to build from the command line, you should install
@@ -44,7 +44,7 @@ You can install portmidi as follows:
 cd Release; sudo make install
 
 This will install /usr/local/include/{portmidi.h, porttime.h}
-and /usr/local/lib/libportmidi.dylib
+and /usr/local/lib/{libportmidi.dylib, libportmidi_s.a, libpmjni.dylib}
 
 You should now make the pmdefaults.app:
 

@@ -39,9 +39,23 @@ Installing PyPortMidi from its Pyrex source code:
                          from portmidi's pm_linux directory
                          to PyPortMidi's linux directory
 
-4. in PyPortMidi's root directory, type:
+4. WINDOWS: in PyPortMidi's root directory, type:
    python setup.py install
    (make sure you have admin/superuser privileges)
+
+   MAC OS X: you will need xcode
+   open pm_python/macpypm/macpypm.xcodeproj
+   build the project. It should build on OS X 10.5 using Python 2.5, but you
+       may need to adjust some directories
+   copy (by hand) pm_python/macpypm/build/Release/pypm.so to the
+       appropriate python directory, e.g.
+       /Volumes/Macintosh HD/Library/Python/2.5/site-packaages/pypm.so
+   rename pm_python/pypm.py to pm_python/pypm.py-hidden (so that python
+       will not try to load it instead of pypm.so -- pypm.py is for
+       Python 3000 and not for Python 2.x)
+   open a terminal and cd portmidi/pm_python
+   test the installation with: python test.py
+
 
 Distribution of PyPortMidi compiled code:
 --------------------------------------------

@@ -43,7 +43,9 @@ Installing PyPortMidi from its Pyrex source code:
    python setup.py install
    (make sure you have admin/superuser privileges)
 
-   MAC OS X: you will need xcode
+   MAC OS X: you will need xcode. Even though this README says it is for
+       version 2.6, OS X 1.5 has Python 2.5 installed, so I worked with it
+       and have not tried installing 2.6 or testing it with PyPortMidi.
    open pm_python/macpypm/macpypm.xcodeproj
    build the project. It should build on OS X 10.5 using Python 2.5, but you
        may need to adjust some directories

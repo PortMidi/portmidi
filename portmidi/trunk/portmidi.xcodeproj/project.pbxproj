@@ -660,139 +660,6 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		175206F0175206F0175206F0 /* CMake Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi -f CMakeScripts/ALL_BUILD_cmakeRulesBuildPhase.make$CONFIGURATION all";
-		};
-		1753A1901753A1901753A190 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_common -f pm_common/CMakeScripts/pmjni_postBuildPhase.make$CONFIGURATION all";
-		};
-		175410501754105017541050 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C /Users/rbd/portmedia/portmidi -f CMakeScripts/install_postBuildPhase.make$CONFIGURATION all";
-		};
-		17551AA017551AA017551AA0 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_test -f pm_test/CMakeScripts/latency_postBuildPhase.make$CONFIGURATION all";
-		};
-		1755D1801755D1801755D180 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_test -f pm_test/CMakeScripts/midiclock_postBuildPhase.make$CONFIGURATION all";
-		};
-		1756AA201756AA201756AA20 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_test -f pm_test/CMakeScripts/midithread_postBuildPhase.make$CONFIGURATION all";
-		};
-		175777D0175777D0175777D0 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_test -f pm_test/CMakeScripts/midithru_postBuildPhase.make$CONFIGURATION all";
-		};
-		1757FE801757FE801757FE80 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_test -f pm_test/CMakeScripts/mm_postBuildPhase.make$CONFIGURATION all";
-		};
-		175925E0175925E0175925E0 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_test -f pm_test/CMakeScripts/qtest_postBuildPhase.make$CONFIGURATION all";
-		};
-		1759F8101759F8101759F810 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_test -f pm_test/CMakeScripts/sysex_postBuildPhase.make$CONFIGURATION all";
-		};
-		175AAC90175AAC90175AAC90 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_test -f pm_test/CMakeScripts/test_postBuildPhase.make$CONFIGURATION all";
-		};
-		175B83F0175B83F0175B83F0 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_dylib -f pm_dylib/CMakeScripts/portmidi-dynamic_postBuildPhase.make$CONFIGURATION all";
-		};
-		175EAAD0175EAAD0175EAAD0 /* CMake PostBuild Rules */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "CMake PostBuild Rules";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C pm_common -f pm_common/CMakeScripts/portmidi-static_postBuildPhase.make$CONFIGURATION all";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		175396201753962017539620 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -987,9 +854,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
+				OTHER_CFLAGS = "-DNDEBUG";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -1007,7 +872,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = test;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1061,7 +926,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithread;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1115,7 +980,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = qtest;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1155,9 +1020,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
-				OTHER_CFLAGS = (
-					"-fPIC",
-				);
+				OTHER_CFLAGS = "-fPIC";
 				OTHER_LDFLAGS = (
 					"-dynamiclib",
 					"-headerpad_max_install_names",
@@ -1174,7 +1037,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1197,8 +1060,7 @@
 					porttime,
 				);
 				INSTALL_PATH = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
@@ -1270,7 +1132,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = pmjni;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1311,9 +1173,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
-				OTHER_CFLAGS = (
-					"-fPIC",
-				);
+				OTHER_CFLAGS = "-fPIC";
 				OTHER_LDFLAGS = (
 					"-dynamiclib",
 					"-headerpad_max_install_names",
@@ -1332,7 +1192,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = pmjni;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1395,7 +1255,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = pmjni;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1436,9 +1296,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
-				OTHER_CFLAGS = (
-					"-fPIC",
-				);
+				OTHER_CFLAGS = "-fPIC";
 				OTHER_LDFLAGS = (
 					"-dynamiclib",
 					"-headerpad_max_install_names",
@@ -1457,7 +1315,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = pmjni;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1480,8 +1338,7 @@
 					porttime,
 				);
 				INSTALL_PATH = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
@@ -1509,8 +1366,7 @@
 					porttime,
 				);
 				INSTALL_PATH = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
@@ -1538,8 +1394,7 @@
 					porttime,
 				);
 				INSTALL_PATH = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
@@ -1574,9 +1429,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
+				OTHER_CFLAGS = "-DNDEBUG";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -1594,7 +1447,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithread;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1609,9 +1462,7 @@
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .a;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
+				FRAMEWORK_SEARCH_PATHS = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -1625,15 +1476,13 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_STYLE = STATIC;
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
+				OTHER_CFLAGS = "-DNDEBUG";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi_s;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1648,9 +1497,7 @@
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .a;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
+				FRAMEWORK_SEARCH_PATHS = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 2;
@@ -1664,14 +1511,13 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_STYLE = STATIC;
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi_s;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1725,7 +1571,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = latency;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1755,8 +1601,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -1774,7 +1619,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = latency;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1804,9 +1649,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
+				OTHER_CFLAGS = "-DNDEBUG";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -1824,7 +1667,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = latency;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1854,8 +1697,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -1873,7 +1715,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = latency;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1903,8 +1745,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -1922,7 +1763,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithread;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -1976,7 +1817,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midiclock;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2006,8 +1847,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -2025,7 +1865,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midiclock;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2055,9 +1895,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
+				OTHER_CFLAGS = "-DNDEBUG";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -2075,7 +1913,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midiclock;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2105,8 +1943,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -2124,7 +1961,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midiclock;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2154,8 +1991,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -2173,7 +2009,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithru;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2203,8 +2039,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -2222,7 +2057,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithread;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2276,7 +2111,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithru;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2306,8 +2141,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -2325,7 +2159,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithru;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2355,9 +2189,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
+				OTHER_CFLAGS = "-DNDEBUG";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -2375,7 +2207,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = midithru;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2398,8 +2230,7 @@
 					porttime,
 				);
 				INSTALL_PATH = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
@@ -2458,7 +2289,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = mm;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2488,8 +2319,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -2507,7 +2337,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = mm;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2537,9 +2367,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
+				OTHER_CFLAGS = "-DNDEBUG";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -2557,7 +2385,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = mm;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2587,8 +2415,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -2606,7 +2433,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = mm;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2629,8 +2456,7 @@
 					porttime,
 				);
 				INSTALL_PATH = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
@@ -2665,8 +2491,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -2684,7 +2509,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = qtest;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2714,9 +2539,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
+				OTHER_CFLAGS = "-DNDEBUG";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -2734,7 +2557,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = qtest;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2764,8 +2587,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -2783,7 +2605,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = qtest;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2806,8 +2628,7 @@
 					porttime,
 				);
 				INSTALL_PATH = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
@@ -2842,8 +2663,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -2861,7 +2681,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = sysex;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2915,7 +2735,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = sysex;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2945,8 +2765,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -2964,7 +2783,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = sysex;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -2994,9 +2813,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-					"-DNDEBUG",
-				);
+				OTHER_CFLAGS = "-DNDEBUG";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -3014,7 +2831,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = sysex;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -3044,8 +2861,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -3063,7 +2879,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = test;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -3117,7 +2933,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = test;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -3147,8 +2963,7 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_SEARCH_PATHS = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-headerpad_max_install_names",
@@ -3166,7 +2981,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = test;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -3230,7 +3045,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -3270,9 +3085,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
-				OTHER_CFLAGS = (
-					"-fPIC",
-				);
+				OTHER_CFLAGS = "-fPIC";
 				OTHER_LDFLAGS = (
 					"-dynamiclib",
 					"-headerpad_max_install_names",
@@ -3289,7 +3102,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -3349,7 +3162,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -3372,8 +3185,7 @@
 					porttime,
 				);
 				INSTALL_PATH = "";
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
@@ -3437,9 +3249,7 @@
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .a;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
+				FRAMEWORK_SEARCH_PATHS = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3465,7 +3275,7 @@
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi_s;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",
@@ -3480,9 +3290,7 @@
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
 				EXECUTABLE_SUFFIX = .a;
-				FRAMEWORK_SEARCH_PATHS = (
-					/Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks,
-				);
+				FRAMEWORK_SEARCH_PATHS = /Developer/SDKs/MacOSX10.5.sdk/System/Library/Frameworks;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3496,14 +3304,13 @@
 				);
 				INSTALL_PATH = "";
 				LIBRARY_STYLE = STATIC;
-				OTHER_CFLAGS = (
-				);
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				OTHER_REZFLAGS = "";
 				PREBINDING = NO;
 				PRODUCT_NAME = portmidi_s;
 				SECTORDER_FLAGS = "";
-				SYMROOT = ".";
+				SYMROOT = .;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wmost",

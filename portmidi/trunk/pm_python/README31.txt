@@ -60,16 +60,43 @@ Installing PyPortMidi from source code:
         - cd portmidi/pm_python
         - python test31
 
-- OS X INSTALLATION
+- OS X INSTALLATION: *** NOT SUPPORTED ***
+
+The following notes are as far as I got. When I used MacPorts (port install), I 
+could not find libpython3.1.a to link against. When I tried installing manually
+from sources (described below), I got a link error that _environ is undefined.
+I might be able to add some code to define _environ in terms of *_NSGetEnviron(),
+but I haven't tried that. (Or maybe there's some way to configure Python3.1.1 
+differently.) -RBD
+
+0. Install Python3.1.1: Get Python-3.1.1.tgz from http://www.python.org/download/
+   Follow the README: ./configure, make, 
+       make test (doesn't pass all tests), make install
 
 1. Choose to rebuild the PortMidi C library...or not:
    compiled binaries of the PortMidi package are included for OS X,
    so you might be able to skip this step. If you need
    to rebuild:
-        - change to PortMidi subdirectory pm_mac
-        - compile. Type: xcodebuild -project pm_mac.pbproj
-        - copy newly created libportmidi.a to
-          PyPortMidi's OSX subdirectory
+   - change to PortMidi subdirectory pm_mac
+   - compile. Type: xcodebuild -project portmidi.xcodeproj -target libportmidi.dylib -configuration Release
+
+2. Build _pypmbase.so:
+   open pm_python/macpypm/macpypm.xcodeproj
+   build the _pypmbase.so target. 
+       NOTE: THIS IS WHERE THESE DIRECTIONS BREAK DOWN. YOU WILL ENCOUNTER
+       AN ERROR THAT _environ IS UNDEFINED.
+       It should build on OS X 10.5 using Python 3.1.1, but you
+       may need to adjust some directories
+   copy (by hand) pm_python/macpypm/build/Release/_pypmbase.so to the
+       appropriate python directory, e.g.
+       /usr/local/lib/python3.1/site-packaages/_pypmbase.so
+   open a terminal and cd portmidi/pm_python
+
+3. Test (optional of course)
+        - open a "command prompt" (shell)
+        - cd portmidi/pm_python
+        - python3.1 test31
+
 
 - LINUX INSTALLATION
 

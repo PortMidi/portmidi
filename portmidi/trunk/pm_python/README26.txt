@@ -29,10 +29,8 @@ Installing PyPortMidi from its Pyrex source code:
                   - build the project, creating
                     portmidi/Release/portmidi.{lib,dll}
 
-        c. OS X:  - change to PortMidi subdirectory pm_mac
-                  - compile. Type: xcodebuild -project pm_mac.pbproj
-                  - copy newly created libportmidi.a to
-                    PyPortMidi's OSX subdirectory
+        c. OS X:  - change to portmedia/portmidi directory
+                  - compile. Type: xcodebuild -project portmidi.xcodeproj -target libportmidi.dylib -configuration Release
 
         d. Linux: - follow directions in portmidi/pm_linux/README_LINUX.txt
                   - copy libportmidi.a
@@ -47,8 +45,8 @@ Installing PyPortMidi from its Pyrex source code:
        version 2.6, OS X 1.5 has Python 2.5 installed, so I worked with it
        and have not tried installing 2.6 or testing it with PyPortMidi.
    open pm_python/macpypm/macpypm.xcodeproj
-   build the project. It should build on OS X 10.5 using Python 2.5, but you
-       may need to adjust some directories
+   build the pypm.so target. It should build on OS X 10.5 using 
+       Python 2.5, but you may need to adjust some directories
    copy (by hand) pm_python/macpypm/build/Release/pypm.so to the
        appropriate python directory, e.g.
        /Volumes/Macintosh HD/Library/Python/2.5/site-packaages/pypm.so

@@ -10,16 +10,34 @@
 		3D6513C610B87572008B2845 /* pypm.c in Sources */ = {isa = PBXBuildFile; fileRef = 3D6513C510B87572008B2845 /* pypm.c */; };
 		3D6513EB10B8DE52008B2845 /* Python in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D6513EA10B8DE52008B2845 /* Python */; };
 		3D6513F110B8E51C008B2845 /* libportmidi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D6513F010B8E51C008B2845 /* libportmidi.dylib */; };
+		3DD2A6A010C6D98400F17F53 /* pypmbase.c in Sources */ = {isa = PBXBuildFile; fileRef = 3DD2A69F10C6D98400F17F53 /* pypmbase.c */; };
+		3DD2A6A210C6D9A700F17F53 /* libportmidi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D6513F010B8E51C008B2845 /* libportmidi.dylib */; };
+		3DD2A6AA10C770BE00F17F53 /* libpython3.1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DD2A6A910C770BE00F17F53 /* libpython3.1.a */; };
+		3DD2A6C610C7783F00F17F53 /* crt1.o in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DD2A6C510C7783F00F17F53 /* crt1.o */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3D6513C510B87572008B2845 /* pypm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pypm.c; path = ../pypm.c; sourceTree = SOURCE_ROOT; };
 		3D6513EA10B8DE52008B2845 /* Python */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = Python; path = /System/Library/Frameworks/Python.framework/Python; sourceTree = "<absolute>"; };
 		3D6513F010B8E51C008B2845 /* libportmidi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libportmidi.dylib; path = ../../Release/libportmidi.dylib; sourceTree = SOURCE_ROOT; };
+		3DD2A68A10C62E4600F17F53 /* _pypmbase.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = _pypmbase.so; sourceTree = BUILT_PRODUCTS_DIR; };
+		3DD2A69F10C6D98400F17F53 /* pypmbase.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pypmbase.c; path = ../pypmbase.c; sourceTree = SOURCE_ROOT; };
+		3DD2A6A910C770BE00F17F53 /* libpython3.1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpython3.1.a; path = /usr/local/lib/python3.1/config/libpython3.1.a; sourceTree = "<absolute>"; };
+		3DD2A6C510C7783F00F17F53 /* crt1.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; name = crt1.o; path = /usr/lib/crt1.o; sourceTree = "<absolute>"; };
 		D2AAC0630554660B00DB518D /* pypm.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = pypm.so; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3DD2A68810C62E4600F17F53 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3DD2A6A210C6D9A700F17F53 /* libportmidi.dylib in Frameworks */,
+				3DD2A6AA10C770BE00F17F53 /* libpython3.1.a in Frameworks */,
+				3DD2A6C610C7783F00F17F53 /* crt1.o in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D289988505E68E00004EDB86 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -35,6 +53,9 @@
 		08FB7794FE84155DC02AAC07 /* macpypm */ = {
 			isa = PBXGroup;
 			children = (
+				3DD2A6C510C7783F00F17F53 /* crt1.o */,
+				3DD2A6A910C770BE00F17F53 /* libpython3.1.a */,
+				3DD2A69F10C6D98400F17F53 /* pypmbase.c */,
 				3D6513F010B8E51C008B2845 /* libportmidi.dylib */,
 				3D6513EA10B8DE52008B2845 /* Python */,
 				08FB7795FE84155DC02AAC07 /* Source */,
@@ -55,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				D2AAC0630554660B00DB518D /* pypm.so */,
+				3DD2A68A10C62E4600F17F53 /* _pypmbase.so */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -62,6 +84,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		3DD2A68610C62E4600F17F53 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2AAC0600554660B00DB518D /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -72,9 +101,26 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		D2AAC0620554660B00DB518D /* _pypm.pyd */ = {
+		3DD2A68910C62E4600F17F53 /* _pypmbase.pyd */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB914A08733D8E0010E9CD /* Build configuration list for PBXNativeTarget "_pypm.pyd" */;
+			buildConfigurationList = 3DD2A69110C62E5F00F17F53 /* Build configuration list for PBXNativeTarget "_pypmbase.pyd" */;
+			buildPhases = (
+				3DD2A68610C62E4600F17F53 /* Headers */,
+				3DD2A68710C62E4600F17F53 /* Sources */,
+				3DD2A68810C62E4600F17F53 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = _pypmbase.pyd;
+			productName = _pypmbase.pyd;
+			productReference = 3DD2A68A10C62E4600F17F53 /* _pypmbase.so */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+		D2AAC0620554660B00DB518D /* pypm.so */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB914A08733D8E0010E9CD /* Build configuration list for PBXNativeTarget "pypm.so" */;
 			buildPhases = (
 				D2AAC0600554660B00DB518D /* Headers */,
 				D2AAC0610554660B00DB518D /* Sources */,
@@ -84,7 +130,7 @@
 			);
 			dependencies = (
 			);
-			name = _pypm.pyd;
+			name = pypm.so;
 			productName = macpypm;
 			productReference = D2AAC0630554660B00DB518D /* pypm.so */;
 			productType = "com.apple.product-type.library.dynamic";
@@ -101,12 +147,21 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D2AAC0620554660B00DB518D /* _pypm.pyd */,
+				D2AAC0620554660B00DB518D /* pypm.so */,
+				3DD2A68910C62E4600F17F53 /* _pypmbase.pyd */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3DD2A68710C62E4600F17F53 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3DD2A6A010C6D98400F17F53 /* pypmbase.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D2AAC0610554660B00DB518D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -122,6 +177,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
@@ -144,6 +200,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				EXECUTABLE_EXTENSION = so;
 				EXECUTABLE_PREFIX = "";
@@ -185,10 +242,68 @@
 			};
 			name = Release;
 		};
+		3DD2A68B10C62E4700F17F53 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_EXTENSION = so;
+				EXECUTABLE_PREFIX = "";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/python3.1,
+					../../porttime,
+					../../pm_common,
+				);
+				INSTALL_PATH = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Python.framework\"",
+					"\"$(SRCROOT)/../../Release\"",
+					"\"$(SRCROOT)/../../../../Python-3.1.1\"",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = _pypmbase;
+			};
+			name = Debug;
+		};
+		3DD2A68C10C62E4700F17F53 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EXECUTABLE_EXTENSION = so;
+				EXECUTABLE_PREFIX = "";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/python3.1,
+					../../porttime,
+					../../pm_common,
+				);
+				INSTALL_PATH = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_LIBRARY_DIR)/Frameworks/Python.framework\"",
+					"\"$(SRCROOT)/../../Release\"",
+					"\"$(SRCROOT)/../../../../Python-3.1.1\"",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = _pypmbase;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB914A08733D8E0010E9CD /* Build configuration list for PBXNativeTarget "_pypm.pyd" */ = {
+		1DEB914A08733D8E0010E9CD /* Build configuration list for PBXNativeTarget "pypm.so" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB914B08733D8E0010E9CD /* Debug */,
@@ -202,6 +317,15 @@
 			buildConfigurations = (
 				1DEB914F08733D8E0010E9CD /* Debug */,
 				1DEB915008733D8E0010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3DD2A69110C62E5F00F17F53 /* Build configuration list for PBXNativeTarget "_pypmbase.pyd" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3DD2A68B10C62E4700F17F53 /* Debug */,
+				3DD2A68C10C62E4700F17F53 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -11,12 +11,35 @@ PyPortMidi details for Python 2.6
 Installing PyPortMidi from its Pyrex source code:
 -------------------------------------------------
 
+0. Windows and Linux only: install Python if you need it.
+   These instructions were tested using Python2.6. For
+   Linux, I installed from sources (rather than using
+   synaptic) in order to get Python.h, which was missing
+   from the runtime that was already installed. Make sure
+   you know which python you are running. After installing
+   from sources, I had /usr/local/bin/python as well as
+   /usr/bin/python. The local/bin/python was the new one.
+
 1. Linux only: install ASLA if it is not installed:
    http://www.alsa-project.org/
 
-2. Install Pyrex if it is not installed
+2. Linux and Windows only: Install Pyrex if it is not installed
    http://nz.cosc.canterbury.ac.nz/~greg/python/Pyrex/
+   (If that URL does not work, try this one:
+  http://www.cosc.canterbury.ac.nz/greg.ewing/python/Pyrex/Pyrex-0.9.8.5.tar.gz)
    (Tested using Pyrex-0.9.8.5)
+   I was not able to run Pyrex on OS X due to version problems,
+   but Pyrex is only used to translate pypm.pyx to pypm.c, which
+   is included in the PortMidi release, so you really do not need
+   Pyrex.
+   On Linux, I did this:
+       extract to ~/Pyrex-0.9.8.5
+       cd ~/Pyrex-0.9.8.5
+       PYTHONPATH=`pwd` [Note: my initial PYTHONPATH was empty, 
+       			 otherwise I would do an append to the path]
+     You can then run ~/Pyrex-0.9.8.5/bin/pyrexc pypm.pyx to make
+     pypm.c, but the following instructions just use the pypm.c 
+     that's in the repository.
 
 3. Choose to rebuild the PortMidi C library...or not:
    compiled binaries of the PortMidi package are included for Win32,
@@ -37,7 +60,7 @@ Installing PyPortMidi from its Pyrex source code:
                          from portmidi's pm_linux directory
                          to PyPortMidi's linux directory
 
-4. WINDOWS: in PyPortMidi's root directory, type:
+4. WINDOWS: in a command prompt window, cd to portmidi/pm_python, and type:
    python setup.py install
    (make sure you have admin/superuser privileges)
 
@@ -55,6 +78,12 @@ Installing PyPortMidi from its Pyrex source code:
        Python 3000 and not for Python 2.x)
    open a terminal and cd portmidi/pm_python
    test the installation with: python test.py
+
+   LINUX: I used the commands in build26.sh to create and install the
+   PyPortMidi extension. This should really be a nice makefile (at least)
+   but I don't know how to generalize this for different versions of 
+   Python and Linux, so for now, you should inspect the paths and verify
+   that they are correct before blindly running this as a script.
 
 
 Distribution of PyPortMidi compiled code:

@@ -3,7 +3,7 @@
    Roger B. Dannenberg, Jun 2008
 */
 
-#include <stdint.h> /* fro uint8_t ... */
+#include <stdint.h> /* for uint8_t ... */
 
 #ifndef TRUE
     #define TRUE 1

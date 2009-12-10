@@ -780,7 +780,7 @@ static value_ptr extract_data(bplist_info_ptr bplist, uint64_t offset)
         return NULL;
         
     value = value_create();
-    // case is ok because we only allow files up to 100MB:
+    // cast is ok because we only allow files up to 100MB:
     value_set_data(value, bplist->data_bytes + (size_t) offset, (size_t) size);
     return value;
 }

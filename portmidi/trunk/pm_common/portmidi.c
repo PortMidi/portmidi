@@ -889,6 +889,19 @@ error_return:
     return pm_errmsg(err);
 }
 
+PmError Pm_Synchronize( PortMidiStream* stream ) {
+    PmInternal *midi = (PmInternal *) stream;
+    PmError err = pmNoError;
+    if (midi == NULL)
+        err = pmBadPtr;
+    else if (!descriptors[midi->device_id].pub.output)
+        err = pmBadPtr;
+    else if (!descriptors[midi->device_id].pub.opened)
+        err = pmBadPtr;
+    else
+        midi->first_message = TRUE;
+    return err;
+}
 
 PMEXPORT PmError Pm_Abort( PortMidiStream* stream ) {
     PmInternal *midi = (PmInternal *) stream;

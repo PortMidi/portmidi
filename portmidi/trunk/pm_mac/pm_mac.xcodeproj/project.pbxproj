@@ -70,6 +70,10 @@
 		<array>
 			<string>$JAVAROOT/pmdefaults.jar</string>
 		</array>
+		<key>JVMArchs</key>
+		<array>
+			<string>i386</string>
+		</array>
 		<key>JVMVersion</key>
 		<string>1.5</string>
 		<key>MainClass</key>

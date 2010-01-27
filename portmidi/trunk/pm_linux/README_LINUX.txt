@@ -8,12 +8,17 @@ Go back up to the portmidi directory and type:
 ccmake .
 
 Type 'c' (configure) and then 'g' (generate). You may have
-to manually set JAVA_INCLUDE_PATH and JAVA_INCLUDE_PATH2
+to manually set JAVA_INCLUDE_PATH and JAVA_JVM_LIBRARY
 by typing 't' (toggle to advanced mode) and using the 
-editor to change the fields. Normally, if JAVA_INCLUDE_PATH
-is something like /home/rbd/jdk1.6.0_16/include, then
-JAVA_INCLUDE_PATH2 is the same with an added "/linux", e.g.
-/home/rbd/jdk1.6.0_16/include/linux. Both are needed.
+editor to change the fields. You can find possible values
+for JAVA_INCLUDE_PATH by typing "locate jni.h", and for
+JAVA_JVM_LIBRARY by typing locate libjvm".
+
+You also need JAVA_INCLUDE_PATH2, but this will normally
+be set automatically after you set JAVA_INCLUDE_PATH and
+run "configure" (type "c" to ccmake). Normally,
+JAVA_INCLUDE_PATH2 is the linux subdirectory within
+JAVA_INCLUDE_PATH.
 
 Notice that the CMAKE_BUILD_TYPE can be Debug or Release.
 Stick with Release if you are not debugging.
@@ -84,6 +89,9 @@ On certain architectures (AMD64 amongst them), shared libraries *must*
 be "PIC-enabled".
 
 CHANGELOG
+
+22-jan-2010 Roger B. Dannenberg
+   Updated instructions about Java paths
 
 14-oct-2009 Roger B. Dannenberg
    Using CMake now for building and configuration

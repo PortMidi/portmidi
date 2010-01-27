@@ -61,22 +61,13 @@ if(UNIX)
   else(APPLE)
     # LINUX settings...
     include(FindJNI)
-    # message(STATUS "JAVA_JVM_LIB_PATH is " ${JAVA_JVM_LIB_PATH})
-    # message(STATUS "JAVA_INCLUDE_PATH is " ${JAVA_INCLUDE_PATH})
-    # note: should use JAVA_JVM_LIB_PATH, but it is not set properly
-    # note: user might need to set JAVA_INCLUDE_PATH manually
-    #
-    # this will probably break on BSD and other Unix systems; the fix
-    # depends on whether FindJNI can find Java or not. If yes, then
-    # we should try to rely on automatically set JAVA_INCLUDE_PATH and
-    # JAVA_INCLUDE_PATH2; if no, then we need to make both JAVA_INCLUDE_PATH
-    # and JAVA_INCLUDE_PATH2 set by user (will need clear documentation
-    # because JAVA_INCLUDE_PATH2 is pretty obscure)
-    set(JAVA_INCLUDE_PATH  ${JAVA_INCLUDE_PATH-UNKNOWN}
-        CACHE STRING "where to find Java SDK include directory")
-    set(JAVA_INCLUDE_PATHS ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH}/linux)
+    message(STATUS "JAVA_JVM_LIB_PATH is " ${JAVA_JVM_LIB_PATH})
+    message(STATUS "JAVA_INCLUDE_PATH is " ${JAVA_INCLUDE_PATH})
+    message(STATUS "JAVA_INCLUDE_PATH2 is " ${JAVA_INCLUDE_PATH2})
+    message(STATUS "JAVA_JVM_LIBRARY is " ${JAVA_JVM_LIBRARY})
+    set(JAVA_INCLUDE_PATHS ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2})
     # libjvm.so is found relative to JAVA_INCLUDE_PATH:
-    set(JAVAVM_LIB ${JAVA_INCLUDE_PATH}/../jre/lib/i386/client/libjvm.so)
+    set(JAVAVM_LIB ${JAVA_JVM_LIBRARY}/libjvm.so)
 
     set(LINUXSRC pmlinuxalsa pmlinux finddefault)
     prepend_path(LIBSRC ../pm_linux/ ${LINUXSRC})
@@ -91,8 +82,7 @@ else(UNIX)
     include(../pm_win/static.cmake)
     
     include(FindJNI)
-    # note: should use JAVA_JVM_LIB_PATH, but it is not set properly
-    set(JAVAVM_LIB ${JAVA_INCLUDE_PATH}/../lib/jvm.lib)
+    set(JAVAVM_LIB ${JAVA_JVM_LIBRARY}/jvm.lib)
 
     set(JAVA_INCLUDE_PATHS ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2})
     # message(STATUS "JAVA_INCLUDE_PATHS: " ${JAVA_INCLUDE_PATHS})
@@ -101,7 +91,7 @@ else(UNIX)
     prepend_path(LIBSRC ../pm_win/ ${WINSRC})
     list(APPEND LIBSRC ../porttime/ptwinmm)
     set(PM_NEEDED_LIBS winmm.lib)
-    # message(STATUS "JAVAVM_LIB: " ${JAVAVM_LIB})
+    message(STATUS "JAVAVM_LIB: " ${JAVAVM_LIB})
   endif(WIN32)
 endif(UNIX)
 set(JNI_EXTRA_LIBS ${PM_NEEDED_LIBS} ${JAVAVM_LIB})

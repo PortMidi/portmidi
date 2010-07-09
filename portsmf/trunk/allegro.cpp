@@ -122,7 +122,7 @@ void Alg_parameter::show()
         printf("%s:%s", attr_name(), s);
         break;
     case 'i':
-        printf("%s:%d", attr_name(), i);
+        printf("%s:%ld", attr_name(), i);
         break;
     case 'l':
         printf("%s:%s", attr_name(), (l ? "t" : "f"));
@@ -600,7 +600,7 @@ Alg_note::~Alg_note()
 
 void Alg_note::show()
 {
-    printf("Alg_note: time %g, chan %d, dur %g, key %d, "
+    printf("Alg_note: time %g, chan %ld, dur %g, key %ld, "
            "pitch %g, loud %g, attributes ",
            time, chan, dur, key, pitch, loud);
     Alg_parameters_ptr parms = parameters;
@@ -669,8 +669,8 @@ Alg_event_ptr Alg_events::uninsert(long index)
 {
     assert(0 <= index && index < len);
     Alg_event_ptr event = events[index];
-    printf("memmove: %x from %x (%d)\n", events + index, events + index + 1,
-            sizeof(Alg_event_ptr) * (len - index - 1));
+    //printf("memmove: %x from %x (%d)\n", events + index, events + index + 1,
+    //        sizeof(Alg_event_ptr) * (len - index - 1));
     memmove(events + index, events + index + 1,
             sizeof(Alg_event_ptr) * (len - index - 1));
     len--;
@@ -2265,7 +2265,7 @@ void Alg_iterator::show()
 {
     for (int i = 0; i < len; i++) {
         Alg_pending_event_ptr p = &(pending_events[i]);
-        printf("    %d: %p[%d] on %d\n", i, p->events, p->index, p->note_on);
+        printf("    %d: %p[%ld] on %d\n", i, p->events, p->index, p->note_on);
     }
 }
 
@@ -2945,7 +2945,6 @@ void Alg_seq::set_events(Alg_event_ptr *events, long len, long max)
 void Alg_iterator::begin(bool note_off_flag)
 {
     // keep an array of indexes into tracks
-    printf("new pending\n");
     int i;
     for (i = 0; i < seq->track_list.length(); i++) {
         if (seq->track_list[i].length() > 0) {

@@ -68,12 +68,12 @@ Alg_event_ptr Alg_seq::write_track_name(ostream &file, int n,
             Alg_update_ptr u = (Alg_update_ptr) e;
             if (u->parameter.attr == attr) {
                 file << " " << u->parameter.s;
-                break;
+                return e;
             }
         }
     }
     file << endl;
-    return e;
+    return NULL;
 }
 
 

@@ -8,6 +8,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "portsmf_test", "portsmf_tes
 		{D035BCF8-CF15-4456-A4E1-C7E6ACD79346} = {D035BCF8-CF15-4456-A4E1-C7E6ACD79346}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "allegroconvert", "apps\allegroconvert.vcproj", "{3CF9F99C-ADB3-4CD2-A6F9-2472C2083324}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -22,6 +24,10 @@ Global
 		{AF00107F-E436-4EBC-A1F3-CB176E7D1F84}.Debug|Win32.Build.0 = Debug|Win32
 		{AF00107F-E436-4EBC-A1F3-CB176E7D1F84}.Release|Win32.ActiveCfg = Release|Win32
 		{AF00107F-E436-4EBC-A1F3-CB176E7D1F84}.Release|Win32.Build.0 = Release|Win32
+		{3CF9F99C-ADB3-4CD2-A6F9-2472C2083324}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3CF9F99C-ADB3-4CD2-A6F9-2472C2083324}.Debug|Win32.Build.0 = Debug|Win32
+		{3CF9F99C-ADB3-4CD2-A6F9-2472C2083324}.Release|Win32.ActiveCfg = Debug|Win32
+		{3CF9F99C-ADB3-4CD2-A6F9-2472C2083324}.Release|Win32.Build.0 = Debug|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

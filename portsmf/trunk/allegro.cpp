@@ -2289,12 +2289,14 @@ bool Alg_iterator::earlier(int i, int j)
 }
 
 
-void Alg_iterator::insert(Alg_events_ptr events, long index, bool note_on)
+void Alg_iterator::insert(Alg_events_ptr events, long index, 
+                          bool note_on, void *cookie)
 {
     if (len == maxlen) expand();
     pending_events[len].events = events;
     pending_events[len].index = index;
     pending_events[len].note_on = note_on;
+    pending_events[len].cookie = cookie;
     int loc = len;
     int loc_parent = HEAP_PARENT(loc);
     len++;
@@ -2312,12 +2314,13 @@ void Alg_iterator::insert(Alg_events_ptr events, long index, bool note_on)
 }
 
 bool Alg_iterator::remove_next(Alg_events_ptr &events, long &index, 
-                              bool &note_on)
+                               bool &note_on, void **cookie_ptr)
 {
     if (len == 0) return false; // empty!
     events = pending_events[0].events;
     index = pending_events[0].index;
     note_on = pending_events[0].note_on;
+    if (cookie_ptr) *cookie_ptr = pending_events[0].cookie;
     len--;
     pending_events[0] = pending_events[len];
     // sift down
@@ -2942,25 +2945,27 @@ void Alg_seq::set_events(Alg_event_ptr *events, long len, long max)
 */
 
 
-void Alg_iterator::begin(bool note_off_flag)
+void Alg_iterator::begin_seq(Alg_seq_ptr s, void *cookie)
 {
     // keep an array of indexes into tracks
+    // printf("new pending\n");
     int i;
-    for (i = 0; i < seq->track_list.length(); i++) {
-        if (seq->track_list[i].length() > 0) {
-            insert(&(seq->track_list[i]), 0, true);
+    for (i = 0; i < s->track_list.length(); i++) {
+        if (s->track_list[i].length() > 0) {
+            insert(&(s->track_list[i]), 0, true, cookie);
         }
     }    
 }
 
 
-Alg_event_ptr Alg_iterator::next(bool *note_on)
+Alg_event_ptr Alg_iterator::next(bool *note_on, void **cookie_ptr)
     // return the next event in time from any track
 {
     Alg_events_ptr events_ptr;
     long index;
     bool on;
-    if (!remove_next(events_ptr, index, on)) {
+    void *cookie;
+    if (!remove_next(events_ptr, index, on, &cookie)) {
         return NULL;
     }
     if (note_on) *note_on = on;
@@ -2968,14 +2973,15 @@ Alg_event_ptr Alg_iterator::next(bool *note_on)
     if (on) {
         if (note_off_flag && event->is_note()) {
             // this was a note-on, so insert pending note-off
-            insert(events_ptr, index, false);
+            insert(events_ptr, index, false, cookie);
         }
         // for both notes and updates, insert next event (at index + 1)
         index++;
         if (index < events_ptr->length()) {
-            insert(events_ptr, index, true);
+            insert(events_ptr, index, true, cookie);
         }
     }
+    if (cookie_ptr) *cookie_ptr = cookie;
     return event;
 }
 

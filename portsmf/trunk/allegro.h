@@ -528,10 +528,14 @@ public:
     // to delete the buffer (owner might want to reuse it), so the destructor
     // does nothing.
     virtual ~Serial_read_buffer() {  }
+#if defined(_WIN32)
 #pragma warning(disable: 546) // cast to int is OK, we only want low 7 bits
 #pragma warning(disable: 4311) // type cast pointer to long warning
+#endif
     void get_pad() { while (((long) ptr) & 7) ptr++; }
+#if defined(_WIN32)
 #pragma warning(default: 4311 546)
+#endif
     // Prepare to read n bytes from buf. The caller must manage buf: it is
     // valid until reading is finished, and it is caller's responsibility
     // to free buf when it is no longer needed.
@@ -582,18 +586,26 @@ typedef class Serial_write_buffer: public Serial_buffer {
         while ((*ptr++ = *s++)) assert(ptr < fence);
         // 4311 is type cast pointer to long warning
         // 4312 is type cast long to pointer warning
+#if defined(_WIN32)
 #pragma warning(disable: 4311 4312)
+#endif
         assert((char *)(((long) (ptr + 7)) & ~7) <= fence);
+#if defined(_WIN32)
 #pragma warning(default: 4311 4312)
+#endif
         pad(); }
     void set_int32(long v) { *((long *) ptr) = v; ptr += 4; }
     void set_double(double v) { *((double *) ptr) = v; ptr += 8; }
     void set_float(float v) { *((float *) ptr) = v; ptr += 4; }
     void set_char(char v) { *ptr++ = v; }
+#if defined(_WIN32)
 #pragma warning(disable: 546) // cast to int is OK, we only want low 7 bits
 #pragma warning(disable: 4311) // type cast pointer to long warning
+#endif
     void pad() { while (((long) ptr) & 7) set_char(0); }
+#if defined(_WIN32)
 #pragma warning(default: 4311 546)
+#endif
     void *to_heap(long *len) {
         *len = get_posn();
         char *newbuf = new char[*len];
@@ -882,10 +894,12 @@ typedef enum {
 
 
 typedef struct Alg_pending_event {
+    void *cookie; // client-provided sequence identifier
     Alg_events *events; // the array of events
     long index; // offset of this event
     bool note_on; // is this a note-on or a note-off (if applicable)?
 } *Alg_pending_event_ptr;
+
 
 typedef class Alg_iterator {
 private:
@@ -898,8 +912,9 @@ private:
 
     void show();
     bool earlier(int i, int j);
-    void insert(Alg_events_ptr events, long index, bool note_on);
-    bool remove_next(Alg_events_ptr &events, long &index, bool &note_on);
+    void insert(Alg_events_ptr events, long index, bool note_on, void *cookie);
+    bool remove_next(Alg_events_ptr &events, long &index, bool &note_on,
+                     void **cookie_ptr);
 public:
     bool note_off_flag; // remembers if we are iterating over note-off
                         // events as well as note-on and update events
@@ -910,17 +925,23 @@ public:
         maxlen = len = 0;
         pending_events = NULL;
     }
+    // Normally, iteration is over the events in the one sequence used
+    // to instatiate the iterator (see above), but with this method, you
+    // can add more sequences to the iteration. Events are returned in
+    // time order, so effectively sequence events are merged.
+    void begin_seq(Alg_seq_ptr s, void *cookie = NULL);
     ~Alg_iterator();
     // Prepare to enumerate events in order. If note_off_flag is true, then
     // iteration_next will merge note-off events into the sequence.
-    void begin(bool note_off_flag = false); 
+    void begin(void *cookie = NULL) { begin_seq(seq, cookie); }
     // return next event (or NULL). If iteration_begin was called with
     // note_off_flag = true, and if note_on is not NULL, then *note_on
     // is set to true when the result value represents a note-on or update.
     // (With note_off_flag, each Alg_note event is returned twice, once
     // at the note-on time, with *note_on == true, and once at the note-off
-    // time, with *note_on == false
-    Alg_event_ptr next(bool *note_on = NULL); 
+    // time, with *note_on == false. If a cookie_ptr is passed, then the
+    // cookie corresponding to the event is stored at that address
+    Alg_event_ptr next(bool *note_on = NULL, void **cookie_ptr = NULL); 
     void end();   // clean up after enumerating events
 } *Alg_iterator_ptr;
 

@@ -6,9 +6,6 @@
 ;;; See http://www.cliki.net/LLGPL for the text of this agreement.
 ;;; **********************************************************************
 
-;;; $Name: rel-2_0_0 $
-;;; $Revision: 1.1 $
-;;; $Date: 2006/04/30 15:00:28 $
 
 ;;; A CFFI interface to Portmidi. Should run in most Common Lisp
 ;;; implementations on Linux, OS X and Windows. For information about

@@ -1,3 +1,2 @@
-The file SConstruct comes from Michael Gogins (24 Oct 2008). Although
-not currently maintained or tested (volunteers welcome!), this might
-be useful for anyone with MinGW/MSys installed. -RBD
+Mingw users should build makefiles using CMake. Please contact me if you have problems -- MinGW/MSys has been used to compile PortMidi, but the CMake files have not been tested with MinGW/MSys (as far as I know). -RBD
+ Aug 2010

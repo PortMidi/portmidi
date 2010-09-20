@@ -53,6 +53,7 @@ clean:
 	rm -f pm_test/*.opt pm_test/*.ncb
 	rm -f pm_java/pmjni/*.o pm_java/pmjni/*~ pm_java/*.h
 	rm -rf Release/CMakeFiles Debug/CMakeFiles
+	rm -rf pm_mac/pmdefaults/lib pm_mac/pmdefaults/src
 
 cleaner: clean
 	rm -rf pm_mac/build

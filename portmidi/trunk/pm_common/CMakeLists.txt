@@ -21,6 +21,13 @@ else(APPLE OR WIN32)
   set(LINUX_FLAGS "-DPMALSA")
 endif(APPLE OR WIN32)
 
+if(APPLE)
+  set(CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk CACHE 
+      PATH "-isysroot parameter for compiler" FORCE)
+  set(CMAKE_C_FLAGS "-mmacosx-version-min=10.5" CACHE 
+      STRING "needed in conjunction with CMAKE_OSX_SYSROOT" FORCE)
+endif(APPLE)
+
 macro(prepend_path RESULT PATH)
   set(${RESULT})
   foreach(FILE ${ARGN})
@@ -82,7 +89,6 @@ else(UNIX)
     include(../pm_win/static.cmake)
     
     include(FindJNI)
-    set(JAVAVM_LIB ${JAVA_JVM_LIBRARY}/jvm.lib)
 
     set(JAVA_INCLUDE_PATHS ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2})
     # message(STATUS "JAVA_INCLUDE_PATHS: " ${JAVA_INCLUDE_PATHS})
@@ -91,10 +97,9 @@ else(UNIX)
     prepend_path(LIBSRC ../pm_win/ ${WINSRC})
     list(APPEND LIBSRC ../porttime/ptwinmm)
     set(PM_NEEDED_LIBS winmm.lib)
-    message(STATUS "JAVAVM_LIB: " ${JAVAVM_LIB})
   endif(WIN32)
 endif(UNIX)
-set(JNI_EXTRA_LIBS ${PM_NEEDED_LIBS} ${JAVAVM_LIB})
+set(JNI_EXTRA_LIBS ${PM_NEEDED_LIBS} ${JAVA_JVM_LIBRARY})
 
 # this completes the list of library sources by adding shared code
 list(APPEND LIBSRC pmutil portmidi)

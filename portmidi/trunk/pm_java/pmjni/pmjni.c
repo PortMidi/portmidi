@@ -248,9 +248,7 @@ JNIEXPORT jint JNICALL Java_jportmidi_JPortMidiApi_Pm_1Read
     jfieldID timestamp_fid = 
             (*env)->GetFieldID(env, jpmevent_class, "timestamp", "I");
     PmEvent buffer;
-    PmError rslt = Pm_Read(
-        (PmStream *) (*env)->GetIntField(env, jstream, address_fid), 
-        &buffer, 1);
+    PmError rslt = Pm_Read(PMSTREAM(jstream, address_fid), &buffer, 1);
     (*env)->SetIntField(env, jpmevent, message_fid, buffer.message);
     (*env)->SetIntField(env, jpmevent, timestamp_fid, buffer.timestamp);
     return rslt;

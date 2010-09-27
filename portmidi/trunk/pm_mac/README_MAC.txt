@@ -93,7 +93,8 @@ ALL_BUILD target. The default will be to build the Debug
 version, but you may want to change this to Release. 
 
 NOTE: ALL_BUILD may report errors. Try simply building again
-until they go away. There appears to be a race condition or
+or rebuilding specific targets that fail until they build
+without errors. There appears to be a race condition or
 missing dependencies in the build system.
 
 The Debug version is compiled with PM_CHECK_ERRORS, and the

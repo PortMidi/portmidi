@@ -147,7 +147,7 @@ public class PmDefaultsFrame extends JFrame
         System.out.println("initComponents returned\n");
         pack(); // necessary before calling getInsets();
         // initially, only width matters to layout:
-        layoutComponents(500, 300);
+        layoutComponents(550, 300);
         System.out.println("after layout, pref " + getPreferredSize());
         // now, based on layout-computed preferredSize, set the Frame size
         Insets insets = getInsets();
@@ -204,6 +204,11 @@ public class PmDefaultsFrame extends JFrame
             String prefName = makePrefName(inputIds.get(id));
             System.out.println("input pref: " + prefName);
             prefs.put("PM_RECOMMENDED_INPUT_DEVICE", prefName);
+        }
+        try {
+            prefs.flush();
+        } catch(BackingStoreException e) {
+            System.out.println(e);
         }
     }
 

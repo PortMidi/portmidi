@@ -78,11 +78,12 @@ Alg_event_ptr Alg_seq::write_track_name(ostream &file, int n,
 }
 
 
-void Alg_seq::write(ostream &file, bool in_secs)
+void Alg_seq::write(ostream &file, bool in_secs, double offset)
 {
     int i, j;
     if (in_secs) convert_to_seconds();
     else convert_to_beats();
+    file << "#offset " << offset << endl;
     Alg_event_ptr update_to_skip = write_track_name(file, 0, track_list[0]);
     Alg_beats &beats = time_map->beats;
     for (i = 0; i < beats.len - 1; i++) {
@@ -172,11 +173,11 @@ void Alg_seq::write(ostream &file, bool in_secs)
     }
 }
 
-bool Alg_seq::write(const char *filename)
+bool Alg_seq::write(const char *filename, double offset)
 {
     ofstream file(filename);
     if (file.fail()) return false;
-     write(file, units_are_seconds);
-     file.close();
-     return true;
+    write(file, units_are_seconds, offset);
+    file.close();
+    return true;
 }

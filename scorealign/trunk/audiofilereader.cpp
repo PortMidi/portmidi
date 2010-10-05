@@ -4,11 +4,16 @@
  * 16-Jun-08  RBD revised to use libsndfile
  */
 #include "assert.h"
+#include "malloc.h"
 #include "stdio.h"
 #include "string.h"
 #include "sndfile.h"
 #include "audioreader.h"
 #include "audiofilereader.h"
+
+#ifdef WIN32
+#define bzero(addr, siz) memset(addr, 0, siz)
+#endif
 
 double Audio_file_reader::get_sample_rate()
 {
@@ -29,20 +34,17 @@ long Audio_file_reader::read(float *data, long n)
     float *input_data = (float *) alloca(bytes_per_frame * samples_per_frame);
     assert(input_data != NULL) ;
 	
-    // read into the end of data
     long frames_read = sf_readf_float(sf, input_data, n);
     long chans = sf_info.channels;
-    // now convert and move to beginning of data
-    if (chans > 1) {
-        for (int frame = 0; frame < frames_read; frame++) {
-            float sum = 0;
-            for (int chan = 0; chan < sf_info.channels; chan++) {
-                // sum over channels within a frame
-                sum += input_data[frame * chans + chan];
-            }
-            // write the frame sum to result array
-            data[frame] = sum;
+    // now convert to mono and move to data
+    for (int frame = 0; frame < frames_read; frame++) {
+        float sum = 0;
+        for (int chan = 0; chan < sf_info.channels; chan++) {
+            // sum over channels within a frame
+            sum += input_data[frame * chans + chan];
         }
+        // write the frame sum to result array
+        data[frame] = sum;
     }
     return frames_read;
 }

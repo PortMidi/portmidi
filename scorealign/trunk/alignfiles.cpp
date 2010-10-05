@@ -30,6 +30,7 @@ bool is_midi_file(char *filename)
 bool align_files(char *infilename1, char *infilename2, 
                 Scorealign &sa, bool verbose)
 {
+    sa.verbose = verbose;
     if (verbose) printf("opening %s\n", infilename1);
     if (is_midi_file(infilename1)) {
         // get sequence from infilename1
@@ -50,7 +51,7 @@ bool align_files(char *infilename1, char *infilename2,
                             infilename2);
                 return false;
             }
-            sa.align_midi_to_midi(seq, seq2, verbose);
+            sa.align_midi_to_midi(seq, seq2);
             return true;
         } else {
             // get audio from infilename2
@@ -61,7 +62,7 @@ bool align_files(char *infilename1, char *infilename2,
                             infilename2);
                 return false;
             }
-            sa.align_midi_to_audio(seq, reader, verbose);
+            sa.align_midi_to_audio(seq, reader);
             return true;
         }
     } else { // if first file is audio, so is second file
@@ -80,7 +81,7 @@ bool align_files(char *infilename1, char *infilename2,
                         infilename2);
             return false;
         }
-        sa.align_audio_to_audio(reader1, reader2, verbose);
+        sa.align_audio_to_audio(reader1, reader2);
         return true;
     }
 }

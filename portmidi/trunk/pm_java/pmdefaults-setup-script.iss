@@ -14,9 +14,9 @@ AppSupportURL=http://portmedia.sourceforge.net/
 AppUpdatesURL=http://portmedia.sourceforge.net/
 DefaultDirName={pf}\PmDefaults
 DefaultGroupName=PmDefaults
-LicenseFile=C:\Users\rbd\portmidi\pm_java\win32\license.txt
+LicenseFile=C:\Users\rbd\portmedia\portmidi\pm_java\win32\license.txt
 OutputBaseFilename=setup
-SetupIconFile=C:\Users\rbd\portmidi\pm_java\pmdefaults\pmdefaults.ico
+SetupIconFile=C:\Users\rbd\portmedia\portmidi\pm_java\pmdefaults\pmdefaults.ico
 Compression=lzma
 SolidCompression=yes
 
@@ -28,10 +28,10 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "C:\Users\rbd\portmidi\pm_java\win32\pmdefaults.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\rbd\portmidi\pm_java\win32\pmdefaults.jar"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\rbd\portmidi\pm_java\win32\pmjni.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "C:\Users\rbd\portmidi\pm_java\win32\license.txt"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\rbd\portmedia\portmidi\pm_java\win32\pmdefaults.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\rbd\portmedia\portmidi\pm_java\win32\pmdefaults.jar"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\rbd\portmedia\portmidi\pm_java\win32\pmjni.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\Users\rbd\portmedia\portmidi\pm_java\win32\license.txt"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

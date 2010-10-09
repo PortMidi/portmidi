@@ -79,9 +79,9 @@ static void midi_channel_message(PortMidiStream *midi, double when,
 }
 
 
-static char *pressure_attr;
-static char *bend_attr;
-static char *program_attr;
+static const char *pressure_attr;
+static const char *bend_attr;
+static const char *program_attr;
 
 
 void send_midi_update(Alg_update_ptr u, PortMidiStream *midi)
@@ -156,7 +156,7 @@ void seq_play(Alg_seq &seq)
     // passes in a void * so the time function can get some context.
     // It is safe to call Pt_Time with a parameter -- it will just be ignored.
     if (Pm_OpenOutput(&mo, dev, NULL, 256, 
-                      (long (*)(void *))&Pt_Time, NULL, 100) == pmNoError) {
+                      (PmTimestamp (*)(void *))&Pt_Time, NULL, 100) == pmNoError) {
         seq2midi(seq, mo);
         wait_until(time_elapsed() + 1);
         Pm_Close(mo);

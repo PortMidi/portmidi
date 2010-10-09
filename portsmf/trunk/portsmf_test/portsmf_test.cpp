@@ -142,7 +142,7 @@ void test6()
     seq->write(cout, true);
 	long index = seq->seek_time(1.0, 0);
 	printf("seq->get_units_are_seconds() = %d\n", seq->get_units_are_seconds());
-	printf("seq->seek_time(1.0, 0) returns %d\n", index);
+	printf("seq->seek_time(1.0, 0) returns %ld\n", index);
 	printf("note is:\n");
 	if ((*seq->track(0))[index]->is_note()) {
 		((Alg_note_ptr) (*(seq->track(0)))[index])->show();
@@ -178,7 +178,7 @@ void test7()
 	    long m;
 		double b, n, d;
 	    seq->beat_to_measure(qtable[i], &m, &b, &n, &d);
-		printf("%g -> %d + %g (%g/%g)\n", qtable[i], m, b, n, d);
+		printf("%g -> %ld + %g (%g/%g)\n", qtable[i], m, b, n, d);
 	}
 }
 
@@ -256,7 +256,7 @@ void test10()
 	    long m;
 		double b, n, d;
 	    seq->beat_to_measure(btable[i], &m, &b, &n, &d);
-		printf("%g -> %d + %g (%g/%g)\n", btable[i], m, b, n, d);
+		printf("%g -> %ld + %g (%g/%g)\n", btable[i], m, b, n, d);
 	}
 }
 
@@ -720,7 +720,7 @@ void test32() // serialize big midi file and unserialize
     void *buffer;
     long bytes;
     seq->serialize(&buffer, &bytes);
-    printf("Serialized %d bytes\n", bytes);
+    printf("Serialized %ld bytes\n", bytes);
     Alg_seq_ptr new_seq = (Alg_seq_ptr) seq->unserialize(buffer, bytes);
     ofstream sfile("bigseq2.alg", ios::out | ios::binary);
     new_seq->write(sfile, true);

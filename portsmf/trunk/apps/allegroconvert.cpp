@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
     for (i = 0; i < seq->track_list.length(); i++) {
         events += seq->track_list[i].length();
     }
-    printf("%d tracks, %d events\n", seq->track_list.length(), events);
+    printf("%ld tracks, %d events\n", seq->track_list.length(), events);
     printf("wrote %s\n", outfilename);
     
     /* DELETE THE DATA */

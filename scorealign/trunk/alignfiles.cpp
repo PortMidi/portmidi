@@ -20,14 +20,14 @@ using namespace std;
 
 /* is_midi_file -- see if file name ends in .mid */
 /**/
-bool is_midi_file(char *filename)
+bool is_midi_file(const char *filename)
 {
     size_t len = strlen(filename);
     return (len > 4 && strcmp(filename + len - 4, ".mid") == 0);
 }
 
 
-bool align_files(char *infilename1, char *infilename2, 
+bool align_files(const char *infilename1, const char *infilename2, 
                 Scorealign &sa, bool verbose)
 {
     sa.verbose = verbose;

@@ -219,6 +219,7 @@ double Curvefit::compute_dist(int i)
         for (int y = (int) y1; y < y2; y++) {
             double x = interpolate(y1, x1, y2, x2, y);
             sum += distance_xy(x, y);
+            // printf("dist %g %d = %g\n", x, y, distance_xy(x, y));
         }
     }
     // normalize using line length: sum/n is average distance. Multiply
@@ -230,7 +231,7 @@ double Curvefit::compute_dist(int i)
     double rslt = sqrt(dx*dx + dy*dy) * sum / n;
     // printf("compute_dist %d: x1 %g y1 %g x2 %g y2 %g sum %g rslt %g\n",
     //        i, x1, y1, x2, y2, sum, rslt);
-    if (rslt < 0 || rslt > 20 * n) { // DEBUGGING
+    if (rslt < 0 || rslt > 24 * n) { // DEBUGGING
         printf("internal error");
     }
     return rslt;

@@ -12,7 +12,7 @@
  * 14-Jul-08  RBD
  */
 
-bool align_files(char *infilename1, char *infilename2, 
+bool align_files(const char *infilename1, const char *infilename2, 
                  Scorealign &sa, bool verbose);
 
-bool is_midi_file(char *filename);
+bool is_midi_file(const char *filename);

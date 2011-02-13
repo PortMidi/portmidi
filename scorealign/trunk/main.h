@@ -8,5 +8,5 @@
  * 14-Jul-08  RBD
  */
 
-void print_path_range(short *pathx, short *pathy, int i, int j);
-void print_chroma_table(float *chrom_energy, int frames);
+void print_path_range(const short *pathx, const short *pathy, int i, int j);
+void print_chroma_table(const float *chrom_energy, int frames);

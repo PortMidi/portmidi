@@ -4,7 +4,7 @@
  * 16-Jun-08  RBD revised to use libsndfile
  */
 #include "assert.h"
-#include "malloc.h"
+#include "stdlib.h"
 #include "stdio.h"
 #include "string.h"
 #include "sndfile.h"
@@ -50,7 +50,7 @@ long Audio_file_reader::read(float *data, long n)
 }
 
 
-bool Audio_file_reader::open(char *filename, Scorealign &sa, bool verbose)
+bool Audio_file_reader::open(const char *filename, Scorealign &sa, bool verbose)
 {
     bytes_per_frame = 0; // initialize now in case an error occurs
     name[0] = 0;
@@ -81,7 +81,7 @@ void Audio_file_reader::print_info()
     printf("   sample rate = %g\n", sample_rate);
     printf("   channels = %d\n", sf_info.channels);
     /*=============================================================*/
-    printf("   total frames number is = %d\n", total_frames);
+    printf("   total frames number is = %ld\n", total_frames);
     printf("   audio duration = %g seconds\n", total_frames / sample_rate);
     /*=============================================================*/
 }

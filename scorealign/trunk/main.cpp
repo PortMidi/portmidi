@@ -17,7 +17,7 @@
 // a global object with score alignment parameters and data
 Scorealign sa;
 
-static void print_usage(char *progname) 
+static void print_usage(const char *progname) 
 {
     printf("\nUsage: %s [-<flags> [<period> <windowsize> <path> <smooth> "
            "<trans> <midi> <beatmap> <image>]] <file0> [<file1>]\n", progname);
@@ -25,7 +25,8 @@ static void print_usage(char *progname)
            "to\n");
     printf("   transcription.txt. Otherwise, align <file0> and <file1>.\n");
     printf("   -h 0.25 indicates a frame period of 0.25 seconds\n");
-    printf("   -w 0.25 indicates a window size of 0.25 seconds. \n");
+    printf("   -w 0.25 indicates a window size of 0.25 seconds.\n");
+    printf("   -d 0.1 indicates a silence threshold of RMS=0.1.\n");
     printf("   -r indicates filename to write raw alignment path to "
            "(default path.data)\n");
     printf("   -s is filename to write smoothed alignment path(default is "
@@ -54,7 +55,7 @@ static void print_usage(char *progname)
 	saves the smooth time map in SMOOTH_FILENAME
 
 */
-void save_smooth_file(char *smooth_filename, Scorealign &sa) {
+void save_smooth_file(const char *smooth_filename, Scorealign &sa) {
     FILE *smoothf = fopen(smooth_filename, "w");
     assert(smoothf);
     for (int i = 0; i < sa.file0_frames; i++) {
@@ -69,7 +70,7 @@ void save_smooth_file(char *smooth_filename, Scorealign &sa) {
    prints the allegro beat_map (for debugging) which contain
    the time, beat pair for a song 
 */
-void print_beat_map(Alg_seq &seq, char *filename) {
+void print_beat_map(Alg_seq &seq, const char *filename) {
     
     FILE *beatmap_print = fopen(filename, "w"); 
     
@@ -91,18 +92,17 @@ void print_beat_map(Alg_seq &seq, char *filename) {
 
 */
 void edit_transcription(Alg_seq &seq , bool warp, FILE *outf, 
-                        char *midi_filename, char *beat_filename) {
+                        const char *midi_filename, const char *beat_filename) {
     int note_x = 1;
     seq.convert_to_seconds();
     Alg_iterator iter(&seq, false); // no note-offs
     iter.begin();
-
     Alg_event_ptr e = iter.next();
 
     while (e) {
         if (e->is_note()) {
             Alg_note_ptr n = (Alg_note_ptr) e;
-            fprintf(outf, "%d %d %d %d ", 
+            fprintf(outf, "%d %ld %d %d ", 
                     note_x++, n->chan, ROUND(n->pitch), ROUND(n->loud));
             // now compute onset time mapped to audio time
             double start = n->time;
@@ -127,15 +127,19 @@ void edit_transcription(Alg_seq &seq , bool warp, FILE *outf,
 
 
 // save image of distance matrix
-void save_image(char *image_filename, Scorealign &sa)
+void save_image(const char *image_filename, Scorealign &sa)
 {
     FILE *outf = fopen(image_filename, "wb");
+    if (!outf) {
+        fprintf(stderr, "Error: could not open %s for write.\n", 
+                image_filename);
+    }
     float max_d = 0.0;
     float min_d = 999999.0;
     fputs("P5\n", outf);
-    fprintf(outf, "%d %d 255\n", sa.file0_frames, sa.file1_frames);
-    for (int row = 0; row < sa.file1_frames; row++) {
-        for (int col = 0; col < sa.file0_frames; col++) {
+    fprintf(outf, "%d %d 255\n", sa.file1_frames, sa.file0_frames);
+    for (int row = 0; row < sa.file0_frames; row++) {
+        for (int col = 0; col < sa.file1_frames; col++) {
             float d = sa.gen_dist(row, col);
 #ifdef DEBUG_LOG
             fprintf(dbf, "%d %d %g\n", row, col, d);
@@ -170,13 +174,13 @@ Where
    <onset> is time in seconds, rounded to 3 decimal places (milliseconds)
    <duration> is time in seconds, rounded to 3 decimal places
 */
-void save_transcription(char *file0, char *file1, 
-                        bool warp, char *filename, char *smooth_filename, 
-                        char *midi_filename, char *beat_filename)
+void save_transcription(const char *file0, const char *file1, 
+                        bool warp, const char *filename, const char *smooth_filename, 
+                        const char *midi_filename, const char *beat_filename)
 {
     
-    char *midiname; //midi file to be read
-    char *audioname; //audio file to be read
+    const char *midiname; //midi file to be read
+    const char *audioname; //audio file to be read
     
     if (warp) save_smooth_file(smooth_filename, sa); 
     
@@ -215,7 +219,7 @@ void save_transcription(char *file0, char *file1,
 /*		SAVE_PATH
 	write the alignment path to FILENAME
 */
-void save_path(char *filename, int pathlen, short* pathx, short *pathy,
+void save_path(const char *filename, int pathlen, short* pathx, short *pathy,
                float actual_frame_period_0, float actual_frame_period_1)
 {
     // print the path to a (plot) file
@@ -234,7 +238,7 @@ void save_path(char *filename, int pathlen, short* pathx, short *pathy,
 	Prints the chroma table (for debugging)
 */
 
-void print_chroma_table(float *chrom_energy, int frames)
+void print_chroma_table(const float *chrom_energy, int frames)
 {
     int i, j;
     for (j = 0; j < frames; j++) {
@@ -248,9 +252,9 @@ void print_chroma_table(float *chrom_energy, int frames)
 
 int main(int argc, char *argv []) 
 {	
-    char *progname, *infilename0, *infilename1;
-    char *smooth_filename, *path_filename, *trans_filename;
-    char *midi_filename, *beat_filename, *image_filename;
+    const char *progname, *infilename0, *infilename1;
+    const char *smooth_filename, *path_filename, *trans_filename;
+    const char *midi_filename, *beat_filename, *image_filename;
     
     //just transcribe if trasncribe == 1
     int transcribe = 0;
@@ -303,6 +307,8 @@ int main(int argc, char *argv [])
                 sa.presmooth_time = atof(argv[i+1]);
             } else if (flag == 'x') {
                 sa.line_time = atof(argv[i+1]);
+            } else if (flag == 'd') {
+                sa.silence_threshold = atof(argv[i+1]);
             }
             i++;
         }
@@ -337,7 +343,7 @@ int main(int argc, char *argv [])
 
     // if midi only in infilename1, make it infilename0
     if (is_midi_file(infilename1) && !is_midi_file(infilename0)) {
-        char *temp; 
+        const char *temp; 
         temp = infilename0; 
         infilename0 = infilename1;
         infilename1 = temp;
@@ -390,7 +396,7 @@ finish:
 
 /* print_path_range -- debugging output */
 /**/
-void print_path_range(short *pathx, short *pathy, int i, int j)
+void print_path_range(const short *pathx, const short *pathy, int i, int j)
 {
     while (i <= j) {
         printf("%d %d\n", pathx[i], pathy[i]);

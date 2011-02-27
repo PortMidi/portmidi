@@ -12,7 +12,9 @@
 #include "audiofilereader.h"
 
 #ifdef WIN32
+#include <malloc.h>
 #define bzero(addr, siz) memset(addr, 0, siz)
+#define alloca _alloca
 #endif
 
 double Audio_file_reader::get_sample_rate()
@@ -34,7 +36,7 @@ long Audio_file_reader::read(float *data, long n)
     float *input_data = (float *) alloca(bytes_per_frame * samples_per_frame);
     assert(input_data != NULL) ;
 	
-    long frames_read = sf_readf_float(sf, input_data, n);
+    long frames_read = (long) sf_readf_float(sf, input_data, n);
     long chans = sf_info.channels;
     // now convert to mono and move to data
     for (int frame = 0; frame < frames_read; frame++) {

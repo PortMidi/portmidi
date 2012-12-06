@@ -11,10 +11,10 @@ configuration=Release
 PF=/usr/local
 
 # For debugging, define PM_CHECK_ERRORS
-ifeq ($(configuration),Debug)
-    CONFIG = Debug
-else
+ifeq ($(configuration),Release)
     CONFIG = Release
+else
+    CONFIG = Debug
 endif
 
 current: all

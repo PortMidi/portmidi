@@ -13,6 +13,7 @@
 
 #ifdef WIN32
 #include <malloc.h>
+#include <windows.h>
 #define bzero(addr, siz) memset(addr, 0, siz)
 #define alloca _alloca
 #endif
@@ -58,7 +59,19 @@ bool Audio_file_reader::open(const char *filename, Scorealign &sa, bool verbose)
     name[0] = 0;
     bzero(&sf_info, sizeof(sf_info));
     sf = sf_open(filename, SFM_READ, &sf_info);
-    if (!sf) return false;
+    if (!sf) {
+#ifdef WIN32
+		/* windows-specific code to report error opening file */
+		char *msg;
+		DWORD code = GetLastError();
+		DWORD code2 = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+								    FORMAT_MESSAGE_FROM_SYSTEM,
+									0, code, 0, (LPSTR) &msg, 0, 0);
+	    printf("Error string: %s\n", msg);
+		LocalFree(msg);
+#endif
+		return false;
+	}
     strncpy(name, filename, MAX_NAME_LEN);
     name[MAX_NAME_LEN] = 0; // just in case
     total_frames = (long) sf_seek(sf, 0, SEEK_END);

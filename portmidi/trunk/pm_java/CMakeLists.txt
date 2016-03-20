@@ -16,12 +16,12 @@ if(UNIX)
         COMMAND javac -classpath . pmdefaults/PmDefaultsFrame.java
 	MAIN_DEPENDENCY pmdefaults/PmDefaultsFrame.java
 	DEPENDS pmdefaults/PmDefaults.java
-	WORKING_DIRECTORY pm_java)
+	WORKING_DIRECTORY .)
     add_custom_command(OUTPUT pmdefaults/PmDefaults.class
         COMMAND javac -classpath . pmdefaults/PmDefaults.java
 	MAIN_DEPENDENCY pmdefaults/PmDefaults.java
 	DEPENDS pmdefaults/PmDefaultsFrame.java
-	WORKING_DIRECTORY pm_java)
+	WORKING_DIRECTORY .)
     add_custom_command(OUTPUT ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/pmdefaults.jar
         COMMAND	cp pmdefaults/portmusic_logo.png .
         COMMAND	jar cmf pmdefaults/manifest.txt pmdefaults.jar
@@ -32,7 +32,7 @@ if(UNIX)
 	COMMAND rm portmusic_logo.png
 	MAIN_DEPENDENCY pmdefaults/PmDefaults.class
 	DEPENDS ${PMDEFAULTS_ALL_CLASSES}
-	WORKING_DIRECTORY pm_java)
+	WORKING_DIRECTORY .)
     add_custom_target(pmdefaults_target ALL 
         DEPENDS ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/pmdefaults.jar)
     # message(STATUS "add_custom_target: pmdefaults.jar")

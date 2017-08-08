@@ -4,6 +4,9 @@
  * pm_write() call blocking (forever) on Linux when
  * sending very dense MIDI sequences.
  *
+ * Modified 8 Aug 2017 with -n to send expired timestamps
+ * to test a theory about why Linux ALSA hangs in Audacity.
+ *
  * Roger B. Dannenberg, Aug 2017
  */
 
@@ -32,7 +35,7 @@ int32_t latency = 0;
 int32_t msgrate = 0;
 int deviceno = -9999;
 int duration = 0;
-
+int expired_timestamps = FALSE;
 
 /* read a number from console */
 /**/
@@ -81,6 +84,14 @@ void fast_test()
     int msgcnt = 0;
     int pitch = 60;
     int printtime = 1000;
+    /* if expired_timestamps, we want to send timestamps that have
+     * expired. They should be sent immediately, but there's a suggestion
+     * that negative delay might cause problems in the ALSA implementation
+     * so this is something we can test using the -n flag.
+     */
+    if (expired_timestamps) {
+        now = now - 2 * latency;
+    }
     while (now - start < duration *  1000) {
         /* how many messages do we send? Total should be
          *     (elapsed * rate) / 1000
@@ -112,11 +123,12 @@ void fast_test()
 
 void show_usage()
 {
-    printf("Usage: test [-h] %s\nwhere %s\n%s\n%s\n",
-           "[-l latency] [-r rate] [-d device] [-s dur]",
+    printf("Usage: test [-h] %s\nwhere %s\n%s\n%s\n%s\n",
+           "[-l latency] [-r rate] [-d device] [-s dur] [-n]",
            "latency is in ms, rate is messages per second,",
-           "device is the PortMidi device number, and",
-           "dur is the length of the test in seconds");
+           "device is the PortMidi device number,",
+           "dur is the length of the test in seconds, and",
+           "-n means send timestamps in the past, -h means help.");
 }
 
 int main(int argc, char *argv[])
@@ -137,7 +149,7 @@ int main(int argc, char *argv[])
     else if (sizeof(void *) == 4) 
         printf ("Apparently this is a 32-bit machine.\n");
     
-    if (i <= 1) {
+    if (argc <= 1) {
         show_usage();
     } else {
         for (i = 1; i < argc; i++) {
@@ -153,6 +165,14 @@ int main(int argc, char *argv[])
                 msgrate = atoi(argv[i]);
                 printf("Rate will be %d messages/second\n", msgrate);
                 rate_valid = TRUE;
+            } else if (strcmp(argv[i], "-s") == 0) {
+                i = i + 1;
+                duration = atoi(argv[i]);
+                printf("Duration will be %d seconds\n", msgrate);
+                dur_valid = TRUE;
+            } else if (strcmp(argv[i], "-n") == 0) {
+                printf("Sending expired timestamps (-n)\n");
+                expired_timestamps = TRUE;
             } else {
                 show_usage();
             }

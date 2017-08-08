@@ -1,4 +1,4 @@
-# pm_test
+# CMake file to build tests in this directory: pm_test
 
 # set the build directory to be in portmidi, not in portmidi/pm_test
 # this is required for Xcode:
@@ -24,3 +24,4 @@ make_a_test(latency)
 make_a_test(mm)
 make_a_test(midiclock)
 make_a_test(qtest)
+make_a_test(fast)

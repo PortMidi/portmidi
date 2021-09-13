@@ -128,7 +128,7 @@ typedef enum {
     pmNoData = 0, /**< A "no error" return that also indicates no data avail. */
     pmGotData = 1, /**< A "no error" return that also indicates data available */
     pmHostError = -10000,
-    pmInvalidDeviceId, /** out of range or 
+    pmInvalidDeviceId, /**< out of range or 
                         * output device when input is requested or 
                         * input device when output is requested or
                         * device is already opened 
@@ -136,13 +136,15 @@ typedef enum {
     pmInsufficientMemory,
     pmBufferTooSmall,
     pmBufferOverflow,
-    pmBadPtr, /* PortMidiStream parameter is NULL or
+    pmBadPtr, /**< PortMidiStream parameter is NULL or
                * stream is not opened or
                * stream is output when input is required or
                * stream is input when output is required */
-    pmBadData, /** illegal midi data, e.g. missing EOX */
+    pmBadData, /**< illegal midi data, e.g. missing EOX */
     pmInternalError,
-    pmBufferMaxSize /** buffer is already as large as it can be */
+    pmBufferMaxSize, /**< buffer is already as large as it can be */
+    pmNotImplemented, /**< the function is not implemented, nothing was done */
+    pmInterfaceNotSupported /**< the requested interface is not supported */
     /* NOTE: If you add a new error type, be sure to update Pm_GetErrorText() */
 } PmError;
 
@@ -341,10 +343,10 @@ PMEXPORT const PmDeviceInfo* Pm_GetDeviceInfo( PmDeviceID id );
     timestamp+latency = 5001. This will be 5001-4990 = 11ms from now.
 
     return value:
-    Upon success Pm_Open() returns PmNoError and places a pointer to a
+    Upon success `Pm_Open*()` returns PmNoError and places a pointer to a
     valid PortMidiStream in the stream argument.
-    If a call to Pm_Open() fails a nonzero error code is returned (see
-    PMError above) and the value of port is invalid.
+    If a call to `Pm_Open*()` fails a nonzero error code is returned (see
+    PMError above) and the value of stream is invalid.
 
     Any stream that is successfully opened should eventually be closed
     by calling Pm_Close().
@@ -359,6 +361,45 @@ PMEXPORT PmError Pm_OpenInput( PortMidiStream** stream,
 
 PMEXPORT PmError Pm_OpenOutput( PortMidiStream** stream,
                 PmDeviceID outputDevice,
+                void *outputDriverInfo,
+                int32_t bufferSize,
+                PmTimeProcPtr time_proc,
+                void *time_info,
+                int32_t latency );
+
+/**
+   Pm_CreateVirtualInput() and Pm_CreateVirtualOutput() open virtual devices.
+
+   These functions are similar to Pm_OpenInput() and Pm_OpenOutput(),
+   except rather than opening existing devices, they create virtual
+   devices that appear to other applications as if there exists a
+   device with the given #name parameter using the interface given by
+   #interf. If #interf is NULL, the default interface (API) is
+   used. Default interfaces are "MMSystem", "CoreMIDI" and
+   "ALSA". Currently, these are the only ones implemented, but future
+   implementations could support DirectMusic, Jack, or others.
+
+   Other than #name and #interf, parameters have the same
+   interpretation as in #Pm_OpenInput() and #Pm_OpenOutput.
+
+   Additional return values are #pmInvalidDevicId (#name is invalid or
+   already exists) and #pmInterfaceNotSupported (#interf is does not
+   match a supported interface).
+
+   Virtual devices are not supported by Windows (Multimedia API). Calls
+   on Windows do nothing except return #pmNotImplemented.
+*/
+PMEXPORT PmError Pm_CreateVirtualInput( PortMidiStream** stream,
+                const char *name,
+                const char *interf,
+                void *inputDriverInfo,
+                int32_t bufferSize,
+                PmTimeProcPtr time_proc,
+                void *time_info );
+
+PMEXPORT PmError Pm_CreateVirtualOutput( PortMidiStream** stream,
+                const char *name,
+                const char *interf,
                 void *outputDriverInfo,
                 int32_t bufferSize,
                 PmTimeProcPtr time_proc,

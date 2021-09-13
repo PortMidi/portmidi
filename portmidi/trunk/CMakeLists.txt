@@ -2,19 +2,21 @@
 # Roger B. Dannenberg
 # 20 Sep 2009
 
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 2.8.12)
+set(CMAKE_OSX_DEPLOYMENT_TARGET 10.6 CACHE STRING 
+                                "make for this OS version or higher")
 
 if(UNIX)
   # allow user to set Release or Debug
   set(CMAKE_BUILD_TYPE Release CACHE STRING 
       "Semicolon-separate list of supported configuration types")
   # set default directories but don't override cached values...
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CACHEFILE_DIR}/${CMAKE_BUILD_TYPE}
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}
       CACHE STRING "libraries go here")
-  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CACHEFILE_DIR}/${CMAKE_BUILD_TYPE}
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}
       CACHE STRING "libraries go here")
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY 
-      ${CMAKE_CACHEFILE_DIR}/${CMAKE_BUILD_TYPE}
+      ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}
       CACHE STRING "executables go here")
 
 else(UNIX)
@@ -36,7 +38,7 @@ set(CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO "" CACHE INTERNAL "Unused")
 set(CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO "" CACHE INTERNAL "Unused")
 set(CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "" CACHE INTERNAL "Unused")
 
-set(CMAKE_OSX_ARCHITECTURES i386 ppc x86_64 CACHE STRING "change to needed architecture for a smaller library" FORCE)
+set(CMAKE_OSX_ARCHITECTURES x86_64 CACHE STRING "change to needed architecture for a smaller library" FORCE)
 
 PROJECT(portmidi)
 
@@ -54,13 +56,13 @@ if(UNIX)
   # then every other path is left alone
   if(CMAKE_LIBRARY_OUTPUT_DIRECTORY MATCHES ${BAD_DIR})
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY 
-        ${CMAKE_CACHEFILE_DIR}/${CMAKE_BUILD_TYPE}
+        ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}
         CACHE STRING "executables go here" FORCE)
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY 
-        ${CMAKE_CACHEFILE_DIR}/${CMAKE_BUILD_TYPE}
+        ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}
         CACHE STRING "libraries go here" FORCE)
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY 
-        ${CMAKE_CACHEFILE_DIR}/${CMAKE_BUILD_TYPE}
+        ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}
         CACHE STRING "libraries go here" FORCE)
   endif(CMAKE_LIBRARY_OUTPUT_DIRECTORY MATCHES ${BAD_DIR})
 endif(UNIX)

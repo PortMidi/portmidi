@@ -90,6 +90,61 @@ int pm_descriptor_max = 0;
 int pm_descriptor_index = 0;
 descriptor_type descriptors = NULL;
 
+/* interface descriptors are simple: an array of string/fnptr pairs: */
+#define NUM_INTERF_DESCRIPTORS 4
+static struct {
+    const char *interf;
+    pm_create_fn create_fn;
+} interf_descriptors[NUM_INTERF_DESCRIPTORS];
+
+static int next_interf_descriptor = 0;
+
+
+/* pm_add_interf -- describe an interface to library
+ *
+ * This is called at initialization time, once for each
+ * supported interface (e.g., CoreMIDI). The strings
+ * are retained but NOT COPIED, so do not destroy them!
+ *
+ * The purpose is to register a function that creates
+ * a virtual input or output device.
+ *
+ * returns pmInsufficientMemor if interface memory is
+ * exceeded, otherwise returns pmNoError.
+ */
+PmError pm_add_interf(char *interf, pm_create_fn create_fn)
+{
+    if (next_interf_descriptor >= NUM_INTERF_DESCRIPTORS) {
+        return pmInsufficientMemory;
+    }
+    interf_descriptors[next_interf_descriptor].interf = interf;
+    interf_descriptors[next_interf_descriptor].create_fn = create_fn;
+    next_interf_descriptor++;
+    return pmNoError;
+}
+
+PmError pm_create_virtual(PmInternal *midi, int is_input, const char *interf,
+                          const char *name, void *driver_info)
+{
+    int i;
+    if (next_interf_descriptor == 0) {
+        return pmNotImplemented;
+    }
+    if (!interf) {
+        /* default interface is the first one */
+        interf = interf_descriptors[0].interf;
+    }
+    for (i = 0; i < next_interf_descriptor; i++) {
+        if (strcmp(interf_descriptors[i].interf,
+                   interf) == 0) {
+            return (*interf_descriptors[i].create_fn)(midi, is_input, 
+                                                      name, driver_info);
+        }
+    }
+    return pmInterfaceNotSupported;
+}
+
+
 /* pm_add_device -- describe interface/device pair to library 
  *
  * This is called at intialization time, once for each 
@@ -97,9 +152,9 @@ descriptor_type descriptors = NULL;
  * The strings are retained but NOT COPIED, so do not destroy them!
  *
  * returns pmInvalidDeviceId if device memory is exceeded
- * otherwise returns pmNoError
+ * otherwise returns index (portmidi device_id) of the added device
  */
-PmError pm_add_device(char *interf, char *name, int input, 
+PmError pm_add_device(char *interf, const char *name, int is_input, 
                       void *descriptor, pm_fns_type dictionary) {
     if (pm_descriptor_index >= pm_descriptor_max) {
         // expand descriptors
@@ -116,8 +171,8 @@ PmError pm_add_device(char *interf, char *name, int input,
     }
     descriptors[pm_descriptor_index].pub.interf = interf;
     descriptors[pm_descriptor_index].pub.name = name;
-    descriptors[pm_descriptor_index].pub.input = input;
-    descriptors[pm_descriptor_index].pub.output = !input;
+    descriptors[pm_descriptor_index].pub.input = is_input;
+    descriptors[pm_descriptor_index].pub.output = !is_input;
 
     /* default state: nothing to close (for automatic device closing) */
     descriptors[pm_descriptor_index].pub.opened = FALSE;
@@ -130,9 +185,7 @@ PmError pm_add_device(char *interf, char *name, int input,
 
     descriptors[pm_descriptor_index].dictionary = dictionary;
     
-    pm_descriptor_index++;
-    
-    return pmNoError;
+    return pm_descriptor_index++;
 }
 
 
@@ -216,12 +269,16 @@ PmError pm_fail_fn(PmInternal *midi) {
 static PmError none_open(PmInternal *midi, void *driverInfo) {
     return pmBadPtr;
 }
-static void none_get_host_error(PmInternal * midi, char * msg, unsigned int len) {
+
+static void none_get_host_error(PmInternal * midi, char * msg,
+                                unsigned int len) {
     *msg = 0; // empty string
 }
+
 static unsigned int none_has_host_error(PmInternal * midi) {
     return FALSE;
 }
+
 PmTimestamp none_synchronize(PmInternal *midi) {
     return 0;
 }
@@ -238,7 +295,7 @@ pm_fns_node pm_none_dictionary = {
     none_write_flush,
     none_synchronize,
     none_open,
-    none_abort, 
+    none_abort,
     none_close,
     none_poll,
     none_has_host_error,
@@ -280,6 +337,9 @@ PMEXPORT const char *Pm_GetErrorText( PmError errnum ) {
         break;
     case pmBufferMaxSize:
         msg = "PortMidi: `Buffer cannot be made larger'";
+        break;
+    case pmNotImplemented:
+        msg = "PortMidi: `Function is not implemented'";
         break;
     default:                         
         msg = "PortMidi: `Illegal error number'"; 
@@ -445,7 +505,8 @@ static PmError pm_end_sysex(PmInternal *midi)
    Pm_WriteSysEx all operate a state machine that "outputs" calls to
    write_short, begin_sysex, write_byte, end_sysex, and write_realtime */
 
-PMEXPORT PmError Pm_Write( PortMidiStream *stream, PmEvent *buffer, int32_t length)
+PMEXPORT PmError Pm_Write(PortMidiStream *stream, PmEvent *buffer,
+                          int32_t length)
 {
     PmInternal *midi = (PmInternal *) stream;
     PmError err = pmNoError;
@@ -666,6 +727,69 @@ end_of_sysex:
 
 
 
+PmError pm_create_internal(PmInternal **stream, PmDeviceID device_id,
+                           int is_input, int latency, PmTimeProcPtr time_proc,
+                           void *time_info, int buffer_size, int virtual)
+{
+    if (!virtual && (device_id < 0 || device_id >= pm_descriptor_index)) {
+       return pmInvalidDeviceId;
+    }        
+    /* create portMidi internal data */
+    PmInternal *midi = (PmInternal *) pm_alloc(sizeof(PmInternal)); 
+    *stream = midi;
+    if (!midi) {
+        return pmInsufficientMemory;
+    }
+    midi->device_id = device_id;
+    midi->is_input = is_input;
+    midi->time_proc = time_proc;
+    /* if latency > 0, we need a time reference for output. 
+       If none is provided, use PortTime library */
+    if (time_proc == NULL && latency != 0 && !is_input) {
+        if (!Pt_Started()) 
+            Pt_Start(1, 0, 0);
+        /* time_get does not take a parameter, so coerce */
+        midi->time_proc = (PmTimeProcPtr) Pt_Time;
+    }
+    midi->time_info = time_info;
+    if (is_input) {
+        midi->latency = 0;  /* unused by input */
+        if (buffer_size <= 0) buffer_size = 256; /* default buffer size */
+        midi->queue = Pm_QueueCreate(buffer_size, (int32_t) sizeof(PmEvent));
+        if (!midi->queue) {
+            /* free portMidi data */
+            *stream = NULL;
+            pm_free(midi);
+            return pmInsufficientMemory;
+        }
+    } else {
+        /* if latency zero, output immediate (timestamps ignored) */
+        /* if latency < 0, use 0 but don't return an error */
+        if (latency < 0) latency = 0;
+        midi->latency = latency;
+        midi->queue = NULL;  /* unused by output; input needs to allocate: */
+    }
+    midi->buffer_len = buffer_size; /* portMidi input storage */
+    midi->sysex_in_progress = FALSE;
+    midi->sysex_message = 0; 
+    midi->sysex_message_count = 0; 
+    midi->filters = (is_input ? PM_FILT_ACTIVE : 0);
+    midi->channel_mask = 0xFFFF;
+    midi->sync_time = 0;
+    midi->first_message = TRUE;
+    midi->fill_base = NULL;
+    midi->fill_offset_ptr = NULL;
+    midi->fill_length = 0;
+    if (virtual) {
+        midi->dictionary = NULL;
+    } else {
+        midi->dictionary = descriptors[device_id].dictionary;
+        descriptors[device_id].internalDescriptor = midi;
+    }
+    return pmNoError;
+}
+
+
 PMEXPORT PmError Pm_OpenInput(PortMidiStream** stream,
                      PmDeviceID inputDevice,
                      void *inputDriverInfo,
@@ -676,58 +800,24 @@ PMEXPORT PmError Pm_OpenInput(PortMidiStream** stream,
     PmInternal *midi;
     PmError err = pmNoError;
     pm_hosterror = FALSE;
-    *stream = NULL;
+    *stream = NULL;  /* invariant: *stream == midi */
     
     /* arg checking */
-    if (inputDevice < 0 || inputDevice >= pm_descriptor_index) 
-        err = pmInvalidDeviceId;
-    else if (!descriptors[inputDevice].pub.input) 
+    if (!descriptors[inputDevice].pub.input) 
         err =  pmInvalidDeviceId;
-    else if(descriptors[inputDevice].pub.opened)
+    else if (descriptors[inputDevice].pub.opened)
         err =  pmInvalidDeviceId;
-    
     if (err != pmNoError) 
         goto error_return;
 
-    /* create portMidi internal data */
-    midi = (PmInternal *) pm_alloc(sizeof(PmInternal)); 
+    /* common initialization of PmInternal structure (midi): */
+    err = pm_create_internal(&midi, inputDevice, FALSE, 0, time_proc,
+                             time_info, bufferSize, FALSE);
     *stream = midi;
-    if (!midi) {
-        err = pmInsufficientMemory;
+    if (err) {
         goto error_return;
     }
-    midi->device_id = inputDevice;
-    midi->write_flag = FALSE;
-    midi->time_proc = time_proc;
-    midi->time_info = time_info;
-    /* windows adds timestamps in the driver and these are more accurate than
-       using a time_proc, so do not automatically provide a time proc. Non-win
-       implementations may want to provide a default time_proc in their
-       system-specific midi_out_open() method.
-     */
-    if (bufferSize <= 0) bufferSize = 256; /* default buffer size */
-    midi->queue = Pm_QueueCreate(bufferSize, (int32_t) sizeof(PmEvent));
-    if (!midi->queue) {
-        /* free portMidi data */
-        *stream = NULL;
-        pm_free(midi); 
-        err = pmInsufficientMemory;
-        goto error_return;
-    }
-    midi->buffer_len = bufferSize; /* portMidi input storage */
-    midi->latency = 0; /* not used */
-    midi->sysex_in_progress = FALSE;
-    midi->sysex_message = 0; 
-    midi->sysex_message_count = 0; 
-    midi->filters = PM_FILT_ACTIVE;
-    midi->channel_mask = 0xFFFF;
-    midi->sync_time = 0;
-    midi->first_message = TRUE;
-    midi->dictionary = descriptors[inputDevice].dictionary;
-    midi->fill_base = NULL;
-    midi->fill_offset_ptr = NULL;
-    midi->fill_length = 0;
-    descriptors[inputDevice].internalDescriptor = midi;
+
     /* open system dependent input device */
     err = (*midi->dictionary->open)(midi, inputDriverInfo);
     if (err) {
@@ -772,43 +862,14 @@ PMEXPORT PmError Pm_OpenOutput(PortMidiStream** stream,
     if (err != pmNoError) 
         goto error_return;
 
-    /* create portMidi internal data */
-    midi = (PmInternal *) pm_alloc(sizeof(PmInternal)); 
-    *stream = midi;                 
-    if (!midi) {
-        err = pmInsufficientMemory;
+    /* common initialization of PmInternal structure (midi): */
+    err = pm_create_internal(&midi, outputDevice, TRUE, latency, time_proc,
+                             time_info, bufferSize, FALSE);
+    *stream = midi;
+    if (err) {
         goto error_return;
     }
-    midi->device_id = outputDevice;
-    midi->write_flag = TRUE;
-    midi->time_proc = time_proc;
-    /* if latency > 0, we need a time reference. If none is provided,
-       use PortTime library */
-    if (time_proc == NULL && latency != 0) {
-        if (!Pt_Started()) 
-            Pt_Start(1, 0, 0);
-        /* time_get does not take a parameter, so coerce */
-        midi->time_proc = (PmTimeProcPtr) Pt_Time;
-    }
-    midi->time_info = time_info;
-    midi->buffer_len = bufferSize;
-    midi->queue = NULL; /* unused by output */
-    /* if latency zero, output immediate (timestamps ignored) */
-    /* if latency < 0, use 0 but don't return an error */
-    if (latency < 0) latency = 0;
-    midi->latency = latency;
-    midi->sysex_in_progress = FALSE;
-    midi->sysex_message = 0; /* unused by output */
-    midi->sysex_message_count = 0; /* unused by output */
-    midi->filters = 0; /* not used for output */
-    midi->channel_mask = 0xFFFF;
-    midi->sync_time = 0;
-    midi->first_message = TRUE;
-    midi->dictionary = descriptors[outputDevice].dictionary;
-    midi->fill_base = NULL;
-    midi->fill_offset_ptr = NULL;
-    midi->fill_length = 0;
-    descriptors[outputDevice].internalDescriptor = midi;
+
     /* open system dependent output device */
     err = (*midi->dictionary->open)(midi, outputDriverInfo);
     if (err) {
@@ -819,6 +880,103 @@ PMEXPORT PmError Pm_OpenOutput(PortMidiStream** stream,
     } else {
         /* portMidi input open successful */
         descriptors[outputDevice].pub.opened = TRUE;
+    }
+error_return:
+    /* note: system-dependent code must set pm_hosterror and
+     * pm_hosterror_text if a pmHostError occurs
+     */
+    return pm_errmsg(err);
+}
+
+
+PMEXPORT PmError Pm_CreateVirtualInput(PortMidiStream** stream,
+                     const char *name,
+                     const char *interf,
+                     void *inputDriverInfo,
+                     int32_t bufferSize,
+                     PmTimeProcPtr time_proc,
+                     void *time_info)
+{
+    PmInternal *midi;
+    PmError err = pmNoError;
+    pm_hosterror = FALSE;
+    *stream = NULL;
+    
+    /* arg checking */
+    if (!name) {
+        err = pmInvalidDeviceId;
+        goto error_return;
+    }
+
+    Pm_Initialize();  /* just in case */
+
+    /* common initialization of PmInternal structure (midi): */
+    err = pm_create_internal(&midi, 0, TRUE, 0, time_proc,
+                             time_info, bufferSize, TRUE);
+    *stream = midi;
+    if (err) {
+        goto error_return;
+    }
+    /* open system dependent input device */
+    err = pm_create_virtual(midi, TRUE, interf, name, inputDriverInfo);
+    if (err < 0) {
+        *stream = NULL;
+        /* free portMidi data */
+        Pm_QueueDestroy(midi->queue);
+        pm_free(midi);
+    } else {
+        /* make sure we can find the new info using device_id: */
+        descriptors[midi->device_id].internalDescriptor = midi;
+        /* portMidi input open successful */
+        descriptors[midi->device_id].pub.opened = TRUE;
+        err = pmNoError;
+    }
+error_return:
+    /* note: if there is a pmHostError, it is the responsibility
+     * of the system-dependent code (*midi->dictionary->open)()
+     * to set pm_hosterror and pm_hosterror_text
+     */
+    return pm_errmsg(err);
+}
+
+
+PMEXPORT PmError Pm_CreateVirtualOutput(PortMidiStream** stream,
+                      const char *name,
+                      const char *interf,
+                      void *outputDriverInfo,
+                      int32_t bufferSize,
+                      PmTimeProcPtr time_proc,
+                      void *time_info,
+                      int32_t latency)
+{
+    PmInternal *midi;
+    PmError err = pmNoError;
+    pm_hosterror = FALSE;
+    *stream =  NULL;
+    
+    /* arg checking */
+    if (!name) {
+        err = pmInvalidDeviceId;
+        goto error_return;
+    }
+    
+    Pm_Initialize();  /* just in case */
+
+    /* common initialization of PmInternal structure (midi): */
+    err = pm_create_internal(&midi, 0, FALSE, latency, time_proc,
+                             time_info, bufferSize, TRUE);
+    *stream = midi;
+    /* open system dependent output device */
+    err = pm_create_virtual(midi, FALSE, interf, name, outputDriverInfo);
+    if (err < 0) {
+        *stream = NULL;
+        /* free portMidi data */
+        pm_free(midi); 
+    } else {
+        /* make sure we can find the new info using device_id: */
+        descriptors[midi->device_id].internalDescriptor = midi;
+        /* portMidi input open successful */
+        descriptors[midi->device_id].pub.opened = TRUE;
     }
 error_return:
     /* note: system-dependent code must set pm_hosterror and

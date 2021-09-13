@@ -119,7 +119,7 @@ int get_number(char *prompt)
 {
     char line[STRING_MAX];
     int n = 0, i;
-    printf(prompt);
+    printf("%s", prompt);
     while (n != 1) {
         n = scanf("%d", &i);
         fgets(line, STRING_MAX, stdin);
@@ -136,7 +136,7 @@ void receive_poll(PtTimestamp timestamp, void *userData)
     if (!active) return;
     while ((count = Pm_Read(midi_in, &event, 1))) {
         if (count == 1) output(event.message);
-        else            printf(Pm_GetErrorText(count));
+        else            printf("%s", Pm_GetErrorText(count));
     }
 }
 
@@ -168,7 +168,7 @@ int main(int argc, char **argv)
     inp = get_number("Type input device number: ");
     err = Pm_OpenInput(&midi_in, inp, NULL, 512, NULL, NULL);
     if (err) {
-        printf(Pm_GetErrorText(err));
+        printf("%s", Pm_GetErrorText(err));
         Pt_Stop();
         mmexit(1);
     }
@@ -484,7 +484,7 @@ private int put_pitch(int p)
         "gs", "a", "bf", "b"    };
     /* note octave correction below */
     sprintf(result, "%s%d", ptos[p % 12], (p / 12) - 1);
-    printf(result);
+    printf("%s", result);
     return strlen(result);
 }
 

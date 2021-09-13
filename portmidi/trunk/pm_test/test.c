@@ -37,7 +37,7 @@ int get_number(char *prompt)
 {
     char line[STRING_MAX];
     int n = 0, i;
-    printf(prompt);
+    printf("%s", prompt);
     while (n != 1) {
         n = scanf("%d", &i);
         fgets(line, STRING_MAX, stdin);
@@ -83,7 +83,7 @@ void main_test_input(unsigned int somethingStupid) {
     while (i < num) {
         status = Pm_Poll(midi);
         if (status == TRUE) {
-            length = Pm_Read(midi,buffer, 1);
+            length = Pm_Read(midi, buffer, 1);
             if (length > 0) {
                 printf("Got message %d: time %ld, %2lx %2lx %2lx\n",
                        i,

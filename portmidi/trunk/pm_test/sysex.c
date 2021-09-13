@@ -39,7 +39,7 @@ int get_number(char *prompt)
 {
     char line[STRING_MAX];
     int n = 0, i;
-    printf(prompt);
+    printf("%s", prompt);
     while (n != 1) {
         n = scanf("%d", &i);
         fgets(line, STRING_MAX, stdin);
@@ -171,7 +171,7 @@ void loopback_test()
 	    if (seconds == 0) seconds = 1;
             printf("Correctly received %d byte sysex message.\n", i);
 	    total_bytes += i;
-	    printf("Cummulative bytes/sec: %d\n", total_bytes / seconds);
+	    printf("Cummulative bytes/sec: %d\n", (int) (total_bytes / seconds));
         }
     }
 cleanup:

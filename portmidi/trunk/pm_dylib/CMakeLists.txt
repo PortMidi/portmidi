@@ -43,9 +43,10 @@ if(UNIX)
   set (CMAKE_C_FLAGS_DEBUG "-g ${CMAKE_C_FLAGS_DEBUG}" 
        CACHE STRING "enable extra checks for debugging" FORCE)
   if(APPLE)
-    set(MACSRC pmmacosxcm pmmac readbinaryplist finddefault)
+    set(MACSRC pmmacosxcm.c pmmacosxcm.h pmmac.c pmmac.h 
+        readbinaryplist.c readbinaryplist.h finddefault.c) 
     prepend_path(LIBSRC ../pm_mac/ ${MACSRC})
-    list(APPEND LIBSRC ../porttime/ptmacosx_mach)
+    list(APPEND LIBSRC ../porttime/ptmacosx_mach.c) 
 
     include_directories(${CMAKE_OSX_SYSROOT}/Developer/Headers/FlatCarbon)
     set(FRAMEWORK_PATH ${CMAKE_OSX_SYSROOT}/System/Library/Frameworks)
@@ -81,9 +82,9 @@ if(UNIX)
     # libjvm.so is found relative to JAVA_INCLUDE_PATH:
     set(JAVAVM_LIB ${JAVA_INCLUDE_PATH}/../jre/lib/i386/client/libjvm.so)
 
-    set(LINUXSRC pmlinuxalsa pmlinux finddefault)
+    set(LINUXSRC pmlinuxalsa.c pmlinuxalsa.h pmlinux.c pmlinux.h finddefault.c) 
     prepend_path(LIBSRC ../pm_linux/ ${LINUXSRC})
-    list(APPEND LIBSRC ../porttime/ptlinux)
+    list(APPEND LIBSRC ../porttime/ptlinux.c) 
 
     set(PM_NEEDED_LIBS pthread asound)
   endif(APPLE)
@@ -99,9 +100,9 @@ else(UNIX)
     set(JAVA_INCLUDE_PATHS ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2})
     # message(STATUS "JAVA_INCLUDE_PATHS: " ${JAVA_INCLUDE_PATHS})
 
-    set(WINSRC pmwin pmwinmm)
+    set(WINSRC pmwin.c pmwinmm.c pmwinmm.h) 
     prepend_path(LIBSRC ../pm_win/ ${WINSRC})
-    list(APPEND LIBSRC ../porttime/ptwinmm)
+    list(APPEND LIBSRC ../porttime/ptwinmm.c)
     set(PM_NEEDED_LIBS winmm.lib)
     # message(STATUS "JAVAVM_LIB: " ${JAVAVM_LIB})
   endif(WIN32)
@@ -109,12 +110,14 @@ endif(UNIX)
 set(JNI_EXTRA_LIBS ${PM_NEEDED_LIBS} ${JAVAVM_LIB})
 
 # this completes the list of library sources by adding shared code
-set(SHARED_FILES pmutil portmidi)
+set(SHARED_FILES pmutil.c pmutil.h portmidi.c portmidi.h)  
 prepend_path(SHARED_PATHS ../pm_common/ ${SHARED_FILES})
+# message(STATUS "portmidi-dynamic SHARED_PATHS: " ${SHARED_PATHS})  
 list(APPEND LIBSRC ${SHARED_PATHS})
-
+# message(STATUS "portmidi-dynamic LIBSRC: " ${LIBSRC})
 add_library(portmidi-dynamic SHARED ${LIBSRC})
-set_target_properties(portmidi-dynamic PROPERTIES OUTPUT_NAME "portmidi")
+set_target_properties(portmidi-dynamic PROPERTIES OUTPUT_NAME "portmidi"
+                                                  MACOSX_RPATH ON)
 target_link_libraries(portmidi-dynamic ${PM_NEEDED_LIBS})
 
 # install the libraries (Linux and Mac OS X command line)

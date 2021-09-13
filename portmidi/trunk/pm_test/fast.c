@@ -61,7 +61,7 @@ void fast_test()
     /* It is recommended to start timer before PortMidi */
     TIME_START;
 
-	/* open output device */
+    /* open output device */
     Pm_OpenOutput(&midi, 
                   deviceno, 
                   DRIVER_INFO,
@@ -123,7 +123,7 @@ void fast_test()
 
 void show_usage()
 {
-    printf("Usage: test [-h] %s\nwhere %s\n%s\n%s\n%s\n",
+    printf("Usage: fast [-h] %s\nwhere %s\n%s\n%s\n%s\n",
            "[-l latency] [-r rate] [-d device] [-s dur] [-n]",
            "latency is in ms, rate is messages per second,",
            "device is the PortMidi device number,",
@@ -165,6 +165,10 @@ int main(int argc, char *argv[])
                 msgrate = atoi(argv[i]);
                 printf("Rate will be %d messages/second\n", msgrate);
                 rate_valid = TRUE;
+            } else if (strcmp(argv[i], "-d") == 0) {
+                i = i + 1;
+                deviceno = atoi(argv[i]);
+                printf("Device will be %d\n", deviceno);
             } else if (strcmp(argv[i], "-s") == 0) {
                 i = i + 1;
                 duration = atoi(argv[i]);
@@ -201,8 +205,14 @@ int main(int argc, char *argv[])
         const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
         if (info->output) {
             printf("%d: %s, %s", i, info->interf, info->name);
-            deflt = (i == deviceno ? "selected " :
-                      (i == default_out ? "default " : ""));
+            if (i == deviceno) {
+                device_valid = TRUE;
+                deflt = "selected ";
+            } else if (i == default_out) {
+                deflt = "default ";
+            } else {
+                deflt = "";
+            }                      
             printf(" (%soutput)", deflt);
             printf("\n");
         }

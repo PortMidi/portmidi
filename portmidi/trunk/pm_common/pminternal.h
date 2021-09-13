@@ -51,6 +51,8 @@ typedef PmTimestamp (*pm_synchronize_fn)(struct pm_internal_struct *midi);
    of the open fails */
 typedef PmError (*pm_open_fn)(struct pm_internal_struct *midi,
                               void *driverInfo);
+typedef PmError (*pm_create_fn)(struct pm_internal_struct *midi, int is_input,
+                                const char *name, void *driverInfo);
 typedef PmError (*pm_abort_fn)(struct pm_internal_struct *midi);
 /* pm_close_fn should clean up all memory and close the device if any
    part of the close fails. */
@@ -83,8 +85,8 @@ typedef struct {
 extern pm_fns_node pm_none_dictionary;
 
 typedef struct {
-    PmDeviceInfo pub; /* some portmidi state also saved in here (for autmatic
-                         device closing (see PmDeviceInfo struct) */
+    PmDeviceInfo pub; /* some portmidi state also saved in here (for automatic
+                         device closing -- see PmDeviceInfo struct) */
     void *descriptor; /* ID number passed to win32 multimedia API open */
     void *internalDescriptor; /* points to PmInternal device, allows automatic 
                                  device closing */
@@ -99,7 +101,7 @@ typedef uint32_t (*time_get_proc_type)(void *time_info);
 
 typedef struct pm_internal_struct {
     int device_id; /* which device is open (index to descriptors) */
-    short write_flag; /* MIDI_IN, or MIDI_OUT */
+    short is_input; /* MIDI IN (true) or MIDI OUT (false) */
     
     PmTimeProcPtr time_proc; /* where to get the time */
     void *time_info; /* pass this to get_time() */
@@ -155,8 +157,9 @@ PmTimestamp none_synchronize(PmInternal *midi);
 PmError pm_fail_fn(PmInternal *midi);
 PmError pm_fail_timestamp_fn(PmInternal *midi, PmTimestamp timestamp);
 PmError pm_success_fn(PmInternal *midi);
-PmError pm_add_device(char *interf, char *name, int input, void *descriptor,
-                      pm_fns_type dictionary);
+PmError pm_add_interf(char *interf, pm_create_fn create_fn);
+PmError pm_add_device(char *interf, const char *name, int is_input,
+                      void *descriptor, pm_fns_type dictionary);
 uint32_t pm_read_bytes(PmInternal *midi, const unsigned char *data, int len,
                            PmTimestamp timestamp);
 void pm_read_short(PmInternal *midi, PmEvent *event);

@@ -167,7 +167,7 @@ int get_number(char *prompt)
 {
     char line[STRING_MAX];
     int n = 0, i;
-    printf(prompt);
+    printf("%s", prompt);
     while (n != 1) {
         n = scanf("%d", &i);
         fgets(line, STRING_MAX, stdin);
@@ -256,7 +256,7 @@ int main(int argc, char **argv)
     err = Pm_OpenOutput(&midi, outp, DRIVER_INFO, OUTPUT_BUFFER_SIZE, 
                         TIME_PROC, TIME_INFO, LATENCY);
     if (err) {
-        printf(Pm_GetErrorText(err));
+        printf("%s", Pm_GetErrorText(err));
         goto error_exit_no_device;
     }
     active = true;

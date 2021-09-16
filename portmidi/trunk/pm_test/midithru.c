@@ -1,18 +1,21 @@
 /* midithru.c -- example program implementing background thru processing */
 
-/* suppose you want low-latency midi-thru processing, but your application
-   wants to take advantage of the input buffer and timestamped data so that
-   it does not have to operate with very low latency.
+/* suppose you want low-latency midi-thru processing, but your
+   application wants to take advantage of the input buffer and
+   timestamped data so that it does not have to operate with very low
+   latency.
 
-   This program illustrates how to use a timer callback from PortTime to 
-   implement a low-latency process that handles midi thru, including correctly
-   merging midi data from the application with midi data from the input port.
+   This program illustrates how to use a timer callback from PortTime
+   to implement a low-latency process that handles midi thru,
+   including correctly merging midi data from the application with
+   midi data from the input port.
 
-   The main application, which runs in the main program thread, will use an
-   interface similar to that of PortMidi, but since PortMidi does not allow
-   concurrent threads to share access to a stream, the application will
-   call private methods that transfer MIDI messages to and from the timer 
-   thread. All PortMidi API calls are made from the timer thread.
+   The main application, which runs in the main program thread, will
+   use an interface similar to that of PortMidi, but since PortMidi
+   does not allow concurrent threads to share access to a stream, the
+   application will call private methods that transfer MIDI messages
+   to and from the timer thread using lock-free queues. All PortMidi
+   API calls are made from the timer thread.
  */
 
 /* DESIGN
@@ -229,7 +232,7 @@ void exit_with_message(char *msg)
 }
 
 
-void initialize()
+void initialize(int input, int output)
 /* set up midi processing thread and open midi streams */
 {
     /* note that it is safe to call PortMidi from the main thread for
@@ -246,7 +249,6 @@ void initialize()
      */
 
     const PmDeviceInfo *info;
-    int id;
 
     /* make the message queues */
     in_queue = Pm_QueueCreate(IN_QUEUE_SIZE, sizeof(PmEvent));
@@ -260,32 +262,32 @@ void initialize()
     
     Pm_Initialize();
 
-    id = Pm_GetDefaultOutputDeviceID();
-    info = Pm_GetDeviceInfo(id);
+    output = (output < 0 ? Pm_GetDefaultOutputDeviceID() : output);
+    info = Pm_GetDeviceInfo(output);
     if (info == NULL) {
-        printf("Could not open default output device (%d).", id);
+        printf("Could not open default output device (%d).", output);
         exit_with_message("");
     }
     printf("Opening output device %s %s\n", info->interf, info->name);
 
     /* use zero latency because we want output to be immediate */
     Pm_OpenOutput(&midi_out, 
-                  id, 
+                  output, 
                   NULL /* driver info */,
                   OUT_QUEUE_SIZE,
                   &midithru_time_proc,
                   NULL /* time info */,
                   0 /* Latency */);
 
-    id = Pm_GetDefaultInputDeviceID();
-    info = Pm_GetDeviceInfo(id);
+    input = (input < 0 ? Pm_GetDefaultInputDeviceID() : input);
+    info = Pm_GetDeviceInfo(input);
     if (info == NULL) {
-        printf("Could not open default input device (%d).", id);
+        printf("Could not open default input device (%d).", input);
         exit_with_message("");
     }
     printf("Opening input device %s %s\n", info->interf, info->name);
     Pm_OpenInput(&midi_in, 
-                 id, 
+                 input, 
                  NULL /* driver info */,
                  0 /* use default input size */,
                  &midithru_time_proc,
@@ -330,15 +332,32 @@ int main(int argc, char *argv[])
 {
     PmTimestamp last_time = 0;
     PmEvent buffer;
+    int i;
+    int input = -1, output = -1;
 
-    /* determine what type of test to run */
+    printf("Usage: midithru [-i input] [-o output]\n"
+           "where input and output are portmidi device numbers\n");
+    for (i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "-i") == 0) {
+            i++;
+            input = atoi(argv[i]);
+            printf("Input device number: %d\n", input);
+        } else if (strcmp(argv[i], "-o") == 0) {
+            i++;
+            output = atoi(argv[i]);
+            printf("Output device number: %d\n", output);
+        } else {
+            return -1;
+        }
+    }
     printf("begin PortMidi midithru program...\n");
 
-    initialize(); /* set up and start midi processing */
+    initialize(input, output); /* set up and start midi processing */
 	
-    printf("%s\n%s\n",
-           "This program will run for 60 seconds, or until you play middle C,",
-           "echoing all input with a 2 second delay.");
+    printf("This program will run for 60 seconds, "
+           "or until you play middle C,\n"
+           "All input is sent immediately, implementing software MIDI THRU.\n"
+           "Also, all input is echoed with a 2 second delay.\n");
 
     while (current_timestamp < 60000) {
         /* just to make the point that this is not a low-latency process,

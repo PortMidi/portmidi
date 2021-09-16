@@ -326,6 +326,15 @@ PMEXPORT const PmDeviceInfo* Pm_GetDeviceInfo( PmDeviceID id );
     device driver or hardware. Latency may also help you to synchronize midi
     data to audio data by matching midi latency to the audio buffer latency.
 
+    Note: ALSA appears to have a fixed-size priority queue for timed output
+    messages. Testing indicates the queue can hold a little over 400 3-byte
+    MIDI messages. Thus, you can send 10,000 messages/second if the latency
+    is 30ms (30ms * 10000 msgs/sec * 0.001 sec/ms = 300 msgs), but not if
+    the latency is 50ms (resulting in about 500 pending messages, which is
+    greater than the 400 message limit). Since timestamps in ALSA are 
+    relative, they are of less value than absolute timestamps in macOS and
+    Windows. This is a limitation of ALSA and apparently a design flaw.
+
     time_proc is a pointer to a procedure that returns time in milliseconds. It
     may be NULL, in which case a default millisecond timebase (PortTime) is 
     used. If the application wants to use PortTime, it should start the timer

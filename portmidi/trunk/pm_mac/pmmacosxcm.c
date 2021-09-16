@@ -473,6 +473,7 @@ static PmError midi_out_close(PmInternal *midi)
     return pmNoError;
 }
 
+
 static PmError midi_create_virtual(struct pm_internal_struct *midi,
                   int is_input, const char *name, void *driverInfo)
 {
@@ -521,7 +522,6 @@ static PmError midi_create_virtual(struct pm_internal_struct *midi,
     }
     midi->dictionary = descriptors[id].dictionary;;
     midi->device_id = id;
-    descriptors[id].descriptor = (long) endpoint;
     return id;
   }
 

@@ -32,9 +32,9 @@
 #endif
 
 /* to store client/port in the device descriptor */
-#define MAKE_DESCRIPTOR(client, port) ((void*)(((client) << 8) | (port)))
-#define GET_DESCRIPTOR_CLIENT(info) ((((int)(info)) >> 8) & 0xff)
-#define GET_DESCRIPTOR_PORT(info) (((int)(info)) & 0xff)
+#define MAKE_DESCRIPTOR(client, port) ((void*)(long)(((client) << 8) | (port)))
+#define GET_DESCRIPTOR_CLIENT(info) ((((long)(info)) >> 8) & 0xff)
+#define GET_DESCRIPTOR_PORT(info) (((long)(info)) & 0xff)
 
 #define BYTE unsigned char
 
@@ -45,14 +45,15 @@ static snd_seq_t *seq = NULL; // all input comes here,
                               // output queue allocated on seq
 static int queue, queue_used; /* one for all ports, reference counted */
 
-typedef struct alsa_descriptor_struct {
+typedef struct alsa_info_struct {
+    int is_virtual;
     int client;
     int port;
     int this_port;
     int in_sysex;
     snd_midi_event_t *parser;
     int error; /* host error code */
-} alsa_descriptor_node, *alsa_descriptor_type;
+} alsa_info_node, *alsa_info_type;
 
 
 /* get_alsa_error_text -- copy error text to potentially short string */
@@ -126,58 +127,64 @@ static int midi_message_length(PmMessage message)
 }
 
 
+static alsa_info_type alsa_info_create(int client_port, long id)
+{
+    alsa_info_type info = (alsa_info_type) pm_alloc(sizeof(alsa_info_node));
+    info->is_virtual = FALSE; /* default */
+    info->this_port = id;
+    info->client = GET_DESCRIPTOR_CLIENT(client_port);
+    info->port = GET_DESCRIPTOR_PORT(client_port);
+    info->in_sysex = 0;
+    info->error = 0;
+    return info;
+}    
+
+
 static PmError alsa_out_open(PmInternal *midi, void *driverInfo) 
 {
-    void *client_port = descriptors[midi->device_id].descriptor;
-    alsa_descriptor_type desc = (alsa_descriptor_type) 
-        pm_alloc(sizeof(alsa_descriptor_node));
-    snd_seq_port_info_t *info;
+    int id = midi->device_id;
+    void *client_port = descriptors[id].descriptor;
+    alsa_info_type ainfo = alsa_info_create((long) client_port, id);
+    snd_seq_port_info_t *pinfo;
     int err;
+    int queue_used = 0;
 
-    if (!desc) return pmInsufficientMemory;
+    if (!ainfo) return pmInsufficientMemory;
     
-    snd_seq_port_info_alloca(&info);
-    snd_seq_port_info_set_port(info, midi->device_id);
-    snd_seq_port_info_set_capability(info, SND_SEQ_PORT_CAP_WRITE |
+    snd_seq_port_info_alloca(&pinfo);
+    snd_seq_port_info_set_port(pinfo, id);
+    snd_seq_port_info_set_capability(pinfo, SND_SEQ_PORT_CAP_WRITE |
                                      SND_SEQ_PORT_CAP_READ);
-    snd_seq_port_info_set_type(info, SND_SEQ_PORT_TYPE_MIDI_GENERIC | 
+    snd_seq_port_info_set_type(pinfo, SND_SEQ_PORT_TYPE_MIDI_GENERIC | 
                                      SND_SEQ_PORT_TYPE_APPLICATION);
-    snd_seq_port_info_set_port_specified(info, 1);
-    err = snd_seq_create_port(seq, info);
-    if (err < 0) goto free_desc;
+    snd_seq_port_info_set_port_specified(pinfo, 1);
+    err = snd_seq_create_port(seq, pinfo);
+    if (err < 0) goto free_ainfo;
 
-    /* fill in fields of desc, which is passed to pm_write routines */
-    midi->descriptor = desc;
-    desc->client = GET_DESCRIPTOR_CLIENT(client_port);
-    desc->port = GET_DESCRIPTOR_PORT(client_port);
-    desc->this_port = midi->device_id;
-    desc->in_sysex = 0;
+    /* fill in fields of info, which is passed to pm_write routines */
+    midi->api_info = ainfo;
 
-    desc->error = 0;
-
-    err = snd_midi_event_new(PM_DEFAULT_SYSEX_BUFFER_SIZE, &desc->parser);
+    err = snd_midi_event_new(PM_DEFAULT_SYSEX_BUFFER_SIZE, &ainfo->parser);
     if (err < 0) goto free_this_port;
 
     if (midi->latency > 0) { /* must delay output using a queue */
         err = alsa_use_queue();
         if (err < 0) goto free_parser;
-
-        err = snd_seq_connect_to(seq, desc->this_port, desc->client, desc->port);
-        if (err < 0) goto unuse_queue;  /* clean up and return on error */
-    } else {
-        err = snd_seq_connect_to(seq, desc->this_port, desc->client, desc->port);
-        if (err < 0) goto free_parser;  /* clean up and return on error */
-    }        
+        queue_used++;
+    }
+    err = snd_seq_connect_to(seq, ainfo->this_port, ainfo->client, ainfo->port);
+    if (err < 0) goto unuse_queue;  /* clean up and return on error */
     return pmNoError;
 
  unuse_queue:
-    alsa_unuse_queue();
+    if (queue_used > 0)
+        alsa_unuse_queue();
  free_parser:
-    snd_midi_event_free(desc->parser);
+    snd_midi_event_free(ainfo->parser);
  free_this_port:
-    snd_seq_delete_port(seq, desc->this_port);
- free_desc:
-    pm_free(desc);
+    snd_seq_delete_port(seq, ainfo->this_port);
+ free_ainfo:
+    pm_free(ainfo);
     pm_hosterror = err;
     if (err < 0) {
         get_alsa_error_text(pm_hosterror_text, PM_HOST_ERROR_MSG_LEN, err);
@@ -189,14 +196,18 @@ static PmError alsa_out_open(PmInternal *midi, void *driverInfo)
 static PmError alsa_write_byte(PmInternal *midi, unsigned char byte, 
                         PmTimestamp timestamp)
 {
-    alsa_descriptor_type desc = (alsa_descriptor_type) midi->descriptor;
+    alsa_info_type info = (alsa_info_type) midi->api_info;
     snd_seq_event_t ev;
     int err;
 
     snd_seq_ev_clear(&ev);
-    if (snd_midi_event_encode_byte(desc->parser, byte, &ev) == 1) {
-        snd_seq_ev_set_dest(&ev, desc->client, desc->port);
-        snd_seq_ev_set_source(&ev, desc->this_port);
+    if (snd_midi_event_encode_byte(info->parser, byte, &ev) == 1) {
+        if (info->is_virtual) {
+            snd_seq_ev_set_subs(&ev);
+        } else {
+            snd_seq_ev_set_dest(&ev, info->client, info->port);
+        }
+        snd_seq_ev_set_source(&ev, info->this_port);
         if (midi->latency > 0) {
             /* compute relative time of event = timestamp - now + latency */
             PmTimestamp now = (midi->time_proc ? 
@@ -229,7 +240,7 @@ static PmError alsa_write_byte(PmInternal *midi, unsigned char byte,
         VERBOSE printf("sending event\n");
         err = snd_seq_event_output(seq, &ev);
         if (err < 0) {
-            desc->error = err;
+            info->error = err;
             return pmHostError;
         }
     }
@@ -239,21 +250,25 @@ static PmError alsa_write_byte(PmInternal *midi, unsigned char byte,
 
 static PmError alsa_out_close(PmInternal *midi)
 {
-    alsa_descriptor_type desc = (alsa_descriptor_type) midi->descriptor;
-    if (!desc) return pmBadPtr;
+    alsa_info_type info = (alsa_info_type) midi->api_info;
+    int error2 = 0;
+    if (!info) return pmBadPtr;
 
-    if ((pm_hosterror = snd_seq_disconnect_to(seq, desc->this_port, 
-                                              desc->client, desc->port))) {
-        // if there's an error, try to delete the port anyway, but don't
-        // change the pm_hosterror value so we retain the first error
-        snd_seq_delete_port(seq, desc->this_port);
-    } else { // if there's no error, delete the port and retain any error
-        pm_hosterror = snd_seq_delete_port(seq, desc->this_port);
+    if (!info->is_virtual) {
+        pm_hosterror = snd_seq_disconnect_to(seq, info->this_port, 
+                                             info->client, info->port);
     }
+    /* even if there was an error, we still try to delete the port */
+    error2 = snd_seq_delete_port(seq, info->this_port);
+
+    if (!pm_hosterror) { /* retain original error if there was one */
+        pm_hosterror = error2; /* otherwise, we want port delete status */
+    }
+
     if (midi->latency > 0) alsa_unuse_queue();
-    snd_midi_event_free(desc->parser);
-    midi->descriptor = NULL; /* destroy the pointer to signify "closed" */
-    pm_free(desc);
+    snd_midi_event_free(info->parser);
+    midi->api_info = NULL; /* destroy the pointer to signify "closed" */
+    pm_free(info);
     if (pm_hosterror) {
         get_alsa_error_text(pm_hosterror_text, PM_HOST_ERROR_MSG_LEN, 
                             pm_hosterror);
@@ -263,64 +278,140 @@ static PmError alsa_out_close(PmInternal *midi)
 }
 
 
+static PmError midi_create_virtual(struct pm_internal_struct *midi,
+                  int is_input, const char *name, void *driverInfo)
+{
+    alsa_info_type ainfo = alsa_info_create(0, 0);
+    snd_seq_port_info_t *pinfo;
+    int err;
+    int id;
+    
+    if (!ainfo) return pmInsufficientMemory;
+    
+    /* we need the id to set the port; descriptor is zero for now, and
+       we will create a port numbered by the device id. There can only
+       be one input and one output with the given name, but this
+       application can open myapp1, myapp2, ... to create more ports */
+    id = pm_add_device("ALSA", name, is_input, 0,
+                       (is_input ? &pm_linuxalsa_in_dictionary :
+                                   &pm_linuxalsa_out_dictionary));
+    if (id < 0) { /* error -- out of memory? */
+        pm_free(ainfo);
+        return pmInsufficientMemory;
+    }
+    snd_seq_port_info_alloca(&pinfo);
+    snd_seq_port_info_set_capability(pinfo,
+            (is_input ? SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE :
+                        SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE |
+                        SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ));
+    snd_seq_port_info_set_type(pinfo, SND_SEQ_PORT_TYPE_MIDI_GENERIC |
+                                     SND_SEQ_PORT_TYPE_APPLICATION);
+    snd_seq_port_info_set_name(pinfo, name);
+    snd_seq_port_info_set_port(pinfo, id);
+    snd_seq_port_info_set_port_specified(pinfo, 1);
+    err = snd_seq_create_port(seq, pinfo);
+    if (err < 0) goto free_ainfo;
+    printf("created virtual port. intended port %d got port %d\n",
+           id, snd_seq_port_info_get_port(pinfo));
+    ainfo->is_virtual = TRUE;
+    ainfo->client = snd_seq_port_info_get_client(pinfo);
+    ainfo->port = snd_seq_port_info_get_port(pinfo);
+    ainfo->this_port = id;
+    descriptors[id].descriptor = MAKE_DESCRIPTOR(ainfo->client, ainfo->port);
+    midi->api_info = ainfo;
+    if (is_input) {
+        err = alsa_use_queue();
+        if (err < 0)
+            goto free_this_port;
+    } else {
+        err = snd_midi_event_new(PM_DEFAULT_SYSEX_BUFFER_SIZE, &ainfo->parser);
+        if (err < 0) goto free_this_port;
+
+        if (midi->latency > 0) { /* must delay output using a queue */
+            err = alsa_use_queue();
+            if (err < 0) goto free_parser;
+        }
+    }
+    midi->dictionary = descriptors[id].dictionary;
+    midi->device_id = id;
+    return pmNoError;
+
+ free_parser:
+    snd_midi_event_free(ainfo->parser);
+ free_this_port:
+    snd_seq_delete_port(seq, ainfo->this_port);
+ free_ainfo:
+    pm_free(ainfo);
+    pm_hosterror = err;
+    if (err < 0) {
+        get_alsa_error_text(pm_hosterror_text, PM_HOST_ERROR_MSG_LEN, err);
+    }
+    pm_undo_add_device();
+    return pmHostError;
+}
+
+
 static PmError alsa_in_open(PmInternal *midi, void *driverInfo)
 {
-    void *client_port = descriptors[midi->device_id].descriptor;
-    alsa_descriptor_type desc = (alsa_descriptor_type) 
-        pm_alloc(sizeof(alsa_descriptor_node));
-    snd_seq_port_info_t *info;
+    int id = midi->device_id;
+    void *client_port = descriptors[id].descriptor;
+    alsa_info_type ainfo = alsa_info_create((long) client_port, id);
+    snd_seq_port_info_t *pinfo;
     snd_seq_port_subscribe_t *sub;
     snd_seq_addr_t addr;
     int err;
 
-    if (!desc) return pmInsufficientMemory;
+    if (!ainfo) return pmInsufficientMemory;
     
     err = alsa_use_queue();
-    if (err < 0) goto free_desc;
+    if (err < 0) goto free_ainfo;
 
-    snd_seq_port_info_alloca(&info);
-    snd_seq_port_info_set_port(info, midi->device_id);
-    snd_seq_port_info_set_capability(info, SND_SEQ_PORT_CAP_WRITE |
+    /* create a port for this alsa client (seq) where the port
+       number matches the portmidi device ID of the input device */
+    snd_seq_port_info_alloca(&pinfo);
+    snd_seq_port_info_set_port(pinfo, id);
+    snd_seq_port_info_set_capability(pinfo, SND_SEQ_PORT_CAP_WRITE |
                                      SND_SEQ_PORT_CAP_READ);
-    snd_seq_port_info_set_type(info, SND_SEQ_PORT_TYPE_MIDI_GENERIC | 
-                                     SND_SEQ_PORT_TYPE_APPLICATION);
-    snd_seq_port_info_set_port_specified(info, 1);
-    err = snd_seq_create_port(seq, info);
+    snd_seq_port_info_set_type(pinfo, SND_SEQ_PORT_TYPE_MIDI_GENERIC | 
+                                      SND_SEQ_PORT_TYPE_APPLICATION);
+    snd_seq_port_info_set_port_specified(pinfo, 1);
+    err = snd_seq_create_port(seq, pinfo);
     if (err < 0) goto free_queue;
 
-    /* fill in fields of desc, which is passed to pm_write routines */
-    midi->descriptor = desc;
-    desc->client = GET_DESCRIPTOR_CLIENT(client_port);
-    desc->port = GET_DESCRIPTOR_PORT(client_port);
-    desc->this_port = midi->device_id;
-    desc->in_sysex = 0;
+    /* fill in fields of ainfo (but maybe this is not used) */
+    midi->api_info = ainfo;
 
-    desc->error = 0;
-
+    /* subscribe to the input device by connecting it to this alsa client */
     VERBOSE printf("snd_seq_connect_from: %d %d %d\n", 
-                   desc->this_port, desc->client, desc->port);
+                   ainfo->this_port, ainfo->client, ainfo->port);
+
+    /* forward messages from input to this alsa client, so this alsa client
+       is the destination, and the destination port is the port we just 
+       created using the device ID as port number */
     snd_seq_port_subscribe_alloca(&sub);
     addr.client = snd_seq_client_id(seq);
-    addr.port = desc->this_port;
+    addr.port = ainfo->this_port;
     snd_seq_port_subscribe_set_dest(sub, &addr);
-    addr.client = desc->client;
-    addr.port = desc->port;
+
+    /* forward from the sender which is the device named by client and port */
+    addr.client = ainfo->client;
+    addr.port = ainfo->port;
     snd_seq_port_subscribe_set_sender(sub, &addr);
     snd_seq_port_subscribe_set_time_update(sub, 1);
     /* this doesn't seem to work: messages come in with real timestamps */
     snd_seq_port_subscribe_set_time_real(sub, 0);
     err = snd_seq_subscribe_port(seq, sub);
-    /* err = 
-       snd_seq_connect_from(seq, desc->this_port, desc->client, desc->port); */
+    /* err = snd_seq_connect_from(seq, ainfo->this_port, ainfo->client, 
+                                  ainfo->port); */
     if (err < 0) goto free_this_port;  /* clean up and return on error */
     return pmNoError;
 
  free_this_port:
-    snd_seq_delete_port(seq, desc->this_port);
+    snd_seq_delete_port(seq, ainfo->this_port);
  free_queue:
     alsa_unuse_queue();
- free_desc:
-    pm_free(desc);
+ free_ainfo:
+    pm_free(ainfo);
     pm_hosterror = err;
     if (err < 0) {
         get_alsa_error_text(pm_hosterror_text, PM_HOST_ERROR_MSG_LEN, err);
@@ -330,17 +421,17 @@ static PmError alsa_in_open(PmInternal *midi, void *driverInfo)
 
 static PmError alsa_in_close(PmInternal *midi)
 {
-    alsa_descriptor_type desc = (alsa_descriptor_type) midi->descriptor;
-    if (!desc) return pmBadPtr;
-    if ((pm_hosterror = snd_seq_disconnect_from(seq, desc->this_port, 
-                                                desc->client, desc->port))) {
-        snd_seq_delete_port(seq, desc->this_port); /* try to close port */
+    alsa_info_type info = (alsa_info_type) midi->api_info;
+    if (!info) return pmBadPtr;
+    if ((pm_hosterror = snd_seq_disconnect_from(seq, info->this_port, 
+                                                info->client, info->port))) {
+        snd_seq_delete_port(seq, info->this_port); /* try to close port */
     } else {
-        pm_hosterror = snd_seq_delete_port(seq, desc->this_port);
+        pm_hosterror = snd_seq_delete_port(seq, info->this_port);
     }
     alsa_unuse_queue();
-    midi->descriptor = NULL;
-    pm_free(desc);
+    midi->api_info = NULL;
+    pm_free(info);
     if (pm_hosterror) {
         get_alsa_error_text(pm_hosterror_text, PM_HOST_ERROR_MSG_LEN, 
                             pm_hosterror);
@@ -362,11 +453,11 @@ static PmError alsa_abort(PmInternal *midi)
      * upgrade my entire Linux OS -RBD
      */
     /*
-    alsa_descriptor_type desc = (alsa_descriptor_type) midi->descriptor;
+    info_type info = (info_type) midi->api_info;
     snd_seq_remove_events_t info;
     snd_seq_addr_t addr;
-    addr.client = desc->client;
-    addr.port = desc->port;
+    addr.client = info->client;
+    addr.port = info->port;
     snd_seq_remove_events_set_dest(&info, &addr);
     snd_seq_remove_events_set_condition(&info, SND_SEQ_REMOVE_DEST);
     pm_hosterror = snd_seq_remove_events(seq, &info);
@@ -381,65 +472,15 @@ static PmError alsa_abort(PmInternal *midi)
 }
 
 
-#ifdef GARBAGE
-This is old code here temporarily for reference
-static PmError alsa_write(PmInternal *midi, PmEvent *buffer, int32_t length)
-{
-    alsa_descriptor_type desc = (alsa_descriptor_type) midi->descriptor;
-    int i, bytes;
-    unsigned char byte;
-    PmMessage msg;
-
-    desc->error = 0;
-    for (; length > 0; length--, buffer++) {
-        VERBOSE printf("message 0x%x\n", buffer->message);
-        if (Pm_MessageStatus(buffer->message) == MIDI_SYSEX)
-            desc->in_sysex = TRUE;
-        if (desc->in_sysex) {
-            msg = buffer->message;
-            for (i = 0; i < 4; i++) {
-                byte = msg;  /* extract next byte to send */
-                alsa_write_byte(midi, byte, buffer->timestamp);
-                if (byte == MIDI_EOX) {
-                    desc->in_sysex = FALSE;
-                    break;
-                }
-                if (desc->error < 0) break;
-                msg >>= 8; /* shift next byte into position */
-            }
-        } else {
-            bytes = midi_message_length(buffer->message);
-            msg = buffer->message;
-            for (i = 0; i < bytes; i++) {
-                byte = msg; /* extract next byte to send */
-                VERBOSE printf("sending 0x%x\n", byte);
-                alsa_write_byte(midi, byte, buffer->timestamp);
-                if (desc->error < 0) break;
-                msg >>= 8; /* shift next byte into position */
-            }
-        }
-    }
-    if (desc->error < 0) return pmHostError;
-
-    VERBOSE printf("snd_seq_drain_output: 0x%x\n", (unsigned int) seq);
-    desc->error = snd_seq_drain_output(seq);
-    if (desc->error < 0) return pmHostError;
-
-    desc->error = pmNoError;
-    return pmNoError;
-}
-#endif
-
-
 static PmError alsa_write_flush(PmInternal *midi, PmTimestamp timestamp)
 {
-    alsa_descriptor_type desc = (alsa_descriptor_type) midi->descriptor;
-    if (!desc) return pmBadPtr;
-    VERBOSE printf("snd_seq_drain_output: 0x%x\n", (unsigned int) seq);
-    desc->error = snd_seq_drain_output(seq);
-    if (desc->error < 0) return pmHostError;
+    alsa_info_type info = (alsa_info_type) midi->api_info;
+    if (!info) return pmBadPtr;
+    VERBOSE printf("snd_seq_drain_output: %p\n", seq);
+    info->error = snd_seq_drain_output(seq);
+    if (info->error < 0) return pmHostError;
 
-    desc->error = pmNoError;
+    info->error = pmNoError;
     return pmNoError;
 }
 
@@ -449,17 +490,17 @@ static PmError alsa_write_short(PmInternal *midi, PmEvent *event)
     int bytes = midi_message_length(event->message);
     PmMessage msg = event->message;
     int i;
-    alsa_descriptor_type desc = (alsa_descriptor_type) midi->descriptor;
-    if (!desc) return pmBadPtr;
+    alsa_info_type info = (alsa_info_type) midi->api_info;
+    if (!info) return pmBadPtr;
     for (i = 0; i < bytes; i++) {
         unsigned char byte = msg;
         VERBOSE printf("sending 0x%x\n", byte);
         alsa_write_byte(midi, byte, event->timestamp);
-        if (desc->error < 0) break;
+        if (info->error < 0) break;
         msg >>= 8; /* shift next byte into position */
     }
-    if (desc->error < 0) return pmHostError;
-    desc->error = pmNoError;
+    if (info->error < 0) return pmHostError;
+    info->error = pmNoError;
     return pmNoError;
 }
 
@@ -658,17 +699,17 @@ static PmError alsa_poll(PmInternal *midi)
 
 static unsigned int alsa_has_host_error(PmInternal *midi)
 {
-    alsa_descriptor_type desc = (alsa_descriptor_type) midi->descriptor;
-    if (!desc) return 0;
-    return desc->error;
+    alsa_info_type info = (alsa_info_type) midi->api_info;
+    if (!info) return 0;
+    return info->error;
 }
 
 
 static void alsa_get_host_error(PmInternal *midi, char *msg, unsigned int len)
 {
-    alsa_descriptor_type desc = (alsa_descriptor_type) midi->descriptor;
-    if (!desc) return;
-    int err = (pm_hosterror || desc->error);
+    alsa_info_type info = (alsa_info_type) midi->api_info;
+    if (!info) return;
+    int err = (pm_hosterror || info->error);
     get_alsa_error_text(msg, len, err);
 }
 
@@ -720,12 +761,15 @@ char *pm_strdup(const char *s)
 }
 
 
-PmError pm_linuxalsa_init( void )
+PmError pm_linuxalsa_init(void)
 {
     int  err;
     snd_seq_client_info_t *cinfo;
     snd_seq_port_info_t *pinfo;
     unsigned int caps;
+
+    /* Register interface ALSA with create_virtual fn */
+    pm_add_interf("ALSA", &midi_create_virtual);
 
     /* Previously, the last parameter was SND_SEQ_NONBLOCK, but this 
      * would cause messages to be dropped if the ALSA buffer fills up.
@@ -744,33 +788,39 @@ PmError pm_linuxalsa_init( void )
 
     snd_seq_client_info_set_client(cinfo, -1);
     while (snd_seq_query_next_client(seq, cinfo) == 0) {
-        snd_seq_port_info_set_client(pinfo, snd_seq_client_info_get_client(cinfo));
+        snd_seq_port_info_set_client(pinfo,
+                                     snd_seq_client_info_get_client(cinfo));
         snd_seq_port_info_set_port(pinfo, -1);
         while (snd_seq_query_next_port(seq, pinfo) == 0) {
             if (snd_seq_port_info_get_client(pinfo) == SND_SEQ_CLIENT_SYSTEM)
                 continue; /* ignore Timer and Announce ports on client 0 */
             caps = snd_seq_port_info_get_capability(pinfo);
-            if (!(caps & (SND_SEQ_PORT_CAP_SUBS_READ | SND_SEQ_PORT_CAP_SUBS_WRITE)))
+            if (!(caps & (SND_SEQ_PORT_CAP_SUBS_READ |
+                          SND_SEQ_PORT_CAP_SUBS_WRITE)))
                 continue; /* ignore if you cannot read or write port */
+            printf("add device client %d port %d (CLIENT_SYSTEM %d)\n",
+                   snd_seq_port_info_get_client(pinfo),
+                   snd_seq_port_info_get_port(pinfo),
+                   SND_SEQ_CLIENT_SYSTEM);
             if (caps & SND_SEQ_PORT_CAP_SUBS_WRITE) {
                 if (pm_default_output_device_id == -1) 
                     pm_default_output_device_id = pm_descriptor_index;
                 pm_add_device("ALSA",
-                              pm_strdup(snd_seq_port_info_get_name(pinfo)),
-                              FALSE,
-                              MAKE_DESCRIPTOR(snd_seq_port_info_get_client(pinfo),
-                                              snd_seq_port_info_get_port(pinfo)),
-                              &pm_linuxalsa_out_dictionary);
+                        pm_strdup(snd_seq_port_info_get_name(pinfo)),
+                        FALSE,
+                        MAKE_DESCRIPTOR(snd_seq_port_info_get_client(pinfo),
+                                        snd_seq_port_info_get_port(pinfo)),
+                        &pm_linuxalsa_out_dictionary);
             }
             if (caps & SND_SEQ_PORT_CAP_SUBS_READ) {
                 if (pm_default_input_device_id == -1) 
                     pm_default_input_device_id = pm_descriptor_index;
                 pm_add_device("ALSA",
-                              pm_strdup(snd_seq_port_info_get_name(pinfo)),
-                              TRUE,
-                              MAKE_DESCRIPTOR(snd_seq_port_info_get_client(pinfo),
-                                              snd_seq_port_info_get_port(pinfo)),
-                              &pm_linuxalsa_in_dictionary);
+                        pm_strdup(snd_seq_port_info_get_name(pinfo)),
+                        TRUE,
+                        MAKE_DESCRIPTOR(snd_seq_port_info_get_client(pinfo),
+                                        snd_seq_port_info_get_port(pinfo)),
+                        &pm_linuxalsa_in_dictionary);
             }
         }
     }

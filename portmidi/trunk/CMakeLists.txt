@@ -25,6 +25,8 @@ else(UNIX)
       "Semicolon-separate list of supported configuration types")
 endif(UNIX)
 
+set(BUILD_PMDEFAULTS TRUE CACHE BOOLEAN "build the Java application PmDefaults for setting PortMidi default input and output devices")
+
 #set(CMAKE_RELATIVE_PATHS ON CACHE STRING "avoid absolute paths" FORCE)
 
 # Clear out the built-in C++ compiler and link flags for each of the 
@@ -75,5 +77,6 @@ add_subdirectory(pm_test)
 add_subdirectory(pm_dylib)
 
 # Cannot figure out how to make an xcode Java application with CMake
-add_subdirectory(pm_java)
-
+if (BUILD_PMDEFAULTS)
+  add_subdirectory(pm_java)
+endif(BUILD_PMDEFAULTS)

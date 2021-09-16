@@ -14,6 +14,7 @@
 #include "portmidi.h"
 #include "pmutil.h"
 #include "pminternal.h"
+#include "finddefault.h"
 
 #ifdef PMALSA
   #include "pmlinuxalsa.h"

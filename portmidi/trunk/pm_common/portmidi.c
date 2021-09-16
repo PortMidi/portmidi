@@ -189,6 +189,12 @@ PmError pm_add_device(char *interf, const char *name, int is_input,
 }
 
 
+void pm_undo_add_device()
+{
+    pm_descriptor_index--;
+}
+
+
 /* utility to look up device, given a pattern, 
    note: pattern is modified
  */
@@ -340,6 +346,9 @@ PMEXPORT const char *Pm_GetErrorText( PmError errnum ) {
         break;
     case pmNotImplemented:
         msg = "PortMidi: `Function is not implemented'";
+        break;
+    case pmInterfaceNotSupported:
+        msg = "PortMidi: `Interface not supported`";
         break;
     default:                         
         msg = "PortMidi: `Illegal error number'"; 
@@ -811,7 +820,7 @@ PMEXPORT PmError Pm_OpenInput(PortMidiStream** stream,
         goto error_return;
 
     /* common initialization of PmInternal structure (midi): */
-    err = pm_create_internal(&midi, inputDevice, FALSE, 0, time_proc,
+    err = pm_create_internal(&midi, inputDevice, TRUE, 0, time_proc,
                              time_info, bufferSize, FALSE);
     *stream = midi;
     if (err) {
@@ -863,7 +872,7 @@ PMEXPORT PmError Pm_OpenOutput(PortMidiStream** stream,
         goto error_return;
 
     /* common initialization of PmInternal structure (midi): */
-    err = pm_create_internal(&midi, outputDevice, TRUE, latency, time_proc,
+    err = pm_create_internal(&midi, outputDevice, FALSE, latency, time_proc,
                              time_info, bufferSize, FALSE);
     *stream = midi;
     if (err) {

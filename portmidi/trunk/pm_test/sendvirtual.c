@@ -92,7 +92,7 @@ void main_test_output(int num)
         next_time += 500;
 
         wait_until(next_time);
-        Pm_WriteShort(midi, next_time, Pm_Message(0x90, pitch, 100));
+        Pm_WriteShort(midi, next_time, Pm_Message(0x90, pitch, 0));
         printf("Note Off pitch %d\n", pitch);
         num--;
         pitch = (pitch + 1) % 12 + 60;

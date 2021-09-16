@@ -7,6 +7,9 @@
  * Modified 8 Aug 2017 with -n to send expired timestamps
  * to test a theory about why Linux ALSA hangs in Audacity.
  *
+ * Modified 9 Aug 2017 with -m, -p to test when timestamps are
+ * wrapping from negative to positive or positive to negative.
+ *
  * Roger B. Dannenberg, Aug 2017
  */
 
@@ -36,6 +39,7 @@ int32_t msgrate = 0;
 int deviceno = -9999;
 int duration = 0;
 int expired_timestamps = FALSE;
+int use_timeoffset = 0;
 
 /* read a number from console */
 /**/
@@ -49,6 +53,20 @@ int get_number(char *prompt)
         fgets(line, STRING_MAX, stdin);
     }
     return i;
+}
+
+
+/* get_time -- the time reference. Normally, this will be the default
+ *    time, Pt_Time(), but if you use the -p or -m option, the time 
+ *    reference will start at an offset of -10s for -m, or 
+ *    maximum_time - 10s for -p, so that we can observe what happens
+ *    with negative time or when time changes sign or wraps (by 
+ *    generating output for more than 10s).
+ */
+PmTimestamp get_time(void *info)
+{
+    PmTimestamp now = (PmTimestamp) (Pt_Time() + use_timeoffset);
+    return now;
 }
 
 
@@ -66,21 +84,21 @@ void fast_test()
                   deviceno, 
                   DRIVER_INFO,
                   OUTPUT_BUFFER_SIZE, 
-                  (int32_t (*)(void *)) Pt_Time,
+                  get_time,
                   NULL,
                   latency);
     printf("Midi Output opened with %ld ms latency.\n", (long) latency);
 
     /* wait a sec after printing previous line */
-    PmTimestamp start = Pt_Time() + 1000;
-    while (start > Pt_Time()) {
+    PmTimestamp start = get_time(NULL) + 1000;
+    while (start > get_time(NULL)) {
         Sleep(10);
     }
     printf("sending output...\n");
     fflush(stdout); /* make sure message goes to console */
 
     /* every 10ms send on/off pairs at timestamps set to current time */
-    PmTimestamp now = Pt_Time();
+    PmTimestamp now = get_time(NULL);
     int msgcnt = 0;
     int pitch = 60;
     int printtime = 1000;
@@ -92,24 +110,29 @@ void fast_test()
     if (expired_timestamps) {
         now = now - 2 * latency;
     }
-    while (now - start < duration *  1000) {
+    while (((PmTimestamp) (now - start)) < duration *  1000) {
         /* how many messages do we send? Total should be
          *     (elapsed * rate) / 1000
          */
-        int send_total = ((now - start) * msgrate) / 1000;
-        while (msgcnt < send_total) {
-            Pm_WriteShort(midi, now, Pm_Message(0x90, pitch, 100));
-            Pm_WriteShort(midi, now, Pm_Message(0x90, pitch, 0));
-            msgcnt += 2;
-            /* play 60, 61, 62, ... 71, then wrap back to 60, 61, ... */
-            pitch = (pitch - 59) % 12 + 60;
-            if (now - start >= printtime) {
+        int send_total = (((PmTimestamp) ((now - start))) * msgrate) / 1000;
+        /* always send until pitch would be 60 so if we run again, the
+           next pitch (60) will be expected */
+        while (msgcnt < send_total || pitch != 60) {
+            if ((msgcnt & 1) == 0) {
+                Pm_WriteShort(midi, now, Pm_Message(0x90, pitch, 100));
+            } else {
+                Pm_WriteShort(midi, now, Pm_Message(0x90, pitch, 0));
+                /* play 60, 61, 62, ... 71, then wrap back to 60, 61, ... */
+                pitch = (pitch - 59) % 12 + 60;
+            }
+            msgcnt += 1;
+            if (((PmTimestamp) (now - start)) >= printtime) {
                 printf("%d at %dms\n", msgcnt, now - start);
                 fflush(stdout); /* make sure message goes to console */
                 printtime += 1000; /* next msg in 1s */
             }
         }
-        now = Pt_Time();
+        now = get_time(NULL);
     }
     /* close device (this not explicitly needed in most implementations) */
     printf("ready to close and terminate... (type RETURN):");
@@ -123,12 +146,16 @@ void fast_test()
 
 void show_usage()
 {
-    printf("Usage: fast [-h] %s\nwhere %s\n%s\n%s\n%s\n",
-           "[-l latency] [-r rate] [-d device] [-s dur] [-n]",
-           "latency is in ms, rate is messages per second,",
-           "device is the PortMidi device number,",
-           "dur is the length of the test in seconds, and",
-           "-n means send timestamps in the past, -h means help.");
+    printf("Usage: fast [-h] [-l latency] [-r rate] [-d device] [-s dur] "
+           "[-n] [-p] [-m]\n"
+           ", where latency is in ms,\n"
+           "        rate is messages per second,\n"
+           "        device is the PortMidi device number,\n"
+           "        dur is the length of the test in seconds,\n"
+           "        -n means send timestamps in the past,\n"
+           "        -p means use a large positive time offset,\n"
+           "        -m means use a large negative time offset, and\n"
+           "        -h means help.\n");
 }
 
 int main(int argc, char *argv[])
@@ -137,7 +164,6 @@ int main(int argc, char *argv[])
     int default_out;
     int i = 0, n = 0;
     char line[STRING_MAX];
-    int test_input = 0, test_output = 0, test_both = 0, somethingStupid = 0;
     int stream_test = 0;
     int latency_valid = FALSE;
     int rate_valid = FALSE;
@@ -172,11 +198,17 @@ int main(int argc, char *argv[])
             } else if (strcmp(argv[i], "-s") == 0) {
                 i = i + 1;
                 duration = atoi(argv[i]);
-                printf("Duration will be %d seconds\n", msgrate);
+                printf("Duration will be %d seconds\n", duration);
                 dur_valid = TRUE;
             } else if (strcmp(argv[i], "-n") == 0) {
                 printf("Sending expired timestamps (-n)\n");
                 expired_timestamps = TRUE;
+            } else if (strcmp(argv[i], "-p") == 0) {
+                printf("Time offset set to 2147473648 (-p)\n");
+                use_timeoffset = 2147473648;
+            } else if (strcmp(argv[i], "-m") == 0) {
+                printf("Time offset set to -10000 (-m)\n");
+                use_timeoffset = -10000;
             } else {
                 show_usage();
             }

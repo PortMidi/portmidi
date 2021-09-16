@@ -131,7 +131,7 @@ typedef struct pm_internal_struct {
     PmTimestamp now; /* set by PmWrite to current time */
     int first_message; /* initially true, used to run first synchronization */
     pm_fns_type dictionary; /* implementation functions */
-    void *descriptor; /* system-dependent state */
+    void *api_info; /* system-dependent state */
     /* the following are used to expedite sysex data */
     /* on windows, in debug mode, based on some profiling, these optimizations
      * cut the time to process sysex bytes from about 7.5 to 0.26 usec/byte,
@@ -160,6 +160,7 @@ PmError pm_success_fn(PmInternal *midi);
 PmError pm_add_interf(char *interf, pm_create_fn create_fn);
 PmError pm_add_device(char *interf, const char *name, int is_input,
                       void *descriptor, pm_fns_type dictionary);
+void pm_undo_add_device(void);
 uint32_t pm_read_bytes(PmInternal *midi, const unsigned char *data, int len,
                            PmTimestamp timestamp);
 void pm_read_short(PmInternal *midi, PmEvent *event);

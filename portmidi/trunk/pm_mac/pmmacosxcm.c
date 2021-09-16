@@ -89,7 +89,7 @@ static MIDIPortRef	portOut = NULL_REF;	/* Output port handle */
 extern pm_fns_node pm_macosx_in_dictionary;
 extern pm_fns_node pm_macosx_out_dictionary;
 
-typedef struct midi_macosxcm_struct {
+typedef struct coremidi_info_struct {
     int is_virtual;     /* virtual device (TRUE) or actual device (FALSE)? */
     PmTimestamp sync_time; /* when did we last determine delta? */
     UInt64 delta;	/* difference between stream time and real time in ns */
@@ -113,7 +113,7 @@ typedef struct midi_macosxcm_struct {
     int byte_count; /* how many bytes in the next packet list? */
     Float64 us_per_host_tick; /* host clock frequency, units of min_next_time */
     UInt64 host_ticks_per_byte; /* host clock units per byte at maximum rate */
-} midi_macosxcm_node, *midi_macosxcm_type;
+} coremidi_info_node, *coremidi_info_type;
 
 /* private function declarations */
 MIDITimeStamp timestamp_pm_to_cm(PmTimestamp timestamp);
@@ -144,7 +144,7 @@ midi_length(int32_t msg)
 
 static PmTimestamp midi_synchronize(PmInternal *midi)
 {
-    midi_macosxcm_type m = (midi_macosxcm_type) midi->descriptor;
+    coremidi_info_type info = (coremidi_info_type) midi->api_info;
     UInt64 pm_stream_time_2 = 
             AudioConvertHostTimeToNanos(AudioGetCurrentHostTime());
     PmTimestamp real_time;
@@ -160,15 +160,15 @@ static PmTimestamp midi_synchronize(PmInternal *midi)
          pm_stream_time_2 = AudioConvertHostTimeToNanos(AudioGetCurrentHostTime());
          /* repeat if more than 0.5 ms has elapsed */
     } while (pm_stream_time_2 > pm_stream_time + 500000);
-    m->delta = pm_stream_time - ((UInt64) real_time * (UInt64) 1000000);
-    m->sync_time = real_time;
+    info->delta = pm_stream_time - ((UInt64) real_time * (UInt64) 1000000);
+    info->sync_time = real_time;
     return real_time;
 }
 
 
 static void
 process_packet(MIDIPacket *packet, PmEvent *event, 
-	       PmInternal *midi, midi_macosxcm_type m)
+	       PmInternal *midi, coremidi_info_type m)
 {
     /* handle a packet of MIDI messages from CoreMIDI */
     /* there may be multiple short messages in one packet (!) */
@@ -259,7 +259,7 @@ process_packet(MIDIPacket *packet, PmEvent *event,
 /* called when MIDI packets are received */
 static void read_callback(const MIDIPacketList *newPackets, PmInternal *midi)
 {
-    midi_macosxcm_type m;
+    coremidi_info_type info = (coremidi_info_type) midi->api_info;
     PmEvent event;
     MIDIPacket *packet;
     unsigned int packetIndex;
@@ -271,15 +271,14 @@ static void read_callback(const MIDIPacketList *newPackets, PmInternal *midi)
 #endif
 
     /* Retrieve the context for this connection */
-    m = (midi_macosxcm_type) midi->descriptor;
-    assert(m);
+    assert(info);
     
     /* synchronize time references every 100ms */
     now = (*midi->time_proc)(midi->time_info);
-    if (m->first_message || m->sync_time + 100 /*ms*/ < now) { 
+    if (info->first_message || info->sync_time + 100 /*ms*/ < now) {
         /* time to resync */
         now = midi_synchronize(midi);
-        m->first_message = FALSE;
+        info->first_message = FALSE;
     }
     
     packet = (MIDIPacket *) &newPackets->packet[0];
@@ -288,7 +287,7 @@ static void read_callback(const MIDIPacketList *newPackets, PmInternal *midi)
     for (packetIndex = 0; packetIndex < newPackets->numPackets; packetIndex++) {
         /* Set the timestamp and dispatch this message */
         event.timestamp = (PmTimestamp) /* explicit conversion */ (
-                (AudioConvertHostTimeToNanos(packet->timeStamp) - m->delta) / 
+                (AudioConvertHostTimeToNanos(packet->timeStamp) - info->delta) /
                 (UInt64) 1000000);
         status = packet->data[0];
         /* process packet as sysex data if it begins with MIDI_SYSEX, or
@@ -297,17 +296,17 @@ static void read_callback(const MIDIPacketList *newPackets, PmInternal *midi)
         printf(" %d", packet->length);
 #endif
         if (status == MIDI_SYSEX || status == MIDI_EOX || 
-            ((!(status & MIDI_STATUS_MASK)) && !m->last_command)) {
+            ((!(status & MIDI_STATUS_MASK)) && !info->last_command)) {
 	    /* previously was: !(status & MIDI_STATUS_MASK)) {
              * but this could mistake running status for sysex data
              */
             /* reset running status data -cpr */
-	    m->last_command = 0;
-	    m->last_msg_length = 0;
+	    info->last_command = 0;
+	    info->last_msg_length = 0;
             /* printf("sysex packet length: %d\n", packet->length); */
             pm_read_bytes(midi, packet->data, packet->length, event.timestamp);
         } else {
-            process_packet(packet, &event, midi, m);
+            process_packet(packet, &event, midi, info);
 	}
         packet = MIDIPacketNext(packet);
     }
@@ -337,10 +336,10 @@ static void virtual_read_callback(const MIDIPacketList *newPackets,
 
 
 /* allocate and initialize our internal coremidi connection info */
-static midi_macosxcm_type create_macosxcm_info(int is_virtual, int is_input)
+static coremidi_info_type create_macosxcm_info(int is_virtual, int is_input)
 {
-    midi_macosxcm_type m = (midi_macosxcm_type) 
-            pm_alloc(sizeof(midi_macosxcm_node));
+    coremidi_info_type m = (coremidi_info_type)
+            pm_alloc(sizeof(coremidi_info_node));
     if (!m) {
         return NULL;
     }
@@ -372,7 +371,7 @@ static PmError
 midi_in_open(PmInternal *midi, void *driverInfo)
 {
     MIDIEndpointRef endpoint;
-    midi_macosxcm_type m;
+    coremidi_info_type info;
     OSStatus macHostError;
     
     /* insure that we have a time_proc for timing */
@@ -387,9 +386,9 @@ midi_in_open(PmInternal *midi, void *driverInfo)
         return pmInvalidDeviceId;
     }
 
-    m = create_macosxcm_info(FALSE, TRUE);
-    midi->descriptor = m;
-    if (!m) {
+    info = create_macosxcm_info(FALSE, TRUE);
+    midi->api_info = info;
+    if (!info) {
         return pmInsufficientMemory;
     }
     macHostError = MIDIPortConnectSource(portIn, endpoint, midi);
@@ -398,8 +397,8 @@ midi_in_open(PmInternal *midi, void *driverInfo)
         sprintf(pm_hosterror_text, 
                 "Host error %ld: MIDIPortConnectSource() in midi_in_open()",
                 (long) macHostError);
-        midi->descriptor = NULL;
-        pm_free(m);
+        midi->api_info = NULL;
+        pm_free(info);
         return pmHostError;
     }
     
@@ -413,16 +412,16 @@ midi_in_close(PmInternal *midi)
     OSStatus macHostError;
     PmError err = pmNoError;
     
-    midi_macosxcm_type m = (midi_macosxcm_type) midi->descriptor;
+    coremidi_info_type info = (coremidi_info_type) midi->api_info;
     
-    if (!m) return pmBadPtr;
+    if (!info) return pmBadPtr;
 
     endpoint = (MIDIEndpointRef) (long) descriptors[midi->device_id].descriptor;
     if (endpoint == NULL_REF) {
         pm_hosterror = pmBadPtr;
     }
     
-    if (m->is_virtual) {
+    if (info->is_virtual) {
         macHostError = MIDIEndpointDispose(endpoint);
         if (macHostError != noErr) {
             pm_hosterror = macHostError;
@@ -442,8 +441,8 @@ midi_in_close(PmInternal *midi)
             err = pmHostError;
         }
     }
-    midi->descriptor = NULL;
-    pm_free(m);
+    midi->api_info = NULL;
+    pm_free(info);
     
     return err;
 }
@@ -451,11 +450,11 @@ midi_in_close(PmInternal *midi)
 
 static PmError midi_out_open(PmInternal *midi, void *driverInfo)
 {
-    midi_macosxcm_type m;
+    coremidi_info_type info;
 
-    m = create_macosxcm_info(FALSE, TRUE);
-    midi->descriptor = m;
-    if (!m) {
+    info = create_macosxcm_info(FALSE, TRUE);
+    midi->api_info = info;
+    if (!info) {
         return pmInsufficientMemory;
     }
     return pmNoError;
@@ -464,11 +463,11 @@ static PmError midi_out_open(PmInternal *midi, void *driverInfo)
 
 static PmError midi_out_close(PmInternal *midi)
 {
-    midi_macosxcm_type m = (midi_macosxcm_type) midi->descriptor;
+    coremidi_info_type m = (coremidi_info_type) midi->api_info;
     if (!m) return pmBadPtr;
     
-    midi->descriptor = NULL;
-    pm_free(midi->descriptor);
+    midi->api_info = NULL;
+    pm_free(midi->api_info);
     
     return pmNoError;
 }
@@ -481,7 +480,7 @@ static PmError midi_create_virtual(struct pm_internal_struct *midi,
     MIDIEndpointRef endpoint;
     CFStringRef nameRef = CFStringCreateWithCString(NULL, name,
                                                     kCFStringEncodingASCII);
-    midi_macosxcm_type m;
+    coremidi_info_type info;
     int id;
 
     /* insure that we have a time_proc for timing */
@@ -491,9 +490,9 @@ static PmError midi_create_virtual(struct pm_internal_struct *midi,
         /* time_get does not take a parameter, so coerce */
         midi->time_proc = (PmTimeProcPtr) Pt_Time;
     }
-    m = create_macosxcm_info(TRUE, is_input);
-    midi->descriptor = m;
-    if (!m) {
+    info = create_macosxcm_info(TRUE, is_input);
+    midi->api_info = info;
+    if (!info) {
         return pmInsufficientMemory;
     }
     if (is_input) {
@@ -509,14 +508,14 @@ static PmError midi_create_virtual(struct pm_internal_struct *midi,
         sprintf(pm_hosterror_text, "Host error %ld: %s() in "
                 "midi_in_create_virtual()", (long) macHostError, 
                 (is_input ? "MIDIDestinationCreate" : "MIDISourceCreate"));
-        pm_free(m);
+        pm_free(info);
         return pmHostError;
     }
     id = pm_add_device("CoreMIDI", name, is_input, endpoint, 
                        (is_input ? &pm_macosx_in_dictionary :
                                    &pm_macosx_out_dictionary));
     if (id < 0) {  /* error -- out of memory? */
-        pm_free(m);
+        pm_free(info);
         MIDIEndpointDispose(endpoint);
         return id;
     }
@@ -548,28 +547,29 @@ static PmError
 midi_write_flush(PmInternal *midi, PmTimestamp timestamp)
 {
     OSStatus macHostError;
-    midi_macosxcm_type m = (midi_macosxcm_type) midi->descriptor;
+    coremidi_info_type info = (coremidi_info_type) midi->api_info;
     MIDIEndpointRef endpoint = 
             (MIDIEndpointRef) (long) descriptors[midi->device_id].descriptor;
     assert(m);
     assert(endpoint);
-    if (m->packet != NULL) {
+    if (info->packet != NULL) {
         /* out of space, send the buffer and start refilling it */
         /* before we can send, maybe delay to limit data rate. OS X allows
          * 15KB/s. */
         UInt64 now = AudioGetCurrentHostTime();
-        if (now < m->min_next_time) {
+        if (now < info->min_next_time) {
             usleep((useconds_t) 
-                   ((m->min_next_time - now) * m->us_per_host_tick));
+                   ((info->min_next_time - now) * info->us_per_host_tick));
         }
-        if (m->is_virtual) {
-            macHostError = MIDIReceived(endpoint, m->packetList);
+        if (info->is_virtual) {
+            macHostError = MIDIReceived(endpoint, info->packetList);
         } else {
-            macHostError = MIDISend(portOut, endpoint, m->packetList);
+            macHostError = MIDISend(portOut, endpoint, info->packetList);
         }
-        m->packet = NULL; /* indicate no data in packetList now */
-        m->min_next_time = now + m->byte_count * m->host_ticks_per_byte;
-        m->byte_count = 0;
+        info->packet = NULL; /* indicate no data in packetList now */
+        info->min_next_time = now + info->byte_count *
+                                    info->host_ticks_per_byte;
+        info->byte_count = 0;
         if (macHostError != noErr) goto send_packet_error;
     }
     return pmNoError;
@@ -577,7 +577,8 @@ midi_write_flush(PmInternal *midi, PmTimestamp timestamp)
 send_packet_error:
     pm_hosterror = macHostError;
     sprintf(pm_hosterror_text, "Host error %ld: %s() in midi_write()", 
-            (long) macHostError, (m->is_virtual ? "MIDIReceived" : "MIDISend"));
+            (long) macHostError,
+            (info->is_virtual ? "MIDIReceived" : "MIDISend"));
     return pmHostError;
 
 }
@@ -588,29 +589,30 @@ send_packet(PmInternal *midi, Byte *message, unsigned int messageLength,
             MIDITimeStamp timestamp)
 {
     PmError err;
-    midi_macosxcm_type m = (midi_macosxcm_type) midi->descriptor;
-    assert(m);
+    coremidi_info_type info = (coremidi_info_type) midi->api_info;
+    assert(info);
     
-    /* printf("add %d to packet %p len %d\n", message[0], m->packet, messageLength); */
-    m->packet = MIDIPacketListAdd(m->packetList, sizeof(m->packetBuffer), 
-                                  m->packet, timestamp, messageLength, 
-                                  message);
-    m->byte_count += messageLength;
-    if (m->packet == NULL) {
+    /* printf("add %d to packet %p len %d\n",
+              message[0], m->packet, messageLength); */
+    info->packet = MIDIPacketListAdd(info->packetList,
+                                     sizeof(info->packetBuffer), info->packet,
+                                     timestamp, messageLength, message);
+    info->byte_count += messageLength;
+    if (info->packet == NULL) {
         /* out of space, send the buffer and start refilling it */
         /* make midi->packet non-null to fool midi_write_flush into sending */
-        m->packet = (MIDIPacket *) 4; 
+        info->packet = (MIDIPacket *) 4;
         /* timestamp is 0 because midi_write_flush ignores timestamp since
          * timestamps are already in packets. The timestamp parameter is here
          * because other API's need it. midi_write_flush can be called 
          * from system-independent code that must be cross-API.
          */
         if ((err = midi_write_flush(midi, 0)) != pmNoError) return err;
-        m->packet = MIDIPacketListInit(m->packetList);
+        info->packet = MIDIPacketListInit(info->packetList);
         assert(m->packet); /* if this fails, it's a programming error */
-        m->packet = MIDIPacketListAdd(m->packetList, sizeof(m->packetBuffer),
-                                      m->packet, timestamp, messageLength, 
-                                      message);
+        info->packet = MIDIPacketListAdd(info->packetList,
+                               sizeof(info->packetBuffer), info->packet,
+                               timestamp, messageLength, message);
         assert(m->packet); /* can't run out of space on first message */           
     }
     return pmNoError;
@@ -623,12 +625,12 @@ static PmError midi_write_short(PmInternal *midi, PmEvent *event)
     PmMessage what = event->message;
     MIDITimeStamp timestamp;
     UInt64 when_ns;
-    midi_macosxcm_type m = (midi_macosxcm_type) midi->descriptor;
+    coremidi_info_type info = (coremidi_info_type) midi->api_info;
     Byte message[4];
     unsigned int messageLength;
 
-    if (m->packet == NULL) {
-        m->packet = MIDIPacketListInit(m->packetList);
+    if (info->packet == NULL) {
+        info->packet = MIDIPacketListInit(info->packetList);
         /* this can never fail, right? failure would indicate something 
            unrecoverable */
         assert(m->packet);
@@ -638,7 +640,8 @@ static PmError midi_write_short(PmInternal *midi, PmEvent *event)
     if (when == 0) when = midi->now;
     /* if latency == 0, midi->now is not valid. We will just set it to zero */
     if (midi->latency == 0) when = 0;
-    when_ns = ((UInt64) (when + midi->latency) * (UInt64) 1000000) + m->delta;
+    when_ns = ((UInt64) (when + midi->latency) * (UInt64) 1000000) +
+              info->delta;
     timestamp = (MIDITimeStamp) AudioConvertNanosToHostTime(when_ns);
 
     message[0] = Pm_MessageStatus(what);
@@ -647,12 +650,12 @@ static PmError midi_write_short(PmInternal *midi, PmEvent *event)
     messageLength = midi_length(what);
         
     /* make sure we go foreward in time */
-    if (timestamp < m->min_next_time) timestamp = m->min_next_time;
+    if (timestamp < info->min_next_time) timestamp = info->min_next_time;
 
     #ifdef LIMIT_RATE
-        if (timestamp < m->last_time)
-            timestamp = m->last_time;
-	m->last_time = timestamp + messageLength * m->host_ticks_per_byte;
+        if (timestamp < info->last_time)
+            timestamp = info->last_time;
+	info->last_time = timestamp + messageLength * info->host_ticks_per_byte;
     #endif
 
     /* Add this message to the packet list */
@@ -664,22 +667,24 @@ static PmError
 midi_begin_sysex(PmInternal *midi, PmTimestamp when)
 {
     UInt64 when_ns;
-    midi_macosxcm_type m = (midi_macosxcm_type) midi->descriptor;
-    assert(m);
-    m->sysex_byte_count = 0;
+    coremidi_info_type info = (coremidi_info_type) midi->api_info;
+    assert(info);
+    info->sysex_byte_count = 0;
     
     /* compute timestamp */
     if (when == 0) when = midi->now;
     /* if latency == 0, midi->now is not valid. We will just set it to zero */
     if (midi->latency == 0) when = 0;
-    when_ns = ((UInt64) (when + midi->latency) * (UInt64) 1000000) + m->delta;
-    m->sysex_timestamp = (MIDITimeStamp) AudioConvertNanosToHostTime(when_ns);
+    when_ns = ((UInt64) (when + midi->latency) * (UInt64) 1000000) +
+              info->delta;
+    info->sysex_timestamp =
+              (MIDITimeStamp) AudioConvertNanosToHostTime(when_ns);
 
-    if (m->packet == NULL) {
-        m->packet = MIDIPacketListInit(m->packetList);
+    if (info->packet == NULL) {
+        info->packet = MIDIPacketListInit(info->packetList);
         /* this can never fail, right? failure would indicate something 
            unrecoverable */
-        assert(m->packet);
+        assert(info->packet);
     }
     return pmNoError;
 }
@@ -689,26 +694,26 @@ static PmError
 midi_end_sysex(PmInternal *midi, PmTimestamp when)
 {
     PmError err;
-    midi_macosxcm_type m = (midi_macosxcm_type) midi->descriptor;
-    assert(m);
+    coremidi_info_type info = (coremidi_info_type) midi->api_info;
+    assert(info);
     
     /* make sure we go foreward in time */
-    if (m->sysex_timestamp < m->min_next_time) 
-        m->sysex_timestamp = m->min_next_time;
+    if (info->sysex_timestamp < info->min_next_time)
+        info->sysex_timestamp = info->min_next_time;
 
     #ifdef LIMIT_RATE
-        if (m->sysex_timestamp < m->last_time) 
-            m->sysex_timestamp = m->last_time;
-        m->last_time = m->sysex_timestamp + m->sysex_byte_count *
-                                            m->host_ticks_per_byte;
+        if (info->sysex_timestamp < info->last_time)
+            info->sysex_timestamp = info->last_time;
+        info->last_time = info->sysex_timestamp + info->sysex_byte_count *
+                                                  info->host_ticks_per_byte;
     #endif
     
     /* now send what's in the buffer */
-    err = send_packet(midi, m->sysex_buffer, m->sysex_byte_count,
-                      m->sysex_timestamp);
-    m->sysex_byte_count = 0;
+    err = send_packet(midi, info->sysex_buffer, info->sysex_byte_count,
+                      info->sysex_timestamp);
+    info->sysex_byte_count = 0;
     if (err != pmNoError) {
-        m->packet = NULL; /* flush everything in the packet list */
+        info->packet = NULL; /* flush everything in the packet list */
         return err;
     }
     return pmNoError;
@@ -718,13 +723,13 @@ midi_end_sysex(PmInternal *midi, PmTimestamp when)
 static PmError
 midi_write_byte(PmInternal *midi, unsigned char byte, PmTimestamp timestamp)
 {
-    midi_macosxcm_type m = (midi_macosxcm_type) midi->descriptor;
+    coremidi_info_type info = (coremidi_info_type) midi->api_info;
     assert(m);
-    if (m->sysex_byte_count >= SYSEX_BUFFER_SIZE) {
+    if (info->sysex_byte_count >= SYSEX_BUFFER_SIZE) {
         PmError err = midi_end_sysex(midi, timestamp);
         if (err != pmNoError) return err;
     }
-    m->sysex_buffer[m->sysex_byte_count++] = byte;
+    info->sysex_buffer[info->sysex_byte_count++] = byte;
     return pmNoError;
 }
 
@@ -742,22 +747,22 @@ midi_write_realtime(PmInternal *midi, PmEvent *event)
 
 static unsigned int midi_has_host_error(PmInternal *midi)
 {
-    midi_macosxcm_type m = (midi_macosxcm_type) midi->descriptor;
-    return (m->callback_error[0] != 0) || (m->error[0] != 0);
+    coremidi_info_type info = (coremidi_info_type) midi->api_info;
+    return (info->callback_error[0] != 0) || (info->error[0] != 0);
 }
 
 
 static void midi_get_host_error(PmInternal *midi, char *msg, unsigned int len)
 {
-    midi_macosxcm_type m = (midi_macosxcm_type) midi->descriptor;
+    coremidi_info_type info = (coremidi_info_type) midi->api_info;
     msg[0] = 0; /* initialize to empty string */
-    if (m) { /* make sure there is an open device to examine */
-        if (m->error[0]) {
-            strncpy(msg, m->error, len);
-            m->error[0] = 0; /* clear the error */
-        } else if (m->callback_error[0]) {
-            strncpy(msg, m->callback_error, len);
-            m->callback_error[0] = 0; /* clear the error */
+    if (info) { /* make sure there is an open device to examine */
+        if (info->error[0]) {
+            strncpy(msg, info->error, len);
+            info->error[0] = 0; /* clear the error */
+        } else if (info->callback_error[0]) {
+            strncpy(msg, info->callback_error, len);
+            info->callback_error[0] = 0; /* clear the error */
         }
         msg[len - 1] = 0; /* make sure string is terminated */
     }

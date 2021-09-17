@@ -283,7 +283,7 @@ int main(int argc, char *argv[])
         int len;
         fgets(line, STRING_MAX, stdin);
         /* remove the newline: */
-        len = strlen(line);
+        len = (int) strlen(line);
         if (len > 0) line[len - 1] = 0; /* overwrite the newline char */
         if (strcmp(line, "q") == 0) {
             msg = QUIT_MSG;

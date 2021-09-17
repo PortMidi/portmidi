@@ -5,13 +5,6 @@
 #include "string.h"
 #include "assert.h"
 
-#ifdef WIN32
-#include "windows.h"
-#else
-#include <unistd.h>
-#define Sleep(n) usleep(n * 1000)
-#endif
-
 #define INPUT_BUFFER_SIZE 100
 #define OUTPUT_BUFFER_SIZE 0
 #define DRIVER_INFO NULL
@@ -171,7 +164,7 @@ void main_test_output(int isochronous_test)
                    " may hear uneven timing\n");
         }
         printf("Starting in 1s..."); fflush(stdout);
-        Sleep(1000);
+        Pt_Sleep(1000);
         int count;
         PmTimestamp start = TIME_PROC(TIME_INFO);
         for (count = 0; count < 80; count++) {
@@ -185,7 +178,7 @@ void main_test_output(int isochronous_test)
             // the times at which we send messages. PortMidi timing
             // should remove the jitter if latency > 100
             while (TIME_PROC(TIME_INFO) < next_time) {
-                Sleep(random() % 100);
+                Pt_Sleep(rand() % 100);
             }
         }
         printf("Done sending 80 notes at 4 notes per second.\n");
@@ -457,12 +450,12 @@ int main(int argc, char *argv[])
 
     /* determine what type of test to run */
     printf("begin portMidi test...\n");
-    printf("%s%s%s%s%s",
-           "enter your choice...\n    1: test input\n",
-           "    2: test input (fail w/assert)\n",
-           "    3: test input (fail w/NULL assign)\n",
-           "    4: test output\n    5: test both\n",
-           "    6: stream test (for WinMM)\n    7. isochronous out\n");
+    printf("enter your choice...\n    1: test input\n"
+           "    2: test input (fail w/assert)\n"
+           "    3: test input (fail w/NULL assign)\n"
+           "    4: test output\n    5: test both\n"
+           "    6: stream test (for WinMM)\n"
+           "    7. isochronous out\n");
     while (n != 1) {
         n = scanf("%d", &i);
         fgets(line, STRING_MAX, stdin);

@@ -25,7 +25,12 @@ else(UNIX)
       "Semicolon-separate list of supported configuration types")
 endif(UNIX)
 
-set(BUILD_PMDEFAULTS TRUE CACHE BOOLEAN "build the Java application PmDefaults for setting PortMidi default input and output devices")
+# Java support has been discontinued, but is probably straightforward
+# to bring up-to-date. There seems to be no demand, but let the
+# developers know if you need this...
+# set(BUILD_PMDEFAULTS TRUE CACHE BOOLEAN 
+#     "build the Java application PmDefaults for setting PortMidi "
+#     "default input and output devices")
 
 #set(CMAKE_RELATIVE_PATHS ON CACHE STRING "avoid absolute paths" FORCE)
 
@@ -76,7 +81,8 @@ add_subdirectory(pm_test)
 
 add_subdirectory(pm_dylib)
 
-# Cannot figure out how to make an xcode Java application with CMake
-if (BUILD_PMDEFAULTS)
-  add_subdirectory(pm_java)
-endif(BUILD_PMDEFAULTS)
+# See note above about Java support discontinued
+## Cannot figure out how to make an xcode Java application with CMake
+# if (BUILD_PMDEFAULTS)
+#   add_subdirectory(pm_java)
+# endif(BUILD_PMDEFAULTS)

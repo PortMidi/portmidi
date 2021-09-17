@@ -13,32 +13,32 @@ Comments are shown in square brackets [like this]
 
 1. ./qtest -- output should show a bunch of tests and no error message.
 
-2. ./test [for test input]
+2. ./testio [test input]
 Latency in ms: >>0
 enter your choice... >>1
 Type input number: >>6  [pick a working input device]
 [play some notes, look for note-on (0x90) with pitch and velocity data]
 
-3. ./test [for test input (fail w/assert)
+3. ./testio [test input (fail w/assert)]
 Latency in ms: >>0
-enter your choice... >>3
+enter your choice... >>2
 Type input number: >>6  [pick a working input device]
 [play some notes, program will abort after 5 messages]
 
-4. ./test [for test input (fail w/NULL assign)
+4. ./testio [test input (fail w/NULL assign)]
 Latency in ms: >>0
 enter your choice... >>3
 Type input number: >>6  [pick a working input device]
 [play some notes, program will Segmentation fault after 5 messages]
 
-5. ./test [for test output, no latency]
+5. ./testio [test output, no latency]
 Latency in ms: >>0
 enter your choice... >>4
 Type output number: >>2  [pick a working output device]
 >> [type ENTER when prompted (7 times)]
 [hear note on, note off, note on, note off, chord]
 
-6. ./test [for test output, latency > 0]
+6. ./testio [test output, latency > 0]
 Latency in ms: >>300
 enter your choice... >>4
 Type output number: >>2  [pick a working output device]
@@ -46,21 +46,21 @@ Type output number: >>2  [pick a working output device]
 [hear note on, note off, note on, note off, arpeggiated chord
  (delay of 300ms should be apparent)]
 
-7. ./test [for both, no latency]
+7. ./testio [for both, no latency]
 Latency in ms: >>0
 enter your choice... >>5
 Type input number: >>6  [pick a working input device]
 Type output number: >>2  [pick a working output device]
 [play notes on input, hear them on output]
 
-8. ./test [for both, latency > 0]
+8. ./testio [for both, latency > 0]
 Latency in ms: >>300
 enter your choice... >>5
 Type input number: >>6  [pick a working input device]
 Type output number: >>2  [pick a working output device]
 [play notes on input, hear them on output (delay of 300ms is apparent)]
 
-9. ./test [stream test]
+9. ./testio [stream test]
 Latency in ms: >>0 [does not matter]
 enter your choice... >>6
 Type output number: >>2  [pick a working output device]
@@ -68,7 +68,7 @@ Type output number: >>2  [pick a working output device]
 [hear 4 notes: C D E F# at one note per second, then all turn off]
 ready to close and terminate... (type ENTER) :>> [type ENTER (twice)]
 
-10. ./test [isochronous out]
+10. ./testio [isochronous out]
 Latency in ms: >>300
 enter your choice... >>7
 Type output number: >>2  [pick a working output device]
@@ -147,10 +147,9 @@ Type input device number: >>6  [pick a working input device]
  2 sec delay to the output device; program terminates in 60 seconds]
 >> [ENTER to exit]
 
-
 19. ./recvvirtual [in one shell]
-    ./test [in another shell]
-[For test application:]
+    ./testio [in another shell]
+[For testio application:]
     Latency in ms: >>0
     enter your choice... >>4 [test output]
     Type output number: >>9 [select the "portmidi (output)" device]

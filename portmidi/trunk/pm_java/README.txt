@@ -1,6 +1,25 @@
 README.txt
 Roger B. Dannenberg
 16 Jun 2009
+updated 2021
+
+PmDefaults never found much use. I recommend you implement
+per-application preferences and store default PortMidi device
+numbers for input and output there. (Or better yet, store
+device *names* since numbers can change if you plug in or 
+remove USB devices.) 
+
+Even without PmDefaults, a PortMidi API for Java would probably be an
+improvement over other Java libraries, but there is very little MIDI
+development in Java, so I have not maintained this API. The only thing
+probably seriously wrong now is an interface to the
+Pm_CreateVirtualInput and Pm_CreateVirtualOutput functions, which are
+new additions.
+
+I will leave the code here, and if there is a demand, please either
+update it or let your needs be known. Perhaps I or someone can help.
+ 
+==================================================================
 
 This directory was created to implement PmDefaults, a program to
 set default input and output devices for PortMidi applications.

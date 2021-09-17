@@ -130,7 +130,6 @@ int main(int argc, char *argv[])
     int default_in;
     int default_out;
     int i = 0, n = 0;
-    char line[STRING_MAX];
     int test_input = 0, test_output = 0, test_both = 0, somethingStupid = 0;
     int stream_test = 0;
     int device_valid = FALSE;

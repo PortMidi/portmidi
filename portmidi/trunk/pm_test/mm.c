@@ -485,7 +485,7 @@ private int put_pitch(int p)
     /* note octave correction below */
     sprintf(result, "%s%d", ptos[p % 12], (p / 12) - 1);
     fputs(result, stdout);
-    return strlen(result);
+    return (int) strlen(result);
 }
 
 

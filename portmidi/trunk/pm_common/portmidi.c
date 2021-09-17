@@ -365,6 +365,7 @@ PMEXPORT void Pm_GetHostErrorText(char * msg, unsigned int len) {
     assert(msg);
     assert(len > 0);
     if (pm_hosterror) {
+#pragma warning(suppress: 4996)  // don't use suggested strncpy_s
         strncpy(msg, (char *) pm_hosterror_text, len);
         pm_hosterror = FALSE;
         pm_hosterror_text[0] = 0; /* clear the message; not necessary, but it

@@ -20,7 +20,7 @@ if(APPLE OR WIN32)
     message(STATUS "DEFAULT_DEBUG_FLAGS not nil: " ${DEFAULT_DEBUG_FLAGS})
   endif(NOT DEFAULT_DEBUG_FLAGS)
 else(APPLE OR WIN32)
-  set(LINUX_FLAGS "-DPMALSA")
+  add_definitions("-DPMALSA")
 endif(APPLE OR WIN32)
 
 macro(prepend_path RESULT PATH)
@@ -31,10 +31,10 @@ macro(prepend_path RESULT PATH)
 endmacro(prepend_path)
 
 set(CMAKE_C_FLAGS_DEBUG 
-    "${DEFAULT_DEBUG_FLAGS} -DPM_CHECK_ERRORS=1 -DDEBUG ${LINUX_FLAGS}"
+    "${DEFAULT_DEBUG_FLAGS} -DPM_CHECK_ERRORS=1 -DDEBUG"
     CACHE STRING "enable extra checks for debugging" FORCE)
 
-set(CMAKE_C_FLAGS_RELEASE "${DEFAULT_RELEASE_FLAGS} ${LINUX_FLAGS}"
+set(CMAKE_C_FLAGS_RELEASE "${DEFAULT_RELEASE_FLAGS}"
     CACHE STRING "flags for release version" FORCE)
 
 # first include the appropriate system-dependent file:
@@ -60,7 +60,7 @@ if(UNIX)
 
     set(JAVAVM_LIB "${FRAMEWORK_PATH}/JavaVM.framework")
     set(JAVA_INCLUDE_PATHS ${JAVAVM_LIB}/Headers)
-    set(INSTALL_NAME_DIR "/usr/local/lib")
+    set(INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
     message(STATUS "SYSROOT: " ${CMAKE_OSX_SYSROOT})
   else(APPLE)
     # LINUX settings...
@@ -123,8 +123,8 @@ target_link_libraries(portmidi-dynamic ${PM_NEEDED_LIBS})
 # install the libraries (Linux and Mac OS X command line)
 if(UNIX)
   INSTALL(TARGETS portmidi-dynamic
-    LIBRARY DESTINATION /usr/local/lib
-    ARCHIVE DESTINATION /usr/local/lib)
+    LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
   INSTALL(FILES ../pm_common/portmidi.h ../porttime/porttime.h
-    DESTINATION /usr/local/include)
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
 endif(UNIX)

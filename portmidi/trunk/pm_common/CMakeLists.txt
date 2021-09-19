@@ -22,9 +22,12 @@ else(APPLE OR WIN32)
 endif(APPLE OR WIN32)
 
 if(APPLE)
-  set(CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.6.sdk CACHE 
+  set(PM_OSX_VERSION "10.7" CACHE STRING
+      "selects PM_OSX_SDK and macosx-version-min C flag")
+  set(PM_OSX_SDK "/Developer/SDKs/MacOSX${PM_OSX_VERSION}.sdk")
+  set(CMAKE_OSX_SYSROOT ${PM_OSC_SDK} CACHE 
       PATH "-isysroot parameter for compiler")
-  set(CMAKE_C_FLAGS "-mmacosx-version-min=10.6" CACHE 
+  set(CMAKE_C_FLAGS "-mmacosx-version-min=${PM_OSC_VERSION}" CACHE 
       STRING "needed in conjunction with CMAKE_OSX_SYSROOT" FORCE)
 endif(APPLE)
 
@@ -103,10 +106,10 @@ endif(UNIX)
 set(JNI_EXTRA_LIBS ${PM_NEEDED_LIBS} ${JAVA_JVM_LIBRARY})
 
 # this completes the list of library sources by adding shared code
-list(APPEND LIBSRC pmutil.c pmutil.h portmidi.c portmidi.h) 
+list(APPEND LIBSRC pmutil.c pmutil.h portmidi.c portmidi.h pminternal.h) 
 
 # now add the shared files to make the complete list of library sources
-add_library(portmidi-static ${LIBSRC})
+add_library(portmidi-static STATIC ${LIBSRC})
 set_target_properties(portmidi-static PROPERTIES OUTPUT_NAME "portmidi_s")
 target_link_libraries(portmidi-static ${PM_NEEDED_LIBS})
 
@@ -122,9 +125,9 @@ set_target_properties(pmjni PROPERTIES EXECUTABLE_EXTENSION "jnilib"
 # install the libraries (Linux and Mac OS X command line)
 if(UNIX)
   INSTALL(TARGETS portmidi-static pmjni
-    LIBRARY DESTINATION /usr/local/lib
-    ARCHIVE DESTINATION /usr/local/lib)
+    LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 # .h files installed by pm_dylib/CMakeLists.txt, so don't need them here
 #  INSTALL(FILES portmidi.h ../porttime/porttime.h
-#    DESTINATION /usr/local/include)
+#    DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
 endif(UNIX)

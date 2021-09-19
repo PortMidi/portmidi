@@ -309,6 +309,10 @@ static PmError midi_create_virtual(struct pm_internal_struct *midi,
     snd_seq_port_info_set_name(pinfo, name);
     snd_seq_port_info_set_port(pinfo, id);
     snd_seq_port_info_set_port_specified(pinfo, 1);
+    /* next 3 lines needed to generate timestamp - PaulLiu */
+    snd_seq_port_info_set_timestamping(info, 1);
+    snd_seq_port_info_set_timestamp_real(info, 0);
+    snd_seq_port_info_set_timestamp_queue(info, queue);
     err = snd_seq_create_port(seq, pinfo);
     if (err < 0) goto free_ainfo;
     printf("created virtual port. intended port %d got port %d\n",
@@ -659,6 +663,12 @@ static void handle_event(snd_seq_event_t *ev)
         pm_read_bytes(midi, ptr, ev->data.ext.len, timestamp);
         break;
     }
+    case SND_SEQ_EVENT_UNSUBSCRIBE: /* TODO - PaulLiu */
+        printf("unhandled SND_SEQ_EVENT_UNSUBSCRIBE message\n");
+        break;
+    default:
+        printf("portmidi handle_event: not handled type %x\n", ev->type);
+        break;
     }
 }
 

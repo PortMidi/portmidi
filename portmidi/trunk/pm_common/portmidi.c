@@ -36,7 +36,7 @@
 
 #define is_empty(midi) ((midi)->tail == (midi)->head)
 
-/* this is not static so that pm_init can set it directly if
+/* this is not static so that pm_init can set it directly
  *   (see pmmac.c:pm_init())
  */
 int pm_initialized = FALSE;
@@ -232,14 +232,16 @@ portmidi implementation
 ====================================================================
 */
 
-PMEXPORT int Pm_CountDevices( void ) {
+PMEXPORT int Pm_CountDevices(void)
+{
     Pm_Initialize();
     /* no error checking -- Pm_Initialize() does not fail */
     return pm_descriptor_index;
 }
 
 
-PMEXPORT const PmDeviceInfo* Pm_GetDeviceInfo( PmDeviceID id ) {
+PMEXPORT const PmDeviceInfo* Pm_GetDeviceInfo(PmDeviceID id)
+{
     Pm_Initialize(); /* no error check needed */
     if (id >= 0 && id < pm_descriptor_index) {
         return &descriptors[id].pub;
@@ -248,44 +250,53 @@ PMEXPORT const PmDeviceInfo* Pm_GetDeviceInfo( PmDeviceID id ) {
 }
 
 /* pm_success_fn -- "noop" function pointer */
-PmError pm_success_fn(PmInternal *midi) {
+PmError pm_success_fn(PmInternal *midi)
+{
     return pmNoError;
 }
 
 /* none_write -- returns an error if called */
-PmError none_write_short(PmInternal *midi, PmEvent *buffer) {
+PmError none_write_short(PmInternal *midi, PmEvent *buffer)
+{
     return pmBadPtr;
 }
 
 /* pm_fail_timestamp_fn -- placeholder for begin_sysex and flush */
-PmError pm_fail_timestamp_fn(PmInternal *midi, PmTimestamp timestamp) {
+PmError pm_fail_timestamp_fn(PmInternal *midi, PmTimestamp timestamp)
+{
     return pmBadPtr;
 }
 
 PmError none_write_byte(PmInternal *midi, unsigned char byte, 
-                        PmTimestamp timestamp) {
+                        PmTimestamp timestamp)
+{
     return pmBadPtr;
 }
 
 /* pm_fail_fn -- generic function, returns error if called */
-PmError pm_fail_fn(PmInternal *midi) {
+PmError pm_fail_fn(PmInternal *midi)
+{
     return pmBadPtr;
 }
 
-static PmError none_open(PmInternal *midi, void *driverInfo) {
+static PmError none_open(PmInternal *midi, void *driverInfo)
+{
     return pmBadPtr;
 }
 
 static void none_get_host_error(PmInternal * midi, char * msg,
-                                unsigned int len) {
+                                unsigned int len)
+{
     *msg = 0; // empty string
 }
 
-static unsigned int none_has_host_error(PmInternal * midi) {
+static unsigned int none_has_host_error(PmInternal * midi)
+{
     return FALSE;
 }
 
-PmTimestamp none_synchronize(PmInternal *midi) {
+PmTimestamp none_synchronize(PmInternal *midi)
+{
     return 0;
 }
 
@@ -309,7 +320,8 @@ pm_fns_node pm_none_dictionary = {
 };
 
 
-PMEXPORT const char *Pm_GetErrorText( PmError errnum ) {
+PMEXPORT const char *Pm_GetErrorText(PmError errnum)
+{
     const char *msg;
 
     switch(errnum)
@@ -361,7 +373,8 @@ PMEXPORT const char *Pm_GetErrorText( PmError errnum ) {
 /* This can be called whenever you get a pmHostError return value.
  * The error will always be in the global pm_hosterror_text.
  */
-PMEXPORT void Pm_GetHostErrorText(char * msg, unsigned int len) {
+PMEXPORT void Pm_GetHostErrorText(char * msg, unsigned int len)
+{
     assert(msg);
     assert(len > 0);
     if (pm_hosterror) {
@@ -377,7 +390,8 @@ PMEXPORT void Pm_GetHostErrorText(char * msg, unsigned int len) {
 }
 
 
-PMEXPORT int Pm_HasHostError(PortMidiStream * stream) {
+PMEXPORT int Pm_HasHostError(PortMidiStream * stream)
+{
     if (pm_hosterror) return TRUE;
     if (stream) {
         PmInternal * midi = (PmInternal *) stream;
@@ -393,7 +407,8 @@ PMEXPORT int Pm_HasHostError(PortMidiStream * stream) {
 }
 
 
-PMEXPORT PmError Pm_Initialize( void ) {
+PMEXPORT PmError Pm_Initialize(void)
+{
     if (!pm_initialized) {
         pm_hosterror = FALSE;
         pm_hosterror_text[0] = 0; /* the null string */
@@ -404,7 +419,8 @@ PMEXPORT PmError Pm_Initialize( void ) {
 }
 
 
-PMEXPORT PmError Pm_Terminate( void ) {
+PMEXPORT PmError Pm_Terminate(void)
+{
     if (pm_initialized) {
         pm_term();
         // if there are no devices, descriptors might still be NULL
@@ -424,7 +440,8 @@ PMEXPORT PmError Pm_Terminate( void ) {
 /*
  * returns number of messages actually read, or error code
  */
-PMEXPORT int Pm_Read(PortMidiStream *stream, PmEvent *buffer, int32_t length) {
+PMEXPORT int Pm_Read(PortMidiStream *stream, PmEvent *buffer, int32_t length)
+{
     PmInternal *midi = (PmInternal *) stream;
     int n = 0;
     PmError err = pmNoError;
@@ -465,7 +482,7 @@ PMEXPORT int Pm_Read(PortMidiStream *stream, PmEvent *buffer, int32_t length) {
     return n;
 }
 
-PMEXPORT PmError Pm_Poll( PortMidiStream *stream )
+PMEXPORT PmError Pm_Poll(PortMidiStream *stream)
 {
     PmInternal *midi = (PmInternal *) stream;
     PmError err;
@@ -649,7 +666,8 @@ error_exit:
 }
 
 
-PMEXPORT PmError Pm_WriteShort(PortMidiStream *stream, PmTimestamp when, PmMessage msg)
+PMEXPORT PmError Pm_WriteShort(PortMidiStream *stream, PmTimestamp when,
+                               PmMessage msg)
 {
     PmEvent event;
     
@@ -801,11 +819,11 @@ PmError pm_create_internal(PmInternal **stream, PmDeviceID device_id,
 
 
 PMEXPORT PmError Pm_OpenInput(PortMidiStream** stream,
-                     PmDeviceID inputDevice,
-                     void *inputDriverInfo,
-                     int32_t bufferSize,
-                     PmTimeProcPtr time_proc,
-                     void *time_info)
+                              PmDeviceID inputDevice,
+                              void *inputDriverInfo,
+                              int32_t bufferSize,
+                              PmTimeProcPtr time_proc,
+                              void *time_info)
 {
     PmInternal *midi;
     PmError err = pmNoError;
@@ -850,12 +868,12 @@ error_return:
 
 
 PMEXPORT PmError Pm_OpenOutput(PortMidiStream** stream,
-                      PmDeviceID outputDevice,
-                      void *outputDriverInfo,
-                      int32_t bufferSize,
-                      PmTimeProcPtr time_proc,
-                      void *time_info,
-                      int32_t latency ) 
+                               PmDeviceID outputDevice,
+                               void *outputDriverInfo,
+                               int32_t bufferSize,
+                               PmTimeProcPtr time_proc,
+                               void *time_info,
+                               int32_t latency)
 {
     PmInternal *midi;
     PmError err = pmNoError;
@@ -900,12 +918,12 @@ error_return:
 
 
 PMEXPORT PmError Pm_CreateVirtualInput(PortMidiStream** stream,
-                     const char *name,
-                     const char *interf,
-                     void *inputDriverInfo,
-                     int32_t bufferSize,
-                     PmTimeProcPtr time_proc,
-                     void *time_info)
+                                       const char *name,
+                                       const char *interf,
+                                       void *inputDriverInfo,
+                                       int32_t bufferSize,
+                                       PmTimeProcPtr time_proc,
+                                       void *time_info)
 {
     PmInternal *midi;
     PmError err = pmNoError;
@@ -951,13 +969,13 @@ error_return:
 
 
 PMEXPORT PmError Pm_CreateVirtualOutput(PortMidiStream** stream,
-                      const char *name,
-                      const char *interf,
-                      void *outputDriverInfo,
-                      int32_t bufferSize,
-                      PmTimeProcPtr time_proc,
-                      void *time_info,
-                      int32_t latency)
+                                        const char *name,
+                                        const char *interf,
+                                        void *outputDriverInfo,
+                                        int32_t bufferSize,
+                                        PmTimeProcPtr time_proc,
+                                        void *time_info,
+                                        int32_t latency)
 {
     PmInternal *midi;
     PmError err = pmNoError;
@@ -1010,7 +1028,8 @@ PMEXPORT PmError Pm_SetChannelMask(PortMidiStream *stream, int mask)
 }
 
 
-PMEXPORT PmError Pm_SetFilter(PortMidiStream *stream, int32_t filters) {
+PMEXPORT PmError Pm_SetFilter(PortMidiStream *stream, int32_t filters)
+{
     PmInternal *midi = (PmInternal *) stream;
     PmError err = pmNoError;
 
@@ -1025,7 +1044,8 @@ PMEXPORT PmError Pm_SetFilter(PortMidiStream *stream, int32_t filters) {
 }
 
 
-PMEXPORT PmError Pm_Close( PortMidiStream *stream ) {
+PMEXPORT PmError Pm_Close(PortMidiStream *stream)
+{
     PmInternal *midi = (PmInternal *) stream;
     PmError err = pmNoError;
 
@@ -1057,7 +1077,8 @@ error_return:
     return pm_errmsg(err);
 }
 
-PmError Pm_Synchronize( PortMidiStream* stream ) {
+PmError Pm_Synchronize(PortMidiStream* stream)
+{
     PmInternal *midi = (PmInternal *) stream;
     PmError err = pmNoError;
     if (midi == NULL)
@@ -1071,7 +1092,8 @@ PmError Pm_Synchronize( PortMidiStream* stream ) {
     return err;
 }
 
-PMEXPORT PmError Pm_Abort( PortMidiStream* stream ) {
+PMEXPORT PmError Pm_Abort(PortMidiStream* stream)
+{
     PmInternal *midi = (PmInternal *) stream;
     PmError err;
     /* arg checking */
@@ -1094,19 +1116,20 @@ PMEXPORT PmError Pm_Abort( PortMidiStream* stream ) {
 
 
 
-/* pm_channel_filtered returns non-zero if the channel mask is blocking the current channel */
+/* pm_channel_filtered returns non-zero if the channel mask is
+   blocking the current channel */
 #define pm_channel_filtered(status, mask) \
     ((((status) & 0xF0) != 0xF0) && (!(Pm_Channel((status) & 0x0F) & (mask))))
 
 
-/* The following two functions will checks to see if a MIDI message matches
-   the filtering criteria.  Since the sysex routines only want to filter realtime messages,
-   we need to have separate routines.
+/* The following two functions will checks to see if a MIDI message
+   matches the filtering criteria.  Since the sysex routines only want
+   to filter realtime messages, we need to have separate routines.
  */
 
 
-/* pm_realtime_filtered returns non-zero if the filter will kill the current message.
-   Note that only realtime messages are checked here.
+/* pm_realtime_filtered returns non-zero if the filter will kill the
+   current message. Note that only realtime messages are checked here.
  */
 #define pm_realtime_filtered(status, filters) \
     ((((status) & 0xF0) == 0xF0) && ((1 << ((status) & 0xF)) & (filters)))
@@ -1127,18 +1150,21 @@ PMEXPORT PmError Pm_Abort( PortMidiStream* stream ) {
 }*/
 
 
-/* pm_status_filtered returns non-zero if a filter will kill the current message, based on status.
-   Note that sysex and real time are not checked.  It is up to the subsystem (winmm, core midi, alsa)
-   to filter sysex, as it is handled more easily and efficiently at that level.
-   Realtime message are filtered in pm_realtime_filtered.
+/* pm_status_filtered returns non-zero if a filter will kill the
+   current message, based on status. Note that sysex and real time are
+   not checked.  It is up to the subsystem (winmm, core midi, alsa) to
+   filter sysex, as it is handled more easily and efficiently at that
+   level. Realtime message are filtered in pm_realtime_filtered.
  */
-#define pm_status_filtered(status, filters) ((1 << (16 + ((status) >> 4))) & (filters))
+#define pm_status_filtered(status, filters) \
+                ((1 << (16 + ((status) >> 4))) & (filters))
 
 
 /*
     return  ((status == MIDI_NOTE_ON) && (filters & PM_FILT_NOTE))
             ||  ((status == MIDI_NOTE_OFF) && (filters & PM_FILT_NOTE))
-            ||  ((status == MIDI_CHANNEL_AT) && (filters & PM_FILT_CHANNEL_AFTERTOUCH))
+            ||  ((status == MIDI_CHANNEL_AT) &&
+                 (filters & PM_FILT_CHANNEL_AFTERTOUCH))
             ||  ((status == MIDI_POLY_AT) && (filters & PM_FILT_POLY_AFTERTOUCH))
             ||  ((status == MIDI_PROGRAM) && (filters & PM_FILT_PROGRAM))
             ||  ((status == MIDI_CONTROL) && (filters & PM_FILT_CONTROL))

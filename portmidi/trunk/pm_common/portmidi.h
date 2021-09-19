@@ -92,19 +92,7 @@ extern "C" {
  *        occurs. This also uses stdio for console text I/O.
  */
 
-#ifndef WIN32
-// Linux and OS X have stdint.h
 #include <stdint.h>
-#else
-#ifndef INT32_DEFINED
-// rather than having users install a special .h file for windows, 
-// just put the required definitions inline here. porttime.h uses
-// these too, so the definitions are (unfortunately) duplicated there
-typedef int int32_t;
-typedef unsigned int uint32_t;
-#define INT32_DEFINED
-#endif
-#endif
 
 #ifdef _WINDLL
 #define PMEXPORT __declspec(dllexport)
@@ -126,7 +114,7 @@ typedef unsigned int uint32_t;
 typedef enum {
     pmNoError = 0,
     pmNoData = 0, /**< A "no error" return that also indicates no data avail. */
-    pmGotData = 1, /**< A "no error" return that also indicates data available */
+    pmGotData = 1, /**< A "no error" return also indicating data available */
     pmHostError = -10000,
     pmInvalidDeviceId, /**< out of range or 
                         * output device when input is requested or 
@@ -152,13 +140,13 @@ typedef enum {
     Pm_Initialize() is the library initialisation function - call this before
     using the library.
 */
-PMEXPORT PmError Pm_Initialize( void );
+PMEXPORT PmError Pm_Initialize(void);
 
 /**
     Pm_Terminate() is the library termination function - call this after
     using the library.
 */
-PMEXPORT PmError Pm_Terminate( void );
+PMEXPORT PmError Pm_Terminate(void);
 
 /**  A single PortMidiStream is a descriptor for an open MIDI device.
 */
@@ -179,14 +167,14 @@ typedef void PortMidiStream;
     the stream, e.g. an input or output operation. Until the error is cleared,
     no new error codes will be obtained, even for a different stream.
 */
-PMEXPORT int Pm_HasHostError( PortMidiStream * stream );
+PMEXPORT int Pm_HasHostError(PortMidiStream * stream);
 
 
 /**  Translate portmidi error number into human readable message.
     These strings are constants (set at compile time) so client has 
     no need to allocate storage
 */
-PMEXPORT const char *Pm_GetErrorText( PmError errnum );
+PMEXPORT const char *Pm_GetErrorText(PmError errnum);
 
 /**  Translate portmidi host error into human readable message.
     These strings are computed at run time, so client has to allocate storage.
@@ -217,20 +205,76 @@ typedef struct {
 } PmDeviceInfo;
 
 /**  Get devices count, ids range from 0 to Pm_CountDevices()-1. */
-PMEXPORT int Pm_CountDevices( void );
+PMEXPORT int Pm_CountDevices(void);
 /**
     Pm_GetDefaultInputDeviceID(), Pm_GetDefaultOutputDeviceID()
 
     Return the default device ID or pmNoDevice if there are no devices.
     The result (but not pmNoDevice) can be passed to Pm_OpenMidi().
     
-    The default device can be specified using a small application
-    named pmdefaults that is part of the PortMidi distribution. This
-    program in turn uses the Java Preferences object created by
+    The use of these functions is not recommended. There is no natural
+    "default device" on any system, so defaults must be set by users.
+    (Currently, PortMidi just returns the first device it finds as
+    "default".)  The (unsolved) problem is how to implement simple
+    preferences for a cross-platform library. (More notes follow, but
+    you can stop reading here.)
+
+    To implement preferences, you need (1) a standard place to put
+    them, (2) a representation for the preferences, (3) a graphical
+    interface to test and set preferences, (4) a "natural" way to
+    invoke the preference-setting program. To solve (3), PortMidi
+    originally chose to use Java and Swing to implement a
+    cross-platform GUI program called "pmdefaults." Java's Preferences
+    class already provide a location (problem 1) and representation
+    (problem 2). However, this solution was complex, requiring
+    PortMidi to parse binary Java preference files and requiring users
+    to install and invoke Java programs. It did not seem possible to
+    integrate pmdefaults into the system preference subsystems on
+    macOS, Windows, and Linux, so the user had to install and run
+    pmdefaults as an application. Moreover, Java is falling out of
+    favor.
+
+    A simpler solution is pass the burden to applications. It is easy
+    to scan devices with PortMidi and build a device menu, and to save
+    menu selections in application preferences for next time. This is
+    my recommendation for any GUI program. For simple command-line
+    applications and utilities, see pm_test where all the test
+    programs now accept device numbers on the command line and/or
+    prompt for their entry.
+
+    Some advice for preferences: MIDI devices used to be built-in or
+    plug-in cards, so the numbers rarely changed. Now MIDI devices are
+    often plug-in USB devices, so device numbers change, and you
+    probably need to design to reinitialize PortMidi to rescan
+    devices. MIDI is pretty stateless, so this isn't a big problem,
+    although it means you cannot find a new device while playing or
+    recording MIDI.
+
+    Since device numbering can change whenever a USB device is plugged
+    in, preferences should record *names* of devices rather than
+    device numbers. It is simple enough to use string matching to find
+    a prefered device, so PortMidi does not provide any built-in
+    lookup function. See below for details of the Java preferences API.
+
+    In the future, I would like to remove the legacy code that parses
+    Java preference data (macOS plist, linux prefs.xml, Windows
+    registry entries) and replace it with something more useful. Maybe
+    something really simple: $HOME/.portmidi? Or maybe a new
+    pmdefaults written with PyGame? Or use QT? If applications write
+    their own preferences, maybe a minimal command line preference
+    setter is all that's needed? Or maybe command line application
+    users are happy without a preference system? Comments and
+    proposals are welcome.
+
+    For completeness, here is a description of the original use of
+    Java for preference setting: The default device can be specified
+    using a small application named pmdefaults that is part of the
+    PortMidi distribution. This program in turn uses the Java
+    Preferences object created by
     java.util.prefs.Preferences.userRoot().node("/PortMidi"); the
-    preference is set by calling 
-        prefs.put("PM_RECOMMENDED_OUTPUT_DEVICE", prefName);
-    or  prefs.put("PM_RECOMMENDED_INPUT_DEVICE", prefName);
+    preference is set by calling
+    prefs.put("PM_RECOMMENDED_OUTPUT_DEVICE", prefName); or
+    prefs.put("PM_RECOMMENDED_INPUT_DEVICE", prefName);
     
     In the statements above, prefName is a string describing the
     MIDI device in the form "interf, name" where interf identifies
@@ -250,19 +294,17 @@ PMEXPORT int Pm_CountDevices( void );
     the entire preference string is interpreted as a name, and the
     interface part is the empty string, which matches anything.
 
-    On the MAC, preferences are stored in 
-      /Users/$NAME/Library/Preferences/com.apple.java.util.prefs.plist
+    On the MAC, preferences are stored in
+    /Users/$NAME/Library/Preferences/com.apple.java.util.prefs.plist
     which is a binary file. In addition to the pmdefaults program,
     there are utilities that can read and edit this preference file.
-
-    On the PC, 
-
-    On Linux, 
+    On Windows, the Registry is used. On Linux, preferences are in an
+    XML file.
 
 */
-PMEXPORT PmDeviceID Pm_GetDefaultInputDeviceID( void );
+PMEXPORT PmDeviceID Pm_GetDefaultInputDeviceID(void);
 /** see PmDeviceID Pm_GetDefaultInputDeviceID() */
-PMEXPORT PmDeviceID Pm_GetDefaultOutputDeviceID( void );
+PMEXPORT PmDeviceID Pm_GetDefaultOutputDeviceID(void);
 
 /**
     PmTimestamp is used to represent a millisecond clock with arbitrary
@@ -286,7 +328,7 @@ typedef PmTimestamp (*PmTimeProcPtr)(void *time_info);
     not be manipulated or freed. The pointer is guaranteed to be valid
     between calls to Pm_Initialize() and Pm_Terminate().
 */
-PMEXPORT const PmDeviceInfo* Pm_GetDeviceInfo( PmDeviceID id );
+PMEXPORT const PmDeviceInfo* Pm_GetDeviceInfo(PmDeviceID id);
 
 /**
     Pm_OpenInput() and Pm_OpenOutput() open devices.
@@ -361,20 +403,20 @@ PMEXPORT const PmDeviceInfo* Pm_GetDeviceInfo( PmDeviceID id );
     by calling Pm_Close().
 
 */
-PMEXPORT PmError Pm_OpenInput( PortMidiStream** stream,
+PMEXPORT PmError Pm_OpenInput(PortMidiStream** stream,
                 PmDeviceID inputDevice,
                 void *inputDriverInfo,
                 int32_t bufferSize,
                 PmTimeProcPtr time_proc,
-                void *time_info );
+                void *time_info);
 
-PMEXPORT PmError Pm_OpenOutput( PortMidiStream** stream,
+PMEXPORT PmError Pm_OpenOutput(PortMidiStream** stream,
                 PmDeviceID outputDevice,
                 void *outputDriverInfo,
                 int32_t bufferSize,
                 PmTimeProcPtr time_proc,
                 void *time_info,
-                int32_t latency );
+                int32_t latency);
 
 /**
    Pm_CreateVirtualInput() and Pm_CreateVirtualOutput() open virtual devices.
@@ -398,22 +440,22 @@ PMEXPORT PmError Pm_OpenOutput( PortMidiStream** stream,
    Virtual devices are not supported by Windows (Multimedia API). Calls
    on Windows do nothing except return #pmNotImplemented.
 */
-PMEXPORT PmError Pm_CreateVirtualInput( PortMidiStream** stream,
+PMEXPORT PmError Pm_CreateVirtualInput(PortMidiStream** stream,
                 const char *name,
                 const char *interf,
                 void *inputDriverInfo,
                 int32_t bufferSize,
                 PmTimeProcPtr time_proc,
-                void *time_info );
+                void *time_info);
 
-PMEXPORT PmError Pm_CreateVirtualOutput( PortMidiStream** stream,
+PMEXPORT PmError Pm_CreateVirtualOutput(PortMidiStream** stream,
                 const char *name,
                 const char *interf,
                 void *outputDriverInfo,
                 int32_t bufferSize,
                 PmTimeProcPtr time_proc,
                 void *time_info,
-                int32_t latency );
+                int32_t latency);
   /** @} */
 
 /**
@@ -421,18 +463,18 @@ PMEXPORT PmError Pm_CreateVirtualOutput( PortMidiStream** stream,
    @{
 */
 
-/*  \function PmError Pm_SetFilter( PortMidiStream* stream, int32_t filters )
+/*  \function PmError Pm_SetFilter(PortMidiStream* stream, int32_t filters)
     Pm_SetFilter() sets filters on an open input stream to drop selected
     input types. By default, only active sensing messages are filtered.
     To prohibit, say, active sensing and sysex messages, call
     Pm_SetFilter(stream, PM_FILT_ACTIVE | PM_FILT_SYSEX);
 
-    Filtering is useful when midi routing or midi thru functionality is being
-    provided by the user application.
-    For example, you may want to exclude timing messages (clock, MTC, start/stop/continue),
-    while allowing note-related messages to pass.
-    Or you may be using a sequencer or drum-machine for MIDI clock information but want to
-    exclude any notes it may play.
+    Filtering is useful when midi routing or midi thru functionality
+    is being provided by the user application.
+    For example, you may want to exclude timing messages (clock, MTC,
+    start/stop/continue), while allowing note-related messages to pass.
+    Or you may be using a sequencer or drum-machine for MIDI clock
+    information but want to exclude any notes it may play.
  */
     
 /* Filter bit-mask definitions */
@@ -462,7 +504,8 @@ PMEXPORT PmError Pm_CreateVirtualOutput( PortMidiStream** stream,
 /** per-note aftertouch (0xA0-0xAF) */
 #define PM_FILT_POLY_AFTERTOUCH (1 << 0x1A)
 /** filter both channel and poly aftertouch */
-#define PM_FILT_AFTERTOUCH (PM_FILT_CHANNEL_AFTERTOUCH | PM_FILT_POLY_AFTERTOUCH)
+#define PM_FILT_AFTERTOUCH (PM_FILT_CHANNEL_AFTERTOUCH | \
+                            PM_FILT_POLY_AFTERTOUCH)
 /** Program changes (0xC0-0xCF) */
 #define PM_FILT_PROGRAM (1 << 0x1C)
 /** Control Changes (CC's) (0xB0-0xBF)*/
@@ -478,10 +521,11 @@ PMEXPORT PmError Pm_CreateVirtualOutput( PortMidiStream** stream,
 /** Tuning request (0xF6)*/
 #define PM_FILT_TUNE (1 << 0x06)
 /** All System Common messages (mtc, song position, song select, tune request) */
-#define PM_FILT_SYSTEMCOMMON (PM_FILT_MTC | PM_FILT_SONG_POSITION | PM_FILT_SONG_SELECT | PM_FILT_TUNE)
+#define PM_FILT_SYSTEMCOMMON (PM_FILT_MTC | PM_FILT_SONG_POSITION | \
+                              PM_FILT_SONG_SELECT | PM_FILT_TUNE)
 
 
-PMEXPORT PmError Pm_SetFilter( PortMidiStream* stream, int32_t filters );
+PMEXPORT PmError Pm_SetFilter(PortMidiStream* stream, int32_t filters);
 
 #define Pm_Channel(channel) (1<<(channel))
 /**
@@ -509,14 +553,14 @@ PMEXPORT PmError Pm_SetChannelMask(PortMidiStream *stream, int mask);
     ignore messages in the buffer and close an input device at
     any time.
  */
-PMEXPORT PmError Pm_Abort( PortMidiStream* stream );
+PMEXPORT PmError Pm_Abort(PortMidiStream* stream);
      
 /**
     Pm_Close() closes a midi stream, flushing any pending buffers.
     (PortMidi attempts to close open streams when the application 
     exits -- this is particularly difficult under Windows.)
 */
-PMEXPORT PmError Pm_Close( PortMidiStream* stream );
+PMEXPORT PmError Pm_Close(PortMidiStream* stream);
 
 /**
     Pm_Synchronize() instructs PortMidi to (re)synchronize to the
@@ -541,7 +585,7 @@ PMEXPORT PmError Pm_Close( PortMidiStream* stream );
     Pm_Synchronize. PortMidi will always synchronize at the 
     first output message and periodically thereafter.
 */
-PmError Pm_Synchronize( PortMidiStream* stream );
+PmError Pm_Synchronize(PortMidiStream* stream);
 
 
 /**
@@ -660,13 +704,13 @@ typedef struct {
     message" and will be flushed as well.
 
 */
-PMEXPORT int Pm_Read( PortMidiStream *stream, PmEvent *buffer, int32_t length );
+PMEXPORT int Pm_Read(PortMidiStream *stream, PmEvent *buffer, int32_t length);
 
 /**
     Pm_Poll() tests whether input is available, 
     returning TRUE, FALSE, or an error value.
 */
-PMEXPORT PmError Pm_Poll( PortMidiStream *stream);
+PMEXPORT PmError Pm_Poll(PortMidiStream *stream);
 
 /** 
     Pm_Write() writes midi data from a buffer. This may contain:
@@ -681,7 +725,8 @@ PMEXPORT PmError Pm_Poll( PortMidiStream *stream);
 
     Sysex data may contain embedded real-time messages.
 */
-PMEXPORT PmError Pm_Write( PortMidiStream *stream, PmEvent *buffer, int32_t length );
+PMEXPORT PmError Pm_Write(PortMidiStream *stream, PmEvent *buffer,
+                          int32_t length);
 
 /**
     Pm_WriteShort() writes a timestamped non-system-exclusive midi message.
@@ -689,12 +734,14 @@ PMEXPORT PmError Pm_Write( PortMidiStream *stream, PmEvent *buffer, int32_t leng
     non-decreasing. (But timestamps are ignored if the stream was opened
     with latency = 0.)
 */
-PMEXPORT PmError Pm_WriteShort( PortMidiStream *stream, PmTimestamp when, int32_t msg);
+PMEXPORT PmError Pm_WriteShort(PortMidiStream *stream, PmTimestamp when,
+                               PmMessage msg);
 
 /**
     Pm_WriteSysEx() writes a timestamped system-exclusive midi message.
 */
-PMEXPORT PmError Pm_WriteSysEx( PortMidiStream *stream, PmTimestamp when, unsigned char *msg);
+PMEXPORT PmError Pm_WriteSysEx(PortMidiStream *stream, PmTimestamp when, 
+                               unsigned char *msg);
 
 /** @} */
 

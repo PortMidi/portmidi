@@ -70,8 +70,9 @@
 #define VERBOSE_ON 1
 #define VERBOSE if (VERBOSE_ON)
 
-#define MIDI_SYSEX      0xf0
-#define MIDI_EOX        0xf7
+#define MIDI_SYSEX       0xf0
+#define MIDI_EOX         0xf7
+#define MIDI_CLOCK       0xf8
 #define MIDI_STATUS_MASK 0x80
 
 // "Ref"s are pointers on 32-bit machines and ints on 64 bit machines
@@ -122,8 +123,7 @@ PmTimestamp timestamp_cm_to_pm(MIDITimeStamp timestamp);
 char* cm_get_full_endpoint_name(MIDIEndpointRef endpoint);
 
 
-static int
-midi_length(int32_t msg)
+static int midi_length(int32_t msg)
 {
     int status, high, low;
     static int high_lengths[] = {
@@ -166,9 +166,8 @@ static PmTimestamp midi_synchronize(PmInternal *midi)
 }
 
 
-static void
-process_packet(MIDIPacket *packet, PmEvent *event, 
-	       PmInternal *midi, coremidi_info_type m)
+static void process_packet(MIDIPacket *packet, PmEvent *event, 
+                           PmInternal *midi, coremidi_info_type m)
 {
     /* handle a packet of MIDI messages from CoreMIDI */
     /* there may be multiple short messages in one packet (!) */
@@ -200,8 +199,15 @@ process_packet(MIDIPacket *packet, PmEvent *event,
 		/* since there's no more data, we're done */
 		return;
 	    }
-	    m->last_msg_length = cur_message_length;
-	    m->last_command = cur_packet_data[0];
+            if (cur_packet_data[0] < MIDI_SYSEX) {
+                /* channel messages set running status */
+                m->last_command = cur_packet_data[0];
+                m->last_msg_length = cur_message_length;
+            } else if (cur_packet_data[0] < MIDI_CLOCK) {
+                /* system messages clear running status */
+                m->last_command = 0;
+                m->last_msg_length = 0;
+            }
 	    switch (cur_message_length) {
 	    case 1:
 	        event->message = Pm_Message(cur_packet_data[0], 0, 0);
@@ -221,8 +227,8 @@ process_packet(MIDIPacket *packet, PmEvent *event,
 	        return; /* give up on packet if continued after assert */
 	    }
 	    pm_read_short(midi, event);
-	    remaining_length -= m->last_msg_length;
-	    cur_packet_data += m->last_msg_length;
+	    remaining_length -= cur_message_length;
+	    cur_packet_data += cur_message_length;
 	} else if (m->last_msg_length > remaining_length + 1) {
 	    /* we have running status, but not enough data */
 #ifdef DEBUG
@@ -317,7 +323,7 @@ static void read_callback(const MIDIPacketList *newPackets, PmInternal *midi)
 
 /* callback for real devices - redirects to read_callback */
 static void device_read_callback(const MIDIPacketList *newPackets, 
-                             void *refCon, void *connRefCon)
+                                 void *refCon, void *connRefCon)
 {
     printf("device_read_callback refCon %ld connRefCon %ld\n", 
            (long) refCon, (long) connRefCon);
@@ -327,7 +333,7 @@ static void device_read_callback(const MIDIPacketList *newPackets,
 
 /* callback for virtual devices - redirects to read_callback */
 static void virtual_read_callback(const MIDIPacketList *newPackets, 
-                              void *refCon, void *connRefCon)
+                                  void *refCon, void *connRefCon)
 {
     printf("virtual_read_callback refCon %ld connRefCon %ld\n", 
            (long) refCon, (long) connRefCon);
@@ -367,8 +373,7 @@ static coremidi_info_type create_macosxcm_info(int is_virtual, int is_input)
 
 
 
-static PmError
-midi_in_open(PmInternal *midi, void *driverInfo)
+static PmError midi_in_open(PmInternal *midi, void *driverInfo)
 {
     MIDIEndpointRef endpoint;
     coremidi_info_type info;
@@ -405,8 +410,7 @@ midi_in_open(PmInternal *midi, void *driverInfo)
     return pmNoError;
 }
 
-static PmError
-midi_in_close(PmInternal *midi)
+static PmError midi_in_close(PmInternal *midi)
 {
     MIDIEndpointRef endpoint;
     OSStatus macHostError;
@@ -525,8 +529,7 @@ static PmError midi_create_virtual(struct pm_internal_struct *midi,
   }
 
 
-static PmError
-midi_abort(PmInternal *midi)
+static PmError midi_abort(PmInternal *midi)
 {
     PmError err = pmNoError;
     OSStatus macHostError;
@@ -543,8 +546,7 @@ midi_abort(PmInternal *midi)
 }
 
 
-static PmError
-midi_write_flush(PmInternal *midi, PmTimestamp timestamp)
+static PmError midi_write_flush(PmInternal *midi, PmTimestamp timestamp)
 {
     OSStatus macHostError;
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
@@ -584,9 +586,8 @@ send_packet_error:
 }
 
 
-static PmError
-send_packet(PmInternal *midi, Byte *message, unsigned int messageLength, 
-            MIDITimeStamp timestamp)
+static PmError send_packet(PmInternal *midi, Byte *message,
+                       unsigned int messageLength, MIDITimeStamp timestamp)
 {
     PmError err;
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
@@ -663,8 +664,7 @@ static PmError midi_write_short(PmInternal *midi, PmEvent *event)
 }
 
 
-static PmError 
-midi_begin_sysex(PmInternal *midi, PmTimestamp when)
+static PmError midi_begin_sysex(PmInternal *midi, PmTimestamp when)
 {
     UInt64 when_ns;
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
@@ -690,8 +690,7 @@ midi_begin_sysex(PmInternal *midi, PmTimestamp when)
 }
 
 
-static PmError
-midi_end_sysex(PmInternal *midi, PmTimestamp when)
+static PmError midi_end_sysex(PmInternal *midi, PmTimestamp when)
 {
     PmError err;
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
@@ -720,8 +719,8 @@ midi_end_sysex(PmInternal *midi, PmTimestamp when)
 }
 
 
-static PmError
-midi_write_byte(PmInternal *midi, unsigned char byte, PmTimestamp timestamp)
+static PmError midi_write_byte(PmInternal *midi, unsigned char byte, 
+                               PmTimestamp timestamp)
 {
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
     assert(m);
@@ -734,8 +733,7 @@ midi_write_byte(PmInternal *midi, unsigned char byte, PmTimestamp timestamp)
 }
 
 
-static PmError
-midi_write_realtime(PmInternal *midi, PmEvent *event)
+static PmError midi_write_realtime(PmInternal *midi, PmEvent *event)
 {
     /* to send a realtime message during a sysex message, first
        flush all pending sysex bytes into packet list */
@@ -744,6 +742,7 @@ midi_write_realtime(PmInternal *midi, PmEvent *event)
     /* then we can just do a normal midi_write_short */
     return midi_write_short(midi, event);
 }
+
 
 static unsigned int midi_has_host_error(PmInternal *midi)
 {
@@ -780,6 +779,7 @@ MIDITimeStamp timestamp_pm_to_cm(PmTimestamp timestamp)
     }
 }
 
+
 PmTimestamp timestamp_cm_to_pm(MIDITimeStamp timestamp)
 {
     UInt64 nanos;
@@ -795,70 +795,71 @@ PmTimestamp timestamp_cm_to_pm(MIDITimeStamp timestamp)
 // The result should be released by the caller.
 CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal)
 {
-  CFMutableStringRef result = CFStringCreateMutable(NULL, 0);
-  CFStringRef str;
+    CFMutableStringRef result = CFStringCreateMutable(NULL, 0);
+    CFStringRef str;
   
-  // begin with the endpoint's name
-  str = NULL;
-  MIDIObjectGetStringProperty(endpoint, kMIDIPropertyName, &str);
-  if (str != NULL) {
-    CFStringAppend(result, str);
-    CFRelease(str);
-  }
-  
-  MIDIEntityRef entity = NULL_REF;
-  MIDIEndpointGetEntity(endpoint, &entity);
-  if (entity == NULL_REF)
-    // probably virtual
-    return result;
-  
-  if (CFStringGetLength(result) == 0) {
-    // endpoint name has zero length -- try the entity
+    // begin with the endpoint's name
     str = NULL;
-    MIDIObjectGetStringProperty(entity, kMIDIPropertyName, &str);
+    MIDIObjectGetStringProperty(endpoint, kMIDIPropertyName, &str);
     if (str != NULL) {
-      CFStringAppend(result, str);
-      CFRelease(str);
-    }
-  }
-  // now consider the device's name
-  MIDIDeviceRef device = NULL_REF;
-  MIDIEntityGetDevice(entity, &device);
-  if (device == NULL_REF)
-    return result;
-  
-  str = NULL;
-  MIDIObjectGetStringProperty(device, kMIDIPropertyName, &str);
-  if (CFStringGetLength(result) == 0) {
-      CFRelease(result);
-      return str;
-  }
-  if (str != NULL) {
-    // if an external device has only one entity, throw away
-    // the endpoint name and just use the device name
-    if (isExternal && MIDIDeviceGetNumberOfEntities(device) < 2) {
-      CFRelease(result);
-      return str;
-    } else {
-      if (CFStringGetLength(str) == 0) {
+        CFStringAppend(result, str);
         CFRelease(str);
-        return result;
-      }
-      // does the entity name already start with the device name?
-      // (some drivers do this though they shouldn't)
-      // if so, do not prepend
-        if (CFStringCompareWithOptions( result, /* endpoint name */
-             str /* device name */,
-             CFRangeMake(0, CFStringGetLength(str)), 0) != kCFCompareEqualTo) {
-        // prepend the device name to the entity name
-        if (CFStringGetLength(result) > 0)
-          CFStringInsert(result, 0, CFSTR(" "));
-        CFStringInsert(result, 0, str);
-      }
-      CFRelease(str);
     }
-  }
-  return result;
+  
+    MIDIEntityRef entity = NULL_REF;
+    MIDIEndpointGetEntity(endpoint, &entity);
+    if (entity == NULL_REF)
+        // probably virtual
+        return result;
+  
+    if (CFStringGetLength(result) == 0) {
+        // endpoint name has zero length -- try the entity
+        str = NULL;
+        MIDIObjectGetStringProperty(entity, kMIDIPropertyName, &str);
+        if (str != NULL) {
+            CFStringAppend(result, str);
+            CFRelease(str);
+        }
+    }
+    // now consider the device's name
+    MIDIDeviceRef device = NULL_REF;
+    MIDIEntityGetDevice(entity, &device);
+    if (device == NULL_REF)
+        return result;
+  
+    str = NULL;
+    MIDIObjectGetStringProperty(device, kMIDIPropertyName, &str);
+    if (CFStringGetLength(result) == 0) {
+        CFRelease(result);
+        return str;
+    }
+    if (str != NULL) {
+        // if an external device has only one entity, throw away
+        // the endpoint name and just use the device name
+        if (isExternal && MIDIDeviceGetNumberOfEntities(device) < 2) {
+            CFRelease(result);
+            return str;
+        } else {
+            if (CFStringGetLength(str) == 0) {
+                CFRelease(str);
+                return result;
+            }
+            // does the entity name already start with the device name?
+            // (some drivers do this though they shouldn't)
+            // if so, do not prepend
+            if (CFStringCompareWithOptions(result, /* endpoint name */
+                        str, /* device name */
+                        CFRangeMake(0, CFStringGetLength(str)), 0) != 
+                kCFCompareEqualTo) {
+                // prepend the device name to the entity name
+                if (CFStringGetLength(result) > 0)
+                    CFStringInsert(result, 0, CFSTR(" "));
+                CFStringInsert(result, 0, str);
+            }
+            CFRelease(str);
+        }
+    }
+    return result;
 }
 
 
@@ -866,105 +867,82 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal)
 // The result should be released by the caller.
 static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint)
 {
-  CFMutableStringRef result = CFStringCreateMutable(NULL, 0);
-  CFStringRef str;
-  OSStatus err;
-  long i;
+    CFMutableStringRef result = CFStringCreateMutable(NULL, 0);
+    CFStringRef str;
+    OSStatus err;
+    long i;
   
-  // Does the endpoint have connections?
-  CFDataRef connections = NULL;
-  long nConnected = 0;
-  bool anyStrings = false;
-  err = MIDIObjectGetDataProperty(endpoint, kMIDIPropertyConnectionUniqueID, &connections);
-  if (connections != NULL) {
-    // It has connections, follow them
-    // Concatenate the names of all connected devices
-    nConnected = CFDataGetLength(connections) / (int32_t) sizeof(MIDIUniqueID);
-    if (nConnected) {
-      const SInt32 *pid = (const SInt32 *)(CFDataGetBytePtr(connections));
-      for (i = 0; i < nConnected; ++i, ++pid) {
-        MIDIUniqueID id = EndianS32_BtoN(*pid);
-        MIDIObjectRef connObject;
-        MIDIObjectType connObjectType;
-        err = MIDIObjectFindByUniqueID(id, &connObject, &connObjectType);
-        if (err == noErr) {
-          if (connObjectType == kMIDIObjectType_ExternalSource  ||
-              connObjectType == kMIDIObjectType_ExternalDestination) {
-            // Connected to an external device's endpoint (10.3 and later).
-            str = EndpointName((MIDIEndpointRef)(connObject), true);
-          } else {
-            // Connected to an external device (10.2) (or something else, catch-all)
-            str = NULL;
-            MIDIObjectGetStringProperty(connObject, kMIDIPropertyName, &str);
-          }
-          if (str != NULL) {
-            if (anyStrings)
-              CFStringAppend(result, CFSTR(", "));
-            else anyStrings = true;
-            CFStringAppend(result, str);
-            CFRelease(str);
-          }
+    // Does the endpoint have connections?
+    CFDataRef connections = NULL;
+    long nConnected = 0;
+    bool anyStrings = false;
+    err = MIDIObjectGetDataProperty(endpoint, kMIDIPropertyConnectionUniqueID,
+                                    &connections);
+    if (connections != NULL) {
+        // It has connections, follow them
+        // Concatenate the names of all connected devices
+        nConnected = CFDataGetLength(connections) / 
+                     (int32_t) sizeof(MIDIUniqueID);
+        if (nConnected) {
+            const SInt32 *pid = (const SInt32 *)(CFDataGetBytePtr(connections));
+            for (i = 0; i < nConnected; ++i, ++pid) {
+                MIDIUniqueID id = EndianS32_BtoN(*pid);
+                MIDIObjectRef connObject;
+                MIDIObjectType connObjectType;
+                err = MIDIObjectFindByUniqueID(id, &connObject, 
+                                               &connObjectType);
+                if (err == noErr) {
+                    if (connObjectType == kMIDIObjectType_ExternalSource  ||
+                        connObjectType == kMIDIObjectType_ExternalDestination) {
+                        // Connected to an external device's endpoint (>=10.3)
+                        str = EndpointName((MIDIEndpointRef)(connObject), true);
+                    } else {
+                        // Connected to an external device (10.2) 
+                        // (or something else, catch-all)
+                        str = NULL;
+                        MIDIObjectGetStringProperty(connObject, 
+                                                    kMIDIPropertyName, &str);
+                    }
+                    if (str != NULL) {
+                        if (anyStrings)
+                            CFStringAppend(result, CFSTR(", "));
+                        else anyStrings = true;
+                        CFStringAppend(result, str);
+                        CFRelease(str);
+                    }
+                }
+            }
         }
-      }
+        CFRelease(connections);
     }
-    CFRelease(connections);
-  }
-  if (anyStrings)
-    return result; // caller should release result
+    if (anyStrings)
+        return result; // caller should release result
 
-  CFRelease(result);
+    CFRelease(result);
 
-  // Here, either the endpoint had no connections, or we failed to obtain names for any of them.
-  return EndpointName(endpoint, false);
+    // Here, either the endpoint had no connections, or we failed to
+    // obtain names for any of them.
+    return EndpointName(endpoint, false);
 }
 
 
-char* cm_get_full_endpoint_name(MIDIEndpointRef endpoint)
+char *cm_get_full_endpoint_name(MIDIEndpointRef endpoint)
 {
-#ifdef OLDCODE
-    MIDIEntityRef entity;
-    MIDIDeviceRef device;
+    /* Thanks to Dan Wilcox for fixes for Unicode handling */
+    CFStringRef fullName = ConnectedEndpointName(endpoint);
+    CFIndex utf16_len = CFStringGetLength(fullName) + 1;
+    CFIndex max_byte_len = CFStringGetMaximumSizeForEncoding(
+                                   utf16_len, kCFStringEncodingUTF8) + 1;
+    char* pmname = (char *) pm_alloc(CFStringGetLength(fullName) + 1);
 
-    CFStringRef endpointName = NULL;
-    CFStringRef deviceName = NULL;
-#endif
-    CFStringRef fullName = NULL;
-    CFStringEncoding defaultEncoding;
-    char* newName;
-
-    /* get the default string encoding */
-    defaultEncoding = CFStringGetSystemEncoding();
-
-    fullName = ConnectedEndpointName(endpoint);
-    
-#ifdef OLDCODE
-    /* get the entity and device info */
-    MIDIEndpointGetEntity(endpoint, &entity);
-    MIDIEntityGetDevice(entity, &device);
-
-    /* create the nicely formated name */
-    MIDIObjectGetStringProperty(endpoint, kMIDIPropertyName, &endpointName);
-    MIDIObjectGetStringProperty(device, kMIDIPropertyName, &deviceName);
-    if (deviceName != NULL) {
-        fullName = CFStringCreateWithFormat(NULL, NULL, CFSTR("%@: %@"),
-                                            deviceName, endpointName);
-    } else {
-        fullName = endpointName;
-    }
-#endif    
-    /* copy the string into our buffer */
-    newName = (char *) malloc(CFStringGetLength(fullName) + 1);
-    CFStringGetCString(fullName, newName, CFStringGetLength(fullName) + 1,
-                       defaultEncoding);
+    /* copy the string into our buffer; note that there may be some wasted
+       space, but the total waste is not large */
+    CFStringGetCString(fullName, pmname, max_byte_len, kCFStringEncodingUTF8);
 
     /* clean up */
-#ifdef OLDCODE
-    if (endpointName) CFRelease(endpointName);
-    if (deviceName) CFRelease(deviceName);
-#endif
     if (fullName) CFRelease(fullName);
 
-    return newName;
+    return pmname;
 }
 
  

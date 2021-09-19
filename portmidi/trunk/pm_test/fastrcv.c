@@ -19,7 +19,7 @@
 
 #define INPUT_BUFFER_SIZE 1000  /* big to avoid losing any input */
 #define DRIVER_INFO NULL
-#define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
+#define TIME_PROC ((PmTimeProcPtr) Pt_Time)
 #define TIME_INFO NULL
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
 
@@ -37,11 +37,11 @@ int deviceno = -9999;
 
 /* read a number from console */
 /**/
-int get_number(char *prompt)
+int get_number(const char *prompt)
 {
     char line[STRING_MAX];
     int n = 0, i;
-    printf("%s", prompt);
+    fputs(prompt, stdout);
     while (n != 1) {
         n = scanf("%d", &i);
         fgets(line, STRING_MAX, stdin);

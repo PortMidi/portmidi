@@ -7,7 +7,7 @@
 
 #define INPUT_BUFFER_SIZE 100
 #define DRIVER_INFO NULL
-#define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
+#define TIME_PROC ((PmTimeProcPtr) Pt_Time)
 #define TIME_INFO NULL
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
 

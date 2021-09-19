@@ -87,7 +87,7 @@ CHANGE LOG
 #define min(a, b) ((a) <= (b) ? (a) : (b))
 #endif
 
-int get_number(char *prompt);
+int get_number(const char *prompt);
 
 PtTimestamp previous_callback_time = 0;
 
@@ -276,7 +276,7 @@ int main()
 
 
 /* read a number from console */
-int get_number(char *prompt)
+int get_number(const char *prompt)
 {
     char line[STRING_MAX];
     int n = 0, i;

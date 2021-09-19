@@ -43,11 +43,11 @@ int use_timeoffset = 0;
 
 /* read a number from console */
 /**/
-int get_number(char *prompt)
+int get_number(const char *prompt)
 {
     char line[STRING_MAX];
     int n = 0, i;
-    printf("%s", prompt);
+    fputs(prompt, stdout);
     while (n != 1) {
         n = scanf("%d", &i);
         fgets(line, STRING_MAX, stdin);
@@ -161,8 +161,7 @@ int main(int argc, char *argv[])
 {
     int default_in;
     int default_out;
-    int i = 0, n = 0;
-    int stream_test = 0;
+    int i = 0;
     int latency_valid = FALSE;
     int rate_valid = FALSE;
     int device_valid = FALSE;

@@ -33,7 +33,7 @@ void doSomethingStupid() {
 
 /* read a number from console */
 /**/
-int get_number(char *prompt)
+int get_number(const char *prompt)
 {
     char line[STRING_MAX];
     int n = 0, i;

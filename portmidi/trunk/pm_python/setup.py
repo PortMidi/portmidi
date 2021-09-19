@@ -11,16 +11,11 @@ except ImportError:
     from Pyrex.Distutils import build_ext
 
 
-
-
-
 DESCRIPTION = open('README_PYTHON.txt').read()
-CHANGES = open('CHANGES.txt').read()
-TODO = open('TODO.txt').read()
 
 EXTRAS = {}
 
-long_description = DESCRIPTION + CHANGES + TODO
+long_description = DESCRIPTION
 #import sys
 #if "checkdocs" in sys.argv:
 #    print long_description
@@ -142,7 +137,7 @@ PACKAGEDATA.update(EXTRAS)
 
 
 if sys.platform == 'win32':
-    print "Found Win32 platform"
+    print("Found Win32 platform")
     EXTENSION = dict(
         ext_modules=[ 
             Extension("pyportmidi._pyportmidi", [os.path.join("pyportmidi", "_pyportmidi.pyx")],
@@ -154,7 +149,7 @@ if sys.platform == 'win32':
         ]
     )
 elif sys.platform == 'darwin':
-    print "Found darwin (OS X) platform"
+    print("Found darwin (OS X) platform")
     library_dirs = ["/usr/local/lib"]
     include_dirs = ["/usr/local/include"]
     EXTENSION = dict(
@@ -169,15 +164,16 @@ elif sys.platform == 'darwin':
         ]
     )
 else:
-    print "Assuming Linux platform"
+    print("Assuming Linux platform")
     EXTENSION = dict(
         ext_modules=[ 
-            Extension("pyportmidi._pyportmidi", [os.path.join("pyportmidi", "_pyportmidi.pyx")],
+            Extension("pyportmidi._pyportmidi", 
+                      [os.path.join("pyportmidi", "_pyportmidi.pyx")],
                       library_dirs=["./linux"],
+                      include_dirs=["../pm_common", "../porttime"],
                       libraries = ["portmidi", "asound", "pthread"]
                       )
         ]
-       
     )
 
 PACKAGEDATA.update(EXTENSION)

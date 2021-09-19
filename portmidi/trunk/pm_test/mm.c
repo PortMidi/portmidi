@@ -110,12 +110,12 @@ private    void    showhelp();
 private    void    showbytes(PmMessage data, int len, boolean newline);
 private    void    showstatus(boolean flag);
 private    void    doascii(char c);
-private    int     get_number(char *prompt);
+private    int     get_number(const char *prompt);
 
 
 /* read a number from console */
 /**/
-int get_number(char *prompt)
+int get_number(const char *prompt)
 {
     char line[STRING_MAX];
     int n = 0, i;
@@ -534,7 +534,8 @@ private void showhelp()
     printf("   -------------  -----     -------------  -----\n");
     printf("   Channels       1 - 16    Programs       1 - 128\n");
     printf("   Controllers    0 - 127   After Touch    0 - 127\n");
-    printf("   Loudness       0 - 127   Pitch Bend     0 - 16383, center = 8192\n");
+    printf("   Loudness       0 - 127   Pitch Bend     0 - 16383, "
+           "center = 8192\n");
     printf("   Pitches        0 - 127, 60 = c4 = middle C\n");
     printf(" \n");
     printf("n toggles notes");
@@ -568,5 +569,5 @@ private void showhelp()
 
 private void showstatus(boolean flag)
 {
-    printf(", now %s\n", flag ? "ON" : "OFF" );
+    printf(", now %s\n", flag ? "ON" : "OFF");
 }

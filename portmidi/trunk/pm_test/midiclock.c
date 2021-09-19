@@ -24,7 +24,7 @@ typedef int boolean;
 
 #define OUTPUT_BUFFER_SIZE 0
 #define DRIVER_INFO NULL
-#define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
+#define TIME_PROC ((PmTimeProcPtr) Pt_Time)
 #define TIME_INFO NULL
 #define LATENCY 0
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
@@ -163,7 +163,7 @@ void timer_poll(PtTimestamp timestamp, void *userData)
 
 /* read a number from console */
 /**/
-int get_number(char *prompt)
+int get_number(const char *prompt)
 {
     char line[STRING_MAX];
     int n = 0, i;

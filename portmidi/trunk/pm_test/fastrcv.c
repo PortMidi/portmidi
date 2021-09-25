@@ -34,6 +34,7 @@
 
 
 int deviceno = -9999;
+int verbose = FALSE;
 
 /* read a number from console */
 /**/
@@ -88,15 +89,23 @@ void fastrcv_test()
             length = Pm_Read(midi, buffer, 1);
             if (length > 0) {
                 int status = Pm_MessageStatus(buffer[0].message);
+                if (status == 0x80) {  /* convert NoteOff to NoteOn, vel=0 */
+                    status = 0x90;
+                    buffer[0].message = Pm_Message(status, 
+                            Pm_MessageData1(buffer[0].message), 0);
+                }
                 /* only listen to NOTEON messages */
                 if (status == 0x90) {
                     int pitch = Pm_MessageData1(buffer[0].message);
-                    int is_on = (Pm_MessageData2(buffer[0].message) > 0);
+                    int vel = Pm_MessageData2(buffer[0].message);
+                    int is_on = (vel > 0);
+                    if (verbose) {
+                        printf("Note pitch %d vel %d\n", pitch, vel);
+                    }
                     msgcnt++;
                     if (pitch != expected_pitch || expected_on != is_on) {
                         printf("Unexpected note-on: pitch %d vel %d, "
-                               "expected: pitch %d Note%s\n", pitch,
-                               Pm_MessageData2(buffer[0].message),
+                               "expected: pitch %d Note%s\n", pitch, vel,
                                expected_pitch, (expected_on ? "On" : "Off"));
                     }
                     if (is_on) {
@@ -121,8 +130,10 @@ void fastrcv_test()
 
 void show_usage()
 {
-    printf("Usage: fastrcv [-h] [-d device], where\n"
-           "device is the PortMidi device number, -h means help.\n");
+    printf("Usage: fastrcv [-h] [-v] [-d device], where\n"
+           "device is the PortMidi device number,\n"
+           "-h means help,\n"
+           "-v means verbose (print messages)\n");
 }
 
 int main(int argc, char *argv[])
@@ -145,6 +156,8 @@ int main(int argc, char *argv[])
         for (i = 1; i < argc; i++) {
             if (strcmp(argv[i], "-h") == 0) {
                 show_usage();
+            } else if (strcmp(argv[i], "-v") == 0) {
+                verbose = TRUE;
             } else if (strcmp(argv[i], "-d") == 0) {
                 i = i + 1;
                 deviceno = atoi(argv[i]);
@@ -171,7 +184,7 @@ int main(int argc, char *argv[])
             } else {
                 deflt = "";
             }                      
-            printf(" (%soutput)", deflt);
+            printf(" (%sinput)", deflt);
             printf("\n");
         }
     }

@@ -282,6 +282,19 @@ static void winmm_get_host_error(PmInternal *midi, char * msg, UINT len)
     }
 }
 
+static improve_winerr(int pm_hosterror, char *message)
+{
+    if (pm_hosterror == MMSYSERR_NOMEM) {
+        /* add explanation to Window's confusing error message */
+        /* if there's room: */
+        if (PM_HOST_ERROR_MSG_LEN - strlen(pm_hosterror_text) > 60) {
+            strcat(pm_hosterror_text, " Probably this MIDI device is open "
+                                      "in another application.");
+        }
+    }
+}
+
+
 
 /*
 =============================================================================
@@ -540,6 +553,7 @@ no_memory:
         int err = midiInGetErrorText(pm_hosterror, (char *) pm_hosterror_text,
                                      PM_HOST_ERROR_MSG_LEN);
         assert(err == MMSYSERR_NOERROR);
+        improve_winerr(pm_hosterror, (char *) pm_hosterror_text);
         return pmHostError;
     }
     /* if !pm_hosterror, then the error must be pmInsufficientMemory */
@@ -830,6 +844,7 @@ no_memory:
         int err = midiOutGetErrorText(pm_hosterror, (char *) pm_hosterror_text,
                                       PM_HOST_ERROR_MSG_LEN);
         assert(err == MMSYSERR_NOERROR);
+        improve_winerr(pm_hosterror, (char *) pm_hosterror_text);
         return pmHostError;
     }
     return pmInsufficientMemory;

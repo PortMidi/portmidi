@@ -109,14 +109,14 @@ void fast_test()
     if (expired_timestamps) {
         now = now - 2 * latency;
     }
-    while (((PmTimestamp) (now - start)) < duration *  1000) {
+    while (((PmTimestamp) (now - start)) < duration *  1000 || pitch != 60) {
         /* how many messages do we send? Total should be
          *     (elapsed * rate) / 1000
          */
         int send_total = (((PmTimestamp) ((now - start))) * msgrate) / 1000;
         /* always send until pitch would be 60 so if we run again, the
            next pitch (60) will be expected */
-        while (msgcnt < send_total || pitch != 60) {
+        if (msgcnt < send_total) {
             if ((msgcnt & 1) == 0) {
                 Pm_WriteShort(midi, now, Pm_Message(0x90, pitch, 100));
             } else {

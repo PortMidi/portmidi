@@ -508,7 +508,9 @@ static PmError midi_out_open(PmInternal *midi, void *driverInfo)
     info = create_macosxcm_info(FALSE, FALSE);
     if (midi->device_id <= MAX_IAC_NUM) {
         info->isIACdevice = isIAC[midi->device_id];
+#ifdef CM_DEBUG
         printf("midi_out_open isIACdevice %d\n", info->isIACdevice);
+#endif
     }
     midi->api_info = info;
     if (!info) {
@@ -876,7 +878,9 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal, int *isIAC)
             char s[32]; /* driver name may truncate, but that's OK */
             CFStringGetCString(str, s, 31, kCFStringEncodingUTF8);
             s[31] = 0;  /* make sure it is terminated just to be safe */
+#ifdef CM_DEBUG
             printf("driver %s\n", s);
+#endif
             *isIAC = (strcmp(s, "com.apple.AppleMIDIIACDriver") == 0);
         }
     }
@@ -931,7 +935,9 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal, int *isIAC)
     // DEBUG:
     char cstr[80];
     CFStringGetCString(result, cstr, 80, kCFStringEncodingUTF8);
+#ifdef CM_DEBUG
     printf("    EndpointName %s\n", cstr);
+#endif
     return result;
 }
 

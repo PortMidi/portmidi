@@ -20,7 +20,6 @@
 #include "string.h"
 #include "assert.h"
 
-#define OUTPUT_BUFFER_SIZE 0
 #define DRIVER_INFO NULL
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
 
@@ -81,12 +80,16 @@ void fast_test()
     TIME_START;
 
     /* open output device */
+    /* output buffer size should be a little more than
+       msgrate * latency / 1000. PortMidi will guarantee
+       a minimum of latency / 2 */
+    int buffer_size = msgrate * latency / 900;
     if (deviceno == Pm_CountDevices()) {
         err = Pm_CreateVirtualOutput(&midi, "fast", NULL, DRIVER_INFO,
-                          OUTPUT_BUFFER_SIZE, get_time, NULL, latency);
+                                     buffer_size, get_time, NULL, latency);
         pause = TRUE;
     } else {
-        err = Pm_OpenOutput(&midi, deviceno, DRIVER_INFO, OUTPUT_BUFFER_SIZE, 
+        err = Pm_OpenOutput(&midi, deviceno, DRIVER_INFO, buffer_size,
                             get_time, NULL, latency);
     }
     if (err == pmHostError) {
@@ -115,6 +118,7 @@ void fast_test()
     /* every 10ms send on/off pairs at timestamps set to current time */
     PmTimestamp now = get_time(NULL);
     int msgcnt = 0;
+    int polling_count = 0;
     int pitch = 60;
     int printtime = 1000;
     /* if expired_timestamps, we want to send timestamps that have
@@ -125,6 +129,7 @@ void fast_test()
     if (expired_timestamps) {
         now = now - 2 * latency;
     }
+
     while (((PmTimestamp) (now - start)) < duration *  1000 || pitch != 60) {
         /* how many messages do we send? Total should be
          *     (elapsed * rate) / 1000
@@ -142,12 +147,14 @@ void fast_test()
             }
             msgcnt += 1;
             if (((PmTimestamp) (now - start)) >= printtime) {
-                printf("%d at %dms\n", msgcnt, now - start);
+                printf("%d at %dms, polling count %d\n", msgcnt, now - start,
+                       polling_count);
                 fflush(stdout); /* make sure message goes to console */
                 printtime += 1000; /* next msg in 1s */
             }
         }
         now = get_time(NULL);
+        polling_count++;
     }
     /* close device (this not explicitly needed in most implementations) */
     printf("ready to close and terminate... (type RETURN):");

@@ -355,7 +355,12 @@ PMEXPORT const PmDeviceInfo* Pm_GetDeviceInfo(PmDeviceID id);
     specifies the number of output events to be buffered waiting for output. 
     (In some cases -- see below -- PortMidi does not buffer output at all
     and merely passes data to a lower-level API, in which case buffersize
-    is ignored.)
+    is ignored.) Since MIDI speeds now vary from 1 to 50 or more messages
+    per ms (over USB), put some thought into this number. E.g. if latency
+    is 20ms and you want to burst 100 messages in that time (5000 messages
+    per second), you should set the buffersize to 100. The default on 
+    Windows assumes an average rate of 500 messages per second and in this
+    example, output would be slowed waiting for free buffers.
     
     latency is the delay in milliseconds applied to timestamps to determine 
     when the output should actually occur. (If latency is < 0, 0 is assumed.) 

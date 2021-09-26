@@ -1,4 +1,4 @@
-README.txt - for pm_test directory
+EADME.txt - for pm_test directory
 
 These are all test programs for PortMidi
 
@@ -73,7 +73,7 @@ Latency in ms: >>300
 enter your choice... >>7
 Type output number: >>2  [pick a working output device]
 ready to send program 1 change... (type ENTER): >> [type ENTER]
-[hear ~40 notes, exactly 4 notes per second, no jitter]
+[hear 80 notes, exactly 4 notes per second, no jitter]
 
 11. ./latency [no MIDI, histogram]
 Choose timer period (in ms, >= 1): >>1
@@ -112,6 +112,7 @@ Midi output should be sent every __ callback iterations: >>50
 15. ./mm [test with device input]
 Type input device number: >>6  [pick a working input device]
 [play some notes, see notes printed]
+>>q [Type q ENTER when finished to exit]
 
 16. ./midithread -i 6 -o 2 [use working input/output device numbers]
 >>5  [enter a transposition number]
@@ -147,7 +148,7 @@ Type input device number: >>6  [pick a working input device]
  2 sec delay to the output device; program terminates in 60 seconds]
 >> [ENTER to exit]
 
-19. ./recvvirtual [in one shell]
+19. ./recvvirtual [in one shell, macOS and Linux only]
     ./testio [in another shell]
 [For testio application:]
     Latency in ms: >>0
@@ -159,7 +160,7 @@ Type input device number: >>6  [pick a working input device]
 [For recvvirtual application:]
     >> [ENTER to quit]
 
-20. ./sendvirtual [in one shell]
+20. ./sendvirtual [in one shell, macOS and Linux only]
     ./mm [in another shell]
 [For mm application:]
     Type input device number: >>10 [select the "portmidi" device]
@@ -232,7 +233,7 @@ Check output of fastrcv: there should be no errors, just msg/sec.]
 
 Check output of fastrcv: there should be no errors, just msg/sec.]
 
-25. ./fast [virtual output port, latency = 0]
+25. ./fast [virtual output port, latency = 0, macOS and Linux only]
     ./fastrcv [in another shell]
 [Start fast first:]
     Latency in ms: >>0
@@ -250,7 +251,7 @@ Check output of fastrcv: there should be no errors, just msg/sec.]
 
 Check output of fastrcv: there should be no errors, just msg/sec.]
 
-26. ./fast [virtual output port, latency > 0]
+26. ./fast [virtual output port, latency > 0, macOS and Linux only]
     ./fastrcv [in another shell]
 [Start fast first:]
     Latency in ms: >>30 [Note for ALSA, use latency * msgs/ms < 400]
@@ -268,7 +269,7 @@ Check output of fastrcv: there should be no errors, just msg/sec.]
 
 Check output of fastrcv: there should be no errors, just msg/sec.]
 
-27. ./fast [latency = 0]
+27. ./fast [latency = 0, macOS and Linux only]
     ./fastrcv [virtual input port, in another shell]
 [In fastrcv:]
     Input device number: >>8 [enter number listed for "Create virtual 
@@ -283,7 +284,7 @@ Check output of fastrcv: there should be no errors, just msg/sec.]
 
 Check output of fastrcv: there should be no errors, just msg/sec.]
 
-28. ./fast [latency > 0]
+28. ./fast [latency > 0, macOS and Linux only]
     ./fastrcv [virtual input port, in another shell]
 [In fastrcv:]
     Input device number: >>8 [enter number listed for "Create virtual 
@@ -298,7 +299,7 @@ Check output of fastrcv: there should be no errors, just msg/sec.]
 
 Check output of fastrcv: there should be no errors, just msg/sec.]
 
-29. ./midithru -v -n [virtual input and output]
+29. ./midithru -v -n [virtual input and output, macOS and Linux only]
     ./fast [latency = 0]
     ./fastrcv [in another shell]
 [Start midithru first, it will run for 60 seconds]

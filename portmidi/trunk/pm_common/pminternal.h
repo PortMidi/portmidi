@@ -140,7 +140,7 @@ typedef struct pm_internal_struct {
      */
     unsigned char *fill_base; /* addr of ptr to sysex data */
     uint32_t *fill_offset_ptr; /* offset of next sysex byte */
-    int32_t fill_length; /* how many sysex bytes to write */
+    uint32_t fill_length; /* how many sysex bytes to write */
 } PmInternal;
 
 

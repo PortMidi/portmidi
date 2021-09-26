@@ -288,6 +288,7 @@ static improve_winerr(int pm_hosterror, char *message)
         /* add explanation to Window's confusing error message */
         /* if there's room: */
         if (PM_HOST_ERROR_MSG_LEN - strlen(pm_hosterror_text) > 60) {
+#pragma warning(suppress: 4996)  // don't use suggested strcat_s
             strcat(pm_hosterror_text, " Probably this MIDI device is open "
                                       "in another application.");
         }

@@ -508,6 +508,7 @@ static PmError midi_out_open(PmInternal *midi, void *driverInfo)
     info = create_macosxcm_info(FALSE, FALSE);
     if (midi->device_id <= MAX_IAC_NUM) {
         info->isIACdevice = isIAC[midi->device_id];
+        printf("midi_out_open isIACdevice %d\n", info->isIACdevice);
     }
     midi->api_info = info;
     if (!info) {
@@ -556,13 +557,19 @@ static PmError midi_create_virtual(struct pm_internal_struct *midi,
                                virtual_read_callback, midi, &endpoint);
     } else {
         macHostError = MIDISourceCreate(client, nameRef, &endpoint);
+        /* based on experiments, virtual outputs are subject to the
+         * same rate limiting as IAC Bus ports. Setting isIACdevice
+         * turns on rate limiting for this output port. Note that
+         * virtual inputs are not rate limited.
+         */
+        info->isIACdevice = TRUE;
     }
     CFRelease(nameRef);
 
     if (macHostError != noErr) {
         pm_hosterror = macHostError;
         sprintf(pm_hosterror_text, "Host error %ld: %s() in "
-                "midi_in_create_virtual()", (long) macHostError, 
+                "midi_create_virtual()", (long) macHostError, 
                 (is_input ? "MIDIDestinationCreate" : "MIDISourceCreate"));
         pm_free(info);
         return pmHostError;
@@ -869,6 +876,7 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal, int *isIAC)
             char s[32]; /* driver name may truncate, but that's OK */
             CFStringGetCString(str, s, 31, kCFStringEncodingUTF8);
             s[31] = 0;  /* make sure it is terminated just to be safe */
+            printf("driver %s\n", s);
             *isIAC = (strcmp(s, "com.apple.AppleMIDIIACDriver") == 0);
         }
     }
@@ -920,6 +928,10 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal, int *isIAC)
             CFRelease(str);
         }
     }
+    // DEBUG:
+    char cstr[80];
+    CFStringGetCString(result, cstr, 80, kCFStringEncodingUTF8);
+    printf("    EndpointName %s\n", cstr);
     return result;
 }
 
@@ -956,7 +968,8 @@ static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint, int *isIAC)
                     if (connObjectType == kMIDIObjectType_ExternalSource  ||
                         connObjectType == kMIDIObjectType_ExternalDestination) {
                         // Connected to an external device's endpoint (>=10.3)
-                        str = EndpointName((MIDIEndpointRef)(connObject), true, isIAC);
+                        str = EndpointName((MIDIEndpointRef)(connObject), true,
+                                           isIAC);
                     } else {
                         // Connected to an external device (10.2) 
                         // (or something else, catch-all)
@@ -1006,7 +1019,6 @@ char *cm_get_full_endpoint_name(MIDIEndpointRef endpoint, int *isIAC)
     return pmname;
 }
 
- 
 
 pm_fns_node pm_macosx_in_dictionary = {
     none_write_short,

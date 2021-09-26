@@ -232,7 +232,7 @@ void exit_with_message(char *msg)
 }
 
 
-void initialize(int input, int output)
+void initialize(int input, int output, int virtual)
 /* set up midi processing thread and open midi streams */
 {
     /* note that it is safe to call PortMidi from the main thread for
@@ -262,36 +262,57 @@ void initialize(int input, int output)
     
     Pm_Initialize();
 
-    output = (output < 0 ? Pm_GetDefaultOutputDeviceID() : output);
-    info = Pm_GetDeviceInfo(output);
-    if (info == NULL) {
-        printf("Could not open default output device (%d).", output);
-        exit_with_message("");
+    if (output < 0) {
+        if (!virtual) {
+            output = Pm_GetDefaultOutputDeviceID();
+        }
     }
-    printf("Opening output device %s %s\n", info->interf, info->name);
+    if (output >= 0) {
+        info = Pm_GetDeviceInfo(output);
+        if (info == NULL) {
+            printf("Could not open default output device (%d).", output);
+            exit_with_message("");
+        }
 
-    /* use zero latency because we want output to be immediate */
-    Pm_OpenOutput(&midi_out, 
-                  output, 
-                  NULL /* driver info */,
-                  OUT_QUEUE_SIZE,
-                  &midithru_time_proc,
-                  NULL /* time info */,
-                  0 /* Latency */);
+        printf("Opening output device %s %s\n", info->interf, info->name);
 
-    input = (input < 0 ? Pm_GetDefaultInputDeviceID() : input);
-    info = Pm_GetDeviceInfo(input);
-    if (info == NULL) {
-        printf("Could not open default input device (%d).", input);
-        exit_with_message("");
+        /* use zero latency because we want output to be immediate */
+        Pm_OpenOutput(&midi_out,
+                      output,
+                      NULL /* driver info */,
+                      OUT_QUEUE_SIZE,
+                      &midithru_time_proc,
+                      NULL /* time info */,
+                      0 /* Latency */);
+    } else { /* send to virtual port */
+        printf("Opening virtual output device \"midithru\"\n");
+        Pm_CreateVirtualOutput(&midi_out, "midithru", NULL, NULL,
+                         OUT_QUEUE_SIZE, &midithru_time_proc, NULL, 0);
     }
-    printf("Opening input device %s %s\n", info->interf, info->name);
-    Pm_OpenInput(&midi_in, 
-                 input, 
-                 NULL /* driver info */,
-                 0 /* use default input size */,
-                 &midithru_time_proc,
-                 NULL /* time info */);
+    if (input < 0) {
+        if (!virtual) {
+            input = Pm_GetDefaultInputDeviceID();
+        }
+    }
+    if (input >= 0) {
+        info = Pm_GetDeviceInfo(input);
+        if (info == NULL) {
+            printf("Could not open default input device (%d).", input);
+            exit_with_message("");
+        }
+        
+        printf("Opening input device %s %s\n", info->interf, info->name);
+        Pm_OpenInput(&midi_in,
+                     input,
+                     NULL /* driver info */,
+                     0 /* use default input size */,
+                     &midithru_time_proc,
+                     NULL /* time info */);
+    } else { /* receive from virtual port */
+        printf("Opening virtual input device \"midithru\"\n");
+        Pm_CreateVirtualInput(&midi_in, "midithru", NULL, NULL,
+                              0, &midithru_time_proc, NULL);
+    }
     /* Note: if you set a filter here, then this will filter what goes
        to the MIDI THRU port. You may not want to do this.
      */
@@ -334,9 +355,14 @@ int main(int argc, char *argv[])
     PmEvent buffer;
     int i;
     int input = -1, output = -1;
+    int virtual = FALSE;
+    int delay_enable = TRUE;
 
-    printf("Usage: midithru [-i input] [-o output]\n"
-           "where input and output are portmidi device numbers\n");
+    printf("Usage: midithru [-i input] [-o output] [-v] [-n]\n"
+           "where input and output are portmidi device numbers\n"
+           "if -v and input and/or output are not specified,\n"
+           "then virtual ports are created and used instead.\n"
+           "-n turns off the default MIDI delay effect.\n");
     for (i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-i") == 0) {
             i++;
@@ -346,16 +372,21 @@ int main(int argc, char *argv[])
             i++;
             output = atoi(argv[i]);
             printf("Output device number: %d\n", output);
+        } else if (strcmp(argv[i], "-v") == 0) {
+            virtual = TRUE;
+        } else if (strcmp(argv[i], "-n") == 0) {
+            delay_enable = FALSE;
+            printf("delay_effect is disabled\n");
         } else {
             return -1;
         }
     }
     printf("begin PortMidi midithru program...\n");
 
-    initialize(input, output); /* set up and start midi processing */
+    initialize(input, output, virtual); /* set up and start midi processing */
 	
     printf("This program will run for 60 seconds, "
-           "or until you play middle C,\n"
+           "or until you play B below middle C,\n"
            "All input is sent immediately, implementing software MIDI THRU.\n"
            "Also, all input is echoed with a 2 second delay.\n");
 
@@ -369,11 +400,13 @@ int main(int argc, char *argv[])
         while (Pm_Dequeue(in_queue, &buffer) == 1) {
             /* printf("timestamp %d\n", buffer.timestamp); */
             /* printf("message %x\n", buffer.message); */
-            buffer.timestamp = buffer.timestamp + 2000; /* delay */
-            Pm_Enqueue(out_queue, &buffer);
-            /* play middle C to break out of loop */
+            if (delay_enable) {
+                buffer.timestamp = buffer.timestamp + 2000; /* delay */
+                Pm_Enqueue(out_queue, &buffer);
+            }
+            /* play B3 to break out of loop */
             if (Pm_MessageStatus(buffer.message) == 0x90 &&
-                Pm_MessageData1(buffer.message) == 60) {
+                Pm_MessageData1(buffer.message) == 59) {
                 goto quit_now;
             }
         }

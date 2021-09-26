@@ -61,12 +61,13 @@ void fastrcv_test()
     TIME_START;
 
     /* open output device */
-    Pm_OpenInput(&midi, 
-                 deviceno, 
-                 DRIVER_INFO,
-                 INPUT_BUFFER_SIZE, 
-                 TIME_PROC,
-                 TIME_INFO);
+    if (deviceno == Pm_CountDevices()) {
+        Pm_CreateVirtualInput(&midi, "fastrcv", NULL, DRIVER_INFO,
+                              INPUT_BUFFER_SIZE, TIME_PROC, TIME_INFO);
+    } else {
+        Pm_OpenInput(&midi, deviceno, DRIVER_INFO, INPUT_BUFFER_SIZE, 
+                     TIME_PROC, TIME_INFO);
+    }
     printf("Midi Input opened.\n");
 
     /* wait a sec after printing previous line */
@@ -156,6 +157,8 @@ int main(int argc, char *argv[])
 {
     int default_in;
     int default_out;
+    char *deflt;
+
     int i = 0, n = 0;
     int test_input = 0, test_output = 0, test_both = 0, somethingStupid = 0;
     int stream_test = 0;
@@ -188,7 +191,6 @@ int main(int argc, char *argv[])
     default_in = Pm_GetDefaultInputDeviceID();
     default_out = Pm_GetDefaultOutputDeviceID();
     for (i = 0; i < Pm_CountDevices(); i++) {
-        char *deflt;
         const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
         if (!info->output) {
             printf("%d: %s, %s", i, info->interf, info->name);
@@ -200,10 +202,17 @@ int main(int argc, char *argv[])
             } else {
                 deflt = "";
             }                      
-            printf(" (%sinput)", deflt);
-            printf("\n");
+            printf(" (%sinput)\n", deflt);
         }
     }
+    printf("%d: Create virtual port named \"fastrcv\"", i);
+    if (i == deviceno) {
+        device_valid = TRUE;
+        deflt = "selected ";
+    } else {
+        deflt = "";
+    }        
+    printf(" (%sinput)\n", deflt);
     
     if (!device_valid) {
         deviceno = get_number("Input device number: ");

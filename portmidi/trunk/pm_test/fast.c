@@ -73,21 +73,37 @@ PmTimestamp get_time(void *info)
 void fast_test()
 {
     PmStream * midi;
-	char line[80];
+    char line[STRING_MAX];
+    int pause = FALSE;  /* pause if this is a virtual output port */
+    PmError err;
 
     /* It is recommended to start timer before PortMidi */
     TIME_START;
 
     /* open output device */
-    Pm_OpenOutput(&midi, 
-                  deviceno, 
-                  DRIVER_INFO,
-                  OUTPUT_BUFFER_SIZE, 
-                  get_time,
-                  NULL,
-                  latency);
+    if (deviceno == Pm_CountDevices()) {
+        err = Pm_CreateVirtualOutput(&midi, "fast", NULL, DRIVER_INFO,
+                          OUTPUT_BUFFER_SIZE, get_time, NULL, latency);
+        pause = TRUE;
+    } else {
+        err = Pm_OpenOutput(&midi, deviceno, DRIVER_INFO, OUTPUT_BUFFER_SIZE, 
+                            get_time, NULL, latency);
+    }
+    if (err == pmHostError) {
+        Pm_GetHostErrorText(line, STRING_MAX);
+        printf("PortMidi found host error...\n  %s\n", line);
+        goto done;
+    } else if (err < 0) {
+        printf("PortMidi call failed...\n  %s\n", Pm_GetErrorText(err));
+        goto done;
+    }
     printf("Midi Output opened with %ld ms latency.\n", (long) latency);
-
+    if (pause) {
+        char line[STRING_MAX];
+        printf("Pausing so you can connect a receiver to the newly created\n"
+               "    \"fast\" port. Type ENTER to proceed: ");
+        fgets(line, STRING_MAX, stdin);
+    }
     /* wait a sec after printing previous line */
     PmTimestamp start = get_time(NULL) + 1000;
     while (start > get_time(NULL)) {
@@ -138,6 +154,7 @@ void fast_test()
     fgets(line, STRING_MAX, stdin);
 	
     Pm_Close(midi);
+  done:
     Pm_Terminate();
     printf("done closing and terminating...\n");
 }
@@ -161,6 +178,7 @@ int main(int argc, char *argv[])
 {
     int default_in;
     int default_out;
+    char *deflt;
     int i = 0;
     int latency_valid = FALSE;
     int rate_valid = FALSE;
@@ -230,7 +248,6 @@ int main(int argc, char *argv[])
     default_in = Pm_GetDefaultInputDeviceID();
     default_out = Pm_GetDefaultOutputDeviceID();
     for (i = 0; i < Pm_CountDevices(); i++) {
-        char *deflt;
         const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
         if (info->output) {
             printf("%d: %s, %s", i, info->interf, info->name);
@@ -242,10 +259,17 @@ int main(int argc, char *argv[])
             } else {
                 deflt = "";
             }                      
-            printf(" (%soutput)", deflt);
-            printf("\n");
+            printf(" (%soutput)\n", deflt);
         }
     }
+    printf("%d: Create virtual port named \"fast\"", i);
+    if (i == deviceno) {
+        device_valid = TRUE;
+        deflt = "selected ";
+    } else {
+        deflt = "";
+    }        
+    printf(" (%soutput)\n", deflt);
     
     if (!device_valid) {
         deviceno = get_number("Output device number: ");

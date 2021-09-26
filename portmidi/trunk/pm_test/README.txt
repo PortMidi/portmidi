@@ -205,33 +205,115 @@ Type input  device number: >>0 [pick input device for loopback]
     Duration in seconds: >>10
     Output device number: >>0 [pick a non-hardware device if possible]
     sending output...
-[see message counts and times; on Linux you should get about 1000
- messages/second, e.g. the final count displayed could be 89992 at
- around 9000ms; on macOS you should get less than 10, e.g. the
- final count could be 60244 at 8205ms, and data will not be
- printed every 1000ms due to blocking; Windows does not have
- software ports, so data rate might be limited by device.
+[see message counts and times; on Linux you should get about 10000 
+ messages/s; on macOS you should get about 4666 messages/s; Windows 
+ does not have software ports, so data rate might be limited by the 
+ loopback device you use.]
 
 Check output of fastrcv: there should be no errors, just msg/sec.]
  
 24. ./fast [latency > 0]
     ./fastrcv [in another shell]
-[This is a speed check, especially for macOSX IAC bus connections,
- which are known to drop messages if you send messages too fast.
+[This is a speed check, especially for macOSX IAC bus connections, 
+ which are known to drop messages if you send messages too fast. 
  fast and fastrcv must use a loopback to function.]
 [In fastrcv:]
     Input device number: >>1 [pick a non-hardware device if possible]
 [In fast:]
     Latency in ms: >>30 [Note for ALSA, use latency * msgs/ms < 400]
-    Rate in messages per second: >>10000
-    Duration in seconds: >>10
+    Rate in messages per second: >>10000 
+    Duration in seconds: >>10 
     Output device number: >>0 [pick a non-hardware device if possible]
-    sending output...
-[see message counts and times; on Linux you should get about 10
- messages/ms, e.g. the final count displayed could be 89322 at
- around 9032ms; on macOS you should get less than 10, e.g. the
- final count could be 60244 at 8205ms, and data will not be
- printed every 1000ms due to blocking; Windows does not have
- software ports, so data rate might be limited by device.
+    sending output... 
+[see message counts and times; on Linux you should get about 10000 
+ messages/s; on macOS you should get about 4666 messages/s; Windows 
+ does not have software ports, so data rate might be limited by the 
+ loopback device you use.]
+
+Check output of fastrcv: there should be no errors, just msg/sec.]
+
+25. ./fast [virtual output port, latency = 0]
+    ./fastrcv [in another shell]
+[Start fast first:]
+    Latency in ms: >>0
+    Rate in messages per second: >>10000 
+    Duration in seconds: >>10 
+    Output device number: >>9 [enter number listed for "Create virtual
+                               port named 'fast' (output)"]
+    Pausing so you can connect a receiver to the newly created
+        "fast" port. Type ENTER to proceed: 
+[In fastrcv:]
+    Input device number: >>3 [pick the device named "fast (input)"]
+[In fast:]
+    >>  [type ENTER to start]
+[see message counts and times as above ]
+
+Check output of fastrcv: there should be no errors, just msg/sec.]
+
+26. ./fast [virtual output port, latency > 0]
+    ./fastrcv [in another shell]
+[Start fast first:]
+    Latency in ms: >>30 [Note for ALSA, use latency * msgs/ms < 400]
+    Rate in messages per second: >>10000 
+    Duration in seconds: >>10 
+    Output device number: >>9 [enter number listed for "Create virtual
+                               port named 'fast' (output)"]
+    Pausing so you can connect a receiver to the newly created
+        "fast" port. Type ENTER to proceed: 
+[In fastrcv:]
+    Input device number: >>3 [pick the device named "fast (input)"]
+[In fast:]
+    >>  [type ENTER to start]
+[see message counts and times as above ]
+
+Check output of fastrcv: there should be no errors, just msg/sec.]
+
+27. ./fast [latency = 0]
+    ./fastrcv [virtual input port, in another shell]
+[In fastrcv:]
+    Input device number: >>8 [enter number listed for "Create virtual 
+                              port named 'fastrcv' (input)"]
+[In fast:]
+    Latency in ms: >>0
+    Rate in messages per second: >>10000 
+    Duration in seconds: >>10 
+    Output device number: >>7 [pick the device named "fastrcv (output)"]
+    sending output... 
+[see message counts and times as above ]
+
+Check output of fastrcv: there should be no errors, just msg/sec.]
+
+28. ./fast [latency > 0]
+    ./fastrcv [virtual input port, in another shell]
+[In fastrcv:]
+    Input device number: >>8 [enter number listed for "Create virtual 
+                              port named 'fastrcv' (input)"]
+[In fast:]
+    Latency in ms: >>30 [Note for ALSA, use latency * msgs/ms < 400]
+    Rate in messages per second: >>10000 
+    Duration in seconds: >>10 
+    Output device number: >>7 [pick the device named "fastrcv (output)"]
+    sending output... 
+[see message counts and times as above ]
+
+Check output of fastrcv: there should be no errors, just msg/sec.]
+
+29. ./midithru -v -n [virtual input and output]
+    ./fast [latency = 0]
+    ./fastrcv [in another shell]
+[Start midithru first, it will run for 60 seconds]
+[In fastrcv:]
+    Input device number: >>3 [pick the device named 
+                              port named "midithru (input)"]
+[Start fast first:]
+    Latency in ms: >>0
+    Rate in messages per second: >>10000 
+    Duration in seconds: >>10 
+    Output device number: >>8 [pick the device named "midithru (output)"]
+    sending output... 
+[see message counts and times as above, on Mac, output from fast to
+ midithru AND output from midithru to fastrcv are rate limited, so
+ as in other tests, it will take more than 10s to receive all the
+ messages and the receiving message rate will be about 4666 messages/second]
 
 Check output of fastrcv: there should be no errors, just msg/sec.]

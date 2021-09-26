@@ -82,6 +82,8 @@ void fastrcv_test()
     int expected_pitch = 60;
     int expected_on = TRUE;
     int report_time = Pt_Time() + 1000;  /* report every 1s */
+    PmTimestamp last_timestamp = -1;
+    PmTimestamp last_delta = -1;
     while (TRUE) {
         PmTimestamp now = Pt_Time();
         status = Pm_Poll(midi);
@@ -116,11 +118,25 @@ void fastrcv_test()
                         expected_pitch = (pitch + 1) % 72;
                         if (expected_pitch < 60) expected_pitch = 60;
                     }
+                    if (last_timestamp >= 0) {
+                        last_delta = buffer[0].timestamp - last_timestamp;
+                    }
+                    last_timestamp = buffer[0].timestamp;
                 }
             }
         }
         if (now >= report_time) {
-            printf("%d msgs/sec\n", msgcnt);
+            printf("%d msgs/sec", msgcnt);
+            /* if available, print the last timestamp and last delta time */
+            if (last_timestamp >= 0) {
+                printf(" last timestamp %d", (int) last_timestamp);
+                last_timestamp = -1;
+            }
+            if (last_delta >= 0) {
+                printf(" last delta time %d", (int) last_delta);
+                last_delta = -1;
+            }
+            printf("\n");
             report_time += 1000;
             msgcnt = 0;
         }

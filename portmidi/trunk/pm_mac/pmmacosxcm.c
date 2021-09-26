@@ -41,31 +41,85 @@
 #include <unistd.h>
 
 #define PACKET_BUFFER_SIZE 1024
-/* maximum overall data rate (OS X limit is 15000 bytes/second) */
+/* maximum overall data rate (OS X limits MIDI rate in case there
+ * is a cycle among IAC ports.
+ */
 #define MAX_BYTES_PER_S 14000
 
 /* Apple reports that packets are dropped when the MIDI bytes/sec
-   exceeds 15000. This is computed by "tracking the number of MIDI 
-   bytes scheduled into 1-second buckets over the last six seconds
-   and averaging these counts." 
+   exceeds 15000. This is computed by "tracking the number of MIDI
+   bytes scheduled into 1-second buckets over the last six seconds and
+   averaging these counts." This is confirmed in recent measurements
+   (2021) with pm_test/fast.c and pm_test/fastrcv.c test programs show
+   problems begin above 4900 (3 bytes each) messages/second. We use
+   14000 rather than 15000 to avoid getting too close to the limit.
+ 
+   Experiments show this restriction applies to IAC bus MIDI, but not
+   to hardware interfaces. (I measured 0.5 Mbps each way over USB to a
+   Teensy 3.2 microcontroller implementing a USB MIDI loopback. Maybe
+   it would get 1 Mbps one-way, which would make the CoreMIDI
+   restriction 8x slower than USB. Maybe other USB MIDI
+   implementations are faster -- USB top speed for other protocols is
+   certainly higher than 1 Mbps!)
 
-   This is apparently based on timestamps, not on real time, so 
-   we have to avoid constructing packets that schedule high speed
-   output even if the actual writes are delayed (which was my first
-   solution).
+   This is apparently based on timestamps, not on real time, so we
+   have to avoid constructing packets that schedule high speed output
+   regardless of when writes occur. The solution is to alter
+   timestamps to limit data rates.  This adds a slight time
+   distortion, e.g. an 11 note chord with all notes on the same
+   timestamp will be altered so that the last message is delayed by 30
+   bytes/14000 bps = 2.1ms. Note that this is about 5x MIDI speed, but
+   at least 4x slower than USB MIDI.
+ 
+   Altering timestamps creates another problem, which is that a sender
+   that exceeds the maximum rate can queue up an unbounded number of
+   messages. With non-USB MIDI devices, you could be writing 5x faster
+   to CoreMIDI than the hardware interface can send, causing an
+   unbounded backlog. There seems to be no general solution, so
+   PortMidi does not guarantee delivery if, over the long run, you
+   write faster than the hardware can send.
+   
+   The LIMIT_RATE symbol, if defined (which is the default), enables
+   code to modify timestamps for output to an IAC device as follows:
 
-   The LIMIT_RATE symbol, if defined, enables code to modify 
-   timestamps as follows:
-     After each packet is formed, the next allowable timestamp is
-     computed as this_packet_time + this_packet_len * delay_per_byte
+     Before a packet is formed, the message timestamp is set to the
+     maximum of the PortMidi timestamp (converted to CoreMIDI time)
+     and min_next_time. After each send, min_next_time is updated to
+     the packet time + packet length * delay_per_byte, which limits
+     the scheduled bytes-per-second. Also, after each packet list
+     flush, min_next_time is updated to the maximum of min_next_time
+     and the real time, which prevents many bytes to be scheduled in
+     the past. (We could more directly just say packets are never
+     scheduled in the past, but we prefer to get the current time -- a
+     system call -- only when we perform the more expensive operation
+     of flushing packets, so that's when we update min_next_time to
+     the current real time. If we are sending a lot, we have to flush
+     a lot, so the time will be updated frequently when it matters.)
 
-     This is the minimum timestamp allowed in the next packet. 
-
-     Note that this distorts accurate timestamps somewhat.
+     This possible adjustment to timestamps can distort accurate
+     timestamps by up to 214 us per 3-byte MIDI message.
+ 
+   Nothing blocks the sender from queueing up an arbitrary number of
+   messages. Timestamps should be used for accurate timing by sending
+   timestamped messages a little ahead of real time, not for
+   scheduling an entire MIDI sequence at once!
  */
 #define LIMIT_RATE 1
 
 #define SYSEX_BUFFER_SIZE 128
+/* What is the maximum PortMidi device number for an IAC device? A
+ * cleaner design would be to not use the endpoint as our device
+ * representation. Instead, we could have a private extensible struct
+ * to keep all device information, including whether the device is
+ * implemented with the AppleMIDIIACDriver, which we need because we
+ * have to limit the data rate to this particular driver to avoid
+ * dropping messages. Rather than rewrite a lot of code, I am just
+ * allocating 64 bytes to flag which devices are IAC ones. If an IAC
+ * device number is greater than 63, PortMidi will fail to limit
+ * writes to it, but will not complain and will not access memory
+ * outside the 64-element array of char.
+ */
+#define MAX_IAC_NUM 63
 
 #define VERBOSE_ON 1
 #define VERBOSE if (VERBOSE_ON)
@@ -86,6 +140,7 @@
 static MIDIClientRef	client = NULL_REF; 	/* Client handle to the MIDI server */
 static MIDIPortRef	portIn = NULL_REF;	/* Input port handle */
 static MIDIPortRef	portOut = NULL_REF;	/* Output port handle */
+static char             isIAC[MAX_IAC_NUM + 1]; /* is device an IAC device */
 
 extern pm_fns_node pm_macosx_in_dictionary;
 extern pm_fns_node pm_macosx_out_dictionary;
@@ -94,7 +149,6 @@ typedef struct coremidi_info_struct {
     int is_virtual;     /* virtual device (TRUE) or actual device (FALSE)? */
     PmTimestamp sync_time; /* when did we last determine delta? */
     UInt64 delta;	/* difference between stream time and real time in ns */
-    UInt64 last_time;	/* last output time in host units*/
     int first_message;  /* tells midi_write to sychronize timestamps */
     int sysex_mode;     /* middle of sending sysex */
     uint32_t sysex_word; /* accumulate data when receiving sysex */
@@ -109,9 +163,8 @@ typedef struct coremidi_info_struct {
     /* allow for running status (is running status possible here? -rbd): -cpr */
     unsigned char last_command; 
     int32_t last_msg_length;
-    /* limit midi data rate (a CoreMidi requirement): */
     UInt64 min_next_time; /* when can the next send take place? */
-    int byte_count; /* how many bytes in the next packet list? */
+    int isIACdevice;
     Float64 us_per_host_tick; /* host clock frequency, units of min_next_time */
     UInt64 host_ticks_per_byte; /* host clock units per byte at maximum rate */
 } coremidi_info_node, *coremidi_info_type;
@@ -120,7 +173,7 @@ typedef struct coremidi_info_struct {
 MIDITimeStamp timestamp_pm_to_cm(PmTimestamp timestamp);
 PmTimestamp timestamp_cm_to_pm(MIDITimeStamp timestamp);
 
-char* cm_get_full_endpoint_name(MIDIEndpointRef endpoint);
+char* cm_get_full_endpoint_name(MIDIEndpointRef endpoint, int *isIAC);
 
 
 static int midi_length(int32_t msg)
@@ -167,7 +220,7 @@ static PmTimestamp midi_synchronize(PmInternal *midi)
 
 
 static void process_packet(MIDIPacket *packet, PmEvent *event, 
-                           PmInternal *midi, coremidi_info_type m)
+                           PmInternal *midi, coremidi_info_type info)
 {
     /* handle a packet of MIDI messages from CoreMIDI */
     /* there may be multiple short messages in one packet (!) */
@@ -176,9 +229,9 @@ static void process_packet(MIDIPacket *packet, PmEvent *event,
     while (remaining_length > 0) {
         if (cur_packet_data[0] == MIDI_SYSEX ||
             /* are we in the middle of a sysex message? */
-            (m->last_command == 0 &&
+            (info->last_command == 0 &&
              !(cur_packet_data[0] & MIDI_STATUS_MASK))) {
-            m->last_command = 0; /* no running status */
+            info->last_command = 0; /* no running status */
             unsigned int amt = pm_read_bytes(midi, cur_packet_data, 
                                              remaining_length, 
                                              event->timestamp);
@@ -188,7 +241,7 @@ static void process_packet(MIDIPacket *packet, PmEvent *event,
             /* this should never happen, because pm_read_bytes should
              * get and read all EOX bytes*/
             midi->sysex_in_progress = FALSE;
-            m->last_command = 0;
+            info->last_command = 0;
         } else if (cur_packet_data[0] & MIDI_STATUS_MASK) {
             /* compute the length of the next (short) msg in packet */
 	    unsigned int cur_message_length = midi_length(cur_packet_data[0]);
@@ -201,12 +254,12 @@ static void process_packet(MIDIPacket *packet, PmEvent *event,
 	    }
             if (cur_packet_data[0] < MIDI_SYSEX) {
                 /* channel messages set running status */
-                m->last_command = cur_packet_data[0];
-                m->last_msg_length = cur_message_length;
+                info->last_command = cur_packet_data[0];
+                info->last_msg_length = cur_message_length;
             } else if (cur_packet_data[0] < MIDI_CLOCK) {
                 /* system messages clear running status */
-                m->last_command = 0;
-                m->last_msg_length = 0;
+                info->last_command = 0;
+                info->last_msg_length = 0;
             }
 	    switch (cur_message_length) {
 	    case 1:
@@ -229,7 +282,7 @@ static void process_packet(MIDIPacket *packet, PmEvent *event,
 	    pm_read_short(midi, event);
 	    remaining_length -= cur_message_length;
 	    cur_packet_data += cur_message_length;
-	} else if (m->last_msg_length > remaining_length + 1) {
+	} else if (info->last_msg_length > remaining_length + 1) {
 	    /* we have running status, but not enough data */
 #ifdef DEBUG
 	    printf("PortMidi debug msg: not enough data in CoreMIDI packet");
@@ -237,26 +290,26 @@ static void process_packet(MIDIPacket *packet, PmEvent *event,
 	    /* since there's no more data, we're done */
 	    return;
 	} else { /* output message using running status */
-	    switch (m->last_msg_length) {
+	    switch (info->last_msg_length) {
 	    case 1:
-	        event->message = Pm_Message(m->last_command, 0, 0);
+	        event->message = Pm_Message(info->last_command, 0, 0);
 		break;
 	    case 2:
-	        event->message = Pm_Message(m->last_command, 
+	        event->message = Pm_Message(info->last_command,
 					    cur_packet_data[0], 0);
 		break;
 	    case 3:
-	        event->message = Pm_Message(m->last_command, 
+	        event->message = Pm_Message(info->last_command,
 					    cur_packet_data[0], 
 					    cur_packet_data[1]);
 		break;
 	    default:
 	        /* last_msg_length is invalid -- internal PortMIDI error */
-	        assert(m->last_msg_length == 1);
+	        assert(info->last_msg_length == 1);
 	    }
 	    pm_read_short(midi, event);
-	    remaining_length -= (m->last_msg_length - 1);
-	    cur_packet_data += (m->last_msg_length - 1);
+	    remaining_length -= (info->last_msg_length - 1);
+	    cur_packet_data += (info->last_msg_length - 1);
 	}
     }
 }
@@ -325,8 +378,6 @@ static void read_callback(const MIDIPacketList *newPackets, PmInternal *midi)
 static void device_read_callback(const MIDIPacketList *newPackets, 
                                  void *refCon, void *connRefCon)
 {
-    printf("device_read_callback refCon %ld connRefCon %ld\n", 
-           (long) refCon, (long) connRefCon);
     read_callback(newPackets, (PmInternal *) connRefCon);
 }
 
@@ -335,8 +386,6 @@ static void device_read_callback(const MIDIPacketList *newPackets,
 static void virtual_read_callback(const MIDIPacketList *newPackets, 
                                   void *refCon, void *connRefCon)
 {
-    printf("virtual_read_callback refCon %ld connRefCon %ld\n", 
-           (long) refCon, (long) connRefCon);
     read_callback(newPackets, (PmInternal *) refCon);
 }
 
@@ -344,31 +393,31 @@ static void virtual_read_callback(const MIDIPacketList *newPackets,
 /* allocate and initialize our internal coremidi connection info */
 static coremidi_info_type create_macosxcm_info(int is_virtual, int is_input)
 {
-    coremidi_info_type m = (coremidi_info_type)
+    coremidi_info_type info = (coremidi_info_type)
             pm_alloc(sizeof(coremidi_info_node));
-    if (!m) {
+    if (!info) {
         return NULL;
     }
-    m->is_virtual = is_virtual;
-    m->error[0] = 0;
-    m->callback_error[0] = 0;
-    m->sync_time = 0;
-    m->delta = 0;
-    m->last_time = 0;
-    m->first_message = TRUE;
-    m->sysex_mode = FALSE;
-    m->sysex_word = 0;
-    m->sysex_byte_count = 0;
-    m->packet = NULL;
-    m->last_command = 0;
-    m->last_msg_length = 0;
-    m->min_next_time = 0;
-    m->byte_count = 0;
-    m->us_per_host_tick = 1000000.0 / AudioGetHostClockFrequency();
-    m->host_ticks_per_byte = (UInt64) (1000000.0 /
-                                       (m->us_per_host_tick * MAX_BYTES_PER_S));
-    m->packetList = (is_input ? NULL : (MIDIPacketList *) m->packetBuffer);
-    return m;
+    info->is_virtual = is_virtual;
+    info->error[0] = 0;
+    info->callback_error[0] = 0;
+    info->sync_time = 0;
+    info->delta = 0;
+    info->first_message = TRUE;
+    info->sysex_mode = FALSE;
+    info->sysex_word = 0;
+    info->sysex_byte_count = 0;
+    info->packet = NULL;
+    info->last_command = 0;
+    info->last_msg_length = 0;
+    info->min_next_time = 0;
+    info->isIACdevice = FALSE;
+    info->us_per_host_tick = 1000000.0 / AudioGetHostClockFrequency();
+    info->host_ticks_per_byte =
+            (UInt64) (1000000.0 / (info->us_per_host_tick * MAX_BYTES_PER_S));
+    info->packetList = (is_input ? NULL :
+                                   (MIDIPacketList *) info->packetBuffer);
+    return info;
 }
 
 
@@ -456,7 +505,10 @@ static PmError midi_out_open(PmInternal *midi, void *driverInfo)
 {
     coremidi_info_type info;
 
-    info = create_macosxcm_info(FALSE, TRUE);
+    info = create_macosxcm_info(FALSE, FALSE);
+    if (midi->device_id <= MAX_IAC_NUM) {
+        info->isIACdevice = isIAC[midi->device_id];
+    }
     midi->api_info = info;
     if (!info) {
         return pmInsufficientMemory;
@@ -552,26 +604,20 @@ static PmError midi_write_flush(PmInternal *midi, PmTimestamp timestamp)
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
     MIDIEndpointRef endpoint = 
             (MIDIEndpointRef) (long) descriptors[midi->device_id].descriptor;
-    assert(m);
+    assert(info);
     assert(endpoint);
     if (info->packet != NULL) {
         /* out of space, send the buffer and start refilling it */
-        /* before we can send, maybe delay to limit data rate. OS X allows
-         * 15KB/s. */
+        /* update min_next_time each flush to support rate limit */
         UInt64 now = AudioGetCurrentHostTime();
-        if (now < info->min_next_time) {
-            usleep((useconds_t) 
-                   ((info->min_next_time - now) * info->us_per_host_tick));
-        }
+        if (now > info->min_next_time) 
+            info->min_next_time = now;
         if (info->is_virtual) {
             macHostError = MIDIReceived(endpoint, info->packetList);
         } else {
             macHostError = MIDISend(portOut, endpoint, info->packetList);
         }
         info->packet = NULL; /* indicate no data in packetList now */
-        info->min_next_time = now + info->byte_count *
-                                    info->host_ticks_per_byte;
-        info->byte_count = 0;
         if (macHostError != noErr) goto send_packet_error;
     }
     return pmNoError;
@@ -594,11 +640,13 @@ static PmError send_packet(PmInternal *midi, Byte *message,
     assert(info);
     
     /* printf("add %d to packet %p len %d\n",
-              message[0], m->packet, messageLength); */
+              message[0], info->packet, messageLength); */
     info->packet = MIDIPacketListAdd(info->packetList,
                                      sizeof(info->packetBuffer), info->packet,
                                      timestamp, messageLength, message);
+#if LIMIT_SEND_RATE
     info->byte_count += messageLength;
+#endif
     if (info->packet == NULL) {
         /* out of space, send the buffer and start refilling it */
         /* make midi->packet non-null to fool midi_write_flush into sending */
@@ -610,11 +658,11 @@ static PmError send_packet(PmInternal *midi, Byte *message,
          */
         if ((err = midi_write_flush(midi, 0)) != pmNoError) return err;
         info->packet = MIDIPacketListInit(info->packetList);
-        assert(m->packet); /* if this fails, it's a programming error */
+        assert(info->packet); /* if this fails, it's a programming error */
         info->packet = MIDIPacketListAdd(info->packetList,
                                sizeof(info->packetBuffer), info->packet,
                                timestamp, messageLength, message);
-        assert(m->packet); /* can't run out of space on first message */           
+        assert(info->packet); /* can't run out of space on first message */
     }
     return pmNoError;
 }    
@@ -634,7 +682,7 @@ static PmError midi_write_short(PmInternal *midi, PmEvent *event)
         info->packet = MIDIPacketListInit(info->packetList);
         /* this can never fail, right? failure would indicate something 
            unrecoverable */
-        assert(m->packet);
+        assert(info->packet);
     }
     
     /* compute timestamp */
@@ -649,16 +697,17 @@ static PmError midi_write_short(PmInternal *midi, PmEvent *event)
     message[1] = Pm_MessageData1(what);
     message[2] = Pm_MessageData2(what);
     messageLength = midi_length(what);
-        
-    /* make sure we go foreward in time */
-    if (timestamp < info->min_next_time) timestamp = info->min_next_time;
 
-    #ifdef LIMIT_RATE
-        if (timestamp < info->last_time)
-            timestamp = info->last_time;
-	info->last_time = timestamp + messageLength * info->host_ticks_per_byte;
-    #endif
+#ifdef LIMIT_RATE
+    /* make sure we go forward in time */
+    if (timestamp < info->min_next_time) 
+        timestamp = info->min_next_time;
 
+    if (info->isIACdevice) {
+        info->min_next_time = timestamp + messageLength * 
+                                          info->host_ticks_per_byte;
+    }
+#endif
     /* Add this message to the packet list */
     return send_packet(midi, message, messageLength, timestamp);
 }
@@ -696,16 +745,16 @@ static PmError midi_end_sysex(PmInternal *midi, PmTimestamp when)
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
     assert(info);
     
+#ifdef LIMIT_RATE
     /* make sure we go foreward in time */
     if (info->sysex_timestamp < info->min_next_time)
         info->sysex_timestamp = info->min_next_time;
 
-    #ifdef LIMIT_RATE
-        if (info->sysex_timestamp < info->last_time)
-            info->sysex_timestamp = info->last_time;
-        info->last_time = info->sysex_timestamp + info->sysex_byte_count *
-                                                  info->host_ticks_per_byte;
-    #endif
+    if (info->isIACdevice) {
+        info->min_next_time = info->sysex_timestamp + info->sysex_byte_count *
+                                                      info->host_ticks_per_byte;
+    }
+#endif
     
     /* now send what's in the buffer */
     err = send_packet(midi, info->sysex_buffer, info->sysex_byte_count,
@@ -723,7 +772,7 @@ static PmError midi_write_byte(PmInternal *midi, unsigned char byte,
                                PmTimestamp timestamp)
 {
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
-    assert(m);
+    assert(info);
     if (info->sysex_byte_count >= SYSEX_BUFFER_SIZE) {
         PmError err = midi_end_sysex(midi, timestamp);
         if (err != pmNoError) return err;
@@ -793,10 +842,11 @@ PmTimestamp timestamp_cm_to_pm(MIDITimeStamp timestamp)
 //////////////////////////////////////
 // Obtain the name of an endpoint without regard for whether it has connections.
 // The result should be released by the caller.
-CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal)
+CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal, int *isIAC)
 {
     CFMutableStringRef result = CFStringCreateMutable(NULL, 0);
     CFStringRef str;
+    *isIAC = FALSE;
   
     // begin with the endpoint's name
     str = NULL;
@@ -812,6 +862,17 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal)
         // probably virtual
         return result;
   
+    if (!isExternal) { /* detect IAC devices */
+        //extern const CFStringRef kMIDIPropertyDriverOwner;
+        MIDIObjectGetStringProperty(entity, kMIDIPropertyDriverOwner, &str);
+        if (str != NULL) {
+            char s[32]; /* driver name may truncate, but that's OK */
+            CFStringGetCString(str, s, 31, kCFStringEncodingUTF8);
+            s[31] = 0;  /* make sure it is terminated just to be safe */
+            *isIAC = (strcmp(s, "com.apple.AppleMIDIIACDriver") == 0);
+        }
+    }
+
     if (CFStringGetLength(result) == 0) {
         // endpoint name has zero length -- try the entity
         str = NULL;
@@ -865,7 +926,7 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal)
 
 // Obtain the name of an endpoint, following connections.
 // The result should be released by the caller.
-static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint)
+static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint, int *isIAC)
 {
     CFMutableStringRef result = CFStringCreateMutable(NULL, 0);
     CFStringRef str;
@@ -895,7 +956,7 @@ static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint)
                     if (connObjectType == kMIDIObjectType_ExternalSource  ||
                         connObjectType == kMIDIObjectType_ExternalDestination) {
                         // Connected to an external device's endpoint (>=10.3)
-                        str = EndpointName((MIDIEndpointRef)(connObject), true);
+                        str = EndpointName((MIDIEndpointRef)(connObject), true, isIAC);
                     } else {
                         // Connected to an external device (10.2) 
                         // (or something else, catch-all)
@@ -922,14 +983,14 @@ static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint)
 
     // Here, either the endpoint had no connections, or we failed to
     // obtain names for any of them.
-    return EndpointName(endpoint, false);
+    return EndpointName(endpoint, false, isIAC);
 }
 
 
-char *cm_get_full_endpoint_name(MIDIEndpointRef endpoint)
+char *cm_get_full_endpoint_name(MIDIEndpointRef endpoint, int *isIAC)
 {
     /* Thanks to Dan Wilcox for fixes for Unicode handling */
-    CFStringRef fullName = ConnectedEndpointName(endpoint);
+    CFStringRef fullName = ConnectedEndpointName(endpoint, isIAC);
     CFIndex utf16_len = CFStringGetLength(fullName) + 1;
     CFIndex max_byte_len = CFStringGetMaximumSizeForEncoding(
                                    utf16_len, kCFStringEncodingUTF8) + 1;
@@ -988,6 +1049,8 @@ PmError pm_macosxcm_init(void)
     OSStatus macHostError;
     char *error_text;
 
+    memset(isIAC, 0, sizeof(isIAC)); /* initialize all FALSE */
+
     /* Register interface CoreMIDI with create_virtual fn */
     pm_add_interf("CoreMIDI", &midi_create_virtual);
     /* no check for error return because this always succeeds */
@@ -1005,7 +1068,6 @@ PmError pm_macosxcm_init(void)
     if (numDevices <= 0) {
         return pmNoError;
     }
-
 
     /* Initialize the client handle */
     macHostError = MIDIClientCreate(CFSTR("PortMidi"), NULL, NULL, &client);
@@ -1031,6 +1093,7 @@ PmError pm_macosxcm_init(void)
 
     /* Iterate over the MIDI input devices */
     for (i = 0; i < numInputs; i++) {
+        int isIACflag;
         endpoint = MIDIGetSource(i);
         if (endpoint == NULL_REF) {
             continue;
@@ -1041,12 +1104,15 @@ PmError pm_macosxcm_init(void)
             pm_default_input_device_id = pm_descriptor_index;
         
         /* Register this device with PortMidi */
-        pm_add_device("CoreMIDI", cm_get_full_endpoint_name(endpoint),
+        pm_add_device("CoreMIDI", 
+                      cm_get_full_endpoint_name(endpoint, &isIACflag),
                       TRUE, (void *) (long) endpoint, &pm_macosx_in_dictionary);
     }
 
     /* Iterate over the MIDI output devices */
     for (i = 0; i < numOutputs; i++) {
+        int isIACflag;
+        int id;
         endpoint = MIDIGetDestination(i);
         if (endpoint == NULL_REF) {
             continue;
@@ -1057,9 +1123,13 @@ PmError pm_macosxcm_init(void)
             pm_default_output_device_id = pm_descriptor_index;
 
         /* Register this device with PortMidi */
-        pm_add_device("CoreMIDI", cm_get_full_endpoint_name(endpoint),
-                      FALSE, (void *) (long) endpoint,
-                      &pm_macosx_out_dictionary);
+        id = pm_add_device("CoreMIDI", 
+                     cm_get_full_endpoint_name(endpoint, &isIACflag), FALSE,
+                     (void *) (long) endpoint, &pm_macosx_out_dictionary);
+        /* if this is an IAC device, tuck that info away for write functions */
+        if (isIACflag && id <= MAX_IAC_NUM) {
+            isIAC[id] = TRUE;
+        }
     }
     return pmNoError;
     

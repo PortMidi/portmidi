@@ -486,7 +486,13 @@ static PmError midi_in_close(PmInternal *midi)
     } else {
         /* shut off the incoming messages before freeing data structures */
         macHostError = MIDIPortDisconnectSource(portIn, endpoint);
-        if (macHostError != noErr) {
+        /* If the source closes, you get paramErr == -50 here. It seems
+         * possible to monitor changes like sources closing by getting
+         * notifications ALL changes, but the CoreMIDI documentation is
+         * really terrible overall, and it seems easier to just ignore
+         * this host error.
+         */
+        if (macHostError != noErr && macHostError != -50) {
             pm_hosterror = macHostError;
             sprintf(pm_hosterror_text, "Host error %ld: "
                     "MIDIPortDisconnectSource() in midi_in_close()",

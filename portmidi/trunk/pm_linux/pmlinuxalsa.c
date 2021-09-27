@@ -45,6 +45,8 @@ static snd_seq_t *seq = NULL; // all input comes here,
                               // output queue allocated on seq
 static int queue, queue_used; /* one for all ports, reference counted */
 
+#define PORT_IS_CLOSED -999999
+
 typedef struct alsa_info_struct {
     int is_virtual;
     int client;
@@ -254,17 +256,19 @@ static PmError alsa_out_close(PmInternal *midi)
     int error2 = 0;
     if (!info) return pmBadPtr;
 
-    if (!info->is_virtual) {
-        pm_hosterror = snd_seq_disconnect_to(seq, info->this_port, 
-                                             info->client, info->port);
-    }
-    /* even if there was an error, we still try to delete the port */
-    error2 = snd_seq_delete_port(seq, info->this_port);
+    if (info->this_port != PORT_IS_CLOSED) {
+        if (!info->is_virtual) {
+            pm_hosterror = snd_seq_disconnect_to(seq, info->this_port, 
+                                                 info->client, info->port);
+        }
+        /* even if there was an error, we still try to delete the port */
+    
+        error2 = snd_seq_delete_port(seq, info->this_port);
 
-    if (!pm_hosterror) { /* retain original error if there was one */
-        pm_hosterror = error2; /* otherwise, we want port delete status */
+        if (!pm_hosterror) { /* retain original error if there was one */
+            pm_hosterror = error2; /* otherwise, we want port delete status */
+        }
     }
-
     if (midi->latency > 0) alsa_unuse_queue();
     snd_midi_event_free(info->parser);
     midi->api_info = NULL; /* destroy the pointer to signify "closed" */
@@ -302,7 +306,6 @@ static PmError midi_create_virtual(struct pm_internal_struct *midi,
     snd_seq_port_info_alloca(&pinfo);
     snd_seq_port_info_set_capability(pinfo,
             (is_input ? SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE :
-                        SND_SEQ_PORT_CAP_WRITE | SND_SEQ_PORT_CAP_SUBS_WRITE |
                         SND_SEQ_PORT_CAP_READ | SND_SEQ_PORT_CAP_SUBS_READ));
     snd_seq_port_info_set_type(pinfo, SND_SEQ_PORT_TYPE_MIDI_GENERIC |
                                      SND_SEQ_PORT_TYPE_APPLICATION);
@@ -315,8 +318,8 @@ static PmError midi_create_virtual(struct pm_internal_struct *midi,
     snd_seq_port_info_set_timestamp_queue(pinfo, queue);
     err = snd_seq_create_port(seq, pinfo);
     if (err < 0) goto free_ainfo;
-    printf("created virtual port. intended port %d got port %d\n",
-           id, snd_seq_port_info_get_port(pinfo));
+    VERBOSE printf("created virtual port. intended port %d got port %d\n",
+                   id, snd_seq_port_info_get_port(pinfo));
     ainfo->is_virtual = TRUE;
     ainfo->client = snd_seq_port_info_get_client(pinfo);
     ainfo->port = snd_seq_port_info_get_port(pinfo);
@@ -427,11 +430,13 @@ static PmError alsa_in_close(PmInternal *midi)
 {
     alsa_info_type info = (alsa_info_type) midi->api_info;
     if (!info) return pmBadPtr;
-    if ((pm_hosterror = snd_seq_disconnect_from(seq, info->this_port, 
+    if (info->this_port != PORT_IS_CLOSED) {
+        if ((pm_hosterror = snd_seq_disconnect_from(seq, info->this_port, 
                                                 info->client, info->port))) {
-        snd_seq_delete_port(seq, info->this_port); /* try to close port */
-    } else {
-        pm_hosterror = snd_seq_delete_port(seq, info->this_port);
+            snd_seq_delete_port(seq, info->this_port); /* try to close port */
+        } else {
+            pm_hosterror = snd_seq_delete_port(seq, info->this_port);
+        }
     }
     alsa_unuse_queue();
     midi->api_info = NULL;
@@ -663,9 +668,19 @@ static void handle_event(snd_seq_event_t *ev)
         pm_read_bytes(midi, ptr, ev->data.ext.len, timestamp);
         break;
     }
-    case SND_SEQ_EVENT_PORT_UNSUBSCRIBED: /* TODO - PaulLiu */
-        printf("unhandled SND_SEQ_EVENT_UNSUBSCRIBE message\n");
+    case SND_SEQ_EVENT_PORT_UNSUBSCRIBED: {
+        /* this happens if you have an input port open and the 
+         * device or application with virtual ports closes. We
+         * mark the port as closed to avoid closing a 2nd time
+         * when Pm_Close() is called.
+         */
+        alsa_info_type info = (alsa_info_type) midi->api_info;
+        /* printf("SND_SEQ_EVENT_UNSUBSCRIBE message\n"); */
+        info->this_port = PORT_IS_CLOSED;
         break;
+    }
+    case SND_SEQ_EVENT_PORT_SUBSCRIBED:
+        break;  /* someone connected to a virtual output port, not reported */
     default:
         printf("portmidi handle_event: not handled type %x\n", ev->type);
         break;
@@ -808,10 +823,6 @@ PmError pm_linuxalsa_init(void)
             if (!(caps & (SND_SEQ_PORT_CAP_SUBS_READ |
                           SND_SEQ_PORT_CAP_SUBS_WRITE)))
                 continue; /* ignore if you cannot read or write port */
-            printf("add device client %d port %d (CLIENT_SYSTEM %d)\n",
-                   snd_seq_port_info_get_client(pinfo),
-                   snd_seq_port_info_get_port(pinfo),
-                   SND_SEQ_CLIENT_SYSTEM);
             if (caps & SND_SEQ_PORT_CAP_SUBS_WRITE) {
                 if (pm_default_output_device_id == -1) 
                     pm_default_output_device_id = pm_descriptor_index;

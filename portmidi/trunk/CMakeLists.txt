@@ -18,19 +18,23 @@ if(UNIX)
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY 
       ${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}
       CACHE STRING "executables go here")
-
 else(UNIX)
   # this does not seem to work for xcode:
   set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING 
       "Semicolon-separate list of supported configuration types")
 endif(UNIX)
 
-# Java support has been discontinued, but is probably straightforward
-# to bring up-to-date. There seems to be no demand, but let the
-# developers know if you need this...
-# set(BUILD_PMDEFAULTS TRUE CACHE BOOLEAN 
-#     "build the Java application PmDefaults for setting PortMidi "
-#     "default input and output devices")
+option(BUILD_PMDEFAULTS "build the legacy Java application PmDefaults" OFF)
+option(BUILD_JAVA_NATIVE_INTERFACE
+       "build the Java PortMidi interface library" ${BUILD_PM_DEFAULTS})
+    
+
+if(BUILD_JAVA_NATIVE_INTERFACE)
+  message(WARNING
+    "Java support has been discontinued, but is probably "
+    "straightforward to bring up-to-date. There seems to be "
+    "no demand, but let the developers know if you need this...")
+endif(BUILD_JAVA_NATIVE_INTERFACE)
 
 #set(CMAKE_RELATIVE_PATHS ON CACHE STRING "avoid absolute paths" FORCE)
 
@@ -49,6 +53,13 @@ set(CMAKE_OSX_ARCHITECTURES x86_64 CACHE STRING
     "change to support other architectures" FORCE)
 
 PROJECT(portmidi)
+
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG -DPM_CHECK_ERRORS=1 ${LINUX_FLAGS}")
+set(CMAKE_C_FLAGS_RELEASE "${LINUX_FLAGS}")
+set(PORTMIDI_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG}" CACHE STRING 
+    "CMake shows the wrong value for CMAKE_C_FLAGS_DEBUG. Here it is." FORCE)
+set(PORTMIDI_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE}" CACHE STRING 
+    "CMake shows the wrong value for CMAKE_C_FLAGS_RELEASE. Here it is." FORCE)
 
 if(UNIX)
   # Problem: if there was an old Debug build and you change
@@ -84,6 +95,6 @@ add_subdirectory(pm_dylib)
 
 # See note above about Java support discontinued
 ## Cannot figure out how to make an xcode Java application with CMake
-# if (BUILD_PMDEFAULTS)
-#   add_subdirectory(pm_java)
-# endif(BUILD_PMDEFAULTS)
+if(BUILD_JAVA_NATIVE_INTERFACE)
+  add_subdirectory(pm_java)
+endif(BUILD_JAVA_NATIVE_INTERFACE)

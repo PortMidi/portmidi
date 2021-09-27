@@ -1,4 +1,4 @@
-EADME.txt - for pm_test directory
+README.txt - for pm_test directory
 
 These are all test programs for PortMidi
 
@@ -145,7 +145,8 @@ Type input device number: >>6  [pick a working input device]
 
 18. ./midithru -i 6 -o 2 [use working input/output device numbers]
 [Play notes on input device; notes are sent immediately and also with a
- 2 sec delay to the output device; program terminates in 60 seconds]
+ 2 sec delay to the output device; program terminates in 60 seconds or
+ when you play B3 (B below Middle C)]
 >> [ENTER to exit]
 
 19. ./recvvirtual [in one shell, macOS and Linux only]

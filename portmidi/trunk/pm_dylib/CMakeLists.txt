@@ -19,8 +19,6 @@ if(APPLE OR WIN32)
   else(NOT DEFAULT_DEBUG_FLAGS)
     message(STATUS "DEFAULT_DEBUG_FLAGS not nil: " ${DEFAULT_DEBUG_FLAGS})
   endif(NOT DEFAULT_DEBUG_FLAGS)
-else(APPLE OR WIN32)
-  add_definitions("-DPMALSA")
 endif(APPLE OR WIN32)
 
 macro(prepend_path RESULT PATH)
@@ -30,18 +28,8 @@ macro(prepend_path RESULT PATH)
   endforeach(FILE)
 endmacro(prepend_path)
 
-set(CMAKE_C_FLAGS_DEBUG 
-    "${DEFAULT_DEBUG_FLAGS} -DPM_CHECK_ERRORS=1 -DDEBUG"
-    CACHE STRING "enable extra checks for debugging" FORCE)
-
-set(CMAKE_C_FLAGS_RELEASE "${DEFAULT_RELEASE_FLAGS}"
-    CACHE STRING "flags for release version" FORCE)
-
 # first include the appropriate system-dependent file:
 if(UNIX)
-  # add the -g switch for Linux and Mac OS X (not used in Win32)
-  set (CMAKE_C_FLAGS_DEBUG "-g ${CMAKE_C_FLAGS_DEBUG}" 
-       CACHE STRING "enable extra checks for debugging" FORCE)
   if(APPLE)
     set(MACSRC pmmacosxcm.c pmmacosxcm.h pmmac.c pmmac.h 
         readbinaryplist.c readbinaryplist.h finddefault.c) 
@@ -58,29 +46,34 @@ if(UNIX)
                              ${COREMIDI_LIB} ${CORESERVICES_LIB}
         CACHE INTERNAL "")
 
-    set(JAVAVM_LIB "${FRAMEWORK_PATH}/JavaVM.framework")
-    set(JAVA_INCLUDE_PATHS ${JAVAVM_LIB}/Headers)
+    if(BUILD_JAVA_NATIVE_INTERFACE)
+      set(JAVAVM_LIB "${FRAMEWORK_PATH}/JavaVM.framework")
+      set(JAVA_INCLUDE_PATHS ${JAVAVM_LIB}/Headers)
+    endif(BUILD_JAVA_NATIVE_INTERFACE)
+
     set(INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib")
     message(STATUS "SYSROOT: " ${CMAKE_OSX_SYSROOT})
   else(APPLE)
     # LINUX settings...
-    include(FindJNI)
-    # message(STATUS "JAVA_JVM_LIB_PATH is " ${JAVA_JVM_LIB_PATH})
-    # message(STATUS "JAVA_INCLUDE_PATH is " ${JAVA_INCLUDE_PATH})
-    # note: should use JAVA_JVM_LIB_PATH, but it is not set properly
-    # note: user might need to set JAVA_INCLUDE_PATH manually
-    #
-    # this will probably break on BSD and other Unix systems; the fix
-    # depends on whether FindJNI can find Java or not. If yes, then
-    # we should try to rely on automatically set JAVA_INCLUDE_PATH and
-    # JAVA_INCLUDE_PATH2; if no, then we need to make both JAVA_INCLUDE_PATH
-    # and JAVA_INCLUDE_PATH2 set by user (will need clear documentation
-    # because JAVA_INCLUDE_PATH2 is pretty obscure)
-    set(JAVA_INCLUDE_PATH  ${JAVA_INCLUDE_PATH-UNKNOWN}
-        CACHE STRING "where to find Java SDK include directory")
-    set(JAVA_INCLUDE_PATHS ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH}/linux)
-    # libjvm.so is found relative to JAVA_INCLUDE_PATH:
-    set(JAVAVM_LIB ${JAVA_INCLUDE_PATH}/../jre/lib/i386/client/libjvm.so)
+    if(BUILD_JAVA_NATIVE_INTERFACE)
+      include(FindJNI)
+      # message(STATUS "JAVA_JVM_LIB_PATH is " ${JAVA_JVM_LIB_PATH})
+      # message(STATUS "JAVA_INCLUDE_PATH is " ${JAVA_INCLUDE_PATH})
+      # note: should use JAVA_JVM_LIB_PATH, but it is not set properly
+      # note: user might need to set JAVA_INCLUDE_PATH manually
+      #
+      # this will probably break on BSD and other Unix systems; the fix
+      # depends on whether FindJNI can find Java or not. If yes, then
+      # we should try to rely on automatically set JAVA_INCLUDE_PATH and
+      # JAVA_INCLUDE_PATH2; if no, then we need to make both JAVA_INCLUDE_PATH
+      # and JAVA_INCLUDE_PATH2 set by user (will need clear documentation
+      # because JAVA_INCLUDE_PATH2 is pretty obscure)
+      set(JAVA_INCLUDE_PATH  ${JAVA_INCLUDE_PATH-UNKNOWN}
+          CACHE STRING "where to find Java SDK include directory")
+      set(JAVA_INCLUDE_PATHS ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH}/linux)
+      # libjvm.so is found relative to JAVA_INCLUDE_PATH:
+      set(JAVAVM_LIB ${JAVA_INCLUDE_PATH}/../jre/lib/i386/client/libjvm.so)
+    endif(BUILD_JAVA_NATIVE_INTERFACE)
 
     set(LINUXSRC pmlinuxalsa.c pmlinuxalsa.h pmlinux.c pmlinux.h finddefault.c) 
     prepend_path(LIBSRC ../pm_linux/ ${LINUXSRC})
@@ -93,21 +86,25 @@ else(UNIX)
     # /MDd is multithread debug DLL, /MTd is multithread debug
     # /MD is multithread DLL, /MT is multithread 
     
-    include(FindJNI)
-    # note: should use JAVA_JVM_LIB_PATH, but it is not set properly
-    set(JAVAVM_LIB ${JAVA_INCLUDE_PATH}/../lib/jvm.lib)
+    if(BUILD_JAVA_NATIVE_INTERFACE)
+      include(FindJNI)
+      # note: should use JAVA_JVM_LIB_PATH, but it is not set properly
+      set(JAVAVM_LIB ${JAVA_INCLUDE_PATH}/../lib/jvm.lib)
 
-    set(JAVA_INCLUDE_PATHS ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2})
-    # message(STATUS "JAVA_INCLUDE_PATHS: " ${JAVA_INCLUDE_PATHS})
+      set(JAVA_INCLUDE_PATHS ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2})
+      # message(STATUS "JAVA_INCLUDE_PATHS: " ${JAVA_INCLUDE_PATHS})
+      # message(STATUS "JAVAVM_LIB: " ${JAVAVM_LIB})
+    endif(BUILD_JAVA_NATIVE_INTERFACE)
 
     set(WINSRC pmwin.c pmwinmm.c pmwinmm.h) 
     prepend_path(LIBSRC ../pm_win/ ${WINSRC})
     list(APPEND LIBSRC ../porttime/ptwinmm.c)
     set(PM_NEEDED_LIBS winmm.lib)
-    # message(STATUS "JAVAVM_LIB: " ${JAVAVM_LIB})
   endif(WIN32)
 endif(UNIX)
-set(JNI_EXTRA_LIBS ${PM_NEEDED_LIBS} ${JAVAVM_LIB})
+if(BUILD_JAVA_NATIVE_INTERFACE)
+  set(JNI_EXTRA_LIBS ${PM_NEEDED_LIBS} ${JAVAVM_LIB})
+endif(BUILD_JAVA_NATIVE_INTERFACE)
 
 # this completes the list of library sources by adding shared code
 set(SHARED_FILES pmutil.c pmutil.h portmidi.c portmidi.h)  

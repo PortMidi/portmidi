@@ -152,8 +152,8 @@ PmError pm_create_virtual(PmInternal *midi, int is_input, const char *interf,
  */
 PmError pm_add_device(char *interf, const char *name, int is_input, 
                       void *descriptor, pm_fns_type dictionary) {
-    printf("pm_add_device: %s %s %d %p %p\n",
-           interf, name, is_input, descriptor, dictionary);
+    /* printf("pm_add_device: %s %s %d %p %p\n",
+           interf, name, is_input, descriptor, dictionary); */
     if (pm_descriptor_index >= pm_descriptor_max) {
         // expand descriptors
         descriptor_type new_descriptors = (descriptor_type) 

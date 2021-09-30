@@ -85,7 +85,7 @@ $(document).ready(function(){initNavTree('group__grp__events__filters.html','');
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Data Structures</a> &#124;
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
@@ -94,105 +94,141 @@ $(document).ready(function(){initNavTree('group__grp__events__filters.html','');
 <div class="contents">
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Data Structures</h2></td></tr>
+Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_pm_event.html">PmEvent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">All midi data comes in the form of <a class="el" href="struct_pm_event.html" title="All midi data comes in the form of PmEvent structures.">PmEvent</a> structures.  <a href="struct_pm_event.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga14df46b4e5e3aa265dc8dee06df8ce19"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga14df46b4e5e3aa265dc8dee06df8ce19">PM_FILT_ACTIVE</a>&#160;&#160;&#160;(1 &lt;&lt; 0x0E)</td></tr>
+<tr class="memitem:ga14df46b4e5e3aa265dc8dee06df8ce19"><td class="memItemLeft" align="right" valign="top"><a id="ga14df46b4e5e3aa265dc8dee06df8ce19" name="ga14df46b4e5e3aa265dc8dee06df8ce19"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_ACTIVE</b>&#160;&#160;&#160;(1 &lt;&lt; 0x0E)</td></tr>
+<tr class="memdesc:ga14df46b4e5e3aa265dc8dee06df8ce19"><td class="mdescLeft">&#160;</td><td class="mdescRight">filter active sensing messages (0xFE): <br /></td></tr>
 <tr class="separator:ga14df46b4e5e3aa265dc8dee06df8ce19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3ef53d51914740bb7746e017b5a44402"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga3ef53d51914740bb7746e017b5a44402">PM_FILT_SYSEX</a>&#160;&#160;&#160;(1 &lt;&lt; 0x00)</td></tr>
+<tr class="memitem:ga3ef53d51914740bb7746e017b5a44402"><td class="memItemLeft" align="right" valign="top"><a id="ga3ef53d51914740bb7746e017b5a44402" name="ga3ef53d51914740bb7746e017b5a44402"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_SYSEX</b>&#160;&#160;&#160;(1 &lt;&lt; 0x00)</td></tr>
+<tr class="memdesc:ga3ef53d51914740bb7746e017b5a44402"><td class="mdescLeft">&#160;</td><td class="mdescRight">filter system exclusive messages (0xF0): <br /></td></tr>
 <tr class="separator:ga3ef53d51914740bb7746e017b5a44402"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf6d54a9ff867bab06ee18bc637887834"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#gaf6d54a9ff867bab06ee18bc637887834">PM_FILT_CLOCK</a>&#160;&#160;&#160;(1 &lt;&lt; 0x08)</td></tr>
+<tr class="memitem:gaf6d54a9ff867bab06ee18bc637887834"><td class="memItemLeft" align="right" valign="top"><a id="gaf6d54a9ff867bab06ee18bc637887834" name="gaf6d54a9ff867bab06ee18bc637887834"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_CLOCK</b>&#160;&#160;&#160;(1 &lt;&lt; 0x08)</td></tr>
+<tr class="memdesc:gaf6d54a9ff867bab06ee18bc637887834"><td class="mdescLeft">&#160;</td><td class="mdescRight">filter MIDI clock message (0xF8) <br /></td></tr>
 <tr class="separator:gaf6d54a9ff867bab06ee18bc637887834"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae8733c7af01f94015043c8926076557a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#gae8733c7af01f94015043c8926076557a">PM_FILT_PLAY</a>&#160;&#160;&#160;((1 &lt;&lt; 0x0A) | (1 &lt;&lt; 0x0C) | (1 &lt;&lt; 0x0B))</td></tr>
+<tr class="memitem:gae8733c7af01f94015043c8926076557a"><td class="memItemLeft" align="right" valign="top"><a id="gae8733c7af01f94015043c8926076557a" name="gae8733c7af01f94015043c8926076557a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_PLAY</b>&#160;&#160;&#160;((1 &lt;&lt; 0x0A) | (1 &lt;&lt; 0x0C) | (1 &lt;&lt; 0x0B))</td></tr>
+<tr class="memdesc:gae8733c7af01f94015043c8926076557a"><td class="mdescLeft">&#160;</td><td class="mdescRight">filter play messages (start 0xFA, stop 0xFC, continue 0xFB) <br /></td></tr>
 <tr class="separator:gae8733c7af01f94015043c8926076557a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa4de938a93a84d9d06cc5173f4277595"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#gaa4de938a93a84d9d06cc5173f4277595">PM_FILT_TICK</a>&#160;&#160;&#160;(1 &lt;&lt; 0x09)</td></tr>
+<tr class="memitem:gaa4de938a93a84d9d06cc5173f4277595"><td class="memItemLeft" align="right" valign="top"><a id="gaa4de938a93a84d9d06cc5173f4277595" name="gaa4de938a93a84d9d06cc5173f4277595"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_TICK</b>&#160;&#160;&#160;(1 &lt;&lt; 0x09)</td></tr>
+<tr class="memdesc:gaa4de938a93a84d9d06cc5173f4277595"><td class="mdescLeft">&#160;</td><td class="mdescRight">filter tick messages (0xF9) <br /></td></tr>
 <tr class="separator:gaa4de938a93a84d9d06cc5173f4277595"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaea41a2172d5c7382f6b9d7df85c62a7c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#gaea41a2172d5c7382f6b9d7df85c62a7c">PM_FILT_FD</a>&#160;&#160;&#160;(1 &lt;&lt; 0x0D)</td></tr>
+<tr class="memitem:gaea41a2172d5c7382f6b9d7df85c62a7c"><td class="memItemLeft" align="right" valign="top"><a id="gaea41a2172d5c7382f6b9d7df85c62a7c" name="gaea41a2172d5c7382f6b9d7df85c62a7c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_FD</b>&#160;&#160;&#160;(1 &lt;&lt; 0x0D)</td></tr>
+<tr class="memdesc:gaea41a2172d5c7382f6b9d7df85c62a7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">filter undefined FD messages <br /></td></tr>
 <tr class="separator:gaea41a2172d5c7382f6b9d7df85c62a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4ee575e9f8ba7bf24e53919cfe81edab"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga4ee575e9f8ba7bf24e53919cfe81edab">PM_FILT_UNDEFINED</a>&#160;&#160;&#160;<a class="el" href="group__grp__events__filters.html#gaea41a2172d5c7382f6b9d7df85c62a7c">PM_FILT_FD</a></td></tr>
+<tr class="memitem:ga4ee575e9f8ba7bf24e53919cfe81edab"><td class="memItemLeft" align="right" valign="top"><a id="ga4ee575e9f8ba7bf24e53919cfe81edab" name="ga4ee575e9f8ba7bf24e53919cfe81edab"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_UNDEFINED</b>&#160;&#160;&#160;<a class="el" href="group__grp__events__filters.html#gaea41a2172d5c7382f6b9d7df85c62a7c">PM_FILT_FD</a></td></tr>
+<tr class="memdesc:ga4ee575e9f8ba7bf24e53919cfe81edab"><td class="mdescLeft">&#160;</td><td class="mdescRight">filter undefined real-time messages <br /></td></tr>
 <tr class="separator:ga4ee575e9f8ba7bf24e53919cfe81edab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf398203a8c838897bd07dc356cd9ed54"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#gaf398203a8c838897bd07dc356cd9ed54">PM_FILT_RESET</a>&#160;&#160;&#160;(1 &lt;&lt; 0x0F)</td></tr>
+<tr class="memitem:gaf398203a8c838897bd07dc356cd9ed54"><td class="memItemLeft" align="right" valign="top"><a id="gaf398203a8c838897bd07dc356cd9ed54" name="gaf398203a8c838897bd07dc356cd9ed54"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_RESET</b>&#160;&#160;&#160;(1 &lt;&lt; 0x0F)</td></tr>
+<tr class="memdesc:gaf398203a8c838897bd07dc356cd9ed54"><td class="mdescLeft">&#160;</td><td class="mdescRight">filter reset messages (0xFF) <br /></td></tr>
 <tr class="separator:gaf398203a8c838897bd07dc356cd9ed54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga20f84601b1fc10c18339cf85bf9b91e9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga20f84601b1fc10c18339cf85bf9b91e9">PM_FILT_REALTIME</a></td></tr>
+<tr class="memdesc:ga20f84601b1fc10c18339cf85bf9b91e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">filter all real-time messages  <a href="group__grp__events__filters.html#ga20f84601b1fc10c18339cf85bf9b91e9">More...</a><br /></td></tr>
 <tr class="separator:ga20f84601b1fc10c18339cf85bf9b91e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga27d37f62f7ab2674c5c6626a15630b48"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga27d37f62f7ab2674c5c6626a15630b48">PM_FILT_NOTE</a>&#160;&#160;&#160;((1 &lt;&lt; 0x19) | (1 &lt;&lt; 0x18))</td></tr>
+<tr class="memitem:ga27d37f62f7ab2674c5c6626a15630b48"><td class="memItemLeft" align="right" valign="top"><a id="ga27d37f62f7ab2674c5c6626a15630b48" name="ga27d37f62f7ab2674c5c6626a15630b48"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_NOTE</b>&#160;&#160;&#160;((1 &lt;&lt; 0x19) | (1 &lt;&lt; 0x18))</td></tr>
+<tr class="memdesc:ga27d37f62f7ab2674c5c6626a15630b48"><td class="mdescLeft">&#160;</td><td class="mdescRight">filter note-on and note-off (0x90-0x9F and 0x80-0x8F <br /></td></tr>
 <tr class="separator:ga27d37f62f7ab2674c5c6626a15630b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf26195f93ad34640136d893fd4729a31"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#gaf26195f93ad34640136d893fd4729a31">PM_FILT_CHANNEL_AFTERTOUCH</a>&#160;&#160;&#160;(1 &lt;&lt; 0x1D)</td></tr>
+<tr class="memitem:gaf26195f93ad34640136d893fd4729a31"><td class="memItemLeft" align="right" valign="top"><a id="gaf26195f93ad34640136d893fd4729a31" name="gaf26195f93ad34640136d893fd4729a31"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_CHANNEL_AFTERTOUCH</b>&#160;&#160;&#160;(1 &lt;&lt; 0x1D)</td></tr>
+<tr class="memdesc:gaf26195f93ad34640136d893fd4729a31"><td class="mdescLeft">&#160;</td><td class="mdescRight">filter channel aftertouch (most midi controllers use this) (0xD0-0xDF) <br /></td></tr>
 <tr class="separator:gaf26195f93ad34640136d893fd4729a31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1b300264b36000d2f1aceb990a1aeb1d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga1b300264b36000d2f1aceb990a1aeb1d">PM_FILT_POLY_AFTERTOUCH</a>&#160;&#160;&#160;(1 &lt;&lt; 0x1A)</td></tr>
+<tr class="memitem:ga1b300264b36000d2f1aceb990a1aeb1d"><td class="memItemLeft" align="right" valign="top"><a id="ga1b300264b36000d2f1aceb990a1aeb1d" name="ga1b300264b36000d2f1aceb990a1aeb1d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_POLY_AFTERTOUCH</b>&#160;&#160;&#160;(1 &lt;&lt; 0x1A)</td></tr>
+<tr class="memdesc:ga1b300264b36000d2f1aceb990a1aeb1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">per-note aftertouch (0xA0-0xAF) <br /></td></tr>
 <tr class="separator:ga1b300264b36000d2f1aceb990a1aeb1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4f2cf0d7c7de4318c0750b80098031da"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga4f2cf0d7c7de4318c0750b80098031da">PM_FILT_AFTERTOUCH</a></td></tr>
+<tr class="memdesc:ga4f2cf0d7c7de4318c0750b80098031da"><td class="mdescLeft">&#160;</td><td class="mdescRight">filter both channel and poly aftertouch  <a href="group__grp__events__filters.html#ga4f2cf0d7c7de4318c0750b80098031da">More...</a><br /></td></tr>
 <tr class="separator:ga4f2cf0d7c7de4318c0750b80098031da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gade6cc12acc0eed1bbff2ead41cdc1ba4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#gade6cc12acc0eed1bbff2ead41cdc1ba4">PM_FILT_PROGRAM</a>&#160;&#160;&#160;(1 &lt;&lt; 0x1C)</td></tr>
+<tr class="memitem:gade6cc12acc0eed1bbff2ead41cdc1ba4"><td class="memItemLeft" align="right" valign="top"><a id="gade6cc12acc0eed1bbff2ead41cdc1ba4" name="gade6cc12acc0eed1bbff2ead41cdc1ba4"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_PROGRAM</b>&#160;&#160;&#160;(1 &lt;&lt; 0x1C)</td></tr>
+<tr class="memdesc:gade6cc12acc0eed1bbff2ead41cdc1ba4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Program changes (0xC0-0xCF) <br /></td></tr>
 <tr class="separator:gade6cc12acc0eed1bbff2ead41cdc1ba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab37c64bd527f54ec37fb312dabda16b1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#gab37c64bd527f54ec37fb312dabda16b1">PM_FILT_CONTROL</a>&#160;&#160;&#160;(1 &lt;&lt; 0x1B)</td></tr>
+<tr class="memitem:gab37c64bd527f54ec37fb312dabda16b1"><td class="memItemLeft" align="right" valign="top"><a id="gab37c64bd527f54ec37fb312dabda16b1" name="gab37c64bd527f54ec37fb312dabda16b1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_CONTROL</b>&#160;&#160;&#160;(1 &lt;&lt; 0x1B)</td></tr>
+<tr class="memdesc:gab37c64bd527f54ec37fb312dabda16b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Control Changes (CC's) (0xB0-0xBF) <br /></td></tr>
 <tr class="separator:gab37c64bd527f54ec37fb312dabda16b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae6615da402e1a1a82b7833c7a30415e4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#gae6615da402e1a1a82b7833c7a30415e4">PM_FILT_PITCHBEND</a>&#160;&#160;&#160;(1 &lt;&lt; 0x1E)</td></tr>
+<tr class="memitem:gae6615da402e1a1a82b7833c7a30415e4"><td class="memItemLeft" align="right" valign="top"><a id="gae6615da402e1a1a82b7833c7a30415e4" name="gae6615da402e1a1a82b7833c7a30415e4"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_PITCHBEND</b>&#160;&#160;&#160;(1 &lt;&lt; 0x1E)</td></tr>
+<tr class="memdesc:gae6615da402e1a1a82b7833c7a30415e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pitch Bender (0xE0-0xEF. <br /></td></tr>
 <tr class="separator:gae6615da402e1a1a82b7833c7a30415e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9209ea350d58f2d1bc404bc1deecce0f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga9209ea350d58f2d1bc404bc1deecce0f">PM_FILT_MTC</a>&#160;&#160;&#160;(1 &lt;&lt; 0x01)</td></tr>
+<tr class="memitem:ga9209ea350d58f2d1bc404bc1deecce0f"><td class="memItemLeft" align="right" valign="top"><a id="ga9209ea350d58f2d1bc404bc1deecce0f" name="ga9209ea350d58f2d1bc404bc1deecce0f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_MTC</b>&#160;&#160;&#160;(1 &lt;&lt; 0x01)</td></tr>
+<tr class="memdesc:ga9209ea350d58f2d1bc404bc1deecce0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">MIDI Time Code (0xF1) <br /></td></tr>
 <tr class="separator:ga9209ea350d58f2d1bc404bc1deecce0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga830ecd4a62070c6e76352eea4524f537"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga830ecd4a62070c6e76352eea4524f537">PM_FILT_SONG_POSITION</a>&#160;&#160;&#160;(1 &lt;&lt; 0x02)</td></tr>
+<tr class="memitem:ga830ecd4a62070c6e76352eea4524f537"><td class="memItemLeft" align="right" valign="top"><a id="ga830ecd4a62070c6e76352eea4524f537" name="ga830ecd4a62070c6e76352eea4524f537"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_SONG_POSITION</b>&#160;&#160;&#160;(1 &lt;&lt; 0x02)</td></tr>
+<tr class="memdesc:ga830ecd4a62070c6e76352eea4524f537"><td class="mdescLeft">&#160;</td><td class="mdescRight">Song Position (0xF2) <br /></td></tr>
 <tr class="separator:ga830ecd4a62070c6e76352eea4524f537"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga45af83115b0e12767e99f619801f49b5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga45af83115b0e12767e99f619801f49b5">PM_FILT_SONG_SELECT</a>&#160;&#160;&#160;(1 &lt;&lt; 0x03)</td></tr>
+<tr class="memitem:ga45af83115b0e12767e99f619801f49b5"><td class="memItemLeft" align="right" valign="top"><a id="ga45af83115b0e12767e99f619801f49b5" name="ga45af83115b0e12767e99f619801f49b5"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_SONG_SELECT</b>&#160;&#160;&#160;(1 &lt;&lt; 0x03)</td></tr>
+<tr class="memdesc:ga45af83115b0e12767e99f619801f49b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Song Select (0xF3) <br /></td></tr>
 <tr class="separator:ga45af83115b0e12767e99f619801f49b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga96a486160895ec39c1f74611149e6bdd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga96a486160895ec39c1f74611149e6bdd">PM_FILT_TUNE</a>&#160;&#160;&#160;(1 &lt;&lt; 0x06)</td></tr>
+<tr class="memitem:ga96a486160895ec39c1f74611149e6bdd"><td class="memItemLeft" align="right" valign="top"><a id="ga96a486160895ec39c1f74611149e6bdd" name="ga96a486160895ec39c1f74611149e6bdd"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>PM_FILT_TUNE</b>&#160;&#160;&#160;(1 &lt;&lt; 0x06)</td></tr>
+<tr class="memdesc:ga96a486160895ec39c1f74611149e6bdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tuning request (0xF6) <br /></td></tr>
 <tr class="separator:ga96a486160895ec39c1f74611149e6bdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9f87e719897a7be9e0c17ea2c60c0171"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga9f87e719897a7be9e0c17ea2c60c0171">PM_FILT_SYSTEMCOMMON</a></td></tr>
+<tr class="memdesc:ga9f87e719897a7be9e0c17ea2c60c0171"><td class="mdescLeft">&#160;</td><td class="mdescRight">All System Common messages (mtc, song position, song select, tune request)  <a href="group__grp__events__filters.html#ga9f87e719897a7be9e0c17ea2c60c0171">More...</a><br /></td></tr>
 <tr class="separator:ga9f87e719897a7be9e0c17ea2c60c0171"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga33262c53c6591f143fc61e12a8e2205c"><td class="memItemLeft" align="right" valign="top"><a id="ga33262c53c6591f143fc61e12a8e2205c" name="ga33262c53c6591f143fc61e12a8e2205c"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>Pm_Channel</b>(channel)&#160;&#160;&#160;(1&lt;&lt;(channel))</td></tr>
+<tr class="memdesc:ga33262c53c6591f143fc61e12a8e2205c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a mask that filters one channel. <br /></td></tr>
 <tr class="separator:ga33262c53c6591f143fc61e12a8e2205c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf1c22515214f7a2cbb1e1e8fb02602bd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#gaf1c22515214f7a2cbb1e1e8fb02602bd">Pm_Message</a>(status,  data1,  data2)</td></tr>
+<tr class="memdesc:gaf1c22515214f7a2cbb1e1e8fb02602bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encode a short Midi message into a 32-bit word.  <a href="group__grp__events__filters.html#gaf1c22515214f7a2cbb1e1e8fb02602bd">More...</a><br /></td></tr>
 <tr class="separator:gaf1c22515214f7a2cbb1e1e8fb02602bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga729fed9ce1244a4052ef68527706eaf9"><td class="memItemLeft" align="right" valign="top"><a id="ga729fed9ce1244a4052ef68527706eaf9" name="ga729fed9ce1244a4052ef68527706eaf9"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>Pm_MessageStatus</b>(msg)&#160;&#160;&#160;((msg) &amp; 0xFF)</td></tr>
+<tr class="memdesc:ga729fed9ce1244a4052ef68527706eaf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract the status field from a 32-bit midi message. <br /></td></tr>
 <tr class="separator:ga729fed9ce1244a4052ef68527706eaf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9b7776c54c8c7a1ce68101070ecb9c19"><td class="memItemLeft" align="right" valign="top"><a id="ga9b7776c54c8c7a1ce68101070ecb9c19" name="ga9b7776c54c8c7a1ce68101070ecb9c19"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>Pm_MessageData1</b>(msg)&#160;&#160;&#160;(((msg) &gt;&gt; 8) &amp; 0xFF)</td></tr>
+<tr class="memdesc:ga9b7776c54c8c7a1ce68101070ecb9c19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract the 1st data field (e.g., pitch) from a 32-bit midi message. <br /></td></tr>
 <tr class="separator:ga9b7776c54c8c7a1ce68101070ecb9c19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaefddbd9fdc825fe9e107e935eae17811"><td class="memItemLeft" align="right" valign="top"><a id="gaefddbd9fdc825fe9e107e935eae17811" name="gaefddbd9fdc825fe9e107e935eae17811"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>Pm_MessageData2</b>(msg)&#160;&#160;&#160;(((msg) &gt;&gt; 16) &amp; 0xFF)</td></tr>
+<tr class="memdesc:gaefddbd9fdc825fe9e107e935eae17811"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract the 2nd data field (e.g., velocity) from a 32-bit midi message. <br /></td></tr>
 <tr class="separator:gaefddbd9fdc825fe9e107e935eae17811"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:gad8455e4afe978a74c68e345bef99761d"><td class="memItemLeft" align="right" valign="top">typedef int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#gad8455e4afe978a74c68e345bef99761d">PmMessage</a></td></tr>
+<tr class="memitem:gad8455e4afe978a74c68e345bef99761d"><td class="memItemLeft" align="right" valign="top"><a id="gad8455e4afe978a74c68e345bef99761d" name="gad8455e4afe978a74c68e345bef99761d"></a>
+typedef int32_t&#160;</td><td class="memItemRight" valign="bottom"><b>PmMessage</b></td></tr>
+<tr class="memdesc:gad8455e4afe978a74c68e345bef99761d"><td class="mdescLeft">&#160;</td><td class="mdescRight">see <a class="el" href="struct_pm_event.html" title="All midi data comes in the form of PmEvent structures.">PmEvent</a> <br /></td></tr>
 <tr class="separator:gad8455e4afe978a74c68e345bef99761d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ga1a2b69b85efe9743345e18fc96607994"><td class="memItemLeft" align="right" valign="top"><a id="ga1a2b69b85efe9743345e18fc96607994" name="ga1a2b69b85efe9743345e18fc96607994"></a>
-PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><b>Pm_SetFilter</b> (PortMidiStream *stream, int32_t filters)</td></tr>
+PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Pm_SetFilter</b> (<a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *stream, int32_t filters)</td></tr>
 <tr class="separator:ga1a2b69b85efe9743345e18fc96607994"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga87f9bc67a21a8b058a3f915a2f98746a"><td class="memItemLeft" align="right" valign="top">PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga87f9bc67a21a8b058a3f915a2f98746a">Pm_SetChannelMask</a> (PortMidiStream *stream, int mask)</td></tr>
+<tr class="memitem:ga87f9bc67a21a8b058a3f915a2f98746a"><td class="memItemLeft" align="right" valign="top">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga87f9bc67a21a8b058a3f915a2f98746a">Pm_SetChannelMask</a> (<a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *stream, int mask)</td></tr>
+<tr class="memdesc:ga87f9bc67a21a8b058a3f915a2f98746a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filter incoming messages based on channel.  <a href="group__grp__events__filters.html#ga87f9bc67a21a8b058a3f915a2f98746a">More...</a><br /></td></tr>
 <tr class="separator:ga87f9bc67a21a8b058a3f915a2f98746a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8934ac3b02359b60177a06580c66a20e"><td class="memItemLeft" align="right" valign="top">PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga8934ac3b02359b60177a06580c66a20e">Pm_Abort</a> (PortMidiStream *stream)</td></tr>
+<tr class="memitem:ga8934ac3b02359b60177a06580c66a20e"><td class="memItemLeft" align="right" valign="top">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga8934ac3b02359b60177a06580c66a20e">Pm_Abort</a> (<a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *stream)</td></tr>
+<tr class="memdesc:ga8934ac3b02359b60177a06580c66a20e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Terminate outgoing messages immediately.  <a href="group__grp__events__filters.html#ga8934ac3b02359b60177a06580c66a20e">More...</a><br /></td></tr>
 <tr class="separator:ga8934ac3b02359b60177a06580c66a20e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6b26be2fbcf092c9625ade5303edd0ac"><td class="memItemLeft" align="right" valign="top">PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga6b26be2fbcf092c9625ade5303edd0ac">Pm_Close</a> (PortMidiStream *stream)</td></tr>
+<tr class="memitem:ga6b26be2fbcf092c9625ade5303edd0ac"><td class="memItemLeft" align="right" valign="top">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#ga6b26be2fbcf092c9625ade5303edd0ac">Pm_Close</a> (<a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *stream)</td></tr>
+<tr class="memdesc:ga6b26be2fbcf092c9625ade5303edd0ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close a midi stream, flushing any pending buffers.  <a href="group__grp__events__filters.html#ga6b26be2fbcf092c9625ade5303edd0ac">More...</a><br /></td></tr>
 <tr class="separator:ga6b26be2fbcf092c9625ade5303edd0ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gada0edc37a3424b086b14b151be3aea1a"><td class="memItemLeft" align="right" valign="top">PmError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#gada0edc37a3424b086b14b151be3aea1a">Pm_Synchronize</a> (PortMidiStream *stream)</td></tr>
+<tr class="memitem:gada0edc37a3424b086b14b151be3aea1a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__events__filters.html#gada0edc37a3424b086b14b151be3aea1a">Pm_Synchronize</a> (<a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *stream)</td></tr>
+<tr class="memdesc:gada0edc37a3424b086b14b151be3aea1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">(re)synchronize to the time_proc passed when the stream was opened.  <a href="group__grp__events__filters.html#gada0edc37a3424b086b14b151be3aea1a">More...</a><br /></td></tr>
 <tr class="separator:gada0edc37a3424b086b14b151be3aea1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ga14df46b4e5e3aa265dc8dee06df8ce19" name="ga14df46b4e5e3aa265dc8dee06df8ce19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga14df46b4e5e3aa265dc8dee06df8ce19">&#9670;&nbsp;</a></span>PM_FILT_ACTIVE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_ACTIVE&#160;&#160;&#160;(1 &lt;&lt; 0x0E)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >filter active sensing messages (0xFE): </p>
-
-</div>
-</div>
 <a id="ga4f2cf0d7c7de4318c0750b80098031da" name="ga4f2cf0d7c7de4318c0750b80098031da"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga4f2cf0d7c7de4318c0750b80098031da">&#9670;&nbsp;</a></span>PM_FILT_AFTERTOUCH</h2>
 
@@ -206,158 +242,9 @@ PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><b>Pm_SetFil
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">                            (<a class="code hl_define" href="group__grp__events__filters.html#gaf26195f93ad34640136d893fd4729a31">PM_FILT_CHANNEL_AFTERTOUCH</a> | \</div>
 <div class="line">                            PM_FILT_POLY_AFTERTOUCH)</div>
-<div class="ttc" id="agroup__grp__events__filters_html_gaf26195f93ad34640136d893fd4729a31"><div class="ttname"><a href="group__grp__events__filters.html#gaf26195f93ad34640136d893fd4729a31">PM_FILT_CHANNEL_AFTERTOUCH</a></div><div class="ttdeci">#define PM_FILT_CHANNEL_AFTERTOUCH</div><div class="ttdef"><b>Definition:</b> portmidi.h:511</div></div>
-</div><!-- fragment --><p >filter both channel and poly aftertouch </p>
-
-</div>
-</div>
-<a id="gaf26195f93ad34640136d893fd4729a31" name="gaf26195f93ad34640136d893fd4729a31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf26195f93ad34640136d893fd4729a31">&#9670;&nbsp;</a></span>PM_FILT_CHANNEL_AFTERTOUCH</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_CHANNEL_AFTERTOUCH&#160;&#160;&#160;(1 &lt;&lt; 0x1D)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >filter channel aftertouch (most midi controllers use this) (0xD0-0xDF) </p>
-
-</div>
-</div>
-<a id="gaf6d54a9ff867bab06ee18bc637887834" name="gaf6d54a9ff867bab06ee18bc637887834"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf6d54a9ff867bab06ee18bc637887834">&#9670;&nbsp;</a></span>PM_FILT_CLOCK</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_CLOCK&#160;&#160;&#160;(1 &lt;&lt; 0x08)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >filter MIDI clock message (0xF8) </p>
-
-</div>
-</div>
-<a id="gab37c64bd527f54ec37fb312dabda16b1" name="gab37c64bd527f54ec37fb312dabda16b1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab37c64bd527f54ec37fb312dabda16b1">&#9670;&nbsp;</a></span>PM_FILT_CONTROL</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_CONTROL&#160;&#160;&#160;(1 &lt;&lt; 0x1B)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >Control Changes (CC's) (0xB0-0xBF) </p>
-
-</div>
-</div>
-<a id="gaea41a2172d5c7382f6b9d7df85c62a7c" name="gaea41a2172d5c7382f6b9d7df85c62a7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaea41a2172d5c7382f6b9d7df85c62a7c">&#9670;&nbsp;</a></span>PM_FILT_FD</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_FD&#160;&#160;&#160;(1 &lt;&lt; 0x0D)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >filter undefined FD messages </p>
-
-</div>
-</div>
-<a id="ga9209ea350d58f2d1bc404bc1deecce0f" name="ga9209ea350d58f2d1bc404bc1deecce0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9209ea350d58f2d1bc404bc1deecce0f">&#9670;&nbsp;</a></span>PM_FILT_MTC</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_MTC&#160;&#160;&#160;(1 &lt;&lt; 0x01)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >MIDI Time Code (0xF1) </p>
-
-</div>
-</div>
-<a id="ga27d37f62f7ab2674c5c6626a15630b48" name="ga27d37f62f7ab2674c5c6626a15630b48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga27d37f62f7ab2674c5c6626a15630b48">&#9670;&nbsp;</a></span>PM_FILT_NOTE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_NOTE&#160;&#160;&#160;((1 &lt;&lt; 0x19) | (1 &lt;&lt; 0x18))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >filter note-on and note-off (0x90-0x9F and 0x80-0x8F </p>
-
-</div>
-</div>
-<a id="gae6615da402e1a1a82b7833c7a30415e4" name="gae6615da402e1a1a82b7833c7a30415e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae6615da402e1a1a82b7833c7a30415e4">&#9670;&nbsp;</a></span>PM_FILT_PITCHBEND</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_PITCHBEND&#160;&#160;&#160;(1 &lt;&lt; 0x1E)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >Pitch Bender (0xE0-0xEF </p>
-
-</div>
-</div>
-<a id="gae8733c7af01f94015043c8926076557a" name="gae8733c7af01f94015043c8926076557a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae8733c7af01f94015043c8926076557a">&#9670;&nbsp;</a></span>PM_FILT_PLAY</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_PLAY&#160;&#160;&#160;((1 &lt;&lt; 0x0A) | (1 &lt;&lt; 0x0C) | (1 &lt;&lt; 0x0B))</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >filter play messages (start 0xFA, stop 0xFC, continue 0xFB) </p>
-
-</div>
-</div>
-<a id="ga1b300264b36000d2f1aceb990a1aeb1d" name="ga1b300264b36000d2f1aceb990a1aeb1d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1b300264b36000d2f1aceb990a1aeb1d">&#9670;&nbsp;</a></span>PM_FILT_POLY_AFTERTOUCH</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_POLY_AFTERTOUCH&#160;&#160;&#160;(1 &lt;&lt; 0x1A)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >per-note aftertouch (0xA0-0xAF) </p>
-
-</div>
-</div>
-<a id="gade6cc12acc0eed1bbff2ead41cdc1ba4" name="gade6cc12acc0eed1bbff2ead41cdc1ba4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gade6cc12acc0eed1bbff2ead41cdc1ba4">&#9670;&nbsp;</a></span>PM_FILT_PROGRAM</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_PROGRAM&#160;&#160;&#160;(1 &lt;&lt; 0x1C)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >Program changes (0xC0-0xCF) </p>
+<div class="ttc" id="agroup__grp__events__filters_html_gaf26195f93ad34640136d893fd4729a31"><div class="ttname"><a href="group__grp__events__filters.html#gaf26195f93ad34640136d893fd4729a31">PM_FILT_CHANNEL_AFTERTOUCH</a></div><div class="ttdeci">#define PM_FILT_CHANNEL_AFTERTOUCH</div><div class="ttdoc">filter channel aftertouch (most midi controllers use this) (0xD0-0xDF)</div><div class="ttdef"><b>Definition:</b> portmidi.h:584</div></div>
+</div><!-- fragment -->
+<p>filter both channel and poly aftertouch </p>
 
 </div>
 </div>
@@ -374,73 +261,14 @@ PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><b>Pm_SetFil
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">    (<a class="code hl_define" href="group__grp__events__filters.html#ga14df46b4e5e3aa265dc8dee06df8ce19">PM_FILT_ACTIVE</a> | <a class="code hl_define" href="group__grp__events__filters.html#ga3ef53d51914740bb7746e017b5a44402">PM_FILT_SYSEX</a> | <a class="code hl_define" href="group__grp__events__filters.html#gaf6d54a9ff867bab06ee18bc637887834">PM_FILT_CLOCK</a> | \</div>
 <div class="line">    PM_FILT_PLAY | <a class="code hl_define" href="group__grp__events__filters.html#ga4ee575e9f8ba7bf24e53919cfe81edab">PM_FILT_UNDEFINED</a> | <a class="code hl_define" href="group__grp__events__filters.html#gaf398203a8c838897bd07dc356cd9ed54">PM_FILT_RESET</a> | <a class="code hl_define" href="group__grp__events__filters.html#gaa4de938a93a84d9d06cc5173f4277595">PM_FILT_TICK</a>)</div>
-<div class="ttc" id="agroup__grp__events__filters_html_ga14df46b4e5e3aa265dc8dee06df8ce19"><div class="ttname"><a href="group__grp__events__filters.html#ga14df46b4e5e3aa265dc8dee06df8ce19">PM_FILT_ACTIVE</a></div><div class="ttdeci">#define PM_FILT_ACTIVE</div><div class="ttdef"><b>Definition:</b> portmidi.h:490</div></div>
-<div class="ttc" id="agroup__grp__events__filters_html_ga3ef53d51914740bb7746e017b5a44402"><div class="ttname"><a href="group__grp__events__filters.html#ga3ef53d51914740bb7746e017b5a44402">PM_FILT_SYSEX</a></div><div class="ttdeci">#define PM_FILT_SYSEX</div><div class="ttdef"><b>Definition:</b> portmidi.h:492</div></div>
-<div class="ttc" id="agroup__grp__events__filters_html_ga4ee575e9f8ba7bf24e53919cfe81edab"><div class="ttname"><a href="group__grp__events__filters.html#ga4ee575e9f8ba7bf24e53919cfe81edab">PM_FILT_UNDEFINED</a></div><div class="ttdeci">#define PM_FILT_UNDEFINED</div><div class="ttdef"><b>Definition:</b> portmidi.h:502</div></div>
-<div class="ttc" id="agroup__grp__events__filters_html_gaa4de938a93a84d9d06cc5173f4277595"><div class="ttname"><a href="group__grp__events__filters.html#gaa4de938a93a84d9d06cc5173f4277595">PM_FILT_TICK</a></div><div class="ttdeci">#define PM_FILT_TICK</div><div class="ttdef"><b>Definition:</b> portmidi.h:498</div></div>
-<div class="ttc" id="agroup__grp__events__filters_html_gaf398203a8c838897bd07dc356cd9ed54"><div class="ttname"><a href="group__grp__events__filters.html#gaf398203a8c838897bd07dc356cd9ed54">PM_FILT_RESET</a></div><div class="ttdeci">#define PM_FILT_RESET</div><div class="ttdef"><b>Definition:</b> portmidi.h:504</div></div>
-<div class="ttc" id="agroup__grp__events__filters_html_gaf6d54a9ff867bab06ee18bc637887834"><div class="ttname"><a href="group__grp__events__filters.html#gaf6d54a9ff867bab06ee18bc637887834">PM_FILT_CLOCK</a></div><div class="ttdeci">#define PM_FILT_CLOCK</div><div class="ttdef"><b>Definition:</b> portmidi.h:494</div></div>
-</div><!-- fragment --><p >filter all real-time messages </p>
-
-</div>
-</div>
-<a id="gaf398203a8c838897bd07dc356cd9ed54" name="gaf398203a8c838897bd07dc356cd9ed54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf398203a8c838897bd07dc356cd9ed54">&#9670;&nbsp;</a></span>PM_FILT_RESET</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_RESET&#160;&#160;&#160;(1 &lt;&lt; 0x0F)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >filter reset messages (0xFF) </p>
-
-</div>
-</div>
-<a id="ga830ecd4a62070c6e76352eea4524f537" name="ga830ecd4a62070c6e76352eea4524f537"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga830ecd4a62070c6e76352eea4524f537">&#9670;&nbsp;</a></span>PM_FILT_SONG_POSITION</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_SONG_POSITION&#160;&#160;&#160;(1 &lt;&lt; 0x02)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >Song Position (0xF2) </p>
-
-</div>
-</div>
-<a id="ga45af83115b0e12767e99f619801f49b5" name="ga45af83115b0e12767e99f619801f49b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga45af83115b0e12767e99f619801f49b5">&#9670;&nbsp;</a></span>PM_FILT_SONG_SELECT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_SONG_SELECT&#160;&#160;&#160;(1 &lt;&lt; 0x03)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >Song Select (0xF3) </p>
-
-</div>
-</div>
-<a id="ga3ef53d51914740bb7746e017b5a44402" name="ga3ef53d51914740bb7746e017b5a44402"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3ef53d51914740bb7746e017b5a44402">&#9670;&nbsp;</a></span>PM_FILT_SYSEX</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_SYSEX&#160;&#160;&#160;(1 &lt;&lt; 0x00)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >filter system exclusive messages (0xF0): </p>
+<div class="ttc" id="agroup__grp__events__filters_html_ga14df46b4e5e3aa265dc8dee06df8ce19"><div class="ttname"><a href="group__grp__events__filters.html#ga14df46b4e5e3aa265dc8dee06df8ce19">PM_FILT_ACTIVE</a></div><div class="ttdeci">#define PM_FILT_ACTIVE</div><div class="ttdoc">filter active sensing messages (0xFE):</div><div class="ttdef"><b>Definition:</b> portmidi.h:563</div></div>
+<div class="ttc" id="agroup__grp__events__filters_html_ga3ef53d51914740bb7746e017b5a44402"><div class="ttname"><a href="group__grp__events__filters.html#ga3ef53d51914740bb7746e017b5a44402">PM_FILT_SYSEX</a></div><div class="ttdeci">#define PM_FILT_SYSEX</div><div class="ttdoc">filter system exclusive messages (0xF0):</div><div class="ttdef"><b>Definition:</b> portmidi.h:565</div></div>
+<div class="ttc" id="agroup__grp__events__filters_html_ga4ee575e9f8ba7bf24e53919cfe81edab"><div class="ttname"><a href="group__grp__events__filters.html#ga4ee575e9f8ba7bf24e53919cfe81edab">PM_FILT_UNDEFINED</a></div><div class="ttdeci">#define PM_FILT_UNDEFINED</div><div class="ttdoc">filter undefined real-time messages</div><div class="ttdef"><b>Definition:</b> portmidi.h:575</div></div>
+<div class="ttc" id="agroup__grp__events__filters_html_gaa4de938a93a84d9d06cc5173f4277595"><div class="ttname"><a href="group__grp__events__filters.html#gaa4de938a93a84d9d06cc5173f4277595">PM_FILT_TICK</a></div><div class="ttdeci">#define PM_FILT_TICK</div><div class="ttdoc">filter tick messages (0xF9)</div><div class="ttdef"><b>Definition:</b> portmidi.h:571</div></div>
+<div class="ttc" id="agroup__grp__events__filters_html_gaf398203a8c838897bd07dc356cd9ed54"><div class="ttname"><a href="group__grp__events__filters.html#gaf398203a8c838897bd07dc356cd9ed54">PM_FILT_RESET</a></div><div class="ttdeci">#define PM_FILT_RESET</div><div class="ttdoc">filter reset messages (0xFF)</div><div class="ttdef"><b>Definition:</b> portmidi.h:577</div></div>
+<div class="ttc" id="agroup__grp__events__filters_html_gaf6d54a9ff867bab06ee18bc637887834"><div class="ttname"><a href="group__grp__events__filters.html#gaf6d54a9ff867bab06ee18bc637887834">PM_FILT_CLOCK</a></div><div class="ttdeci">#define PM_FILT_CLOCK</div><div class="ttdoc">filter MIDI clock message (0xF8)</div><div class="ttdef"><b>Definition:</b> portmidi.h:567</div></div>
+</div><!-- fragment -->
+<p>filter all real-time messages </p>
 
 </div>
 </div>
@@ -457,55 +285,11 @@ PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><b>Pm_SetFil
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">                              (<a class="code hl_define" href="group__grp__events__filters.html#ga9209ea350d58f2d1bc404bc1deecce0f">PM_FILT_MTC</a> | <a class="code hl_define" href="group__grp__events__filters.html#ga830ecd4a62070c6e76352eea4524f537">PM_FILT_SONG_POSITION</a> | \</div>
 <div class="line">                              PM_FILT_SONG_SELECT | <a class="code hl_define" href="group__grp__events__filters.html#ga96a486160895ec39c1f74611149e6bdd">PM_FILT_TUNE</a>)</div>
-<div class="ttc" id="agroup__grp__events__filters_html_ga830ecd4a62070c6e76352eea4524f537"><div class="ttname"><a href="group__grp__events__filters.html#ga830ecd4a62070c6e76352eea4524f537">PM_FILT_SONG_POSITION</a></div><div class="ttdeci">#define PM_FILT_SONG_POSITION</div><div class="ttdef"><b>Definition:</b> portmidi.h:526</div></div>
-<div class="ttc" id="agroup__grp__events__filters_html_ga9209ea350d58f2d1bc404bc1deecce0f"><div class="ttname"><a href="group__grp__events__filters.html#ga9209ea350d58f2d1bc404bc1deecce0f">PM_FILT_MTC</a></div><div class="ttdeci">#define PM_FILT_MTC</div><div class="ttdef"><b>Definition:</b> portmidi.h:524</div></div>
-<div class="ttc" id="agroup__grp__events__filters_html_ga96a486160895ec39c1f74611149e6bdd"><div class="ttname"><a href="group__grp__events__filters.html#ga96a486160895ec39c1f74611149e6bdd">PM_FILT_TUNE</a></div><div class="ttdeci">#define PM_FILT_TUNE</div><div class="ttdef"><b>Definition:</b> portmidi.h:530</div></div>
-</div><!-- fragment --><p >All System Common messages (mtc, song position, song select, tune request) </p>
-
-</div>
-</div>
-<a id="gaa4de938a93a84d9d06cc5173f4277595" name="gaa4de938a93a84d9d06cc5173f4277595"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa4de938a93a84d9d06cc5173f4277595">&#9670;&nbsp;</a></span>PM_FILT_TICK</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_TICK&#160;&#160;&#160;(1 &lt;&lt; 0x09)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >filter tick messages (0xF9) </p>
-
-</div>
-</div>
-<a id="ga96a486160895ec39c1f74611149e6bdd" name="ga96a486160895ec39c1f74611149e6bdd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga96a486160895ec39c1f74611149e6bdd">&#9670;&nbsp;</a></span>PM_FILT_TUNE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_TUNE&#160;&#160;&#160;(1 &lt;&lt; 0x06)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >Tuning request (0xF6) </p>
-
-</div>
-</div>
-<a id="ga4ee575e9f8ba7bf24e53919cfe81edab" name="ga4ee575e9f8ba7bf24e53919cfe81edab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4ee575e9f8ba7bf24e53919cfe81edab">&#9670;&nbsp;</a></span>PM_FILT_UNDEFINED</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define PM_FILT_UNDEFINED&#160;&#160;&#160;<a class="el" href="group__grp__events__filters.html#gaea41a2172d5c7382f6b9d7df85c62a7c">PM_FILT_FD</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >filter undefined real-time messages </p>
+<div class="ttc" id="agroup__grp__events__filters_html_ga830ecd4a62070c6e76352eea4524f537"><div class="ttname"><a href="group__grp__events__filters.html#ga830ecd4a62070c6e76352eea4524f537">PM_FILT_SONG_POSITION</a></div><div class="ttdeci">#define PM_FILT_SONG_POSITION</div><div class="ttdoc">Song Position (0xF2)</div><div class="ttdef"><b>Definition:</b> portmidi.h:599</div></div>
+<div class="ttc" id="agroup__grp__events__filters_html_ga9209ea350d58f2d1bc404bc1deecce0f"><div class="ttname"><a href="group__grp__events__filters.html#ga9209ea350d58f2d1bc404bc1deecce0f">PM_FILT_MTC</a></div><div class="ttdeci">#define PM_FILT_MTC</div><div class="ttdoc">MIDI Time Code (0xF1)</div><div class="ttdef"><b>Definition:</b> portmidi.h:597</div></div>
+<div class="ttc" id="agroup__grp__events__filters_html_ga96a486160895ec39c1f74611149e6bdd"><div class="ttname"><a href="group__grp__events__filters.html#ga96a486160895ec39c1f74611149e6bdd">PM_FILT_TUNE</a></div><div class="ttdeci">#define PM_FILT_TUNE</div><div class="ttdoc">Tuning request (0xF6)</div><div class="ttdef"><b>Definition:</b> portmidi.h:603</div></div>
+</div><!-- fragment -->
+<p>All System Common messages (mtc, song position, song select, tune request) </p>
 
 </div>
 </div>
@@ -543,24 +327,9 @@ PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><b>Pm_SetFil
 <b>Value:</b><div class="fragment"><div class="line">         ((((data2) &lt;&lt; 16) &amp; 0xFF0000) | \</div>
 <div class="line">          (((data1) &lt;&lt; 8) &amp; 0xFF00) | \</div>
 <div class="line">          ((status) &amp; 0xFF))</div>
-</div><!-- fragment --><p ><a class="el" href="group__grp__events__filters.html#gaf1c22515214f7a2cbb1e1e8fb02602bd">Pm_Message()</a> encodes a short Midi message into a 32-bit word. If data1 and/or data2 are not present, use zero.</p>
-<p >Pm_MessageStatus(), Pm_MessageData1(), and Pm_MessageData2() extract fields from a 32-bit midi message. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="gad8455e4afe978a74c68e345bef99761d" name="gad8455e4afe978a74c68e345bef99761d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad8455e4afe978a74c68e345bef99761d">&#9670;&nbsp;</a></span>PmMessage</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef int32_t <a class="el" href="group__grp__events__filters.html#gad8455e4afe978a74c68e345bef99761d">PmMessage</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >see <a class="el" href="struct_pm_event.html">PmEvent</a> </p>
+</div><!-- fragment -->
+<p>Encode a short Midi message into a 32-bit word. </p>
+<p >If data1 and/or data2 are not present, use zero. </p>
 
 </div>
 </div>
@@ -572,15 +341,24 @@ PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><b>Pm_SetFil
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">PMEXPORT PmError Pm_Abort </td>
+          <td class="memname">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a> Pm_Abort </td>
           <td>(</td>
-          <td class="paramtype">PortMidiStream *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *&#160;</td>
           <td class="paramname"><em>stream</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p ><a class="el" href="group__grp__events__filters.html#ga8934ac3b02359b60177a06580c66a20e">Pm_Abort()</a> terminates outgoing messages immediately The caller should immediately close the output port; this call may result in transmission of a partial midi message. There is no abort for Midi input because the user can simply ignore messages in the buffer and close an input device at any time. </p>
+
+<p>Terminate outgoing messages immediately. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>an open MIDI output stream.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__grp__basics.html#gga5fd46ccd2e320e17a840886731e8c6b9a9545ea325397bd81d2d81bdd7d92cba4" title="Normal return value indicating no error.">pmNoError</a> or an error code.</dd></dl>
+<p>The caller should immediately close the output port; this call may result in transmission of a partial MIDI message. There is no abort for Midi input because the user can simply ignore messages in the buffer and close an input device at any time. </p>
 
 </div>
 </div>
@@ -591,15 +369,24 @@ PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><b>Pm_SetFil
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">PMEXPORT PmError Pm_Close </td>
+          <td class="memname">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a> Pm_Close </td>
           <td>(</td>
-          <td class="paramtype">PortMidiStream *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *&#160;</td>
           <td class="paramname"><em>stream</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p ><a class="el" href="group__grp__events__filters.html#ga6b26be2fbcf092c9625ade5303edd0ac">Pm_Close()</a> closes a midi stream, flushing any pending buffers. (PortMidi attempts to close open streams when the application exits &ndash; this is particularly difficult under Windows.) </p>
+
+<p>Close a midi stream, flushing any pending buffers. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>an open MIDI input or output stream.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__grp__basics.html#gga5fd46ccd2e320e17a840886731e8c6b9a9545ea325397bd81d2d81bdd7d92cba4" title="Normal return value indicating no error.">pmNoError</a> or an error code.</dd></dl>
+<p>(PortMidi also attempts to close open streams when the application exits &ndash; this is particularly difficult under Windows.) </p>
 
 </div>
 </div>
@@ -610,9 +397,9 @@ PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><b>Pm_SetFil
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">PMEXPORT PmError Pm_SetChannelMask </td>
+          <td class="memname">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a> Pm_SetChannelMask </td>
           <td>(</td>
-          <td class="paramtype">PortMidiStream *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *&#160;</td>
           <td class="paramname"><em>stream</em>, </td>
         </tr>
         <tr>
@@ -628,7 +415,17 @@ PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><b>Pm_SetFil
         </tr>
       </table>
 </div><div class="memdoc">
-<p ><a class="el" href="group__grp__events__filters.html#ga87f9bc67a21a8b058a3f915a2f98746a">Pm_SetChannelMask()</a> filters incoming messages based on channel. The mask is a 16-bit bitfield corresponding to appropriate channels. The Pm_Channel macro can assist in calling this function. i.e. to set receive only input on channel 1, call with Pm_SetChannelMask(Pm_Channel(1)); Multiple channels should be OR'd together, like Pm_SetChannelMask(Pm_Channel(10) | Pm_Channel(11))</p>
+
+<p>Filter incoming messages based on channel. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>an open MIDI input stream.</td></tr>
+    <tr><td class="paramname">mask</td><td>indicates channels to be received.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__grp__basics.html#gga5fd46ccd2e320e17a840886731e8c6b9a9545ea325397bd81d2d81bdd7d92cba4" title="Normal return value indicating no error.">pmNoError</a> or an error code.</dd></dl>
+<p>The <code>mask</code> is a 16-bit bitfield corresponding to appropriate channels. The <a class="el" href="group__grp__events__filters.html#ga33262c53c6591f143fc61e12a8e2205c" title="Create a mask that filters one channel.">Pm_Channel</a> macro can assist in calling this function. I.e. to receive only input on channel 1, call with Pm_SetChannelMask(Pm_Channel(1)); Multiple channels should be OR'd together, like Pm_SetChannelMask(<a class="el" href="group__grp__events__filters.html#ga33262c53c6591f143fc61e12a8e2205c" title="Create a mask that filters one channel.">Pm_Channel(10)</a> | <a class="el" href="group__grp__events__filters.html#ga33262c53c6591f143fc61e12a8e2205c" title="Create a mask that filters one channel.">Pm_Channel(11)</a>)</p>
 <p >Note that channels are numbered 0 to 15 (not 1 to 16). Most synthesizer and interfaces number channels starting at 1, but PortMidi numbers channels starting at 0.</p>
 <p >All channels are allowed by default </p>
 
@@ -641,16 +438,26 @@ PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><b>Pm_SetFil
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">PmError Pm_Synchronize </td>
+          <td class="memname"><a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a> Pm_Synchronize </td>
           <td>(</td>
-          <td class="paramtype">PortMidiStream *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *&#160;</td>
           <td class="paramname"><em>stream</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p ><a class="el" href="group__grp__events__filters.html#gada0edc37a3424b086b14b151be3aea1a">Pm_Synchronize()</a> instructs PortMidi to (re)synchronize to the time_proc passed when the stream was opened. Typically, this is used when the stream must be opened before the time_proc reference is actually advancing. In this case, message timing may be erratic, but since timestamps of zero mean "send immediately," initialization messages with zero timestamps can be written without a functioning time reference and without problems. Before the first MIDI message with a non-zero timestamp is written to the stream, the time reference must begin to advance (for example, if the time_proc computes time based on audio samples, time might begin to advance when an audio stream becomes active). After time_proc return values become valid, and BEFORE writing the first non-zero timestamped MIDI message, call <a class="el" href="group__grp__events__filters.html#gada0edc37a3424b086b14b151be3aea1a">Pm_Synchronize()</a> so that PortMidi can observe the difference between the current time_proc value and its MIDI stream time.</p>
-<p >In the more normal case where time_proc values advance continuously, there is no need to call Pm_Synchronize. PortMidi will always synchronize at the first output message and periodically thereafter. </p>
+
+<p>(re)synchronize to the time_proc passed when the stream was opened. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>an open MIDI input or output stream.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__grp__basics.html#gga5fd46ccd2e320e17a840886731e8c6b9a9545ea325397bd81d2d81bdd7d92cba4" title="Normal return value indicating no error.">pmNoError</a> or an error code.</dd></dl>
+<p>Typically, this is used when the stream must be opened before the time_proc reference is actually advancing. In this case, message timing may be erratic, but since timestamps of zero mean "send
+immediately," initialization messages with zero timestamps can be written without a functioning time reference and without problems. Before the first MIDI message with a non-zero timestamp is written to the stream, the time reference must begin to advance (for example, if the time_proc computes time based on audio samples, time might begin to advance when an audio stream becomes active). After time_proc return values become valid, and BEFORE writing the first non-zero timestamped MIDI message, call <a class="el" href="group__grp__events__filters.html#gada0edc37a3424b086b14b151be3aea1a" title="(re)synchronize to the time_proc passed when the stream was opened.">Pm_Synchronize()</a> so that PortMidi can observe the difference between the current time_proc value and its MIDI stream time.</p>
+<p >In the more normal case where time_proc values advance continuously, there is no need to call <a class="el" href="group__grp__events__filters.html#gada0edc37a3424b086b14b151be3aea1a" title="(re)synchronize to the time_proc passed when the stream was opened.">Pm_Synchronize</a>. PortMidi will always synchronize at the first output message and periodically thereafter. </p>
 
 </div>
 </div>

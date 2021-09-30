@@ -1,6 +1,7 @@
 var group__grp__events__filters =
 [
     [ "PmEvent", "struct_pm_event.html", null ],
+    [ "Pm_Channel", "group__grp__events__filters.html#ga33262c53c6591f143fc61e12a8e2205c", null ],
     [ "PM_FILT_ACTIVE", "group__grp__events__filters.html#ga14df46b4e5e3aa265dc8dee06df8ce19", null ],
     [ "PM_FILT_AFTERTOUCH", "group__grp__events__filters.html#ga4f2cf0d7c7de4318c0750b80098031da", null ],
     [ "PM_FILT_CHANNEL_AFTERTOUCH", "group__grp__events__filters.html#gaf26195f93ad34640136d893fd4729a31", null ],
@@ -23,6 +24,9 @@ var group__grp__events__filters =
     [ "PM_FILT_TUNE", "group__grp__events__filters.html#ga96a486160895ec39c1f74611149e6bdd", null ],
     [ "PM_FILT_UNDEFINED", "group__grp__events__filters.html#ga4ee575e9f8ba7bf24e53919cfe81edab", null ],
     [ "Pm_Message", "group__grp__events__filters.html#gaf1c22515214f7a2cbb1e1e8fb02602bd", null ],
+    [ "Pm_MessageData1", "group__grp__events__filters.html#ga9b7776c54c8c7a1ce68101070ecb9c19", null ],
+    [ "Pm_MessageData2", "group__grp__events__filters.html#gaefddbd9fdc825fe9e107e935eae17811", null ],
+    [ "Pm_MessageStatus", "group__grp__events__filters.html#ga729fed9ce1244a4052ef68527706eaf9", null ],
     [ "PmMessage", "group__grp__events__filters.html#gad8455e4afe978a74c68e345bef99761d", null ],
     [ "Pm_Abort", "group__grp__events__filters.html#ga8934ac3b02359b60177a06580c66a20e", null ],
     [ "Pm_Close", "group__grp__events__filters.html#ga6b26be2fbcf092c9625ade5303edd0ac", null ],

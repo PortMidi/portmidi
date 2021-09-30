@@ -92,15 +92,20 @@ $(document).ready(function(){initNavTree('group__grp__io.html',''); initResizabl
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga3d59225bc890ede974f245ada3de6456"><td class="memItemLeft" align="right" valign="top">PMEXPORT int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__io.html#ga3d59225bc890ede974f245ada3de6456">Pm_Read</a> (PortMidiStream *stream, <a class="el" href="struct_pm_event.html">PmEvent</a> *buffer, int32_t length)</td></tr>
+<tr class="memitem:ga3d59225bc890ede974f245ada3de6456"><td class="memItemLeft" align="right" valign="top">PMEXPORT int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__io.html#ga3d59225bc890ede974f245ada3de6456">Pm_Read</a> (<a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *stream, <a class="el" href="struct_pm_event.html">PmEvent</a> *buffer, int32_t length)</td></tr>
+<tr class="memdesc:ga3d59225bc890ede974f245ada3de6456"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve midi data into a buffer.  <a href="group__grp__io.html#ga3d59225bc890ede974f245ada3de6456">More...</a><br /></td></tr>
 <tr class="separator:ga3d59225bc890ede974f245ada3de6456"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga54198ca9dc1af9d82ec5f44f661faeea"><td class="memItemLeft" align="right" valign="top">PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__io.html#ga54198ca9dc1af9d82ec5f44f661faeea">Pm_Poll</a> (PortMidiStream *stream)</td></tr>
+<tr class="memitem:ga54198ca9dc1af9d82ec5f44f661faeea"><td class="memItemLeft" align="right" valign="top">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__io.html#ga54198ca9dc1af9d82ec5f44f661faeea">Pm_Poll</a> (<a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *stream)</td></tr>
+<tr class="memdesc:ga54198ca9dc1af9d82ec5f44f661faeea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Test whether input is available.  <a href="group__grp__io.html#ga54198ca9dc1af9d82ec5f44f661faeea">More...</a><br /></td></tr>
 <tr class="separator:ga54198ca9dc1af9d82ec5f44f661faeea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga82950117f003d28f9ca6536c00af985a"><td class="memItemLeft" align="right" valign="top">PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__io.html#ga82950117f003d28f9ca6536c00af985a">Pm_Write</a> (PortMidiStream *stream, <a class="el" href="struct_pm_event.html">PmEvent</a> *buffer, int32_t length)</td></tr>
+<tr class="memitem:ga82950117f003d28f9ca6536c00af985a"><td class="memItemLeft" align="right" valign="top">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__io.html#ga82950117f003d28f9ca6536c00af985a">Pm_Write</a> (<a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *stream, <a class="el" href="struct_pm_event.html">PmEvent</a> *buffer, int32_t length)</td></tr>
+<tr class="memdesc:ga82950117f003d28f9ca6536c00af985a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write MIDI data from a buffer.  <a href="group__grp__io.html#ga82950117f003d28f9ca6536c00af985a">More...</a><br /></td></tr>
 <tr class="separator:ga82950117f003d28f9ca6536c00af985a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7a4100b808ac5892aae302f2a227d1ba"><td class="memItemLeft" align="right" valign="top">PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__io.html#ga7a4100b808ac5892aae302f2a227d1ba">Pm_WriteShort</a> (PortMidiStream *stream, PmTimestamp when, <a class="el" href="group__grp__events__filters.html#gad8455e4afe978a74c68e345bef99761d">PmMessage</a> msg)</td></tr>
+<tr class="memitem:ga7a4100b808ac5892aae302f2a227d1ba"><td class="memItemLeft" align="right" valign="top">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__io.html#ga7a4100b808ac5892aae302f2a227d1ba">Pm_WriteShort</a> (<a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *stream, <a class="el" href="group__grp__basics.html#gacf4245beeef251c4a46d66e99d77ffdf">PmTimestamp</a> when, <a class="el" href="group__grp__events__filters.html#gad8455e4afe978a74c68e345bef99761d">PmMessage</a> msg)</td></tr>
+<tr class="memdesc:ga7a4100b808ac5892aae302f2a227d1ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a timestamped non-system-exclusive midi message.  <a href="group__grp__io.html#ga7a4100b808ac5892aae302f2a227d1ba">More...</a><br /></td></tr>
 <tr class="separator:ga7a4100b808ac5892aae302f2a227d1ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4bd5753bdfb53a1611bcdf5ba159fc87"><td class="memItemLeft" align="right" valign="top">PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__io.html#ga4bd5753bdfb53a1611bcdf5ba159fc87">Pm_WriteSysEx</a> (PortMidiStream *stream, PmTimestamp when, unsigned char *msg)</td></tr>
+<tr class="memitem:ga4bd5753bdfb53a1611bcdf5ba159fc87"><td class="memItemLeft" align="right" valign="top">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__io.html#ga4bd5753bdfb53a1611bcdf5ba159fc87">Pm_WriteSysEx</a> (<a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *stream, <a class="el" href="group__grp__basics.html#gacf4245beeef251c4a46d66e99d77ffdf">PmTimestamp</a> when, unsigned char *msg)</td></tr>
+<tr class="memdesc:ga4bd5753bdfb53a1611bcdf5ba159fc87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write a timestamped system-exclusive midi message.  <a href="group__grp__io.html#ga4bd5753bdfb53a1611bcdf5ba159fc87">More...</a><br /></td></tr>
 <tr class="separator:ga4bd5753bdfb53a1611bcdf5ba159fc87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -112,15 +117,23 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">PMEXPORT PmError Pm_Poll </td>
+          <td class="memname">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a> Pm_Poll </td>
           <td>(</td>
-          <td class="paramtype">PortMidiStream *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *&#160;</td>
           <td class="paramname"><em>stream</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p ><a class="el" href="group__grp__io.html#ga54198ca9dc1af9d82ec5f44f661faeea">Pm_Poll()</a> tests whether input is available, returning TRUE, FALSE, or an error value. </p>
+
+<p>Test whether input is available. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>an open input stream.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>TRUE, FALSE, or an error value. </dd></dl>
 
 </div>
 </div>
@@ -133,7 +146,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">PMEXPORT int Pm_Read </td>
           <td>(</td>
-          <td class="paramtype">PortMidiStream *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *&#160;</td>
           <td class="paramname"><em>stream</em>, </td>
         </tr>
         <tr>
@@ -155,12 +168,19 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p ><a class="el" href="group__grp__io.html#ga3d59225bc890ede974f245ada3de6456">Pm_Read()</a> retrieves midi data into a buffer, and returns the number of events read. Result is a non-negative number unless an error occurs, in which case a PmError value will be returned.</p>
-<p >Buffer Overflow</p>
+
+<p>Retrieve midi data into a buffer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>the open input stream.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of events read, or, if the result is negative, a <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9" title="PortMidi error code; a common return type.">PmError</a> value will be returned.</dd></dl>
+<p>The Buffer Overflow Problem</p>
 <p >The problem: if an input overflow occurs, data will be lost, ultimately because there is no flow control all the way back to the data source. When data is lost, the receiver should be notified and some sort of graceful recovery should take place, e.g. you shouldn't resume receiving in the middle of a long sysex message.</p>
 <p >With a lock-free fifo, which is pretty much what we're stuck with to enable portability to the Mac, it's tricky for the producer and consumer to synchronously reset the buffer and resume normal operation.</p>
-<p >Solution: the buffer managed by PortMidi will be flushed when an overflow occurs. The consumer (<a class="el" href="group__grp__io.html#ga3d59225bc890ede974f245ada3de6456">Pm_Read()</a>) gets an error message (pmBufferOverflow) and ordinary processing resumes as soon as a new message arrives. The remainder of a partial sysex message is not considered to be a "new
-message" and will be flushed as well. </p>
+<p >Solution: the entire buffer managed by PortMidi will be flushed when an overflow occurs. The consumer (<a class="el" href="group__grp__io.html#ga3d59225bc890ede974f245ada3de6456" title="Retrieve midi data into a buffer.">Pm_Read()</a>) gets an error message (#pmBufferOverflow) and ordinary processing resumes as soon as a new message arrives. The remainder of a partial sysex message is not considered to be a "new message" and will be flushed as well. </p>
 
 </div>
 </div>
@@ -171,9 +191,9 @@ message" and will be flushed as well. </p>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">PMEXPORT PmError Pm_Write </td>
+          <td class="memname">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a> Pm_Write </td>
           <td>(</td>
-          <td class="paramtype">PortMidiStream *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *&#160;</td>
           <td class="paramname"><em>stream</em>, </td>
         </tr>
         <tr>
@@ -195,12 +215,24 @@ message" and will be flushed as well. </p>
         </tr>
       </table>
 </div><div class="memdoc">
-<p ><a class="el" href="group__grp__io.html#ga82950117f003d28f9ca6536c00af985a">Pm_Write()</a> writes midi data from a buffer. This may contain:</p><ul>
-<li>short messages or</li>
-<li>sysex messages that are converted into a sequence of <a class="el" href="struct_pm_event.html">PmEvent</a> structures, e.g. sending data from a file or forwarding them from midi input.</li>
+
+<p>Write MIDI data from a buffer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>an open output stream.</td></tr>
+    <tr><td class="paramname">buffer</td><td>(address of) an array of MIDI event data.</td></tr>
+    <tr><td class="paramname">length</td><td>the length of the <code>buffer</code>.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>TRUE, FALSE, or an error value.</dd></dl>
+<p><b>buffer</b> may contain:</p><ul>
+<li>short messages</li>
+<li>sysex messages that are converted into a sequence of <a class="el" href="struct_pm_event.html" title="All midi data comes in the form of PmEvent structures.">PmEvent</a> structures, e.g. sending data from a file or forwarding them from midi input.</li>
 </ul>
-<p >Use <a class="el" href="group__grp__io.html#ga4bd5753bdfb53a1611bcdf5ba159fc87">Pm_WriteSysEx()</a> to write a sysex message stored as a contiguous array of bytes.</p>
-<p >Sysex data may contain embedded real-time messages. </p>
+<p >Use <a class="el" href="group__grp__io.html#ga4bd5753bdfb53a1611bcdf5ba159fc87" title="Write a timestamped system-exclusive midi message.">Pm_WriteSysEx()</a> to write a sysex message stored as a contiguous array of bytes.</p>
+<p >Sysex data may contain embedded real-time messages.</p>
+<p ><code>buffer</code> is managed by the caller. The buffer may be destroyed as soon as this call returns. </p>
 
 </div>
 </div>
@@ -211,15 +243,15 @@ message" and will be flushed as well. </p>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">PMEXPORT PmError Pm_WriteShort </td>
+          <td class="memname">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a> Pm_WriteShort </td>
           <td>(</td>
-          <td class="paramtype">PortMidiStream *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *&#160;</td>
           <td class="paramname"><em>stream</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">PmTimestamp&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#gacf4245beeef251c4a46d66e99d77ffdf">PmTimestamp</a>&#160;</td>
           <td class="paramname"><em>when</em>, </td>
         </tr>
         <tr>
@@ -235,7 +267,18 @@ message" and will be flushed as well. </p>
         </tr>
       </table>
 </div><div class="memdoc">
-<p ><a class="el" href="group__grp__io.html#ga7a4100b808ac5892aae302f2a227d1ba">Pm_WriteShort()</a> writes a timestamped non-system-exclusive midi message. Messages are delivered in order as received, and timestamps must be non-decreasing. (But timestamps are ignored if the stream was opened with latency = 0.) </p>
+
+<p>Write a timestamped non-system-exclusive midi message. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>an open output stream.</td></tr>
+    <tr><td class="paramname">when</td><td>timestamp for the event.</td></tr>
+    <tr><td class="paramname">msg</td><td>the data for the event.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__grp__basics.html#gga5fd46ccd2e320e17a840886731e8c6b9a9545ea325397bd81d2d81bdd7d92cba4" title="Normal return value indicating no error.">pmNoError</a> or an error code.</dd></dl>
+<p>Messages are delivered in order, and timestamps must be non-decreasing. (But timestamps are ignored if the stream was opened with latency = 0, and otherwise, non-decreasing timestamps are "corrected" to the lowest valid value.) </p>
 
 </div>
 </div>
@@ -246,15 +289,15 @@ message" and will be flushed as well. </p>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">PMEXPORT PmError Pm_WriteSysEx </td>
+          <td class="memname">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a> Pm_WriteSysEx </td>
           <td>(</td>
-          <td class="paramtype">PortMidiStream *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> *&#160;</td>
           <td class="paramname"><em>stream</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">PmTimestamp&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#gacf4245beeef251c4a46d66e99d77ffdf">PmTimestamp</a>&#160;</td>
           <td class="paramname"><em>when</em>, </td>
         </tr>
         <tr>
@@ -270,7 +313,18 @@ message" and will be flushed as well. </p>
         </tr>
       </table>
 </div><div class="memdoc">
-<p ><a class="el" href="group__grp__io.html#ga4bd5753bdfb53a1611bcdf5ba159fc87">Pm_WriteSysEx()</a> writes a timestamped system-exclusive midi message. </p>
+
+<p>Write a timestamped system-exclusive midi message. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>an open output stream.</td></tr>
+    <tr><td class="paramname">when</td><td>timestamp for the event.</td></tr>
+    <tr><td class="paramname">msg</td><td>the sysex message, terminated with an EOX status byte.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__grp__basics.html#gga5fd46ccd2e320e17a840886731e8c6b9a9545ea325397bd81d2d81bdd7d92cba4" title="Normal return value indicating no error.">pmNoError</a> or an error code.</dd></dl>
+<p><code>msg</code> is managed by the caller and may be destroyed when this call returns. </p>
 
 </div>
 </div>

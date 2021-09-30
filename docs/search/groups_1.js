@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['input_2foutput_20devices_20handling_0',['Input/Output Devices Handling',['../group__grp__device.html',1,'']]]
+  ['events_20and_20filters_20handling_0',['Events and Filters Handling',['../group__grp__events__filters.html',1,'']]]
 ];

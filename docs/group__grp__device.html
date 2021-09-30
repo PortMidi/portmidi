@@ -92,15 +92,20 @@ $(document).ready(function(){initNavTree('group__grp__device.html',''); initResi
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gab5974cf4a7995002e83bd9410a16470d"><td class="memItemLeft" align="right" valign="top">PMEXPORT const <a class="el" href="struct_pm_device_info.html">PmDeviceInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__device.html#gab5974cf4a7995002e83bd9410a16470d">Pm_GetDeviceInfo</a> (PmDeviceID id)</td></tr>
+<tr class="memitem:gab5974cf4a7995002e83bd9410a16470d"><td class="memItemLeft" align="right" valign="top">PMEXPORT const <a class="el" href="struct_pm_device_info.html">PmDeviceInfo</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__device.html#gab5974cf4a7995002e83bd9410a16470d">Pm_GetDeviceInfo</a> (<a class="el" href="group__grp__basics.html#ga696cc4d4360bb8513f13df4bb134098a">PmDeviceID</a> id)</td></tr>
+<tr class="memdesc:gab5974cf4a7995002e83bd9410a16470d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a <a class="el" href="struct_pm_device_info.html" title="MIDI device information is returned in this structure, which is owned by PortMidi and read-only to ap...">PmDeviceInfo</a> structure describing a MIDI device.  <a href="group__grp__device.html#gab5974cf4a7995002e83bd9410a16470d">More...</a><br /></td></tr>
 <tr class="separator:gab5974cf4a7995002e83bd9410a16470d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabd50a31baaa494ad8b405f9ad54c966e"><td class="memItemLeft" align="right" valign="top">PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__device.html#gabd50a31baaa494ad8b405f9ad54c966e">Pm_OpenInput</a> (PortMidiStream **stream, PmDeviceID inputDevice, void *inputDriverInfo, int32_t bufferSize, PmTimeProcPtr time_proc, void *time_info)</td></tr>
+<tr class="memitem:gabd50a31baaa494ad8b405f9ad54c966e"><td class="memItemLeft" align="right" valign="top">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__device.html#gabd50a31baaa494ad8b405f9ad54c966e">Pm_OpenInput</a> (<a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> **stream, <a class="el" href="group__grp__basics.html#ga696cc4d4360bb8513f13df4bb134098a">PmDeviceID</a> inputDevice, void *inputDriverInfo, int32_t bufferSize, PmTimeProcPtr time_proc, void *time_info)</td></tr>
+<tr class="memdesc:gabd50a31baaa494ad8b405f9ad54c966e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open a MIDI device for input.  <a href="group__grp__device.html#gabd50a31baaa494ad8b405f9ad54c966e">More...</a><br /></td></tr>
 <tr class="separator:gabd50a31baaa494ad8b405f9ad54c966e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga134924cfa8badeecff3c5e1f22aee178"><td class="memItemLeft" align="right" valign="top">PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__device.html#ga134924cfa8badeecff3c5e1f22aee178">Pm_OpenOutput</a> (PortMidiStream **stream, PmDeviceID outputDevice, void *outputDriverInfo, int32_t bufferSize, PmTimeProcPtr time_proc, void *time_info, int32_t latency)</td></tr>
+<tr class="memitem:ga134924cfa8badeecff3c5e1f22aee178"><td class="memItemLeft" align="right" valign="top">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__device.html#ga134924cfa8badeecff3c5e1f22aee178">Pm_OpenOutput</a> (<a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> **stream, <a class="el" href="group__grp__basics.html#ga696cc4d4360bb8513f13df4bb134098a">PmDeviceID</a> outputDevice, void *outputDriverInfo, int32_t bufferSize, PmTimeProcPtr time_proc, void *time_info, int32_t latency)</td></tr>
+<tr class="memdesc:ga134924cfa8badeecff3c5e1f22aee178"><td class="mdescLeft">&#160;</td><td class="mdescRight">Open a MIDI device for output.  <a href="group__grp__device.html#ga134924cfa8badeecff3c5e1f22aee178">More...</a><br /></td></tr>
 <tr class="separator:ga134924cfa8badeecff3c5e1f22aee178"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga49ef5c71c44c036a43a85858202d50ff"><td class="memItemLeft" align="right" valign="top">PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__device.html#ga49ef5c71c44c036a43a85858202d50ff">Pm_CreateVirtualInput</a> (PortMidiStream **stream, const char *name, const char *interf, void *inputDriverInfo, int32_t bufferSize, PmTimeProcPtr time_proc, void *time_info)</td></tr>
+<tr class="memitem:ga49ef5c71c44c036a43a85858202d50ff"><td class="memItemLeft" align="right" valign="top">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__device.html#ga49ef5c71c44c036a43a85858202d50ff">Pm_CreateVirtualInput</a> (<a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> **stream, const char *name, const char *interf, void *inputDriverInfo, int32_t bufferSize, PmTimeProcPtr time_proc, void *time_info)</td></tr>
+<tr class="memdesc:ga49ef5c71c44c036a43a85858202d50ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create and open a virtual input device.  <a href="group__grp__device.html#ga49ef5c71c44c036a43a85858202d50ff">More...</a><br /></td></tr>
 <tr class="separator:ga49ef5c71c44c036a43a85858202d50ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga59c60d68951ac8b840bb51b8438d1864"><td class="memItemLeft" align="right" valign="top">PMEXPORT PmError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__device.html#ga59c60d68951ac8b840bb51b8438d1864">Pm_CreateVirtualOutput</a> (PortMidiStream **stream, const char *name, const char *interf, void *outputDriverInfo, int32_t bufferSize, PmTimeProcPtr time_proc, void *time_info, int32_t latency)</td></tr>
+<tr class="memitem:ga59c60d68951ac8b840bb51b8438d1864"><td class="memItemLeft" align="right" valign="top">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__grp__device.html#ga59c60d68951ac8b840bb51b8438d1864">Pm_CreateVirtualOutput</a> (<a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> **stream, const char *name, const char *interf, void *outputDriverInfo, int32_t bufferSize, PmTimeProcPtr time_proc, void *time_info, int32_t latency)</td></tr>
+<tr class="memdesc:ga59c60d68951ac8b840bb51b8438d1864"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create and open a virtual output device.  <a href="group__grp__device.html#ga59c60d68951ac8b840bb51b8438d1864">More...</a><br /></td></tr>
 <tr class="separator:ga59c60d68951ac8b840bb51b8438d1864"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -112,9 +117,9 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">PMEXPORT PmError Pm_CreateVirtualInput </td>
+          <td class="memname">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a> Pm_CreateVirtualInput </td>
           <td>(</td>
-          <td class="paramtype">PortMidiStream **&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> **&#160;</td>
           <td class="paramname"><em>stream</em>, </td>
         </tr>
         <tr>
@@ -160,11 +165,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p ><a class="el" href="group__grp__device.html#ga49ef5c71c44c036a43a85858202d50ff">Pm_CreateVirtualInput()</a> and <a class="el" href="group__grp__device.html#ga59c60d68951ac8b840bb51b8438d1864">Pm_CreateVirtualOutput()</a> open virtual devices.</p>
-<p >These functions are similar to <a class="el" href="group__grp__device.html#gabd50a31baaa494ad8b405f9ad54c966e">Pm_OpenInput()</a> and <a class="el" href="group__grp__device.html#ga134924cfa8badeecff3c5e1f22aee178">Pm_OpenOutput()</a>, except rather than opening existing devices, they create virtual devices that appear to other applications as if there exists a device with the given <code>name</code> parameter using the interface given by <code>interf</code>. If <code>interf</code> is NULL, the default interface (API) is used. Default interfaces are "MMSystem", "CoreMIDI" and "ALSA". Currently, these are the only ones implemented, but future implementations could support DirectMusic, Jack or others.</p>
-<p >Other than <code>name</code> and <code>interf</code>, parameters have the same interpretation as in <a class="el" href="group__grp__device.html#gabd50a31baaa494ad8b405f9ad54c966e">Pm_OpenInput()</a> and <a class="el" href="group__grp__device.html#ga134924cfa8badeecff3c5e1f22aee178">Pm_OpenOutput</a>.</p>
-<p >Additional return values are #pmInvalidDeviceId (#name is invalid or already exists) and #pmInterfaceNotSupported (#interf is does not match a supported interface).</p>
-<p >Virtual devices are not supported by Windows (Multimedia API). Calls on Windows do nothing except return #pmNotImplemented. </p>
+
+<p>Create and open a virtual input device. </p>
+<p >This function is similar to <a class="el" href="group__grp__device.html#gabd50a31baaa494ad8b405f9ad54c966e" title="Open a MIDI device for input.">Pm_OpenInput()</a>, except rather than opening an existing device, it creates a virtual device that appears to other applications as if it is an output device named <code>name</code> using the interface given by <code>interf</code>. If <code>interf</code> is NULL, the default interface (API) is used. Default interfaces are "MMSystem", "CoreMIDI" and "ALSA". Currently, these are the only ones implemented, but future implementations could support DirectMusic, Jack or others.</p>
+<p >Other than <code>name</code> and <code>interf</code>, parameters have the same interpretation as in <a class="el" href="group__grp__device.html#gabd50a31baaa494ad8b405f9ad54c966e" title="Open a MIDI device for input.">Pm_OpenInput()</a>.</p>
+<p >Additional return values are <a class="el" href="group__grp__basics.html#gga5fd46ccd2e320e17a840886731e8c6b9a629c26e14c9bdac6e1688803f28ecd80" title="Out of range or output device when input is requested or input device when output is requested or dev...">pmInvalidDeviceId</a> (<code>name</code> is invalid or already exists) and <a class="el" href="group__grp__basics.html#gga5fd46ccd2e320e17a840886731e8c6b9a211221ebc07f37f06c127f8da6256316" title="Tthe requested interface is not supported.">pmInterfaceNotSupported</a> (<code>interf</code> is does not match a supported interface).</p>
+<p >Virtual devices are not supported by Windows (Multimedia API). Calls on Windows do nothing except return <a class="el" href="group__grp__basics.html#gga5fd46ccd2e320e17a840886731e8c6b9a3ff0a6e57af62bbcabc66af290b9709d" title="The function is not implemented, nothing was done.">pmNotImplemented</a>. </p>
 
 </div>
 </div>
@@ -175,9 +181,9 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">PMEXPORT PmError Pm_CreateVirtualOutput </td>
+          <td class="memname">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a> Pm_CreateVirtualOutput </td>
           <td>(</td>
-          <td class="paramtype">PortMidiStream **&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> **&#160;</td>
           <td class="paramname"><em>stream</em>, </td>
         </tr>
         <tr>
@@ -229,7 +235,12 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >see <a class="el" href="group__grp__device.html#ga49ef5c71c44c036a43a85858202d50ff">Pm_CreateVirtualInput()</a> for details. </p>
+
+<p>Create and open a virtual output device. </p>
+<p >This function is similar to <a class="el" href="group__grp__device.html#ga134924cfa8badeecff3c5e1f22aee178" title="Open a MIDI device for output.">Pm_OpenOutput()</a>, except rather than opening an existing device, it creates a virtual device that appears to other applications as if it is an input device with the given <code>name</code> parameter using the interface given by <code>interf</code>. If <code>interf</code> is NULL, the default interface (API) is used. Default interfaces are "MMSystem", "CoreMIDI" and "ALSA". Currently, these are the only ones implemented, but future implementations could support DirectMusic, Jack or others.</p>
+<p >Other than <code>name</code> and <code>interf</code>, parameters have the same interpretation as in <a class="el" href="group__grp__device.html#ga134924cfa8badeecff3c5e1f22aee178" title="Open a MIDI device for output.">Pm_OpenOutput()</a>.</p>
+<p >Additional return values are <a class="el" href="group__grp__basics.html#gga5fd46ccd2e320e17a840886731e8c6b9a629c26e14c9bdac6e1688803f28ecd80" title="Out of range or output device when input is requested or input device when output is requested or dev...">pmInvalidDeviceId</a> (<code>name</code> is invalid or already exists) and <a class="el" href="group__grp__basics.html#gga5fd46ccd2e320e17a840886731e8c6b9a211221ebc07f37f06c127f8da6256316" title="Tthe requested interface is not supported.">pmInterfaceNotSupported</a> (<code>interf</code> is does not match a supported interface).</p>
+<p >Virtual devices are not supported by Windows (Multimedia API). Calls on Windows do nothing except return <a class="el" href="group__grp__basics.html#gga5fd46ccd2e320e17a840886731e8c6b9a3ff0a6e57af62bbcabc66af290b9709d" title="The function is not implemented, nothing was done.">pmNotImplemented</a>. </p>
 
 </div>
 </div>
@@ -242,14 +253,22 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">PMEXPORT const <a class="el" href="struct_pm_device_info.html">PmDeviceInfo</a> * Pm_GetDeviceInfo </td>
           <td>(</td>
-          <td class="paramtype">PmDeviceID&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#ga696cc4d4360bb8513f13df4bb134098a">PmDeviceID</a>&#160;</td>
           <td class="paramname"><em>id</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p ><a class="el" href="group__grp__device.html#gab5974cf4a7995002e83bd9410a16470d">Pm_GetDeviceInfo()</a> returns a pointer to a <a class="el" href="struct_pm_device_info.html">PmDeviceInfo</a> structure referring to the device specified by id. If id is out of range the function returns NULL.</p>
-<p >The returned structure is owned by the PortMidi implementation and must not be manipulated or freed. The pointer is guaranteed to be valid between calls to Pm_Initialize() and Pm_Terminate(). </p>
+
+<p>Get a <a class="el" href="struct_pm_device_info.html" title="MIDI device information is returned in this structure, which is owned by PortMidi and read-only to ap...">PmDeviceInfo</a> structure describing a MIDI device. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>the device to be queried.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>If <code>id</code> is out of range the function returns NULL.</p>
+<p >The returned structure is owned by the PortMidi implementation and must not be manipulated or freed. The pointer is guaranteed to be valid between calls to <a class="el" href="group__grp__basics.html#ga5e9d0c116061f0cc25fb789fc393b417" title="Pm_Initialize() is the library initialisation function - call this before using the library.">Pm_Initialize()</a> and <a class="el" href="group__grp__basics.html#ga6c5dd5cd3657ac1cdab6bc5f3063193e" title="Pm_Terminate() is the library termination function - call this after using the library.">Pm_Terminate()</a>. </p>
 
 </div>
 </div>
@@ -260,15 +279,15 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">PMEXPORT PmError Pm_OpenInput </td>
+          <td class="memname">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a> Pm_OpenInput </td>
           <td>(</td>
-          <td class="paramtype">PortMidiStream **&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> **&#160;</td>
           <td class="paramname"><em>stream</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">PmDeviceID&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#ga696cc4d4360bb8513f13df4bb134098a">PmDeviceID</a>&#160;</td>
           <td class="paramname"><em>inputDevice</em>, </td>
         </tr>
         <tr>
@@ -302,20 +321,21 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p ><a class="el" href="group__grp__device.html#gabd50a31baaa494ad8b405f9ad54c966e">Pm_OpenInput()</a> and <a class="el" href="group__grp__device.html#ga134924cfa8badeecff3c5e1f22aee178">Pm_OpenOutput()</a> open devices.</p>
-<p >stream is the address of a PortMidiStream pointer which will receive a pointer to the newly opened stream.</p>
-<p >inputDevice is the id of the device used for input (see PmDeviceID above).</p>
-<p >inputDriverInfo is a pointer to an optional driver specific data structure containing additional information for device setup or handle processing. inputDriverInfo is never required for correct operation. If not used inputDriverInfo should be NULL.</p>
-<p >outputDevice is the id of the device used for output (see PmDeviceID above.)</p>
-<p >outputDriverInfo is a pointer to an optional driver specific data structure containing additional information for device setup or handle processing. outputDriverInfo is never required for correct operation. If not used outputDriverInfo should be NULL.</p>
-<p >For input, the buffersize specifies the number of input events to be buffered waiting to be read using <a class="el" href="group__grp__io.html#ga3d59225bc890ede974f245ada3de6456">Pm_Read()</a>. For output, buffersize specifies the number of output events to be buffered waiting for output. (In some cases &ndash; see below &ndash; PortMidi does not buffer output at all and merely passes data to a lower-level API, in which case buffersize is ignored.) Since MIDI speeds now vary from 1 to 50 or more messages per ms (over USB), put some thought into this number. E.g. if latency is 20ms and you want to burst 100 messages in that time (5000 messages per second), you should set the buffersize to 100. The default on Windows assumes an average rate of 500 messages per second and in this example, output would be slowed waiting for free buffers.</p>
-<p >latency is the delay in milliseconds applied to timestamps to determine when the output should actually occur. (If latency is &lt; 0, 0 is assumed.) If latency is zero, timestamps are ignored and all output is delivered immediately. If latency is greater than zero, output is delayed until the message timestamp plus the latency. (NOTE: the time is measured relative to the time source indicated by time_proc. Timestamps are absolute, not relative delays or offsets.) In some cases, PortMidi can obtain better timing than your application by passing timestamps along to the device driver or hardware. Latency may also help you to synchronize midi data to audio data by matching midi latency to the audio buffer latency.</p>
-<p >Note: ALSA appears to have a fixed-size priority queue for timed output messages. Testing indicates the queue can hold a little over 400 3-byte MIDI messages. Thus, you can send 10,000 messages/second if the latency is 30ms (30ms * 10000 msgs/sec * 0.001 sec/ms = 300 msgs), but not if the latency is 50ms (resulting in about 500 pending messages, which is greater than the 400 message limit). Since timestamps in ALSA are relative, they are of less value than absolute timestamps in macOS and Windows. This is a limitation of ALSA and apparently a design flaw.</p>
-<p >time_proc is a pointer to a procedure that returns time in milliseconds. It may be NULL, in which case a default millisecond timebase (PortTime) is used. If the application wants to use PortTime, it should start the timer (call Pt_Start) before calling Pm_OpenInput or Pm_OpenOutput. If the application tries to start the timer <em>after</em> Pm_OpenInput or Pm_OpenOutput, it may get a ptAlreadyStarted error from Pt_Start, and the application's preferred time resolution and callback function will be ignored. time_proc result values are appended to incoming MIDI data, and time_proc times are used to schedule outgoing MIDI data (when latency is non-zero).</p>
-<p >time_info is a pointer passed to time_proc.</p>
-<p >Example: If I provide a timestamp of 5000, latency is 1, and time_proc returns 4990, then the desired output time will be when time_proc returns timestamp+latency = 5001. This will be 5001-4990 = 11ms from now.</p>
-<p >return value: Upon success <code>Pm_Open*()</code> returns PmNoError and places a pointer to a valid PortMidiStream in the stream argument. If a call to <code>Pm_Open*()</code> fails a nonzero error code is returned (see PMError above) and the value of stream is invalid.</p>
-<p >Any stream that is successfully opened should eventually be closed by calling <a class="el" href="group__grp__events__filters.html#ga6b26be2fbcf092c9625ade5303edd0ac">Pm_Close()</a>. </p>
+
+<p>Open a MIDI device for input. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>the address of a <a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914" title="Represents an open MIDI device.">PortMidiStream</a> pointer which will receive a pointer to the newly opened stream.</td></tr>
+    <tr><td class="paramname">inputDevice</td><td>the ID of the device to be opened (see <a class="el" href="group__grp__basics.html#ga696cc4d4360bb8513f13df4bb134098a" title="Devices are represented as small integers.">PmDeviceID</a>).</td></tr>
+    <tr><td class="paramname">inputDriverInfo</td><td>a pointer to an optional driver-specific data structure containing additional information for device setup or handle processing. This parameter is never required for correct operation. If not used, specify NULL.</td></tr>
+    <tr><td class="paramname">bufferSize</td><td>the number of input events to be buffered waiting to be read using <a class="el" href="group__grp__io.html#ga3d59225bc890ede974f245ada3de6456" title="Retrieve midi data into a buffer.">Pm_Read()</a>. Messages will be lost if the number of unread messages exceeds this value.</td></tr>
+    <tr><td class="paramname">time_proc</td><td>(address of) a procedure that returns time in milliseconds. It may be NULL, in which case a default millisecond timebase (PortTime) is used. If the application wants to use PortTime, it should start the timer (call Pt_Start) before calling Pm_OpenInput or Pm_OpenOutput. If the application tries to start the timer <em>after</em> Pm_OpenInput or Pm_OpenOutput, it may get a ptAlreadyStarted error from Pt_Start, and the application's preferred time resolution and callback function will be ignored. <code>time_proc</code> result values are appended to incoming MIDI data, normally by mapping system-provided timestamps to the <code>time_proc</code> timestamps to maintain the precision of system-provided timestamps.</td></tr>
+    <tr><td class="paramname">time_info</td><td>is a pointer passed to time_proc.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__grp__basics.html#gga5fd46ccd2e320e17a840886731e8c6b9a9545ea325397bd81d2d81bdd7d92cba4" title="Normal return value indicating no error.">pmNoError</a> and places a pointer to a valid <a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914" title="Represents an open MIDI device.">PortMidiStream</a> in the stream argument. If the open operation fails, a nonzero error code is returned (see #PMError) and the value of stream is invalid.</dd></dl>
+<p>Any stream that is successfully opened should eventually be closed by calling <a class="el" href="group__grp__events__filters.html#ga6b26be2fbcf092c9625ade5303edd0ac" title="Close a midi stream, flushing any pending buffers.">Pm_Close()</a>. </p>
 
 </div>
 </div>
@@ -326,15 +346,15 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">PMEXPORT PmError Pm_OpenOutput </td>
+          <td class="memname">PMEXPORT <a class="el" href="group__grp__basics.html#ga5fd46ccd2e320e17a840886731e8c6b9">PmError</a> Pm_OpenOutput </td>
           <td>(</td>
-          <td class="paramtype">PortMidiStream **&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914">PortMidiStream</a> **&#160;</td>
           <td class="paramname"><em>stream</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">PmDeviceID&#160;</td>
+          <td class="paramtype"><a class="el" href="group__grp__basics.html#ga696cc4d4360bb8513f13df4bb134098a">PmDeviceID</a>&#160;</td>
           <td class="paramname"><em>outputDevice</em>, </td>
         </tr>
         <tr>
@@ -374,7 +394,26 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >see <a class="el" href="group__grp__device.html#gabd50a31baaa494ad8b405f9ad54c966e">Pm_OpenInput()</a> for details. </p>
+
+<p>Open a MIDI device for output. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>the address of a <a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914" title="Represents an open MIDI device.">PortMidiStream</a> pointer which will receive a pointer to the newly opened stream.</td></tr>
+    <tr><td class="paramname">outputDevice</td><td>the ID of the device to be opened (see <a class="el" href="group__grp__basics.html#ga696cc4d4360bb8513f13df4bb134098a" title="Devices are represented as small integers.">PmDeviceID</a>).</td></tr>
+    <tr><td class="paramname">outputDriverInfo</td><td>a pointer to an optional driver-specific data structure containing additional information for device setup or handle processing. This parameter is never required for correct operation. If not used, specify NULL.</td></tr>
+    <tr><td class="paramname">bufferSize</td><td>the number of output events to be buffered waiting for output. In some cases &ndash; see below &ndash; PortMidi does not buffer output at all and merely passes data to a lower-level API, in which case <code>bufferSize</code> is ignored. Since MIDI speeds now vary from 1 to 50 or more messages per ms (over USB), put some thought into this number. E.g. if latency is 20ms and you want to burst 100 messages in that time (5000 messages per second), you should set <code>bufferSize</code> to at least 100. The default on Windows assumes an average rate of 500 messages per second and in this example, output would be slowed waiting for free buffers.</td></tr>
+    <tr><td class="paramname">latency</td><td>the delay in milliseconds applied to timestamps to determine when the output should actually occur. (If latency is &lt; 0, 0 is assumed.) If latency is zero, timestamps are ignored and all output is delivered immediately. If latency is greater than zero, output is delayed until the message timestamp plus the latency. (NOTE: the time is measured relative to the time source indicated by time_proc. Timestamps are absolute, not relative delays or offsets.) In some cases, PortMidi can obtain better timing than your application by passing timestamps along to the device driver or hardware, so the best strategy to minimize jitter is: wait until the real time to send the message, compute the message, attach the <em>ideal</em> output time (not the current real time, because some time may have elapsed), and send the message. The <code>latency</code> will be added to the timestamp, and provided the elapsed computation time has not exceeded <code>latency</code>, the message will be delivered according to the timestamp. If the real time is already past the timestamp, the message will be delivered as soon as possible. Latency may also help you to synchronize MIDI data to audio data by matching <code>latency</code> to the audio buffer latency.</td></tr>
+    <tr><td class="paramname">time_proc</td><td>(address of) a pointer to a procedure that returns time in milliseconds. It may be NULL, in which case a default millisecond timebase (PortTime) is used. If the application wants to use PortTime, it should start the timer (call Pt_Start) before calling <a class="el" href="group__grp__device.html#gabd50a31baaa494ad8b405f9ad54c966e" title="Open a MIDI device for input.">Pm_OpenInput</a> or <a class="el" href="group__grp__device.html#ga134924cfa8badeecff3c5e1f22aee178" title="Open a MIDI device for output.">Pm_OpenOutput</a>. If the application tries to start the timer <em>after</em> <a class="el" href="group__grp__device.html#gabd50a31baaa494ad8b405f9ad54c966e" title="Open a MIDI device for input.">Pm_OpenInput</a> or <a class="el" href="group__grp__device.html#ga134924cfa8badeecff3c5e1f22aee178" title="Open a MIDI device for output.">Pm_OpenOutput</a>, it may get a #ptAlreadyStarted error from <a class="el" href="group__grp__porttime.html#gaa0fd8500047387bbe26b5f1c4d91831c" title="start a real-time clock service.">Pt_Start</a>, and the application's preferred time resolution and callback function will be ignored. <code>time_proc</code> times are used to schedule outgoing MIDI data (when latency is non-zero), usually by mapping from time_proc timestamps to internal system timestamps to maintain the precision of system-supported timing.</td></tr>
+    <tr><td class="paramname">time_info</td><td>a pointer passed to time_proc.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__grp__basics.html#gga5fd46ccd2e320e17a840886731e8c6b9a9545ea325397bd81d2d81bdd7d92cba4" title="Normal return value indicating no error.">pmNoError</a> and places a pointer to a valid <a class="el" href="group__grp__basics.html#gaf4949219ee1bb0afc857cb242d123914" title="Represents an open MIDI device.">PortMidiStream</a> in the stream argument. If the operation fails, a nonzero error code is returned (see PMError) and the value of <code>stream</code> is invalid.</dd></dl>
+<p>Note: ALSA appears to have a fixed-size priority queue for timed output messages. Testing indicates the queue can hold a little over 400 3-byte MIDI messages. Thus, you can send 10,000 messages/second if the latency is 30ms (30ms * 10000 msgs/sec * 0.001 sec/ms = 300 msgs), but not if the latency is 50ms (resulting in about 500 pending messages, which is greater than the 400 message limit). Since timestamps in ALSA are relative, they are of less value than absolute timestamps in macOS and Windows. This is a limitation of ALSA and apparently a design flaw.</p>
+<p >Example 1: If I provide a timestamp of 5000, latency is 1, and time_proc returns 4990, then the desired output time will be when time_proc returns timestamp+latency = 5001. This will be 5001-4990 = 11ms from now.</p>
+<p >Example 2: If I want to send at exactly 5010, and latency is 10, I should wait until 5000, compute the messages and provide a timestamp of 5000. As long as computation takes less than 10ms, the message will be delivered at time 5010.</p>
+<p >Example 3 (recommended): It is often convenient to ignore latency. E.g. if a sequence says to output at time 5010, just wait until 5010, compute the message and use 5010 for the timestamp. Delivery will then be at 5010+latency, but unless you are synchronizing to something else, the absolute delay by latency will not matter.</p>
+<p >Any stream that is successfully opened should eventually be closed by calling <a class="el" href="group__grp__events__filters.html#ga6b26be2fbcf092c9625ade5303edd0ac" title="Close a midi stream, flushing any pending buffers.">Pm_Close()</a>. </p>
 
 </div>
 </div>

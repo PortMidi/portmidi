@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['descriptor_5fnode_0',['descriptor_node',['../structdescriptor__node.html',1,'']]]
+  ['pmdeviceinfo_0',['PmDeviceInfo',['../struct_pm_device_info.html',1,'']]],
+  ['pmevent_1',['PmEvent',['../struct_pm_event.html',1,'']]]
 ];

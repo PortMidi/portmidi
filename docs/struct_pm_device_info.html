@@ -85,42 +85,46 @@ $(document).ready(function(){initNavTree('struct_pm_device_info.html',''); initR
 
 <div class="header">
   <div class="summary">
-<a href="#pub-attribs">Data Fields</a>  </div>
-  <div class="headertitle"><div class="title">PmDeviceInfo Struct Reference</div></div>
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="struct_pm_device_info-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">PmDeviceInfo Struct Reference<div class="ingroups"><a class="el" href="group__grp__basics.html">Basic Definitions</a></div></div></div>
 </div><!--header-->
 <div class="contents">
+
+<p>MIDI device information is returned in this structure, which is owned by PortMidi and read-only to applications.  
+ <a href="struct_pm_device_info.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="portmidi_8h_source.html">portmidi.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Data Fields</h2></td></tr>
-<tr class="memitem:a427b2098449590745eb8e4443f0b4ef8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_pm_device_info.html#a427b2098449590745eb8e4443f0b4ef8">structVersion</a></td></tr>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a427b2098449590745eb8e4443f0b4ef8"><td class="memItemLeft" align="right" valign="top"><a id="a427b2098449590745eb8e4443f0b4ef8" name="a427b2098449590745eb8e4443f0b4ef8"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>structVersion</b></td></tr>
+<tr class="memdesc:a427b2098449590745eb8e4443f0b4ef8"><td class="mdescLeft">&#160;</td><td class="mdescRight">this internal structure version <br /></td></tr>
 <tr class="separator:a427b2098449590745eb8e4443f0b4ef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4de98640fcb0246b461a25d12987fb7e"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_pm_device_info.html#a4de98640fcb0246b461a25d12987fb7e">interf</a></td></tr>
+<tr class="memdesc:a4de98640fcb0246b461a25d12987fb7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">underlying MIDI API, e.g.  <a href="struct_pm_device_info.html#a4de98640fcb0246b461a25d12987fb7e">More...</a><br /></td></tr>
 <tr class="separator:a4de98640fcb0246b461a25d12987fb7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f8f80d37794cde9472343e4487ba3eb"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_pm_device_info.html#a8f8f80d37794cde9472343e4487ba3eb">name</a></td></tr>
+<tr class="memdesc:a8f8f80d37794cde9472343e4487ba3eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">device name, e.g.  <a href="struct_pm_device_info.html#a8f8f80d37794cde9472343e4487ba3eb">More...</a><br /></td></tr>
 <tr class="separator:a8f8f80d37794cde9472343e4487ba3eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfab4eebf850cff6c1c1c4b8aa408293"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_pm_device_info.html#adfab4eebf850cff6c1c1c4b8aa408293">input</a></td></tr>
+<tr class="memitem:adfab4eebf850cff6c1c1c4b8aa408293"><td class="memItemLeft" align="right" valign="top"><a id="adfab4eebf850cff6c1c1c4b8aa408293" name="adfab4eebf850cff6c1c1c4b8aa408293"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>input</b></td></tr>
+<tr class="memdesc:adfab4eebf850cff6c1c1c4b8aa408293"><td class="mdescLeft">&#160;</td><td class="mdescRight">true iff input is available <br /></td></tr>
 <tr class="separator:adfab4eebf850cff6c1c1c4b8aa408293"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76a055a540e12c7206a5004afea1f66e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_pm_device_info.html#a76a055a540e12c7206a5004afea1f66e">output</a></td></tr>
+<tr class="memitem:a76a055a540e12c7206a5004afea1f66e"><td class="memItemLeft" align="right" valign="top"><a id="a76a055a540e12c7206a5004afea1f66e" name="a76a055a540e12c7206a5004afea1f66e"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>output</b></td></tr>
+<tr class="memdesc:a76a055a540e12c7206a5004afea1f66e"><td class="mdescLeft">&#160;</td><td class="mdescRight">true iff output is available <br /></td></tr>
 <tr class="separator:a76a055a540e12c7206a5004afea1f66e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2606797deda70b5effbc50b2648d699"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_pm_device_info.html#af2606797deda70b5effbc50b2648d699">opened</a></td></tr>
+<tr class="memitem:af2606797deda70b5effbc50b2648d699"><td class="memItemLeft" align="right" valign="top"><a id="af2606797deda70b5effbc50b2648d699" name="af2606797deda70b5effbc50b2648d699"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>opened</b></td></tr>
+<tr class="memdesc:af2606797deda70b5effbc50b2648d699"><td class="mdescLeft">&#160;</td><td class="mdescRight">used by generic PortMidi for error checking <br /></td></tr>
 <tr class="separator:af2606797deda70b5effbc50b2648d699"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Field Documentation</h2>
-<a id="adfab4eebf850cff6c1c1c4b8aa408293" name="adfab4eebf850cff6c1c1c4b8aa408293"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adfab4eebf850cff6c1c1c4b8aa408293">&#9670;&nbsp;</a></span>input</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int input</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >true iff input is available </p>
-
-</div>
-</div>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p >MIDI device information is returned in this structure, which is owned by PortMidi and read-only to applications. </p>
+<p >See <a class="el" href="group__grp__device.html#gab5974cf4a7995002e83bd9410a16470d" title="Get a PmDeviceInfo structure describing a MIDI device.">Pm_GetDeviceInfo()</a>. </p>
+</div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a4de98640fcb0246b461a25d12987fb7e" name="a4de98640fcb0246b461a25d12987fb7e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4de98640fcb0246b461a25d12987fb7e">&#9670;&nbsp;</a></span>interf</h2>
 
@@ -132,7 +136,9 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >underlying MIDI API, e.g. MMSystem or DirectX </p>
+
+<p>underlying MIDI API, e.g. </p>
+<p >"MMSystem" or "DirectX" </p>
 
 </div>
 </div>
@@ -147,52 +153,9 @@ Data Fields</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >device name, e.g. USB MidiSport 1x1 </p>
 
-</div>
-</div>
-<a id="af2606797deda70b5effbc50b2648d699" name="af2606797deda70b5effbc50b2648d699"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2606797deda70b5effbc50b2648d699">&#9670;&nbsp;</a></span>opened</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int opened</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >used by generic PortMidi code to do error checking on arguments </p>
-
-</div>
-</div>
-<a id="a76a055a540e12c7206a5004afea1f66e" name="a76a055a540e12c7206a5004afea1f66e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76a055a540e12c7206a5004afea1f66e">&#9670;&nbsp;</a></span>output</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int output</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >true iff output is available </p>
-
-</div>
-</div>
-<a id="a427b2098449590745eb8e4443f0b4ef8" name="a427b2098449590745eb8e4443f0b4ef8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a427b2098449590745eb8e4443f0b4ef8">&#9670;&nbsp;</a></span>structVersion</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int structVersion</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p >this internal structure version </p>
+<p>device name, e.g. </p>
+<p >"USB MidiSport 1x1" </p>
 
 </div>
 </div>

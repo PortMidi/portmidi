@@ -1,11 +1,16 @@
+# PortMidi, PortSMF, scorealign
+
+This is:
+ - PortMidi, a cross-platform library for MIDI IO,
+ - PortSMF, a Standard MIDI File reader/writer/data structure, 
+ - scorealign, music alignment software (audio and/or symbolic), 
+all from the orignal designer/developer.
+Each of these is independent; if you 
+just want PortMidi, you only need the portmidi/trunk subdirectory.
+
 # PortMidi
 
-This is PortMidi, a cross-platform library for MIDI IO,
-plus a Standard MIDI File reader/writer/data structure, 
-plus music alignment software (audio and/or symbolic), 
-all from the orignal designer/developer.
-Each of these is independent; there are no mutual dependencies, and if you 
-just want PortMidi, you only need the portmidi subdirectory.
+## [Full C API documentation is here.](https://rbdannenberg.github.io/portmidi/)
 
 ## Compiling and Using PortMidi
 
@@ -40,7 +45,7 @@ For up-to-date PortMidi for languages other than C/C++ found here, check with
 developers. As of 27 Sep 2021, this (and SourceForge) is the only repo with
 the features described above.
 
-## PortSMF
+# PortSMF
 
 PortSMF is a library for reading/writing/editing Standard MIDI Files. It is
 actually much more, with a general representation of events and updates with
@@ -57,7 +62,7 @@ stretching the tempo over some interval.
 In addition to Standard MIDI Files, PortSMF supports an ASCII representation
 called Allegro. PortSMF and Allegro are used for Audacity Note Tracks.
 
-## scorealign
+# scorealign
 
 Another library and applicatioon in this repo is scorealign, which aligns
 audio-to-audio, audio-to-MIDI or MIDI-to-MIDI using dynamic time warping (DTW)

@@ -1,3 +1,13 @@
+# Not ready for prime-time, but publicly visible
+
+This is a mirror transferred from rbdannenberg/portmidi.
+
+This repo will become the canonical release of PortMidi.
+
+Plan is to pare this down to just the PortMidi library and move PortSMF to another repo here and keep ScoreAlign in rbdannenberg/scorealign.
+
+Plan is to also move all bindings and support for other languages to independent repos, also under this PortMidi organization.
+
 # PortMidi, PortSMF, scorealign
 
 This is:

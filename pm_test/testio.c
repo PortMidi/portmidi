@@ -12,9 +12,10 @@
 #define TIME_INFO NULL
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
 
-#define STRING_MAX 80 /* used for console input */
+#define WAIT_FOR_ENTER while (getchar() != '\n') ;
 
 int32_t latency = 0;
+int verbose = FALSE;
 
 /* crash the program to test whether midi ports are closed */
 /**/
@@ -35,13 +36,11 @@ void doSomethingStupid() {
 /**/
 int get_number(const char *prompt)
 {
-    char line[STRING_MAX];
     int n = 0, i;
     fputs(prompt, stdout);
     while (n != 1) {
         n = scanf("%d", &i);
-        fgets(line, STRING_MAX, stdin);
-
+        WAIT_FOR_ENTER
     }
     return i;
 }
@@ -85,8 +84,8 @@ void main_test_input(unsigned int somethingStupid) {
         if (status == TRUE) {
             length = Pm_Read(midi, buffer, 1);
             if (length > 0) {
-                printf("Got message %d: time %ld, %2lx %2lx %2lx\n",
-                       i,
+                printf("Got message %d @ time %ld: timestamp %ld, "
+                       "%2lx %2lx %2lx\n", i, (long) Pt_Time(),
                        (long) buffer[0].timestamp,
                        (long) Pm_MessageStatus(buffer[0].message),
                        (long) Pm_MessageData1(buffer[0].message),
@@ -116,7 +115,6 @@ void main_test_input(unsigned int somethingStupid) {
 void main_test_output(int isochronous_test)
 {
     PmStream * midi;
-	char line[80];
     int32_t off_time;
     int chord[] = { 60, 67, 76, 83, 90 };
     #define chord_size 5 
@@ -144,13 +142,13 @@ void main_test_output(int isochronous_test)
 
     /* output note on/off w/latency offset; hold until user prompts */
     printf("ready to send program 1 change... (type ENTER):");
-    fgets(line, STRING_MAX, stdin);
+    WAIT_FOR_ENTER
     /* if we were writing midi for immediate output, we could always use
        timestamps of zero, but since we may be writing with latency, we
        will explicitly set the timestamp to "now" by getting the time.
        The source of timestamps should always correspond to the TIME_PROC
        and TIME_INFO parameters used in Pm_OpenOutput(). */
-    buffer[0].timestamp = TIME_PROC(TIME_INFO);
+    buffer[0].timestamp = Pt_Time();
     /* Send a program change to increase the chances we will hear notes */
     /* Program 0 is usually a piano, but you can change it here: */
 #define PROGRAM 0
@@ -166,7 +164,7 @@ void main_test_output(int isochronous_test)
         printf("Starting in 1s..."); fflush(stdout);
         Pt_Sleep(1000);
         int count;
-        PmTimestamp start = TIME_PROC(TIME_INFO);
+        PmTimestamp start = Pt_Time();
         for (count = 0; count < 80; count++) {
             buffer[0].timestamp = start + count * 250;
             buffer[0].message = Pm_Message(0x90, 69, 100);
@@ -177,31 +175,31 @@ void main_test_output(int isochronous_test)
             // sleep for a random time up to 100ms to add jitter to
             // the times at which we send messages. PortMidi timing
             // should remove the jitter if latency > 100
-            while (TIME_PROC(TIME_INFO) < next_time) {
+            while (Pt_Time() < next_time) {
                 Pt_Sleep(rand() % 100);
             }
         }
         printf("Done sending 80 notes at 4 notes per second.\n");
     } else {
         printf("ready to note-on... (type ENTER):");
-        fgets(line, STRING_MAX, stdin);
-        buffer[0].timestamp = TIME_PROC(TIME_INFO);
+        WAIT_FOR_ENTER
+        buffer[0].timestamp = Pt_Time();
         buffer[0].message = Pm_Message(0x90, 60, 100);
         Pm_Write(midi, buffer, 1);
         printf("ready to note-off... (type ENTER):");
-        fgets(line, STRING_MAX, stdin);
-        buffer[0].timestamp = TIME_PROC(TIME_INFO);
+        WAIT_FOR_ENTER
+        buffer[0].timestamp = Pt_Time();
         buffer[0].message = Pm_Message(0x90, 60, 0);
         Pm_Write(midi, buffer, 1);
 
         /* output short note on/off w/latency offset; hold until user prompts */
         printf("ready to note-on (short form)... (type ENTER):");
-        fgets(line, STRING_MAX, stdin);
-        Pm_WriteShort(midi, TIME_PROC(TIME_INFO),
+        WAIT_FOR_ENTER
+        Pm_WriteShort(midi, Pt_Time(),
                       Pm_Message(0x90, 60, 100));
         printf("ready to note-off (short form)... (type ENTER):");
-        fgets(line, STRING_MAX, stdin);
-        Pm_WriteShort(midi, TIME_PROC(TIME_INFO),
+        WAIT_FOR_ENTER
+        Pm_WriteShort(midi, Pt_Time(),
                       Pm_Message(0x90, 60, 0));
 
         /* output several note on/offs to test timing. 
@@ -213,8 +211,8 @@ void main_test_output(int isochronous_test)
                    (long) latency);
         }
         printf("ready to chord-on/chord-off... (type ENTER):");
-        fgets(line, STRING_MAX, stdin);
-        timestamp = TIME_PROC(TIME_INFO);
+        WAIT_FOR_ENTER
+        timestamp = Pt_Time();
         printf("starting timestamp %ld\n", (long) timestamp);
         for (i = 0; i < chord_size; i++) {
             buffer[i].timestamp = timestamp + 1000 * i;
@@ -223,7 +221,7 @@ void main_test_output(int isochronous_test)
         Pm_Write(midi, buffer, chord_size);
 
         off_time = timestamp + 1000 + chord_size * 1000; 
-        while (TIME_PROC(TIME_INFO) < off_time) 
+        while (Pt_Time() < off_time) 
             Pt_Sleep(10);  /* wait */
         for (i = 0; i < chord_size; i++) {
             buffer[i].timestamp = timestamp + 1000 * i;
@@ -234,7 +232,7 @@ void main_test_output(int isochronous_test)
 
     /* close device (this not explicitly needed in most implementations) */
     printf("ready to close and terminate... (type ENTER):");
-    fgets(line, STRING_MAX, stdin);
+    WAIT_FOR_ENTER
 	
     Pm_Close(midi);
     Pm_Terminate();
@@ -249,7 +247,7 @@ void main_test_both()
     PmStream * midi, * midiOut;
     PmEvent buffer[1];
     PmError status, length;
-    int num = 10;
+    int num = 11;
     
     in = get_number("Type input number: ");
     out = get_number("Type output number: ");
@@ -272,7 +270,7 @@ void main_test_both()
                  INPUT_BUFFER_SIZE, 
                  TIME_PROC, 
                  TIME_INFO);
-    printf("Midi Input opened. Reading %d Midi messages...\n",num);
+    printf("Midi Input opened. Reading %d Midi messages...\n", num);
     Pm_SetFilter(midi, PM_FILT_ACTIVE | PM_FILT_CLOCK);
     /* empty the buffer after setting filter, just in case anything
        got through */
@@ -286,8 +284,8 @@ void main_test_both()
             length = Pm_Read(midi,buffer,1);
             if (length > 0) {
                 Pm_Write(midiOut, buffer, 1);
-                printf("Got message %d: time %ld, %2lx %2lx %2lx\n",
-                       i,
+                printf("Got message %d @ time %ld: timestamp %ld, "
+                       "%2lx %2lx %2lx\n", i, (long) Pt_Time(),
                        (long) buffer[0].timestamp,
                        (long) Pm_MessageStatus(buffer[0].message),
                        (long) Pm_MessageData1(buffer[0].message),
@@ -298,6 +296,8 @@ void main_test_both()
             }
         }
     }
+    /* allow time for last message to go out */
+    Pt_Sleep(100 + latency);
 
     /* close midi devices */
     Pm_Close(midi);
@@ -315,7 +315,6 @@ void main_test_both()
  */
 void main_test_stream() {
     PmStream * midi;
-	char line[80];
     PmEvent buffer[16];
 
 	/* determine which output device to use */
@@ -339,14 +338,14 @@ void main_test_stream() {
 
     /* output note on/off w/latency offset; hold until user prompts */
     printf("ready to send output... (type ENTER):");
-    fgets(line, STRING_MAX, stdin);
+    WAIT_FOR_ENTER
 
     /* if we were writing midi for immediate output, we could always use
        timestamps of zero, but since we may be writing with latency, we
        will explicitly set the timestamp to "now" by getting the time.
        The source of timestamps should always correspond to the TIME_PROC
        and TIME_INFO parameters used in Pm_OpenOutput(). */
-    buffer[0].timestamp = TIME_PROC(TIME_INFO);
+    buffer[0].timestamp = Pt_Time();
     buffer[0].message = Pm_Message(0xC0, 0, 0);
     buffer[1].timestamp = buffer[0].timestamp;
     buffer[1].message = Pm_Message(0x90, 60, 100);
@@ -372,7 +371,7 @@ void main_test_stream() {
        Then wait until now+2000.
        Play 4 more notes as before.
        We should hear 8 evenly spaced notes. */
-    now = TIME_PROC(TIME_INFO);
+    now = Pt_Time();
     for (i = 0; i < 4; i++) {
         buffer[i * 2].timestamp = now + (i * 500);
         buffer[i * 2].message = Pm_Message(0x90, 60, 100);
@@ -396,8 +395,8 @@ void main_test_stream() {
 #endif
     /* close device (this not explicitly needed in most implementations) */
     printf("ready to close and terminate... (type ENTER):");
-    fgets(line, STRING_MAX, stdin);
-    
+    WAIT_FOR_ENTER
+
     Pm_Close(midi);
     Pm_Terminate();
     printf("done closing and terminating...\n");
@@ -406,8 +405,10 @@ void main_test_stream() {
 
 void show_usage()
 {
-    printf("Usage: test [-h] [-l latency-in-ms]\n");
-    exit(0);
+    printf("Usage: test [-h] [-l latency-in-ms] [-v]\n"
+           "    -h for this help message (only)\n"
+           "    -l for latency\n"
+           "    -v for verbose (enables more output)\n");
 }
 
 int main(int argc, char *argv[])
@@ -415,12 +416,12 @@ int main(int argc, char *argv[])
     int default_in;
     int default_out;
     int i = 0, n = 0;
-    char line[STRING_MAX];
     int test_input = 0, test_output = 0, test_both = 0, somethingStupid = 0;
     int isochronous_test = 0;
     int stream_test = 0;
     int latency_valid = FALSE;
     
+    show_usage();
     if (sizeof(void *) == 8) 
         printf("Apparently this is a 64-bit machine.\n");
     else if (sizeof(void *) == 4) 
@@ -428,14 +429,18 @@ int main(int argc, char *argv[])
     
     for (i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-h") == 0) {
-            show_usage();
+            exit(0);
         } else if (strcmp(argv[i], "-l") == 0 && (i + 1 < argc)) {
             i = i + 1;
             latency = atoi(argv[i]);
             printf("Latency will be %ld\n", (long) latency);
             latency_valid = TRUE;
+        } else if (strcmp(argv[i], "-v") == 0) {
+            printf("Verbose is now TRUE\n");
+            verbose = TRUE;  /* not currently used for anything */
         } else {
             show_usage();
+            exit(0);
         }
     }
 
@@ -458,7 +463,7 @@ int main(int argc, char *argv[])
            "    7. isochronous out\n");
     while (n != 1) {
         n = scanf("%d", &i);
-        fgets(line, STRING_MAX, stdin);
+        WAIT_FOR_ENTER
         switch(i) {
         case 1: 
             test_input = 1;
@@ -523,6 +528,6 @@ int main(int argc, char *argv[])
     }
     
     printf("finished portMidi test...type ENTER to quit...");
-    fgets(line, STRING_MAX, stdin);
+    WAIT_FOR_ENTER
     return 0;
 }

@@ -8,15 +8,16 @@ if(APPLE OR WIN32)
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 
+# Debugging code to figure out what CMake is doing
   # the first time CMake configures, save off CMake's built-in flags
-  if(NOT DEFAULT_DEBUG_FLAGS)
-    set(DEFAULT_DEBUG_FLAGS ${CMAKE_C_FLAGS_DEBUG} CACHE 
-        STRING "CMake's default debug flags" FORCE)
-    set(DEFAULT_RELEASE_FLAGS ${CMAKE_C_FLAGS_RELEASE} CACHE 
-        STRING "CMake's default release flags" FORCE)
-  else(NOT DEFAULT_DEBUG_FLAGS)
-    message(STATUS "DEFAULT_DEBUG_FLAGS not nil: " ${DEFAULT_DEBUG_FLAGS})
-  endif(NOT DEFAULT_DEBUG_FLAGS)
+#  if(NOT DEFAULT_DEBUG_FLAGS)
+#    set(DEFAULT_DEBUG_FLAGS ${CMAKE_C_FLAGS_DEBUG} CACHE 
+#        STRING "CMake's default debug flags" FORCE)
+#    set(DEFAULT_RELEASE_FLAGS ${CMAKE_C_FLAGS_RELEASE} CACHE 
+#        STRING "CMake's default release flags" FORCE)
+#  else(NOT DEFAULT_DEBUG_FLAGS)
+#    message(STATUS "DEFAULT_DEBUG_FLAGS not nil: " ${DEFAULT_DEBUG_FLAGS})
+#  endif(NOT DEFAULT_DEBUG_FLAGS)
 else(APPLE OR WIN32)
   set(LINUX_FLAGS "-DPMALSA" CACHE STRING "must define either PMALSA or PMNULL")
 endif(APPLE OR WIN32)
@@ -29,6 +30,8 @@ if(APPLE)
       PATH "-isysroot parameter for compiler")
   set(CMAKE_C_FLAGS "-mmacosx-version-min=${PM_OSC_VERSION}" CACHE 
       STRING "needed in conjunction with CMAKE_OSX_SYSROOT" FORCE)
+  # option(OSX_RPATH "control CMake policy for finding macOS dynamic libraries"
+  #        ON)  # enabled here to match CMake default. Is this correct?
 endif(APPLE)
 
 macro(prepend_path RESULT PATH)
@@ -43,8 +46,8 @@ if(UNIX)
   if(APPLE)
     set(MACSRC pmmacosxcm.c pmmacosxcm.h pmmac.c pmmac.h 
         readbinaryplist.c readbinaryplist.h finddefault.c) 
-    prepend_path(LIBSRC ../pm_mac/ ${MACSRC})
-    list(APPEND LIBSRC ../porttime/ptmacosx_mach.c) 
+    prepend_path(LIBSRC ${PROJECT_SOURCE_DIR}/pm_mac/ ${MACSRC})
+    list(APPEND LIBSRC ${PROJECT_SOURCE_DIR}/porttime/ptmacosx_mach.c) 
 
     include_directories(${CMAKE_OSX_SYSROOT}/Developer/Headers/FlatCarbon)
     set(FRAMEWORK_PATH ${CMAKE_OSX_SYSROOT}/System/Library/Frameworks)
@@ -52,9 +55,8 @@ if(UNIX)
     set(COREFOUNDATION_LIB "${FRAMEWORK_PATH}/CoreFoundation.framework")
     set(COREMIDI_LIB "${FRAMEWORK_PATH}/CoreMIDI.framework")
     set(CORESERVICES_LIB "${FRAMEWORK_PATH}/CoreServices.framework")
-    set(PM_NEEDED_LIBS ${COREAUDIO_LIB} ${COREFOUNDATION_LIB}
-                             ${COREMIDI_LIB} ${CORESERVICES_LIB}
-        CACHE INTERNAL "")
+    set(NEEDED_LIBS ${COREAUDIO_LIB} ${COREFOUNDATION_LIB}
+                    ${COREMIDI_LIB} ${CORESERVICES_LIB})
 
     if(BUILD_JAVA_NATIVE_INTERFACE)
       set(JAVAVM_LIB "${FRAMEWORK_PATH}/JavaVM.framework")
@@ -65,7 +67,6 @@ if(UNIX)
     # LINUX settings...
     if(BUILD_JAVA_NATIVE_INTERFACE)
       include(FindJNI)
-      message(STATUS "JAVA_JVM_LIB_PATH is " ${JAVA_JVM_LIB_PATH})
       message(STATUS "JAVA_INCLUDE_PATH is " ${JAVA_INCLUDE_PATH})
       message(STATUS "JAVA_INCLUDE_PATH2 is " ${JAVA_INCLUDE_PATH2})
       message(STATUS "JAVA_JVM_LIBRARY is " ${JAVA_JVM_LIBRARY})
@@ -76,9 +77,9 @@ if(UNIX)
 
     set(LINUXSRC pmlinuxalsa.c pmlinuxalsa.h pmlinux.c pmlinux.h
                  finddefault.c) 
-    prepend_path(LIBSRC ../pm_linux/ ${LINUXSRC})
-    list(APPEND LIBSRC ../porttime/ptlinux.c) 
-    set(PM_NEEDED_LIBS pthread asound)
+    prepend_path(LIBSRC ${PROJECT_SOURCE_DIR}/pm_linux/ ${LINUXSRC})
+    list(APPEND LIBSRC ${PROJECT_SOURCE_DIR}/porttime/ptlinux.c) 
+    set(NEEDED_LIBS pthread asound)
   endif(APPLE)
 else(UNIX)
   if(WIN32)
@@ -94,35 +95,34 @@ else(UNIX)
     endif(BUILD_JAVA_NATIVE_INTERFACE)
 
     set(WINSRC pmwin.c pmwinmm.c pmwinmm.h) 
-    prepend_path(LIBSRC ../pm_win/ ${WINSRC})
-    list(APPEND LIBSRC ../porttime/ptwinmm.c)
-    set(PM_NEEDED_LIBS winmm.lib)
+    prepend_path(LIBSRC ${PROJECT_SOURCE_DIR}/pm_win/ ${WINSRC})
+    list(APPEND LIBSRC ${PROJECT_SOURCE_DIR}/porttime/ptwinmm.c)
+    set(NEEDED_LIBS winmm.lib)
   endif(WIN32)
 endif(UNIX)
-if(BUILD_JAVA_NATIVE_INTERFACE)
-  set(JNI_EXTRA_LIBS ${PM_NEEDED_LIBS} ${JAVA_JVM_LIBRARY})
-  # define the jni library
-  include_directories(${JAVA_INCLUDE_PATHS})
-
-  set(JNISRC ${LIBSRC} ../pm_java/pmjni/pmjni.c)
-  add_library(pmjni SHARED ${JNISRC})
-  target_link_libraries(pmjni ${JNI_EXTRA_LIBS})
-  set_target_properties(pmjni PROPERTIES EXECUTABLE_EXTENSION "jnilib"
-                              MACOSX_RPATH ON)
-  set(PMJNI_LIBRARY pmjni)
-endif(BUILD_JAVA_NATIVE_INTERFACE)
 
 # this completes the list of library sources by adding shared code
-list(APPEND LIBSRC pmutil.c pmutil.h portmidi.c portmidi.h pminternal.h) 
+prepend_path(PMSRC "${CMAKE_CURRENT_SOURCE_DIR}/"
+                   pmutil.c pmutil.h portmidi.c portmidi.h pminternal.h)
+list(APPEND LIBSRC ${PMSRC})
+
+set(PM_LIB_NAME "portmidi" CACHE STRING 
+    "The PortMidi library name, e.g. portmidi_static. Default is portmidi")
 
 # now add the shared files to make the complete list of library sources
-add_library(portmidi-static STATIC ${LIBSRC})
-set_target_properties(portmidi-static PROPERTIES OUTPUT_NAME "portmidi_s")
-target_link_libraries(portmidi-static ${PM_NEEDED_LIBS})
+add_library(${PM_LIB_NAME} ${LIBSRC})
+set(PM_LIBSRC ${LIBSRC} CACHE INTERNAL
+    "accumulate and share portmidi library sources here")
+set(PM_NEEDED_LIBS ${NEEDED_LIBS} CACHE INTERNAL
+    "accumulate and share portmidi dependencies here")
+
+# set to CMake default; is this right?:
+set_target_properties(${PM_LIB_NAME} PROPERTIES MACOSX_RPATH ON)
+target_link_libraries(${PM_LIB_NAME} ${PM_NEEDED_LIBS})
 
 # install the libraries (Linux and Mac OS X command line)
 if(UNIX)
-  INSTALL(TARGETS portmidi-static ${PMJNI_LIBRARY}
+  INSTALL(TARGETS ${PM_LIB_NAME} ${PMJNI_LIBRARY}
     LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
     ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 # .h files installed by pm_dylib/CMakeLists.txt, so don't need them here

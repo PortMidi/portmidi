@@ -9,21 +9,67 @@
  */
  
 /* Notes:
-    since the input and output streams are represented by MIDIEndpointRef
-    values and almost no other state, we store the MIDIEndpointRef on
-    descriptors[midi->device_id].descriptor. The only other state we need
-    is for errors: we need to know if there is an error and if so, what is
-    the error text. We use a structure with two kinds of
-    host error: "error" and "callback_error". That way, asynchronous callbacks
-    do not interfere with other error information.
+
+    Since the input and output streams are represented by
+    MIDIEndpointRef values and almost no other state, we store the
+    MIDIEndpointRef on pm_descriptors[midi->device_id].descriptor.
     
-    OS X does not seem to have an error-code-to-text function, so we will
-    just use text messages instead of error codes.
+    OS X does not seem to have an error-code-to-text function, so we
+    will just use text messages instead of error codes.
+
+    Virtual device input synchronization: Once we create a virtual
+    device, it is always "on" and receiving messages, but it must drop
+    messages unless the device has been opened with Pm_OpenInput. To
+    open, the main thread should create all the data structures, then
+    call OSMemoryBarrier so that writes are observed, then set
+    is_opened = TRUE.  To close without locks, we need to get the
+    callback to set is_opened to FALSE before we free data structures;
+    otherwise, there's a race condition where closing could delete
+    structures in use by the virtual_read_callback function. We send
+    8 MIDI resets (FF) in a single packet to our own port to signal
+    the virtual_read_callback to close it. Then, we wait for the
+    callback to recognize the "close" packet and reset is_opened.
+ 
+    Device scanning is done when you first open an application.
+    PortMIDI does not actively update the devices. Instead, you must
+    Pm_Terminate() and Pm_Initialize(), basically starting over. But
+    CoreMIDI does not have a way to shut down(!), and even
+    MIDIClientDispose() somehow retains state (and docs say do not
+    call it even if it worked). The solution, apparently, is to
+    call CFRunLoopRunInMode(), which somehow updates CoreMIDI
+    state.
+ 
+    But when do we call CFRunLoopRunInMode()? I tried calling it
+    in midi_in_poll() which is called when you call Pm_Read() since
+    that is called often. I observed that this caused the program
+    to block for as long as 50ms and fairly often for 2 or 3ms.
+    What was Apple thinking? Is it really OK to design systems that
+    can only function with a tricky multi-threaded, non-blocking
+    priority-based solution, and then not provide a proof of concept
+    or documentation? Or is Apple's design really flawed? If anyone
+    at Apple reads this, please let me know -- I'm curious.
+ 
+    But I digress... Here's the PortMidi approach: Since
+    CFRunLoopRunInMode() is potentially a non-realtime operation,
+    we only call it in Pm_Initialize(), where other calls to look
+    up devices and device names are quite slow to begin with. Again,
+    PortMidi does not actively scan for new or deleted devices, so
+    if devices change, you won't see it until the next Pm_Terminate
+    and Pm_Initialize.
+ 
+    Calling CFRunLoopRunInMode() once is probably not enough. There
+    might be better way, but it seems to work to just call it 100
+    times and insert 20 1ms delays (in case some inter-process
+    communication or synchronization is going on).
+    This adds 20ms to the wall time of Pm_Initialize(), but it
+    typically runs 30ms to much more (~4s), so this has little impact.
  */
 
 #include <stdlib.h>
 
-//#define CM_DEBUG 1
+/* turn on lots of debugging print statements */
+#define CM_DEBUG if (0)
+/* #define CM_DEBUG if (1) */
 
 #include "portmidi.h"
 #include "pmutil.h"
@@ -39,6 +85,7 @@
 #include <CoreMIDI/MIDIServices.h>
 #include <CoreAudio/HostTime.h>
 #include <unistd.h>
+#include <libkern/OSAtomic.h>
 
 #define PACKET_BUFFER_SIZE 1024
 /* maximum overall data rate (OS X limits MIDI rate in case there
@@ -137,19 +184,17 @@
 #define NULL_REF NULL
 #endif
 
-static MIDIClientRef	client = NULL_REF; 	/* Client handle to the MIDI server */
-static MIDIPortRef	portIn = NULL_REF;	/* Input port handle */
-static MIDIPortRef	portOut = NULL_REF;	/* Output port handle */
-static char             isIAC[MAX_IAC_NUM + 1]; /* is device an IAC device */
+static MIDIClientRef client = NULL_REF;  /* Client handle to the MIDI server */
+static MIDIPortRef   portIn = NULL_REF;  /* Input port handle */
+static MIDIPortRef   portOut = NULL_REF;  /* Output port handle */
+static char          isIAC[MAX_IAC_NUM + 1];  /* is device an IAC device */
 
 extern pm_fns_node pm_macosx_in_dictionary;
 extern pm_fns_node pm_macosx_out_dictionary;
 
 typedef struct coremidi_info_struct {
     int is_virtual;     /* virtual device (TRUE) or actual device (FALSE)? */
-    PmTimestamp sync_time; /* when did we last determine delta? */
     UInt64 delta;	/* difference between stream time and real time in ns */
-    int first_message;  /* tells midi_write to sychronize timestamps */
     int sysex_mode;     /* middle of sending sysex */
     uint32_t sysex_word; /* accumulate data when receiving sysex */
     uint32_t sysex_byte_count; /* count how many received */
@@ -174,6 +219,16 @@ MIDITimeStamp timestamp_pm_to_cm(PmTimestamp timestamp);
 PmTimestamp timestamp_cm_to_pm(MIDITimeStamp timestamp);
 
 char* cm_get_full_endpoint_name(MIDIEndpointRef endpoint, int *isIAC);
+
+static PmError check_hosterror(OSStatus err, const char *msg)
+{
+    if (err != noErr) {
+        sprintf(pm_hosterror_text, "Host error %ld: %s", (long) err, msg);
+        pm_hosterror = TRUE;
+        return pmHostError;
+    }
+    return pmNoError;
+}
 
 
 static int midi_length(int32_t msg)
@@ -210,11 +265,12 @@ static PmTimestamp midi_synchronize(PmInternal *midi)
          /* read real_time between two reads of stream time */
          pm_stream_time = pm_stream_time_2;
          real_time = (*midi->time_proc)(midi->time_info);
-         pm_stream_time_2 = AudioConvertHostTimeToNanos(AudioGetCurrentHostTime());
+         pm_stream_time_2 = AudioConvertHostTimeToNanos(
+                                    AudioGetCurrentHostTime());
          /* repeat if more than 0.5 ms has elapsed */
     } while (pm_stream_time_2 > pm_stream_time + 500000);
     info->delta = pm_stream_time - ((UInt64) real_time * (UInt64) 1000000);
-    info->sync_time = real_time;
+    midi->sync_time = real_time;
     return real_time;
 }
 
@@ -318,50 +374,67 @@ static void process_packet(MIDIPacket *packet, PmEvent *event,
 /* called when MIDI packets are received */
 static void read_callback(const MIDIPacketList *newPackets, PmInternal *midi)
 {
-    coremidi_info_type info = (coremidi_info_type) midi->api_info;
     PmEvent event;
     MIDIPacket *packet;
     unsigned int packetIndex;
     uint32_t now;
     unsigned int status;
-    
-#ifdef CM_DEBUG
-    printf("read_callback: numPackets %d: ", newPackets->numPackets);
-#endif
-
     /* Retrieve the context for this connection */
+    coremidi_info_type info = (coremidi_info_type) midi->api_info;
     assert(info);
+    
+    CM_DEBUG printf("read_callback: numPackets %d: ", newPackets->numPackets);
     
     /* synchronize time references every 100ms */
     now = (*midi->time_proc)(midi->time_info);
-    if (info->first_message || info->sync_time + 100 /*ms*/ < now) {
+    if (midi->first_message || midi->sync_time + 100 /*ms*/ < now) {
         /* time to resync */
         now = midi_synchronize(midi);
-        info->first_message = FALSE;
+        midi->first_message = FALSE;
     }
     
     packet = (MIDIPacket *) &newPackets->packet[0];
-    /* printf("read_callback packet status %x length %d\n", packet->data[0], 
-               packet->length); */
+    /* hardware devices get untimed messages and apply timestamps. We
+     * want to preserve them because they should be more accurate than
+     * applying the current time here. virtual devices just pass on the
+     * packet->timeStamp, which could be anything. PortMidi says the 
+     * PortMidi timestamp is the time the message is received. We do not
+     * know if we are receiving from a device driver or a virtual device.
+     * PortMidi sends to virtual devices get a current timestamp, so we
+     * can treat them as the receive time. If the timestamp is zero,
+     * suggested by CoreMIDI as the value to use for immediate delivery,
+     * then we plug in `now` which is obtained above. If another
+     * application sends bogus non-zero timestamps, we will convert them
+     * to this port's reference time and pass them as event.timestamp.
+     * Receiver beware.
+     */
+    CM_DEBUG printf("read_callback packet @ %lld status %x length %d\n",
+                    AudioConvertHostTimeToNanos(AudioGetCurrentHostTime()),
+                    packet->data[0], packet->length);
     for (packetIndex = 0; packetIndex < newPackets->numPackets; packetIndex++) {
         /* Set the timestamp and dispatch this message */
-        event.timestamp = (PmTimestamp) /* explicit conversion */ (
+        CM_DEBUG printf("    packet->timeStamp %lld nanos %lld\n",
+                        packet->timeStamp,
+                        AudioConvertHostTimeToNanos(packet->timeStamp));
+        if (packet->timeStamp == 0) {
+            event.timestamp = now;
+        } else {
+            event.timestamp = (PmTimestamp) /* explicit conversion */ (
                 (AudioConvertHostTimeToNanos(packet->timeStamp) - info->delta) /
                 (UInt64) 1000000);
+        }
         status = packet->data[0];
         /* process packet as sysex data if it begins with MIDI_SYSEX, or
            MIDI_EOX or non-status byte with no running status */
-#ifdef CM_DEBUG
-        printf(" %d", packet->length);
-#endif
+        CM_DEBUG printf("        len %d stat %x\n", packet->length, status);
         if (status == MIDI_SYSEX || status == MIDI_EOX || 
             ((!(status & MIDI_STATUS_MASK)) && !info->last_command)) {
-	    /* previously was: !(status & MIDI_STATUS_MASK)) {
+            /* previously was: !(status & MIDI_STATUS_MASK)) {
              * but this could mistake running status for sysex data
              */
             /* reset running status data -cpr */
-	    info->last_command = 0;
-	    info->last_msg_length = 0;
+            info->last_command = 0;
+            info->last_msg_length = 0;
             /* printf("sysex packet length: %d\n", packet->length); */
             pm_read_bytes(midi, packet->data, packet->length, event.timestamp);
         } else {
@@ -369,9 +442,6 @@ static void read_callback(const MIDIPacketList *newPackets, PmInternal *midi)
 	}
         packet = MIDIPacketNext(packet);
     }
-#ifdef CM_DEBUG
-    printf("\n");
-#endif
 }
 
 /* callback for real devices - redirects to read_callback */
@@ -386,7 +456,27 @@ static void device_read_callback(const MIDIPacketList *newPackets,
 static void virtual_read_callback(const MIDIPacketList *newPackets, 
                                   void *refCon, void *connRefCon)
 {
-    read_callback(newPackets, (PmInternal *) refCon);
+    /* this refCon is the device ID -- if there is a valid ID and 
+       the pm_descriptors table has a non-null pointer to a PmInternal,
+       then then device is open and should receive this data */
+    PmDeviceID id = (PmDeviceID) refCon;
+    if (id >= 0 && id < pm_descriptor_len) {
+        if (pm_descriptors[id].pub.opened) {
+            /* check for close request (7 reset status bytes): */
+            if (newPackets->numPackets == 1 &&
+                newPackets->packet[0].length == 8 &&
+                /* CoreMIDI declares packets with 4-byte alignment, so we
+                 * should be safe to test for 8 0xFF's as 2 32-bit values: */
+                *(SInt32 *) &newPackets->packet[0].data[0] == -1 &&
+                *(SInt32 *) &newPackets->packet[0].data[4] == -1) {
+                CM_DEBUG printf("got close request packet\n");
+                pm_descriptors[id].pub.opened = FALSE;
+                return;
+            } else {
+                read_callback(newPackets, pm_descriptors[id].pm_internal);
+            }
+        }
+    }
 }
 
 
@@ -399,11 +489,7 @@ static coremidi_info_type create_macosxcm_info(int is_virtual, int is_input)
         return NULL;
     }
     info->is_virtual = is_virtual;
-    info->error[0] = 0;
-    info->callback_error[0] = 0;
-    info->sync_time = 0;
     info->delta = 0;
-    info->first_message = TRUE;
     info->sysex_mode = FALSE;
     info->sysex_word = 0;
     info->sysex_byte_count = 0;
@@ -421,41 +507,38 @@ static coremidi_info_type create_macosxcm_info(int is_virtual, int is_input)
 }
 
 
-
 static PmError midi_in_open(PmInternal *midi, void *driverInfo)
 {
     MIDIEndpointRef endpoint;
     coremidi_info_type info;
     OSStatus macHostError;
+    int is_virtual = pm_descriptors[midi->device_id].pub.is_virtual;
     
-    /* insure that we have a time_proc for timing */
-    if (midi->time_proc == NULL) {
-        if (!Pt_Started()) 
-            Pt_Start(1, 0, 0);
-        /* time_get does not take a parameter, so coerce */
-        midi->time_proc = (PmTimeProcPtr) Pt_Time;
-    }
-    endpoint = (MIDIEndpointRef) (long) descriptors[midi->device_id].descriptor;
-    if (endpoint == NULL_REF) {
-        return pmInvalidDeviceId;
+    /* if this is an external device, descriptor is a MIDIEndpointRef.
+     * if this is a virtual device for this application, descriptor is NULL.
+     */
+    if (!is_virtual) {
+        endpoint = (MIDIEndpointRef) (intptr_t)
+                   pm_descriptors[midi->device_id].descriptor;
+        if (endpoint == NULL_REF) {
+            return pmInvalidDeviceId;
+        }
     }
 
-    info = create_macosxcm_info(FALSE, TRUE);
+    info = create_macosxcm_info(is_virtual, TRUE);
     midi->api_info = info;
     if (!info) {
         return pmInsufficientMemory;
     }
-    macHostError = MIDIPortConnectSource(portIn, endpoint, midi);
-    if (macHostError != noErr) {
-        pm_hosterror = macHostError;
-        sprintf(pm_hosterror_text, 
-                "Host error %ld: MIDIPortConnectSource() in midi_in_open()",
-                (long) macHostError);
-        midi->api_info = NULL;
-        pm_free(info);
-        return pmHostError;
+    if (!is_virtual) {
+        macHostError = MIDIPortConnectSource(portIn, endpoint, midi);
+        if (macHostError != noErr) {
+            midi->api_info = NULL;
+            pm_free(info);
+            return  check_hosterror(macHostError,
+                            "MIDIPortConnectSource() in midi_in_open()");
+        }
     }
-    
     return pmNoError;
 }
 
@@ -469,21 +552,13 @@ static PmError midi_in_close(PmInternal *midi)
     
     if (!info) return pmBadPtr;
 
-    endpoint = (MIDIEndpointRef) (long) descriptors[midi->device_id].descriptor;
+    endpoint = (MIDIEndpointRef) (intptr_t)
+               pm_descriptors[midi->device_id].descriptor;
     if (endpoint == NULL_REF) {
-        pm_hosterror = pmBadPtr;
+        return pmBadPtr;
     }
     
-    if (info->is_virtual) {
-        macHostError = MIDIEndpointDispose(endpoint);
-        if (macHostError != noErr) {
-            pm_hosterror = macHostError;
-            sprintf(pm_hosterror_text, "Host error %ld: "
-                    "MIDIEndpointDispose() in midi_in_close()",
-                    (long) macHostError);
-            err = pmHostError;
-        }
-    } else {
+    if (!info->is_virtual) {
         /* shut off the incoming messages before freeing data structures */
         macHostError = MIDIPortDisconnectSource(portIn, endpoint);
         /* If the source closes, you get paramErr == -50 here. It seems
@@ -493,16 +568,56 @@ static PmError midi_in_close(PmInternal *midi)
          * this host error.
          */
         if (macHostError != noErr && macHostError != -50) {
-            pm_hosterror = macHostError;
-            sprintf(pm_hosterror_text, "Host error %ld: "
-                    "MIDIPortDisconnectSource() in midi_in_close()",
-                    (long) macHostError);
-            err = pmHostError;
+            pm_hosterror = TRUE;
+            err = check_hosterror(macHostError, 
+                          "MIDIPortDisconnectSource() in midi_in_close()");
         }
+    } else {
+        /* make "close virtual port" message */
+        SInt64 close_port_bytes = 0xFFFFFFFFFFFFFFFF;
+        /* memory requirements: packet count (4), timestamp (8), length (2),
+         *     data (8). Total: 22, but we allocate plenty more:
+         */
+        Byte packetBuffer[64];
+        MIDIPacketList *plist = (MIDIPacketList *) packetBuffer;
+        MIDIPacket *packet = MIDIPacketListInit(plist);
+        MIDIPacketListAdd(plist, 64, packet, 0, 8,
+                          (const Byte *) &close_port_bytes);
+        macHostError = MIDISend(portOut, endpoint, plist);
+        if (macHostError != noErr) {
+            err = check_hosterror(macHostError, "MIDISend() (PortMidi close "
+                                  "port packet) in midi_in_close()");
+        }            
+        /* when packet is delivered, callback thread will clear opened;
+         * we must wait for that before removing the input queues etc.
+         * Maybe this could use signals of some kind, but if signals use
+         * locks, locks can cause priority inversion problems, so we will
+         * just sleep as needed. On the MIDI timescale, inserting a 0.5ms
+         * latency should be OK, as the application has no business
+         * opening/closing devices during time-critical moments.
+         *
+         * We expect the MIDI thread to close the device quickly (<0.5ms),
+         * but we wait up to 50ms in case something terrible happens like
+         * getting paged out in the middle of deliving packets to this
+         * virtual device. If there is still no response, we time out and
+         * force the close without the MIDI thread (even this will probably
+         * succeed - the problem would be: this thread proceeds to delete
+         * the input queues, and the freed memory is reallocated and
+         * overwritten so that queues are no longer usable. Meanwhile,
+         * the MIDI thread has already begun to deliver packets, so the
+         * check for opened == TRUE passed, but MIDI thread does not insert
+         * into queue until queue is freed, reallocated and overwritten.
+         */
+        for (int i = 0; i < 100; i++) {  /* up to 50ms delay */
+            if (!pm_descriptors[midi->device_id].pub.opened) {
+                break;
+            }
+            usleep(500);  /* 0.5ms */
+        }
+        pm_descriptors[midi->device_id].pub.opened = FALSE;  /* force it */
     }
     midi->api_info = NULL;
     pm_free(info);
-    
     return err;
 }
 
@@ -510,13 +625,12 @@ static PmError midi_in_close(PmInternal *midi)
 static PmError midi_out_open(PmInternal *midi, void *driverInfo)
 {
     coremidi_info_type info;
+    int is_virtual = pm_descriptors[midi->device_id].pub.is_virtual;
 
-    info = create_macosxcm_info(FALSE, FALSE);
+    info = create_macosxcm_info(is_virtual, FALSE);
     if (midi->device_id <= MAX_IAC_NUM) {
         info->isIACdevice = isIAC[midi->device_id];
-#ifdef CM_DEBUG
-        printf("midi_out_open isIACdevice %d\n", info->isIACdevice);
-#endif
+        CM_DEBUG printf("midi_out_open isIACdevice %d\n", info->isIACdevice);
     }
     midi->api_info = info;
     if (!info) {
@@ -528,88 +642,81 @@ static PmError midi_out_open(PmInternal *midi, void *driverInfo)
 
 static PmError midi_out_close(PmInternal *midi)
 {
-    coremidi_info_type m = (coremidi_info_type) midi->api_info;
-    if (!m) return pmBadPtr;
-    
+    coremidi_info_type info = (coremidi_info_type) midi->api_info;
+    if (!info) return pmBadPtr;
     midi->api_info = NULL;
-    pm_free(midi->api_info);
-    
+    pm_free(info);
     return pmNoError;
 }
 
 
-static PmError midi_create_virtual(struct pm_internal_struct *midi,
-                  int is_input, const char *name, void *driverInfo)
+/* MIDIDestinationCreate apparently cannot create a virtual device
+ * without a callback and a "refCon" parameter, but when we create
+ * a virtual device, we do not want a PortMidi stream yet -- that
+ * should wait for the user to open the stream. So, for the refCon,
+ * use the PortMidi device ID. The callback will check if the
+ * device is opened within PortMidi, and if so, use the pm_descriptors
+ * table to locate the corresponding PmStream.
+ */
+static PmError midi_create_virtual(int is_input, const char *name,
+                                   void *device_info)
 {
     OSStatus macHostError;
     MIDIEndpointRef endpoint;
-    CFStringRef nameRef = CFStringCreateWithCString(NULL, name,
-                                                    kCFStringEncodingASCII);
-    coremidi_info_type info;
-    int id;
+    CFStringRef nameRef;
+    PmDeviceID id = pm_add_device("CoreMIDI", name, is_input, TRUE, NULL,
+                                  (is_input ? &pm_macosx_in_dictionary :
+                                              &pm_macosx_out_dictionary));
+    if (id < 0) {  /* error -- out of memory or name conflict? */
+        return id;
+    }
 
-    /* insure that we have a time_proc for timing */
-    if (midi->time_proc == NULL) {
-        if (!Pt_Started())
-            Pt_Start(1, 0, 0);
-        /* time_get does not take a parameter, so coerce */
-        midi->time_proc = (PmTimeProcPtr) Pt_Time;
-    }
-    info = create_macosxcm_info(TRUE, is_input);
-    midi->api_info = info;
-    if (!info) {
-        return pmInsufficientMemory;
-    }
+    nameRef = CFStringCreateWithCString(NULL, name, kCFStringEncodingASCII);
     if (is_input) {
         macHostError = MIDIDestinationCreate(client, nameRef, 
-                               virtual_read_callback, midi, &endpoint);
+                               virtual_read_callback, id, &endpoint);
     } else {
         macHostError = MIDISourceCreate(client, nameRef, &endpoint);
-        /* based on experiments, virtual outputs are subject to the
-         * same rate limiting as IAC Bus ports. Setting isIACdevice
-         * turns on rate limiting for this output port. Note that
-         * virtual inputs are not rate limited.
-         */
-        info->isIACdevice = TRUE;
     }
     CFRelease(nameRef);
 
     if (macHostError != noErr) {
-        pm_hosterror = macHostError;
-        sprintf(pm_hosterror_text, "Host error %ld: %s() in "
-                "midi_create_virtual()", (long) macHostError, 
-                (is_input ? "MIDIDestinationCreate" : "MIDISourceCreate"));
-        pm_free(info);
-        return pmHostError;
+        /* undo the device we just allocated */
+        pm_undo_add_device(id);
+        return check_hosterror(macHostError, (is_input ?
+                       "MIDIDestinationCreate() in midi_create_virtual()" :
+                       "MIDISourceCreate() in midi_create_virtual()"));
     }
-    id = pm_add_device("CoreMIDI", name, is_input, endpoint, 
-                       (is_input ? &pm_macosx_in_dictionary :
-                                   &pm_macosx_out_dictionary));
-    if (id < 0) {  /* error -- out of memory? */
-        pm_free(info);
-        MIDIEndpointDispose(endpoint);
-        return id;
-    }
-    midi->dictionary = descriptors[id].dictionary;;
-    midi->device_id = id;
+    pm_descriptors[id].descriptor = (void *) (intptr_t) endpoint;
     return id;
-  }
+}
+
+
+static PmError midi_delete_virtual(PmDeviceID id)
+{
+    MIDIEndpointRef endpoint;
+    OSStatus macHostError;
+    PmError err = pmNoError;
+    
+    endpoint = (MIDIEndpointRef) (long) pm_descriptors[id].descriptor;
+    if (endpoint == NULL_REF) {
+        return pmBadPtr;
+    }
+    macHostError = MIDIEndpointDispose(endpoint);
+    return check_hosterror(macHostError,
+                           "MIDIEndpointDispose() in midi_in_close()");
+}
 
 
 static PmError midi_abort(PmInternal *midi)
 {
     PmError err = pmNoError;
     OSStatus macHostError;
-    MIDIEndpointRef endpoint =
-            (MIDIEndpointRef) (long) descriptors[midi->device_id].descriptor;
+    MIDIEndpointRef endpoint = (MIDIEndpointRef) (intptr_t)
+                               pm_descriptors[midi->device_id].descriptor;
     macHostError = MIDIFlushOutput(endpoint);
-    if (macHostError != noErr) {
-        pm_hosterror = macHostError;
-        sprintf(pm_hosterror_text,
-                "Host error %ld: MIDIFlushOutput()", (long) macHostError);
-        err = pmHostError;
-    }
-    return err;
+    return check_hosterror(macHostError,
+                           "MIDIFlushOutput() in midi_abort()");
 }
 
 
@@ -617,14 +724,14 @@ static PmError midi_write_flush(PmInternal *midi, PmTimestamp timestamp)
 {
     OSStatus macHostError;
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
-    MIDIEndpointRef endpoint = 
-            (MIDIEndpointRef) (long) descriptors[midi->device_id].descriptor;
+    MIDIEndpointRef endpoint = (MIDIEndpointRef) (intptr_t)
+                               pm_descriptors[midi->device_id].descriptor;
     assert(info);
     assert(endpoint);
     if (info->packet != NULL) {
         /* out of space, send the buffer and start refilling it */
         /* update min_next_time each flush to support rate limit */
-        UInt64 now = AudioGetCurrentHostTime();
+        UInt64 now =  AudioConvertHostTimeToNanos(AudioGetCurrentHostTime());
         if (now > info->min_next_time) 
             info->min_next_time = now;
         if (info->is_virtual) {
@@ -633,29 +740,23 @@ static PmError midi_write_flush(PmInternal *midi, PmTimestamp timestamp)
             macHostError = MIDISend(portOut, endpoint, info->packetList);
         }
         info->packet = NULL; /* indicate no data in packetList now */
-        if (macHostError != noErr) goto send_packet_error;
     }
-    return pmNoError;
-    
-send_packet_error:
-    pm_hosterror = macHostError;
-    sprintf(pm_hosterror_text, "Host error %ld: %s() in midi_write()", 
-            (long) macHostError,
-            (info->is_virtual ? "MIDIReceived" : "MIDISend"));
-    return pmHostError;
-
+    return check_hosterror(macHostError, (info->is_virtual ?
+                                          "MIDIReceived() in midi_write()" :
+                                          "MIDISend() in midi_write()"));
 }
 
 
 static PmError send_packet(PmInternal *midi, Byte *message,
-                       unsigned int messageLength, MIDITimeStamp timestamp)
+                           unsigned int messageLength, MIDITimeStamp timestamp)
 {
     PmError err;
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
     assert(info);
     
-    /* printf("add %d to packet %p len %d\n",
-              message[0], info->packet, messageLength); */
+    CM_DEBUG printf("add %d to packet %p len %d timestamp %lld @ %lld\n",
+                    message[0], info->packet, messageLength, timestamp,
+                    AudioConvertHostTimeToNanos(AudioGetCurrentHostTime()));
     info->packet = MIDIPacketListAdd(info->packetList,
                                      sizeof(info->packetBuffer), info->packet,
                                      timestamp, messageLength, message);
@@ -688,7 +789,7 @@ static PmError midi_write_short(PmInternal *midi, PmEvent *event)
     PmTimestamp when = event->timestamp;
     PmMessage what = event->message;
     MIDITimeStamp timestamp;
-    UInt64 when_ns;
+    UInt64 now_ns;
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
     Byte message[4];
     unsigned int messageLength;
@@ -700,13 +801,29 @@ static PmError midi_write_short(PmInternal *midi, PmEvent *event)
         assert(info->packet);
     }
     
-    /* compute timestamp */
-    if (when == 0) when = midi->now;
-    /* if latency == 0, midi->now is not valid. We will just set it to zero */
-    if (midi->latency == 0) when = 0;
-    when_ns = ((UInt64) (when + midi->latency) * (UInt64) 1000000) +
-              info->delta;
-    timestamp = (MIDITimeStamp) AudioConvertNanosToHostTime(when_ns);
+    /* PortMidi specifies that incoming timestamps are the receive
+     * time.  Devices attach their receive times, but virtual devices
+     * do not. Instead, they pass along whatever timestamp was sent to
+     * them. We do not know if we are connected to real or virtual
+     * device. To avoid wild timestamps on the receiving end, we
+     * consider 2 cases: PortMidi timestamp is zero or latency is
+     * zero. Both mean send immediately, so we attach the current time
+     * which will go out immediately and arrive with a sensible
+     * timestamp (not zero and not zero mapped to the client's local
+     * time). Otherwise, we assume the timestamp is reasonable. It
+     * might be slighly in the past, but we pass it along after
+     * translation to MIDITimeStamp units. 
+     *
+     * Compute timestamp: use current time if timestamp is zero or
+     * latency is zero. Both mean no timing and send immediately.
+     */
+    if (when == 0 || midi->latency == 0) {
+        timestamp = AudioConvertNanosToHostTime(AudioGetCurrentHostTime());
+    } else {  /* translate PortMidi time + latency to CoreMIDI time */
+        timestamp = ((UInt64) (when + midi->latency) * (UInt64) 1000000) +
+                    info->delta;
+        timestamp = AudioConvertNanosToHostTime(timestamp);
+    }
 
     message[0] = Pm_MessageStatus(what);
     message[1] = Pm_MessageData1(what);
@@ -714,11 +831,16 @@ static PmError midi_write_short(PmInternal *midi, PmEvent *event)
     messageLength = midi_length(what);
 
 #ifdef LIMIT_RATE
-    /* make sure we go forward in time */
-    if (timestamp < info->min_next_time) 
+    /* Make sure we go forward in time. */
+    if (timestamp < info->min_next_time) {
         timestamp = info->min_next_time;
-
-    if (info->isIACdevice) {
+    }
+    /* Note that if application is way behind and slowly catching up, then
+     * timestamps could be increasing faster than real time, and since 
+     * timestamps are used to estimate data rate, our estimate could be
+     * low, causing CoreMIDI to drop packets. This seems very unlikely.
+     */
+    if (info->isIACdevice || info->is_virtual) {
         info->min_next_time = timestamp + messageLength * 
                                           info->host_ticks_per_byte;
     }
@@ -743,6 +865,11 @@ static PmError midi_begin_sysex(PmInternal *midi, PmTimestamp when)
               info->delta;
     info->sysex_timestamp =
               (MIDITimeStamp) AudioConvertNanosToHostTime(when_ns);
+    UInt64 now; /* only make system time call when writing a virtual port */
+    if (info->is_virtual && info->sysex_timestamp <
+        (now =  AudioConvertHostTimeToNanos(AudioGetCurrentHostTime()))) {
+        info->sysex_timestamp = now;
+    }
 
     if (info->packet == NULL) {
         info->packet = MIDIPacketListInit(info->packetList);
@@ -777,9 +904,8 @@ static PmError midi_end_sysex(PmInternal *midi, PmTimestamp when)
     info->sysex_byte_count = 0;
     if (err != pmNoError) {
         info->packet = NULL; /* flush everything in the packet list */
-        return err;
     }
-    return pmNoError;
+    return err;
 }
 
 
@@ -808,27 +934,9 @@ static PmError midi_write_realtime(PmInternal *midi, PmEvent *event)
 }
 
 
-static unsigned int midi_has_host_error(PmInternal *midi)
+static unsigned int midi_check_host_error(PmInternal *midi)
 {
-    coremidi_info_type info = (coremidi_info_type) midi->api_info;
-    return (info->callback_error[0] != 0) || (info->error[0] != 0);
-}
-
-
-static void midi_get_host_error(PmInternal *midi, char *msg, unsigned int len)
-{
-    coremidi_info_type info = (coremidi_info_type) midi->api_info;
-    msg[0] = 0; /* initialize to empty string */
-    if (info) { /* make sure there is an open device to examine */
-        if (info->error[0]) {
-            strncpy(msg, info->error, len);
-            info->error[0] = 0; /* clear the error */
-        } else if (info->callback_error[0]) {
-            strncpy(msg, info->callback_error, len);
-            info->callback_error[0] = 0; /* clear the error */
-        }
-        msg[len - 1] = 0; /* make sure string is terminated */
-    }
+    return FALSE;
 }
 
 
@@ -870,13 +978,12 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal, int *isIAC)
         CFStringAppend(result, str);
         CFRelease(str);
     }
-  
     MIDIEntityRef entity = NULL_REF;
     MIDIEndpointGetEntity(endpoint, &entity);
-    if (entity == NULL_REF)
+    if (entity == NULL_REF) {
         // probably virtual
         return result;
-  
+    }
     if (!isExternal) { /* detect IAC devices */
         //extern const CFStringRef kMIDIPropertyDriverOwner;
         MIDIObjectGetStringProperty(entity, kMIDIPropertyDriverOwner, &str);
@@ -884,9 +991,7 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal, int *isIAC)
             char s[32]; /* driver name may truncate, but that's OK */
             CFStringGetCString(str, s, 31, kCFStringEncodingUTF8);
             s[31] = 0;  /* make sure it is terminated just to be safe */
-#ifdef CM_DEBUG
-            printf("driver %s\n", s);
-#endif
+            CM_DEBUG printf("driver %s\n", s);
             *isIAC = (strcmp(s, "com.apple.AppleMIDIIACDriver") == 0);
         }
     }
@@ -938,12 +1043,6 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal, int *isIAC)
             CFRelease(str);
         }
     }
-    // DEBUG:
-    char cstr[80];
-    CFStringGetCString(result, cstr, 80, kCFStringEncodingUTF8);
-#ifdef CM_DEBUG
-    printf("    EndpointName %s\n", cstr);
-#endif
     return result;
 }
 
@@ -1027,7 +1126,6 @@ char *cm_get_full_endpoint_name(MIDIEndpointRef endpoint, int *isIAC)
 
     /* clean up */
     if (fullName) CFRelease(fullName);
-
     return pmname;
 }
 
@@ -1044,8 +1142,7 @@ pm_fns_node pm_macosx_in_dictionary = {
     midi_abort,
     midi_in_close,
     success_poll,
-    midi_has_host_error,
-    midi_get_host_error,
+    midi_check_host_error
 };
 
 pm_fns_node pm_macosx_out_dictionary = {
@@ -1060,9 +1157,18 @@ pm_fns_node pm_macosx_out_dictionary = {
     midi_abort,
     midi_out_close,
     success_poll,
-    midi_has_host_error,
-    midi_get_host_error,
+    midi_check_host_error
 };
+
+
+/* We do nothing with callbacks, but generating the callbacks also
+ * updates CoreMIDI state. Callback may not be essential, but calling
+ * the CFRunLoopRunInMode is necessary.
+ */
+void cm_notify(const MIDINotification *msg, void *refCon)
+{
+    return;
+}
 
 
 PmError pm_macosxcm_init(void)
@@ -1070,19 +1176,17 @@ PmError pm_macosxcm_init(void)
     ItemCount numInputs, numOutputs, numDevices;
     MIDIEndpointRef endpoint;
     int i;
-    OSStatus macHostError;
+    OSStatus macHostError = noErr;
     char *error_text;
 
     memset(isIAC, 0, sizeof(isIAC)); /* initialize all FALSE */
 
     /* Register interface CoreMIDI with create_virtual fn */
-    pm_add_interf("CoreMIDI", &midi_create_virtual);
+    pm_add_interf("CoreMIDI", &midi_create_virtual, &midi_delete_virtual);
     /* no check for error return because this always succeeds */
 
     /* Determine the number of MIDI devices on the system */
     numDevices = MIDIGetNumberOfDevices();
-    numInputs = MIDIGetNumberOfSources();
-    numOutputs = MIDIGetNumberOfDestinations();
 
     /* Return prematurely if no devices exist on the system
        Note that this is not an error. There may be no devices.
@@ -1094,11 +1198,22 @@ PmError pm_macosxcm_init(void)
     }
 
     /* Initialize the client handle */
-    macHostError = MIDIClientCreate(CFSTR("PortMidi"), NULL, NULL, &client);
+    if (client == NULL_REF) {
+        macHostError = MIDIClientCreate(CFSTR("PortMidi"), &cm_notify, NULL,
+                                        &client);
+    } else {  /* see notes above on device scanning */
+        for (int i = 0; i < 100; i++) {
+            // look for any changes before scanning for devices
+            CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0, true);
+            if (i % 5 == 0) Pt_Sleep(1);  /* insert 20 delays */
+        }
+    }
     if (macHostError != noErr) {
         error_text = "MIDIClientCreate() in pm_macosxcm_init()";
         goto error_return;
     }
+    numInputs = MIDIGetNumberOfSources();
+    numOutputs = MIDIGetNumberOfDestinations();
 
     /* Create the input port */
     macHostError = MIDIInputPortCreate(client, CFSTR("Input port"), 
@@ -1122,34 +1237,32 @@ PmError pm_macosxcm_init(void)
         if (endpoint == NULL_REF) {
             continue;
         }
-
         /* set the first input we see to the default */
         if (pm_default_input_device_id == -1)
-            pm_default_input_device_id = pm_descriptor_index;
+            pm_default_input_device_id = pm_descriptor_len;
         
         /* Register this device with PortMidi */
         pm_add_device("CoreMIDI", 
-                      cm_get_full_endpoint_name(endpoint, &isIACflag),
-                      TRUE, (void *) (long) endpoint, &pm_macosx_in_dictionary);
+                cm_get_full_endpoint_name(endpoint, &isIACflag), TRUE, FALSE,
+                (void *) (intptr_t) endpoint, &pm_macosx_in_dictionary);
     }
 
     /* Iterate over the MIDI output devices */
     for (i = 0; i < numOutputs; i++) {
         int isIACflag;
-        int id;
+        PmDeviceID id;
         endpoint = MIDIGetDestination(i);
         if (endpoint == NULL_REF) {
             continue;
         }
-
         /* set the first output we see to the default */
         if (pm_default_output_device_id == -1)
-            pm_default_output_device_id = pm_descriptor_index;
+            pm_default_output_device_id = pm_descriptor_len;
 
         /* Register this device with PortMidi */
         id = pm_add_device("CoreMIDI", 
-                     cm_get_full_endpoint_name(endpoint, &isIACflag), FALSE,
-                     (void *) (long) endpoint, &pm_macosx_out_dictionary);
+                cm_get_full_endpoint_name(endpoint, &isIACflag), FALSE, FALSE,
+                (void *) (intptr_t) endpoint, &pm_macosx_out_dictionary);
         /* if this is an IAC device, tuck that info away for write functions */
         if (isIACflag && id <= MAX_IAC_NUM) {
             isIAC[id] = TRUE;
@@ -1158,16 +1271,14 @@ PmError pm_macosxcm_init(void)
     return pmNoError;
     
 error_return:
-    pm_hosterror = macHostError;
-    sprintf(pm_hosterror_text, "Host error %ld: %s\n", (long) macHostError, 
-            error_text);
     pm_macosxcm_term(); /* clear out any opened ports */
-    return pmHostError;
+    return check_hosterror(macHostError, error_text);
 }
 
 void pm_macosxcm_term(void)
 {
-    if (client != NULL_REF) MIDIClientDispose(client);
+    /* docs say do not explicitly dispose of client
+       if (client != NULL_REF) MIDIClientDispose(client); */
     if (portIn != NULL_REF) MIDIPortDispose(portIn);
     if (portOut != NULL_REF) MIDIPortDispose(portOut);
 }

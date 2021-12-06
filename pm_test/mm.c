@@ -117,13 +117,11 @@ private    int     get_number(const char *prompt);
 /**/
 int get_number(const char *prompt)
 {
-    char line[STRING_MAX];
     int n = 0, i;
     fputs(prompt, stdout);
     while (n != 1) {
         n = scanf("%d", &i);
-        fgets(line, STRING_MAX, stdin);
-
+        while (getchar() != '\n') ;
     }
     return i;
 }
@@ -177,10 +175,8 @@ int main(int argc, char **argv)
     printf("Midi Monitor ready.\n");
     active = true;
     while (!done) {
-        char s[100];
-        if (fgets(s, 100, stdin)) {
-            doascii(s[0]);
-        }
+        doascii(getchar());
+        while (getchar() != '\n') ;
     }
     active = false;
     Pm_Close(midi_in);

@@ -81,6 +81,7 @@ global variable current_timestamp.
 
 #define MIDI_SYSEX 0xf0
 #define MIDI_EOX 0xf7
+#define STRING_MAX 80 /* used for console input */
 
 /* active is set true when midi processing should start */
 int active = FALSE;
@@ -99,6 +100,33 @@ PmTimestamp current_timestamp = 0;
 int thru_sysex_in_progress = FALSE;
 int app_sysex_in_progress = FALSE;
 PmTimestamp last_timestamp = 0;
+
+
+static void prompt_and_exit(void)
+{
+    printf("type ENTER...");
+    while (getchar() != '\n') ;
+    /* this will clean up open ports: */
+    exit(-1);
+}
+
+
+static PmError checkerror(PmError err)
+{
+    if (err == pmHostError) {
+        /* it seems pointless to allocate memory and copy the string,
+         * so I will do the work of Pm_GetHostErrorText directly
+         */
+        char errmsg[80];
+        Pm_GetHostErrorText(errmsg, 80);
+        printf("PortMidi found host error...\n  %s\n", errmsg);
+        prompt_and_exit();
+    } else if (err < 0) {
+        printf("PortMidi call failed...\n  %s\n", Pm_GetErrorText(err));
+        prompt_and_exit();
+    }
+    return err;
+}
 
 
 /* time proc parameter for Pm_MidiOpen */
@@ -120,8 +148,6 @@ void process_midi(PtTimestamp timestamp, void *userData)
     PmEvent buffer; /* just one message at a time */
 
     current_timestamp++; /* update every millisecond */
-    /* if (current_timestamp % 1000 == 0) 
-        printf("time %d\n", current_timestamp); */
 
     /* do nothing until initialization completes */
     if (!active) {
@@ -225,9 +251,8 @@ void process_midi(PtTimestamp timestamp, void *userData)
 void exit_with_message(char *msg)
 {
 #define STRING_MAX 80
-    char line[STRING_MAX];
     printf("%s\nType ENTER...", msg);
-    fgets(line, STRING_MAX, stdin);
+    while (getchar() != '\n') ;
     exit(1);
 }
 
@@ -286,8 +311,10 @@ void initialize(int input, int output, int virtual)
                       0 /* Latency */);
     } else { /* send to virtual port */
         printf("Opening virtual output device \"midithru\"\n");
-        Pm_CreateVirtualOutput(&midi_out, "midithru", NULL, NULL,
-                         OUT_QUEUE_SIZE, &midithru_time_proc, NULL, 0);
+        int id = Pm_CreateVirtualOutput("midithru", NULL, NULL);
+        if (id < 0) checkerror(id);  /* error reporting */
+        checkerror(Pm_OpenOutput(&midi_out, id, NULL, OUT_QUEUE_SIZE,
+                                 &midithru_time_proc, NULL, 0));
     }
     if (input < 0) {
         if (!virtual) {
@@ -310,8 +337,10 @@ void initialize(int input, int output, int virtual)
                      NULL /* time info */);
     } else { /* receive from virtual port */
         printf("Opening virtual input device \"midithru\"\n");
-        Pm_CreateVirtualInput(&midi_in, "midithru", NULL, NULL,
-                              0, &midithru_time_proc, NULL);
+        int id = Pm_CreateVirtualInput("midithru", NULL, NULL);
+        if (id < 0) checkerror(id);  /* error reporting */
+        checkerror(Pm_OpenInput(&midi_in, id, NULL, 0,
+                                &midithru_time_proc, NULL));
     }
     /* Note: if you set a filter here, then this will filter what goes
        to the MIDI THRU port. You may not want to do this.

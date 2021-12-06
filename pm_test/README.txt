@@ -144,7 +144,7 @@ Type input device number: >>6  [pick a working input device]
     >>q  [to quit]
 
 18. ./midithru -i 6 -o 2 [use working input/output device numbers]
-[Play notes on input device; notes are sent immediately and also with a
+[Play notes on input evice; notes are sent immediately and also with a
  2 sec delay to the output device; program terminates in 60 seconds or
  when you play B3 (B below Middle C)]
 >> [ENTER to exit]
@@ -152,7 +152,7 @@ Type input device number: >>6  [pick a working input device]
 19. ./recvvirtual [in one shell, macOS and Linux only]
     ./testio [in another shell]
 [For testio application:]
-    Latency in ms: >>0
+    Latency in ms: >>0 
     enter your choice... >>4 [test output]
     Type output number: >>9 [select the "portmidi (output)" device]
     [type ENTER to each prompt, see that recvvirtual "Got message 0"
@@ -307,7 +307,7 @@ Check output of fastrcv: there should be no errors, just msg/sec.]
 [In fastrcv:]
     Input device number: >>3 [pick the device named 
                               port named "midithru (input)"]
-[Start fast first:]
+[In fast:]
     Latency in ms: >>0
     Rate in messages per second: >>10000 
     Duration in seconds: >>10 
@@ -318,4 +318,31 @@ Check output of fastrcv: there should be no errors, just msg/sec.]
  as in other tests, it will take more than 10s to receive all the
  messages and the receiving message rate will be about 4666 messages/second]
 
-Check output of fastrcv: there should be no errors, just msg/sec.]
+30. ./multivirtual [macOS and Linux only]
+    ./testio
+    ./testio
+[Start multivirtual first]
+[In first testio:]
+    Latency in ms: >>0 
+    enter your choice... >>5 [test both]
+    Type input number: >>1  [pick portmidi1 (input) 
+    Type output number: >>4  [pick portmidi1 (output) 
+[In second testio:]
+    Latency in ms: >>10
+    enter your choice... >>5 [test both]
+    Type input number: >>2  [pick portmidi2 (input) 
+    Type output number: >>5  [pick portmidi2 (output) 
+[In multivirtual:]
+    Type ENTER to send messages: >>  [type ENTER to start]
+[see that each testio gets 11 messages (0 to 10) at reasonable times
+ (e.g. 2077 to 7580, and the "@" times (real times) should match the
+ timestamps). multivirtual should also report reasonable times and
+ line near the end of output should be "Got 11 messages from
+ portmidi1 and 11 from portmidi2; expected 11."]
+
+31. ./multivirtual [macOS and Linux only]
+    ./multivirtual
+[Second instance should report "PortMidi call failed...
+   PortMidi: Cannot create virtual device: name is taken"]
+
+

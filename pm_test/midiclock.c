@@ -165,13 +165,11 @@ void timer_poll(PtTimestamp timestamp, void *userData)
 /**/
 int get_number(const char *prompt)
 {
-    char line[STRING_MAX];
     int n = 0, i;
     fputs(prompt, stdout);
     while (n != 1) {
         n = scanf("%d", &i);
-        fgets(line, STRING_MAX, stdin);
-
+        while (getchar() != '\n') ;
     }
     return i;
 }
@@ -236,7 +234,6 @@ private void doascii(char c)
  */
 int main(int argc, char **argv)
 {
-    char s[STRING_MAX]; /* console input */
     int outp;
     PmError err;
     int i;
@@ -262,16 +259,14 @@ int main(int argc, char **argv)
     active = true;
 
     printf("Type ENTER to start MIDI CLOCK:\n");
-    if (!fgets(s, STRING_MAX, stdin)) goto error_exit;
+    while (getchar() != '\n') ;
     send_start_stop = true; /* send START and then CLOCKs */
 
     while (!done) {
-        if (fgets(s, STRING_MAX, stdin)) {
-            doascii(s[0]);
-        }
+        doascii(getchar());
+        while (getchar() != '\n') ;
     }
 
- error_exit:
     active = false;
     Pt_Sleep(2); /* this is to allow callback to complete -- it's
                     real time, so it's either ok and it runs on

@@ -3,13 +3,18 @@ Roger B. Dannenberg
 16 Jun 2009
 updated 2021
 
+This directory implements a JNI library so that Java programs can use
+the PortMidi API. This was mainly created to implement PmDefaults, a
+program to set default input and output devices for PortMidi
+applications.
+
 PmDefaults never found much use. I recommend you implement
 per-application preferences and store default PortMidi device
 numbers for input and output there. (Or better yet, store
 device *names* since numbers can change if you plug in or 
 remove USB devices.) 
 
-Even without PmDefaults, a PortMidi API for Java would probably be an
+Even without PmDefaults, a PortMidi API for Java is probably an
 improvement over other Java libraries, but there is very little MIDI
 development in Java, so I have not maintained this API. The only thing
 probably seriously wrong now is an interface to the
@@ -21,32 +26,87 @@ update it or let your needs be known. Perhaps I or someone can help.
  
 ==================================================================
 
-This directory was created to implement PmDefaults, a program to
-set default input and output devices for PortMidi applications.
+BUILDING PmDefaults PROGRAM
+
+You must have a JDK installed (Java development kit including javac
+(the Java compiler), jni.h, etc.
+
+Just enable these options in the main CMakeLists.txt file (run CMake
+from ../../portmidi):
+     BUILD_JAVA_NATIVE_INTERFACE
+     BUILD_PMDEFAULTS
+In my Ubuntu linux with jdk-15, ccmake was unable to find my JDK, so
+I have to manually set CMake variables as follows (type 't' to see
+these in ccmake):
+    JAVA_AWT_INCLUDE_PATH  /usr/lib/jvm/jdk-15/include
+    JAVA_AWT_LIBRARY       /usr/lib/jvm/jdk-15/lib
+    JAVA_INCLUDE_PATH      /usr/lib/jvm/jdk-15/include
+    JAVA_INCLUDE_PATH2     /usr/lib/jvm/jdk-15/include
+    JAVA_JVM_LIBRARY       /usr/lib/jvm/jdk-15/lib
+Of course, your paths may differ.
+    
+
+RUNNING PmDefaults PROGRAM
+
+In Windows:
+   [java must be executable from the command line]
+   cd portmidi\pm_java  -- change to this directory
+   pmdefaults           -- runs pmdefaults.bat
+In macOS:
+   [java must be executable from the command line]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   cd portmidi/Release 
+       [or cd portmidi/Debug if you build the Debug configuration]
+   ./pmdefaults
+       [to make pmdefaults run from any working directory, 
+        you will need to:
+        - put libpmjni.dylib in a fixed location
+        - put pmdefaults.jar in a fixed location
+        - edit pmdefaults so that:
+          + the -Djava.library.path= gives the directory with libpmjni.dylib
+          + the -jar gives the full path to pmdefaults.jar
+        - move pmdefaults in a directory that is on your shell's PATH
+In Linux:
+   [java must be executable from the command line]
+   cd portmidi/Release 
+       [or cd portmidi/Debug if you build the Debug configuration]
+   ./pmdefaults
+       [to make pmdefaults run from any working directory, 
+        you will need to:
+        - put libpmjni.dylib in a fixed location
+        - put pmdefaults.jar in a fixed location
+        - edit pmdefaults so that:
+          + the -Djava.library.path= gives the directory with libpmjni.dylib
+          + the -jar gives the full path to pmdefaults.jar
+        - move pmdefaults in a directory that is on your shell's PATH
+   
+DETAILS
 
 There are three main sub-projects here:
   1) pmjni -- a JNI (Java Native Interface) to access PortMidi
   2) jportmidi -- a Java class to access PortMidi (uses pmjni)
   3) pmdefaults -- the PmDefaults application (uses jportmidi)
 
-For Mac OS X, you should build the PmDefaults application in Xcode.
+For Win32, previous PortMidi releases included an installer for
+PmDefaults. Maybe this is still possible if you want a clickable
+desktop program.
 
-For Win32, an installer for PmDefaults is included in setup/.
-To build from sources, you should first build everything including 
-the portmidi dll (that will be used by the Java application) using 
-Visual C++ and a provided .sln file in the portmidi home directory. 
-Then, run make.bat in this directory. The subdirectory win32 will be 
-created with the application pmdefaults.exe. You can run this application 
-in the normal way. To move the application, you need to copy *everything* 
-in win32. To build setup/pmdefaults-setup.exe, I have used both
-Setup Generator from Gentee software and Inno Setup from jrsoftware.org.
-A script for Inno Setup is included in this directory, but since paths
-seem to be absolute, you will have to adjust the paths in the script
-before you use it. 
+---- old implementation notes ----
 
----- implementation notes ----
-
-For windows, we use the free software JavaExe.exe. The copy here was
+For Windows, we use the free software JavaExe.exe. The copy here was
 downloaded from 
 
 http://software.techrepublic.com.com/abstract.aspx?kw=javaexe&docid=767485
@@ -59,9 +119,3 @@ Java application jar file and then *renaming* JavaExe.exe to the name
 of the jar file, but keeping the .exe extension. (See make.bat for this 
 step.) Documentation for JavaExe can be obtained by downloading the
 whole program from the URL(s) above.
-
-
-
-
-
-

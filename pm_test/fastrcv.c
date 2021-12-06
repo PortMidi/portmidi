@@ -18,6 +18,7 @@
 #include "assert.h"
 
 #define INPUT_BUFFER_SIZE 1000  /* big to avoid losing any input */
+#define DEVICE_INFO NULL
 #define DRIVER_INFO NULL
 #define TIME_PROC ((PmTimeProcPtr) Pt_Time)
 #define TIME_INFO NULL
@@ -36,16 +37,43 @@
 int deviceno = -9999;
 int verbose = FALSE;
 
+
+static void prompt_and_exit(void)
+{
+    printf("type ENTER...");
+    while (getchar() != '\n') ;
+    /* this will clean up open ports: */
+    exit(-1);
+}
+
+
+static PmError checkerror(PmError err)
+{
+    if (err == pmHostError) {
+        /* it seems pointless to allocate memory and copy the string,
+         * so I will do the work of Pm_GetHostErrorText directly
+         */
+        char errmsg[80];
+        Pm_GetHostErrorText(errmsg, 80);
+        printf("PortMidi found host error...\n  %s\n", errmsg);
+        prompt_and_exit();
+    } else if (err < 0) {
+        printf("PortMidi call failed...\n  %s\n", Pm_GetErrorText(err));
+        prompt_and_exit();
+    }
+    return err;
+}
+
+
 /* read a number from console */
 /**/
 int get_number(const char *prompt)
 {
-    char line[STRING_MAX];
     int n = 0, i;
     fputs(prompt, stdout);
     while (n != 1) {
         n = scanf("%d", &i);
-        fgets(line, STRING_MAX, stdin);
+        while (getchar() != '\n') ;
     }
     return i;
 }
@@ -62,8 +90,10 @@ void fastrcv_test()
 
     /* open output device */
     if (deviceno == Pm_CountDevices()) {
-        Pm_CreateVirtualInput(&midi, "fastrcv", NULL, DRIVER_INFO,
-                              INPUT_BUFFER_SIZE, TIME_PROC, TIME_INFO);
+        int id = Pm_CreateVirtualInput("fastrcv", NULL, DEVICE_INFO);
+        if (id < 0) checkerror(id);  /* error reporting */
+        checkerror(Pm_OpenInput(&midi, id, DRIVER_INFO,
+                                INPUT_BUFFER_SIZE, TIME_PROC, TIME_INFO));
     } else {
         Pm_OpenInput(&midi, deviceno, DRIVER_INFO, INPUT_BUFFER_SIZE, 
                      TIME_PROC, TIME_INFO);

@@ -37,13 +37,11 @@ int latency = 0;
 /**/
 int get_number(const char *prompt)
 {
-    char line[STRING_MAX];
     int n = 0, i;
     fputs(prompt, stdout);
     while (n != 1) {
         n = scanf("%d", &i);
-        fgets(line, STRING_MAX, stdin);
-
+        while (getchar() != '\n') ;
     }
     return i;
 }
@@ -58,7 +56,6 @@ void loopback_test()
     PmStream *midi_in;
     PmStream *midi_out;
     unsigned char msg[1024];
-    char line[80];
     int32_t len;
     int i;
     int data;
@@ -90,7 +87,7 @@ void loopback_test()
     srand((unsigned int) Pt_Time()); /* seed for random numbers */
 
     begin_time = Pt_Time();
-    while (1) {
+    while (total_bytes < 100000) {
         PmError count;
         int32_t start_time;
         int error_position = -1; /* 0; -1; -1 for continuous */ 
@@ -100,9 +97,11 @@ void loopback_test()
         /* set error_position above to 0 for interactive, -1 for */
         /* continuous */
         if (error_position >= 0) {
+            int c;
             printf("Type return to send message, q to quit: ");
-            fgets(line, STRING_MAX, stdin);
-            if (line[0] == 'q') goto cleanup;
+            while ((c = getchar()) != '\n') {
+                if (c == 'q') goto cleanup;
+            }
         }
 
         /* compose the message */
@@ -168,10 +167,12 @@ void loopback_test()
             break;
         } else {
             int seconds = (Pt_Time() - begin_time) / 1000;
-	    if (seconds == 0) seconds = 1;
+            if (seconds == 0) seconds = 1;
             printf("Correctly received %d byte sysex message.\n", i);
-	    total_bytes += i;
-	    printf("Cummulative bytes/sec: %d\n", (int) (total_bytes / seconds));
+            total_bytes += i;
+            printf("Cummulative bytes/sec: %d, %d%% done.\n", 
+                   (int) (total_bytes / seconds),
+                   (int) (100 * total_bytes / 100000));
         }
     }
 cleanup:
@@ -378,7 +379,7 @@ void receive_sysex()
     printf("Midi Input opened, type file for sysex data: ");
 
     /* open file */
-    fgets(line, STRING_MAX, stdin);
+    if (!fgets(line, STRING_MAX, stdin)) return;  /* no more stdin? */
     /* remove the newline character */
     if (strlen(line) > 0) line[strlen(line) - 1] = 0;
     f = fopen(line, "w");
@@ -443,7 +444,7 @@ void send_sysex()
 	printf("Midi Output opened, type file with sysex data: ");
 
     /* open file */
-    fgets(line, STRING_MAX, stdin);
+    if (!fgets(line, STRING_MAX, stdin)) return;  /* no more stdin? */
     /* remove the newline character */
     if (strlen(line) > 0) line[strlen(line) - 1] = 0;
     f = fopen(line, "r");
@@ -487,7 +488,6 @@ void send_sysex()
 int main()
 {
     int i;
-    char line[80];
     
     /* list device information */
     for (i = 0; i < Pm_CountDevices(); i++) {
@@ -498,11 +498,13 @@ int main()
         printf("\n");
     }
     while (1) {
+        char cmd;
         printf("Type r to receive sysex, s to send,"
                " l for loopback test, m to send multiple,"
                " n to receive multiple, q to quit: ");
-        fgets(line, STRING_MAX, stdin);
-        switch (line[0]) {
+        cmd = getchar();
+        while (getchar() != '\n') ;
+        switch (cmd) {
           case 'r':
             receive_sysex();
             break;

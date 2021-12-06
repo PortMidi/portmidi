@@ -164,9 +164,8 @@ void process_midi(PtTimestamp timestamp, void *userData)
 
 void exit_with_message(char *msg)
 {
-    char line[STRING_MAX];
     printf("%s\n", msg);
-    fgets(line, STRING_MAX, stdin);
+    while (getchar() != '\n') ;
     exit(1);
 }
 
@@ -272,16 +271,15 @@ int main(int argc, char *argv[])
                       this simple assignment is safe */
 
     printf("Enter midi input; it will be transformed as specified by...\n");
-    printf("%s\n%s\n%s\n",
-           "Type 'q' to quit, 'm' to monitor next pitch, t to toggle thru or",
-           "type a number to specify transposition.",
-		   "Must terminate with [ENTER]");
+    printf("Type 'q' to quit, 'm' to monitor next pitch, t to toggle thru or\n"
+           "type a number to specify transposition.\n"
+		   "Must terminate with [ENTER]\n");
 
     while (!done) {
         int32_t msg;
         int input;
         int len;
-        fgets(line, STRING_MAX, stdin);
+        if (!fgets(line, STRING_MAX, stdin)) break;  /* no stdin? */
         /* remove the newline: */
         len = (int) strlen(line);
         if (len > 0) line[len - 1] = 0; /* overwrite the newline char */
@@ -338,7 +336,8 @@ int main(int argc, char *argv[])
     Pm_Close(midi_in);
     Pm_Close(midi_out);
     
-    printf("finished portMidi multithread test...enter any character to quit [RETURN]...");
-    fgets(line, STRING_MAX, stdin);
+    fputs("finished portMidi multithread test.\n"
+          "type ENTER to quit:", stdout);
+    while (getchar() != '\n') ;
     return 0;
 }

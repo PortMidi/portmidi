@@ -19,7 +19,7 @@
 /* asserts used to verify portMidi code logic is sound; later may want
     something more graceful */
 #include <assert.h>
-#ifdef DEBUG
+#ifdef MMDEBUG
 /* this printf stuff really important for debugging client app w/host errors.
     probably want to do something else besides read/write from/to console
     for portability, however */
@@ -130,7 +130,6 @@ typedef struct winmm_info_struct {
     unsigned long sync_time;    /* when did we last determine delta? */
     long delta;                 /* difference between stream time and
                                        real time */
-    int error;                  /* host error from doing port midi call */
     CRITICAL_SECTION lock;      /* prevents reentrant callbacks (input only) */
 } winmm_info_node, *winmm_info_type;
 
@@ -161,7 +160,8 @@ static void pm_winmm_general_inputs()
         if (wRtn == MMSYSERR_NOERROR) {
             /* ignore errors here -- if pm_descriptor_max is exceeded, some
                devices will not be accessible. */
-            pm_add_device("MMSystem", midi_in_caps[i].szPname, TRUE,
+#pragma warning(suppress: 4047)  // coerce non-pointer to pointer is OK
+            pm_add_device("MMSystem", midi_in_caps[i].szPname, TRUE, FALSE,
                           (void *) (intptr_t) i, &pm_winmm_in_dictionary);
         }
     }
@@ -179,7 +179,8 @@ static void pm_winmm_mapper_input()
                             (LPMIDIINCAPS) & midi_in_mapper_caps, 
                             sizeof(MIDIINCAPS));
     if (wRtn == MMSYSERR_NOERROR) {
-        pm_add_device("MMSystem", midi_in_mapper_caps.szPname, TRUE,
+#pragma warning(suppress: 4047)  // coerce non-pointer to pointer is OK
+        pm_add_device("MMSystem", midi_in_mapper_caps.szPname, TRUE, FALSE,
                       (void *) (intptr_t) MIDIMAPPER, &pm_winmm_in_dictionary);
     }
 }
@@ -201,7 +202,8 @@ static void pm_winmm_general_outputs()
         wRtn = midiOutGetDevCaps(i, (LPMIDIOUTCAPS) & midi_out_caps[i],
                                  sizeof(MIDIOUTCAPS));
         if (wRtn == MMSYSERR_NOERROR) {
-            pm_add_device("MMSystem", midi_out_caps[i].szPname, FALSE,
+#pragma warning(suppress: 4047)  // coerce non-pointer to pointer is OK
+            pm_add_device("MMSystem", midi_out_caps[i].szPname, FALSE, FALSE,
                           (void *) (intptr_t) i, &pm_winmm_out_dictionary);
         }
     }
@@ -217,23 +219,18 @@ static void pm_winmm_mapper_output()
     wRtn = midiOutGetDevCaps((UINT) MIDIMAPPER, (LPMIDIOUTCAPS)
                              & midi_out_mapper_caps, sizeof(MIDIOUTCAPS));
     if (wRtn == MMSYSERR_NOERROR) {
-        pm_add_device("MMSystem", midi_out_mapper_caps.szPname, FALSE,
+#pragma warning(suppress: 4047)  // coerce non-pointer to pointer is OK
+        pm_add_device("MMSystem", midi_out_mapper_caps.szPname, FALSE, FALSE,
                       (void *) (intptr_t) MIDIMAPPER, &pm_winmm_out_dictionary);
     }
 }
 
 
 /*
-=========================================================================================
+============================================================================
 host error handling
-=========================================================================================
+============================================================================
 */
-static unsigned int winmm_has_host_error(PmInternal *midi)
-{
-    winmm_info_type info = (winmm_info_type) midi->api_info;
-    return info->error;
-}
-
 
 /* str_copy_len -- like strcat, but won't overrun the destination string */
 /*
@@ -250,37 +247,11 @@ static int str_copy_len(char *dst, char *src, int len)
 }
 
 
-static void winmm_get_host_error(PmInternal *midi, char * msg, UINT len)
+static unsigned int winmm_check_host_error(PmInternal *midi)
 {
-    /* precondition: midi != NULL */
-    winmm_info_type info = (winmm_info_type) midi->api_info;
-    char *hdr1 = "Host error: ";
-    char *hdr2 = "Host callback error: ";
-
-    msg[0] = 0; /* initialize result string to empty */
-
-    if (descriptors[midi->device_id].pub.input) {
-        /* input and output use different winmm API calls */
-        if (info) { /* make sure there is an open device to examine */
-            if (info->error != MMSYSERR_NOERROR) {
-                int n = str_copy_len(msg, hdr1, len);
-                /* read and record host error */
-                int err = midiInGetErrorText(info->error, msg + n, len - n);
-                assert(err == MMSYSERR_NOERROR);
-                info->error = MMSYSERR_NOERROR;
-            }
-        }
-    } else { /* output port */
-        if (info) {
-            if (info->error != MMSYSERR_NOERROR) {
-                int n = str_copy_len(msg, hdr1, len);
-                int err = midiOutGetErrorText(info->error, msg + n, len - n);
-                assert(err == MMSYSERR_NOERROR);
-                info->error = MMSYSERR_NOERROR;
-            }
-        }
-    }
+    return FALSE;
 }
+
 
 static improve_winerr(int pm_hosterror, char *message)
 {
@@ -294,7 +265,6 @@ static improve_winerr(int pm_hosterror, char *message)
         }
     }
 }
-
 
 
 /*
@@ -356,7 +326,7 @@ static LPMIDIHDR get_free_output_buffer(PmInternal *midi)
         }
         /* after scanning every buffer and not finding anything, block */
         if (WaitForSingleObject(info->buffer_signal, 1000) == WAIT_TIMEOUT) {
-#ifdef DEBUG
+#ifdef MMDEBUG
             printf("PortMidi warning: get_free_output_buffer() "
                    "wait timed out after 1000ms\n");
 #endif
@@ -406,53 +376,6 @@ found_buffer:
     return r;
 }
 
-#ifdef EXPANDING_SYSEX_BUFFERS
-note: this is not working code, but might be useful if you want
-      to grow sysex buffers.
-static PmError resize_sysex_buffer(PmInternal *midi, long old_size, 
-                                   long new_size)
-{
-    LPMIDIHDR big;
-    int i;
-    winmm_info_type m = (winmm_info_type) midi->api_info;
-    /* buffer must be smaller than 64k, but be also a multiple of 4 */
-    if (new_size > 65520) {
-        if (old_size >= 65520)
-            return pmBufferMaxSize;
-        else
-            new_size = 65520;
-    }
-    /* allocate a bigger message  */
-    big = allocate_sysex_buffer(new_size);
-    /* printf("expand to %d bytes\n", new_size);*/
-    if (!big) return pmInsufficientMemory;
-    info->error = midiOutPrepareHeader(info->handle.out, big, sizeof(MIDIHDR));
-    if (info->error) {
-        pm_free(big);
-        return pmHostError;
-    }
-    /* make sure we're not going to overwrite any memory */
-    assert(old_size <= new_size);
-    memcpy(big->lpData, info->hdr->lpData, old_size);
-    /* keep track of how many sysex bytes are in message so far */
-    big->dwBytesRecorded = info->hdr->dwBytesRecorded;
-    big->dwBufferLength = new_size;
-    /* find which buffer this was, and replace it */
-    for (i = 0; i < NUM_SYSEX_BUFFERS; i++) {
-        if (info->sysex_buffers[i] == info->hdr) {
-            info->sysex_buffers[i] = big;
-            info->sysex_buffer_size[i] = new_size;
-            pm_free(info->hdr);
-            info->hdr = big;
-            break;
-        }
-    }
-    assert(i != NUM_SYSEX_BUFFERS);
-
-    return pmNoError;
-}
-#endif
-
 /*
 ============================================================================
 begin midi input implementation
@@ -460,10 +383,13 @@ begin midi input implementation
 */
 
 
-static PmError allocate_input_buffer(HMIDIIN h, long buffer_len)
+static unsigned int allocate_input_buffer(HMIDIIN h, long buffer_len)
 {
     LPMIDIHDR hdr = allocate_buffer(buffer_len);
     if (!hdr) return pmInsufficientMemory;
+    /* note: pm_hosterror is normally a boolean, but here, we store Win
+     * error code. The caller must test the value for nonzero, set
+     * pm_hosterror_text, and then set pm_hosterror to TRUE */
     pm_hosterror = midiInPrepareHeader(h, hdr, sizeof(MIDIHDR));
     if (pm_hosterror) {
         pm_free(hdr);
@@ -493,7 +419,6 @@ static winmm_info_type winmm_info_create()
     info->hdr = NULL; /* not used for input */
     info->sync_time = 0;
     info->delta = 0;
-    info->error = MMSYSERR_NOERROR;
     return info;
 }
 
@@ -506,7 +431,7 @@ static PmError winmm_in_open(PmInternal *midi, void *driverInfo)
     int num_input_buffers = max_sysex_len / INPUT_SYSEX_LEN;
     winmm_info_type info;
 
-    dwDevice = (DWORD) (intptr_t) descriptors[i].descriptor;
+    dwDevice = (DWORD) (intptr_t) pm_descriptors[i].descriptor;
 
     /* create system dependent device data */
     info = winmm_info_create();
@@ -537,11 +462,12 @@ static PmError winmm_in_open(PmInternal *midi, void *driverInfo)
     }
     /* start device */
     pm_hosterror = midiInStart(info->handle.in);
-    if (pm_hosterror) goto reset_device;
-    return pmNoError;
+    if (!pm_hosterror) {
+        return pmNoError;
+    }
 
     /* undo steps leading up to the detected error */
-reset_device:
+
     /* ignore return code (we already have an error to report) */
     midiInReset(info->handle.in);
 close_device:
@@ -555,6 +481,7 @@ no_memory:
                                      PM_HOST_ERROR_MSG_LEN);
         assert(err == MMSYSERR_NOERROR);
         improve_winerr(pm_hosterror, (char *) pm_hosterror_text);
+        pm_hosterror = TRUE;
         return pmHostError;
     }
     /* if !pm_hosterror, then the error must be pmInsufficientMemory */
@@ -563,12 +490,6 @@ no_memory:
        closed and memory will be freed. It's up to the caller
        to free the parameter midi */
 }
-
-static PmError winmm_in_poll(PmInternal *midi) {
-    winmm_info_type info = (winmm_info_type) midi->api_info;
-    return info->error;
-}
-
 
 
 /* winmm_in_close -- close an open midi input device */
@@ -763,7 +684,7 @@ static PmError winmm_out_open(PmInternal *midi, void *driverInfo)
     int max_sysex_len = midi->buffer_len * 4;
     int output_buffer_len;
     int num_buffers;
-    dwDevice = (DWORD) (intptr_t) descriptors[i].descriptor;
+    dwDevice = (DWORD) (intptr_t) pm_descriptors[i].descriptor;
 
     /* create system dependent device data */
     info = winmm_info_create();
@@ -892,8 +813,7 @@ static PmError winmm_out_close(PmInternal *midi)
         winmm_out_delete(midi);
     }
     if (pm_hosterror) {
-        int err = midiOutGetErrorText(pm_hosterror,
-                                      (char *) pm_hosterror_text,
+        int err = midiOutGetErrorText(pm_hosterror, (char *) pm_hosterror_text,
                                       PM_HOST_ERROR_MSG_LEN);
         assert(err == MMSYSERR_NOERROR);
         return pmHostError;
@@ -905,13 +825,19 @@ static PmError winmm_out_close(PmInternal *midi)
 static PmError winmm_out_abort(PmInternal *midi)
 {
     winmm_info_type info = (winmm_info_type) midi->api_info;
-    info->error = MMSYSERR_NOERROR;
 
     /* only stop output streams */
     if (midi->latency > 0) {
-        info->error = midiStreamStop(info->handle.stream);
+        pm_hosterror = midiStreamStop(info->handle.stream);
+        if (pm_hosterror) {
+            int err;
+            err = midiOutGetErrorText(pm_hosterror, (char *) pm_hosterror_text,
+                                      PM_HOST_ERROR_MSG_LEN);
+            assert(err == MMSYSERR_NOERROR);
+            return pmHostError;
+        }
     }
-    return info->error ? pmHostError : pmNoError;
+    return pmNoError;
 }
 
 
@@ -920,9 +846,9 @@ static PmError winmm_write_flush(PmInternal *midi, PmTimestamp timestamp)
     winmm_info_type info = (winmm_info_type) midi->api_info;
     assert(info);
     if (info->hdr) {
-        info->error = midiOutPrepareHeader(info->handle.out, info->hdr, 
-                                           sizeof(MIDIHDR));
-        if (info->error) {
+        pm_hosterror = midiOutPrepareHeader(info->handle.out, info->hdr, 
+                                            sizeof(MIDIHDR));
+        if (pm_hosterror) {
             /* do not send message */
         } else if (midi->latency == 0) {
             /* As pointed out by Nigel Brown, 20Sep06, dwBytesRecorded
@@ -931,16 +857,20 @@ static PmError winmm_write_flush(PmInternal *midi, PmTimestamp timestamp)
              * Microsoft documentation says (or doesn't say). */
             info->hdr->dwBufferLength = info->hdr->dwBytesRecorded;
             info->hdr->dwBytesRecorded = 0;
-            info->error = midiOutLongMsg(info->handle.out, info->hdr, 
-                                         sizeof(MIDIHDR));
+            pm_hosterror = midiOutLongMsg(info->handle.out, info->hdr, 
+                                          sizeof(MIDIHDR));
         } else {
-            info->error = midiStreamOut(info->handle.stream, info->hdr, 
-                                        sizeof(MIDIHDR));
+            pm_hosterror = midiStreamOut(info->handle.stream, info->hdr, 
+                                         sizeof(MIDIHDR));
         }
         midi->fill_base = NULL;
         info->hdr = NULL;
-        if (info->error) {
+        if (pm_hosterror) {
+            int err;
             info->hdr->dwFlags = 0; /* release the buffer */
+            err = midiOutGetErrorText(pm_hosterror, (char *) pm_hosterror_text,
+                                      PM_HOST_ERROR_MSG_LEN);
+            assert(err == MMSYSERR_NOERROR);
             return pmHostError;
         }
     }
@@ -955,8 +885,15 @@ static PmError winmm_write_short(PmInternal *midi, PmEvent *event)
     assert(info);
 
     if (midi->latency == 0) { /* use midiOut interface, ignore timestamps */
-        info->error = midiOutShortMsg(info->handle.out, event->message);
-        if (info->error) rslt = pmHostError;
+        pm_hosterror = midiOutShortMsg(info->handle.out, event->message);
+        if (pm_hosterror) {
+            int err;
+            info->hdr->dwFlags = 0; /* release the buffer */
+            err = midiOutGetErrorText(pm_hosterror, (char *) pm_hosterror_text,
+                                      PM_HOST_ERROR_MSG_LEN);
+            assert(err == MMSYSERR_NOERROR);
+            return pmHostError;
+        }
     } else {  /* use midiStream interface -- pass data through buffers */
         unsigned long when = event->timestamp;
         unsigned long delta;
@@ -974,6 +911,7 @@ static PmError winmm_write_short(PmInternal *midi, PmEvent *event)
             info->hdr = get_free_output_buffer(midi);
         }
         full = add_to_buffer(info, info->hdr, delta, event->message);
+        /* note: winmm_write_flush sets pm_hosterror etc. on host error */
         if (full) rslt = winmm_write_flush(midi, when);
     }
     return rslt;
@@ -1160,9 +1098,8 @@ pm_fns_node pm_winmm_in_dictionary = {
                                          winmm_in_open,
                                          winmm_in_abort,
                                          winmm_in_close,
-                                         winmm_in_poll,
-                                         winmm_has_host_error,
-                                         winmm_get_host_error
+                                         success_poll,
+                                         winmm_check_host_error
                                      };
 
 pm_fns_node pm_winmm_out_dictionary = {
@@ -1177,8 +1114,7 @@ pm_fns_node pm_winmm_out_dictionary = {
                                           winmm_out_abort,
                                           winmm_out_close,
                                           none_poll,
-                                          winmm_has_host_error,
-                                          winmm_get_host_error
+                                          winmm_check_host_error
                                       };
 
 
@@ -1207,29 +1143,20 @@ void pm_winmm_init( void )
 void pm_winmm_term( void )
 {
     int i;
-#ifdef DEBUG
-    char msg[PM_HOST_ERROR_MSG_LEN];
-#endif
+#ifdef MMDEBUG
     int doneAny = 0;
-#ifdef DEBUG
     printf("pm_winmm_term called\n");
 #endif
-    for (i = 0; i < pm_descriptor_index; i++) {
-        PmInternal *midi = descriptors[i].internalDescriptor;
+    for (i = 0; i < pm_descriptor_len; i++) {
+        PmInternal *midi = pm_descriptors[i].pm_internal;
         if (midi) {
             winmm_info_type info = (winmm_info_type) midi->api_info;
             if (info->handle.out) {
                 /* close next open device*/
-#ifdef DEBUG
+#ifdef MMDEBUG
                 if (doneAny == 0) {
                     printf("begin closing open devices...\n");
                     doneAny = 1;
-                }
-                /* report any host errors; this EXTEREMELY useful when
-                   trying to debug client app */
-                if (winmm_has_host_error(midi)) {
-                    winmm_get_host_error(midi, msg, PM_HOST_ERROR_MSG_LEN);
-                    printf("%s\n", msg);
                 }
 #endif
                 /* close all open ports */
@@ -1245,11 +1172,11 @@ void pm_winmm_term( void )
         pm_free(midi_out_caps);
         midi_out_caps = NULL;
     }
-#ifdef DEBUG
+#ifdef MMDEBUG
     if (doneAny) {
         printf("warning: devices were left open. They have been closed.\n");
     }
     printf("pm_winmm_term exiting\n");
 #endif
-    pm_descriptor_index = 0;
+    pm_descriptor_len = 0;
 }

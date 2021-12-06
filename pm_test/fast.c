@@ -20,6 +20,7 @@
 #include "string.h"
 #include "assert.h"
 
+#define DEVICE_INFO NULL
 #define DRIVER_INFO NULL
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
 
@@ -44,12 +45,11 @@ int use_timeoffset = 0;
 /**/
 int get_number(const char *prompt)
 {
-    char line[STRING_MAX];
     int n = 0, i;
     fputs(prompt, stdout);
     while (n != 1) {
         n = scanf("%d", &i);
-        fgets(line, STRING_MAX, stdin);
+        while (getchar() != '\n') ;
     }
     return i;
 }
@@ -71,10 +71,10 @@ PmTimestamp get_time(void *info)
 
 void fast_test()
 {
-    PmStream * midi;
+    PmStream *midi;
     char line[STRING_MAX];
     int pause = FALSE;  /* pause if this is a virtual output port */
-    PmError err;
+    PmError err = pmNoError;
 
     /* It is recommended to start timer before PortMidi */
     TIME_START;
@@ -85,10 +85,13 @@ void fast_test()
        a minimum of latency / 2 */
     int buffer_size = msgrate * latency / 900;
     if (deviceno == Pm_CountDevices()) {
-        err = Pm_CreateVirtualOutput(&midi, "fast", NULL, DRIVER_INFO,
-                                     buffer_size, get_time, NULL, latency);
-        pause = TRUE;
-    } else {
+        deviceno = Pm_CreateVirtualOutput("fast", NULL, DEVICE_INFO);
+        if (deviceno >= 0) {
+            err = Pm_OpenOutput(&midi, deviceno, DRIVER_INFO, buffer_size,
+                                get_time, NULL, latency);
+            pause = TRUE;
+        }
+    } else if (err >= pmNoError) {
         err = Pm_OpenOutput(&midi, deviceno, DRIVER_INFO, buffer_size,
                             get_time, NULL, latency);
     }
@@ -102,10 +105,9 @@ void fast_test()
     }
     printf("Midi Output opened with %ld ms latency.\n", (long) latency);
     if (pause) {
-        char line[STRING_MAX];
         printf("Pausing so you can connect a receiver to the newly created\n"
                "    \"fast\" port. Type ENTER to proceed: ");
-        fgets(line, STRING_MAX, stdin);
+        while (getchar() != '\n') ;
     }
     /* wait a sec after printing previous line */
     PmTimestamp start = get_time(NULL) + 1000;
@@ -158,7 +160,7 @@ void fast_test()
     }
     /* close device (this not explicitly needed in most implementations) */
     printf("ready to close and terminate... (type RETURN):");
-    fgets(line, STRING_MAX, stdin);
+    while (getchar() != '\n') ;
 	
     Pm_Close(midi);
   done:

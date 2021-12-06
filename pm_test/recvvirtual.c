@@ -15,9 +15,8 @@
 
 static void prompt_and_exit(void)
 {
-    char line[STRING_MAX];
     printf("type ENTER...");
-    fgets(line, STRING_MAX, stdin);
+    while (getchar() != '\n') ;
     /* this will clean up open ports: */
     exit(-1);
 }
@@ -52,8 +51,8 @@ void main_test_input(int num)
     TIME_START;
 
     /* create a virtual input device */
-    checkerror(Pm_CreateVirtualInput(&midi, "portmidi", NULL, DRIVER_INFO, 
-                                     INPUT_BUFFER_SIZE, TIME_PROC, TIME_INFO));
+    int id = checkerror(Pm_CreateVirtualInput("portmidi", NULL, DRIVER_INFO));
+    checkerror(Pm_OpenInput(&midi, id, NULL, 0, NULL, NULL));
 
     printf("Midi Input opened. Reading %d Midi messages...\n", num);
     Pm_SetFilter(midi, PM_FILT_ACTIVE | PM_FILT_CLOCK | PM_FILT_SYSEX);
@@ -84,9 +83,10 @@ void main_test_input(int num)
 
     /* close device (this not explicitly needed in most implementations) */
     printf("ready to close...");
-
     Pm_Close(midi);
-    printf("done closing...");
+    printf("done closing.\nNow delete the virtual device...");
+    checkerror(Pm_DeleteVirtualDevice(id));
+    printf("done deleting.\n");
 }
 
 
@@ -119,6 +119,6 @@ int main(int argc, char *argv[])
     main_test_input(num);
     
     printf("finished portMidi test...type ENTER to quit...");
-    fgets(line, STRING_MAX, stdin);
+    while (getchar() != '\n') ;
     return 0;
 }

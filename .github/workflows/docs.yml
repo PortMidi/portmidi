@@ -19,7 +19,7 @@ jobs:
 
       - name: Generate Documentation
         run: doxygen
-        working-directory: docs
+        working-directory: .
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

@@ -4,7 +4,7 @@ This is the canonical release of PortMidi.
 
 See other repositories within [PortMidi](https://github.com/PortMidi) for related code and bindings (although currently, not much is here).
 
-## [Full C API documentation is here.](https://portmidi.github.io/portmidi/)
+## [Full C API documentation is here.](https://portmidi.github.io/portmidi_docs/)
 
 ## Compiling and Using PortMidi
 

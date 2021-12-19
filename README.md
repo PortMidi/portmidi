@@ -39,7 +39,7 @@ the features described above.
 
 # Other Repositories
 
-PortMidi used to be part of the PortMedia suite, but repo has been reduced to contain
+PortMidi used to be part of the PortMedia suite, but this repo has been reduced to
 mostly just C/C++ code for PortMidi. You will find some other repositories in this PortMidi project
 set up for language bindings (volunteers and contributors are invited!). Other code removed from
 previous releases of PortMedia include:

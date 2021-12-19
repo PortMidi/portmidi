@@ -37,7 +37,14 @@ For up-to-date PortMidi for languages other than C/C++, check with
 developers. As of 27 Sep 2021, this (and SourceForge) is the only repo with
 the features described above.
 
-# PortSMF
+# Other Repositories
+
+PortMidi used to be part of the PortMedia suite, but repo has been reduced to contain
+mostly just C/C++ code for PortMidi. You will find some other repositories in this PortMidi project
+set up for language bindings (volunteers and contributors are invited!). Other code removed from
+previous releases of PortMedia include:
+
+## PortSMF
 
 A Standard MIDI File (SMF) (and more) library is in the [portsmf repository](https://github.com/PortMidi/portsmf).
 
@@ -56,7 +63,7 @@ stretching the tempo over some interval.
 In addition to Standard MIDI Files, PortSMF supports an ASCII representation
 called Allegro. PortSMF and Allegro are used for Audacity Note Tracks.
 
-# scorealign
+## scorealign
 
 Scorealign used to be part of the PortMedia suite. It is now at the [scorealign repository](https://github.com/rbdannenberg/scorealign).
 

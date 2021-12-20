@@ -3,7 +3,7 @@
 # 20 Sep 2009
 
 cmake_minimum_required(VERSION 2.8.12)
-set(CMAKE_OSX_DEPLOYMENT_TARGET 10.6 CACHE STRING 
+set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9 CACHE STRING 
                                 "make for this OS version or higher")
 
 if(UNIX)

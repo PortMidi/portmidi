@@ -1,0 +1,10 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+includedir=${prefix}/include
+libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
+
+Name: portmidi
+Description: PortMidi is a cross platform library for accessing operating systems' MIDI APIs
+Version: @CMAKE_PROJECT_VERSION@
+URL: https://github.com/PortMidi/portmidi
+Libs: -L${libdir} -lportmidi
+Cflags: -I${includedir}

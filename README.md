@@ -8,10 +8,17 @@ See other repositories within [PortMidi](https://github.com/PortMidi) for relate
 
 ## Compiling and Using PortMidi
 
-Use CMake (or ccmake) to create a Makefile for Linux/BSD or a 
-project file for Xcode or MS Visual Studio. Use make or an IDE to compile. 
-libportmidi_s.* is a static library (recommended - fewer things can go wrong);
-libportmidi.* is a dynamic library.
+PortMidi uses the [CMake build system](https://cmake.org/). Building and installing it follows standard CMake procedures:
+
+```
+cmake -D CMAKE_INSTALL_PREFIX=/where/you/want/to/install/to -S . -B build
+cmake --build build --parallel number-of-cpu-cores
+cmake --install build
+```
+
+If you want to link statically, add `-D BUILD_SHARED_LIBS=OFF` to the first call to `cmake` above.
+
+Alternatively you can use the CMake integration in the IDE of your choice.
 
 ## What's New?
 

@@ -17,3 +17,15 @@
 /portmidi.build/
 /portmidi.xcodeproj/
 
+
+/.vs/
+
+/ZERO_CHECK.vcxproj
+
+/ZERO_CHECK.vcxproj.filters
+
+/pm_common\CMakeFiles/
+
+/pm_common/portmidi.vcxproj.filters
+
+/portmidi.sln

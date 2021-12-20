@@ -26,18 +26,6 @@ if(BUILD_PMDEFAULTS)
   #message(STATUS "  CMAKE_BINARY_DIR ${CMAKE_BINARY_DIR}") 
   #message(STATUS "  EXECUTABLE_OUTPUT_PATH ${EXECUTABLE_OUTPUT_PATH}") 
 
-  add_custom_command(OUTPUT pmdefaults/PmDefaultsFrame.class 
-          COMMAND javac -classpath . pmdefaults/PmDefaultsFrame.java 
-          MAIN_DEPENDENCY pmdefaults/PmDefaultsFrame.java 
-          DEPENDS pmdefaults/PmDefaults.java 
-          WORKING_DIRECTORY .) 
-  add_custom_command(OUTPUT pmdefaults/PmDefaults.class 
-          COMMAND javac -classpath . pmdefaults/PmDefaults.java 
-          MAIN_DEPENDENCY pmdefaults/PmDefaults.java 
-          DEPENDS pmdefaults/PmDefaultsFrame.java 
-          WORKING_DIRECTORY .) 
-#  add_custom_target(pmdefaults ALL 
-#          DEPENDS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/pmdefaults.jar) 
   if(UNIX)
     project(pmdefaults NONE)
     include(UseJava)

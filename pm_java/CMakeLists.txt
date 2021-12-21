@@ -28,16 +28,19 @@ if(BUILD_PMDEFAULTS)
 
   project(pmdefaults NONE)
   include(UseJava)
-  add_jar(pmdefaults 
+
+  if(UNIX)
+    # There seems to be a bug in CMake - Linux complains if NAMESPACE is
+    # missing, but Windows does not make a working VS solution if NAMESPACE
+    # is present, so this "add_jar" call is almost duplicated: here for
+    # Linux/macOS and below for Windows...
+    add_jar(pmdefaults 
           SOURCES pmdefaults/PmDefaults.java pmdefaults/PmDefaultsFrame.java 
                   jportmidi/JPortMidi.java jportmidi/JPortMidiApi.java
                   jportmidi/JPortMidiException.java
-          # NAMESPACE did not seem to work on Windows - omitting it may
-          # cause out-of-source-tree builds to fail:
-          RESOURCES pmdefaults/portmusic_logo.png
+          RESOURCES NAMESPACE "." pmdefaults/portmusic_logo.png
           MANIFEST pmdefaults/manifest.txt
           OUTPUT_DIR pmdefaults)
-  if(UNIX)
     if(BUILD_JAVA_NATIVE_INTERFACE) 
       include(FindJNI) 
       # message(STATUS "JAVA_JVM_LIB_PATH is " ${JAVA_JVM_LIB_PATH})
@@ -67,6 +70,15 @@ if(BUILD_PMDEFAULTS)
     endif(APPLE)
   else(UNIX)
     if(WIN32) 
+      add_jar(pmdefaults 
+          SOURCES pmdefaults/PmDefaults.java pmdefaults/PmDefaultsFrame.java 
+                  jportmidi/JPortMidi.java jportmidi/JPortMidiApi.java
+                  jportmidi/JPortMidiException.java
+          # NAMESPACE did not seem to work on Windows - omitting it may
+          # cause out-of-source-tree builds to fail:
+          RESOURCES pmdefaults/portmusic_logo.png
+          MANIFEST pmdefaults/manifest.txt
+          OUTPUT_DIR pmdefaults)
       if(BUILD_JAVA_NATIVE_INTERFACE) 
         include(FindJNI)
         # note: should use JAVA_JVM_LIB_PATH, but it is not set properly 

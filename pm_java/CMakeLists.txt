@@ -1,5 +1,7 @@
 # pm_java
 
+find_package(Java)
+message(STATUS "Java_JAVA_EXECUTABLE is " ${Java_JAVA_EXECUTABLE})
 if(BUILD_PMDEFAULTS)
   set(JPORTMIDICLASS JPortMidi.class JPortMidiException.class  
                      JPortMidiApi.class)  
@@ -24,51 +26,35 @@ if(BUILD_PMDEFAULTS)
   #message(STATUS "  CMAKE_BINARY_DIR ${CMAKE_BINARY_DIR}") 
   #message(STATUS "  EXECUTABLE_OUTPUT_PATH ${EXECUTABLE_OUTPUT_PATH}") 
 
-  add_custom_command(OUTPUT pmdefaults/PmDefaultsFrame.class 
-          COMMAND javac -classpath . pmdefaults/PmDefaultsFrame.java 
-          MAIN_DEPENDENCY pmdefaults/PmDefaultsFrame.java 
-          DEPENDS pmdefaults/PmDefaults.java 
-          WORKING_DIRECTORY .) 
-  add_custom_command(OUTPUT pmdefaults/PmDefaults.class 
-          COMMAND javac -classpath . pmdefaults/PmDefaults.java 
-          MAIN_DEPENDENCY pmdefaults/PmDefaults.java 
-          DEPENDS pmdefaults/PmDefaultsFrame.java 
-          WORKING_DIRECTORY .) 
-  add_custom_target(pmdefaults ALL 
-          DEPENDS ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/pmdefaults.jar) 
   if(UNIX)
-    add_custom_command(OUTPUT ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/pmdefaults.jar 
-                              ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/pmdefaults
-          COMMAND cp pmdefaults/portmusic_logo.png . 
-          COMMAND jar cmf pmdefaults/manifest.txt pmdefaults.jar 
-                  pmdefaults/*.class portmusic_logo.png jportmidi/*.class 
-          COMMAND mv pmdefaults.jar ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-          COMMAND rm portmusic_logo.png 
-          # create a command to run pmdefaults:
-          COMMAND cp pmdefaults/pmdefaults ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
-          COMMAND chmod +x ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/pmdefaults
-          MAIN_DEPENDENCY pmdefaults/PmDefaults.class 
-          DEPENDS ${PMDEFAULTS_ALL}
-          WORKING_DIRECTORY .) 
+    project(pmdefaults NONE)
+    include(UseJava)
+    add_jar(pmdefaults 
+            SOURCES pmdefaults/PmDefaults.java pmdefaults/PmDefaultsFrame.java 
+                    jportmidi/JPortMidi.java jportmidi/JPortMidiApi.java
+                    jportmidi/JPortMidiException.java
+            RESOURCES NAMESPACE "." pmdefaults/portmusic_logo.png
+            MANIFEST pmdefaults/manifest.txt
+            OUTPUT_DIR pmdefaults)
     if(BUILD_JAVA_NATIVE_INTERFACE) 
       include(FindJNI) 
-      # message(STATUS "JAVA_JVM_LIB_PATH is " ${JAVA_JVM_LIB_PATH}) 
-      # message(STATUS "JAVA_INCLUDE_PATH is " ${JAVA_INCLUDE_PATH}) 
-      # note: should use JAVA_JVM_LIB_PATH, but it is not set properly 
-      # note: user might need to set JAVA_INCLUDE_PATH manually 
+      # message(STATUS "JAVA_JVM_LIB_PATH is " ${JAVA_JVM_LIB_PATH})
+      # message(STATUS "JAVA_INCLUDE_PATH is " ${JAVA_INCLUDE_PATH})
+      # note: should use JAVA_JVM_LIB_PATH, but it is not set properly
+      # note: user might need to set JAVA_INCLUDE_PATH manually
       #
-      # this will probably break on BSD and other Unix systems; the fix 
-      # depends on whether FindJNI can find Java or not. If yes, then 
-      # we should try to rely on automatically set JAVA_INCLUDE_PATH and 
-      # JAVA_INCLUDE_PATH2; if no, then we need to make both JAVA_INCLUDE_PATH 
-      # and JAVA_INCLUDE_PATH2 set by user (will need clear documentation 
-      # because JAVA_INCLUDE_PATH2 is pretty obscure) 
+      # this will probably break on BSD and other Unix systems; the fix
+      # depends on whether FindJNI can find Java or not. If yes, then
+      # we should try to rely on automatically set JAVA_INCLUDE_PATH and
+      # JAVA_INCLUDE_PATH2; if no, then we need to make both JAVA_INCLUDE_PATH
+      # and JAVA_INCLUDE_PATH2 set by user (will need clear documentation
+      # because JAVA_INCLUDE_PATH2 is pretty obscure)
       set(JAVA_INCLUDE_PATH  ${JAVA_INCLUDE_PATH-UNKNOWN}
-          CACHE STRING "where to find Java SDK include directory") 
-      set(JAVA_INCLUDE_PATHS ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH}/linux) 
-      # libjvm.so is found relative to JAVA_INCLUDE_PATH: 
-      set(JAVAVM_LIB ${JAVA_INCLUDE_PATH}/../jre/lib/i386/client/libjvm.so) 
-    endif(BUILD_JAVA_NATIVE_INTERFACE) 
+          CACHE STRING "where to find Java SDK include directory")
+      set(JAVA_INCLUDE_PATHS ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH}/linux)
+      # libjvm.so is found relative to JAVA_INCLUDE_PATH:
+      set(JAVAVM_LIB ${JAVA_INCLUDE_PATH}/../jre/lib/i386/client/libjvm.so)
+    endif(BUILD_JAVA_NATIVE_INTERFACE)
     if(APPLE)
     else(APPLE)
       # install the libraries (Linux only)
@@ -92,7 +78,7 @@ if(BUILD_PMDEFAULTS)
       # /MD is multithread DLL, /MT is multithread 
 
       if(BUILD_JAVA_NATIVE_INTERFACE) 
-        include(FindJNI) 
+        include(FindJNI)
         # note: should use JAVA_JVM_LIB_PATH, but it is not set properly 
         set(JAVAVM_LIB ${JAVA_INCLUDE_PATH}/../lib/jvm.lib) 
 
@@ -109,10 +95,8 @@ endif(BUILD_PMDEFAULTS)
 # define the jni library  
 include_directories(${JAVA_INCLUDE_PATHS})  
 
-set(JNISRC ${PROJECT_SOURCE_DIR}/pm_java/pmjni/pmjni.c)  
+set(JNISRC ${PROJECT_SOURCE_DIR}/pmjni/pmjni.c)  
 
-# THIS DID NOT WORK - REMOVE WHEN pmjni on Windows works again:
-#
 # note: PM_LIBSRC is all source for PortMidi, which becomes part of pmjni.
 # This means there is no dependency on a separate PortMidi library, and
 # pmjni can access internal PortMidi implementation variables and not
@@ -123,8 +107,9 @@ target_link_libraries(pmjni ${PM_NEEDED_LIBS})
 
 
 set_target_properties(pmjni PROPERTIES  
-                            LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})  
+                            LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set_target_properties(pmjni PROPERTIES EXECUTABLE_EXTENSION "jnilib"
-                             MACOSX_RPATH ON)  
+                            MACOSX_RPATH ON)  
 set(PMJNI_LIBRARY pmjni)  
 
+add_dependencies(pmdefaults pmjni) 

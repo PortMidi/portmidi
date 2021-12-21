@@ -23,8 +23,8 @@ else(APPLE OR WIN32)
 endif(APPLE OR WIN32)
 
 if(APPLE)
-  set(PM_OSX_VERSION "10.7" CACHE STRING
-      "selects PM_OSX_SDK and macosx-version-min C flag")
+#  set(PM_OSX_VERSION "10.7" CACHE STRING
+#      "selects PM_OSX_SDK and macosx-version-min C flag")
   set(PM_OSX_SDK "/Developer/SDKs/MacOSX${PM_OSX_VERSION}.sdk")
   set(CMAKE_OSX_SYSROOT ${PM_OSC_SDK} CACHE 
       PATH "-isysroot parameter for compiler")

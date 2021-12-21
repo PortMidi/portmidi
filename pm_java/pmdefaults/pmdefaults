@@ -1,1 +1,1 @@
-java -Djava.library.path=. -jar pmdefaults.jar > /dev/null
+java -Djava.library.path=../../Release:../../Debug -jar pmdefaults.jar > /dev/null

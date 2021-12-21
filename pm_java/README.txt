@@ -52,7 +52,9 @@ In Windows:
    [java must be executable from the command line]
    cd portmidi\pm_java  -- change to this directory
    pmdefaults           -- runs pmdefaults.bat
-In macOS:
+In macOS and Linux:
+   cd portmidi\pm_java\pmdefaults -- change to this directory
+   ./pmdefaults                   -- shell script to invoke java
    [java must be executable from the command line]
 
 

@@ -26,16 +26,18 @@ if(BUILD_PMDEFAULTS)
   #message(STATUS "  CMAKE_BINARY_DIR ${CMAKE_BINARY_DIR}") 
   #message(STATUS "  EXECUTABLE_OUTPUT_PATH ${EXECUTABLE_OUTPUT_PATH}") 
 
+  project(pmdefaults NONE)
+  include(UseJava)
+  add_jar(pmdefaults 
+          SOURCES pmdefaults/PmDefaults.java pmdefaults/PmDefaultsFrame.java 
+                  jportmidi/JPortMidi.java jportmidi/JPortMidiApi.java
+                  jportmidi/JPortMidiException.java
+          # NAMESPACE did not seem to work on Windows - omitting it may
+          # cause out-of-source-tree builds to fail:
+          RESOURCES pmdefaults/portmusic_logo.png
+          MANIFEST pmdefaults/manifest.txt
+          OUTPUT_DIR pmdefaults)
   if(UNIX)
-    project(pmdefaults NONE)
-    include(UseJava)
-    add_jar(pmdefaults 
-            SOURCES pmdefaults/PmDefaults.java pmdefaults/PmDefaultsFrame.java 
-                    jportmidi/JPortMidi.java jportmidi/JPortMidiApi.java
-                    jportmidi/JPortMidiException.java
-            RESOURCES NAMESPACE "." pmdefaults/portmusic_logo.png
-            MANIFEST pmdefaults/manifest.txt
-            OUTPUT_DIR pmdefaults)
     if(BUILD_JAVA_NATIVE_INTERFACE) 
       include(FindJNI) 
       # message(STATUS "JAVA_JVM_LIB_PATH is " ${JAVA_JVM_LIB_PATH})
@@ -65,18 +67,6 @@ if(BUILD_PMDEFAULTS)
     endif(APPLE)
   else(UNIX)
     if(WIN32) 
-      add_custom_command(OUTPUT ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/pmdefaults.jar
-          COMMAND copy pmdefaults\\portmusic_logo.png . 
-          COMMAND echo Running jar to build pmdefaults.jar      
-          COMMAND jar cmf pmdefaults/manifest.txt pmdefaults.jar 
-                  pmdefaults/*.class portmusic_logo.png jportmidi/*.class 
-          COMMAND del portmusic_logo.png 
-          MAIN_DEPENDENCY pmdefaults/PmDefaults.class 
-          DEPENDS ${PMDEFAULTS_ALL}
-          WORKING_DIRECTORY .) 
-      # /MDd is multithread debug DLL, /MTd is multithread debug 
-      # /MD is multithread DLL, /MT is multithread 
-
       if(BUILD_JAVA_NATIVE_INTERFACE) 
         include(FindJNI)
         # note: should use JAVA_JVM_LIB_PATH, but it is not set properly 
@@ -107,8 +97,10 @@ target_link_libraries(pmjni ${PM_NEEDED_LIBS})
 
 
 set_target_properties(pmjni PROPERTIES  
-                            LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
-set_target_properties(pmjni PROPERTIES EXECUTABLE_EXTENSION "jnilib"
+                            LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+                            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+                            ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
+                            EXECUTABLE_EXTENSION "jnilib"
                             MACOSX_RPATH ON)  
 set(PMJNI_LIBRARY pmjni)  
 

@@ -31,8 +31,10 @@ BUILDING PmDefaults PROGRAM
 You must have a JDK installed (Java development kit including javac
 (the Java compiler), jni.h, etc.
 
-Just enable these options in the main CMakeLists.txt file (run CMake
-from ../../portmidi):
+Test java on the command line, e.g., type: javac -version
+
+Enable these options in the main CMakeLists.txt file (run CMake
+from your top-level repository directory):
      BUILD_JAVA_NATIVE_INTERFACE
      BUILD_PMDEFAULTS
 In my Ubuntu linux with jdk-15, ccmake was unable to find my JDK, so
@@ -48,63 +50,17 @@ Of course, your paths may differ.
 
 RUNNING PmDefaults PROGRAM
 
+After building the pmdefaults target with make, Visual Studio, or Xcode:
 In Windows:
-   [java must be executable from the command line]
-   cd portmidi\pm_java  -- change to this directory
-   pmdefaults           -- runs pmdefaults.bat
+   [from the command line:]
+   cd portmidi\pm_java\pmdefaults  -- change to this directory
+   pmdefaults                      -- runs pmdefaults.bat
+   [or from the finder:]
+   double-click on pmdefaults.bat
 In macOS and Linux:
    cd portmidi\pm_java\pmdefaults -- change to this directory
    ./pmdefaults                   -- shell script to invoke java
-   [java must be executable from the command line]
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-   cd portmidi/Release 
-       [or cd portmidi/Debug if you build the Debug configuration]
-   ./pmdefaults
-       [to make pmdefaults run from any working directory, 
-        you will need to:
-        - put libpmjni.dylib in a fixed location
-        - put pmdefaults.jar in a fixed location
-        - edit pmdefaults so that:
-          + the -Djava.library.path= gives the directory with libpmjni.dylib
-          + the -jar gives the full path to pmdefaults.jar
-        - move pmdefaults in a directory that is on your shell's PATH
-In Linux:
-   [java must be executable from the command line]
-   cd portmidi/Release 
-       [or cd portmidi/Debug if you build the Debug configuration]
-   ./pmdefaults
-       [to make pmdefaults run from any working directory, 
-        you will need to:
-        - put libpmjni.dylib in a fixed location
-        - put pmdefaults.jar in a fixed location
-        - edit pmdefaults so that:
-          + the -Djava.library.path= gives the directory with libpmjni.dylib
-          + the -jar gives the full path to pmdefaults.jar
-        - move pmdefaults in a directory that is on your shell's PATH
-   
-DETAILS
-
-There are three main sub-projects here:
-  1) pmjni -- a JNI (Java Native Interface) to access PortMidi
-  2) jportmidi -- a Java class to access PortMidi (uses pmjni)
-  3) pmdefaults -- the PmDefaults application (uses jportmidi)
-
-For Win32, previous PortMidi releases included an installer for
-PmDefaults. Maybe this is still possible if you want a clickable
-desktop program.
 
 ---- old implementation notes ----
 

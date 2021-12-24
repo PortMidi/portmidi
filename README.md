@@ -2,7 +2,8 @@
 
 This is the canonical release of PortMidi.
 
-See other repositories within [PortMidi](https://github.com/PortMidi) for related code and bindings (although currently, not much is here).
+See other repositories within [PortMidi](https://github.com/PortMidi)
+for related code and bindings (although currently, not much is here).
 
 ## [Full C API documentation is here.](https://portmidi.github.io/portmidi_docs/)
 
@@ -10,8 +11,13 @@ See other repositories within [PortMidi](https://github.com/PortMidi) for relate
 
 Use CMake (or ccmake) to create a Makefile for Linux/BSD or a 
 project file for Xcode or MS Visual Studio. Use make or an IDE to compile. 
-libportmidi_s.* is a static library (recommended - fewer things can go wrong);
-libportmidi.* is a dynamic library.
+
+**PmDefaults** is a Java-based program for setting default MIDI
+devices. It is necessary if you use `Pm_DefaultInputDeviceID()` or
+`Pm_DefaultOutputDeviceID()` to avoid implementing your own device
+browsing, selection and preferences in your applications. Enable
+`BUILD_PMDEFAULTS` and `BUILD_JAVA_NATIVE_INTERFACE` in ccmake, and
+see `pm_java/README.txt` for more information.
 
 ## What's New?
 

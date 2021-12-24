@@ -7,6 +7,11 @@
  *  Jason Cohen, Rico Colon, Matt Filippone (Alsa 0.5.x implementation)
  */ 
 
+/* omit this code if PMALSA is not defined -- this mechanism allows
+ * selection of different MIDI interfaces (at compile time).
+ */
+#ifdef PMALSA
+
 #include "stdlib.h"
 #include "portmidi.h"
 #include "pmutil.h"
@@ -826,3 +831,5 @@ void pm_linuxalsa_term(void)
         pm_descriptor_max = 0;
     }
 }
+
+#endif

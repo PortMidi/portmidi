@@ -61,7 +61,7 @@ static void prompt_and_exit(void)
 {
     char line[STRING_MAX];
     printf("type ENTER...");
-    fgets(line, STRING_MAX, stdin);
+    char *rslt = fgets(line, STRING_MAX, stdin);
     /* this will clean up open ports: */
     exit(-1);
 }

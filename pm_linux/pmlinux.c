@@ -60,6 +60,9 @@ void pm_term(void)
     #ifdef PMALSA
         pm_linuxalsa_term();
     #endif
+    #ifdef PMNULL
+        pm_linuxnull_term();
+    #endif
 }
 
 PmDeviceID Pm_GetDefaultInputDeviceID() { 

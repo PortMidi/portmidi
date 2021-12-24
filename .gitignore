@@ -1,3 +1,4 @@
+*~
 CMakeCache.txt
 CMakeFiles/
 CMakeScripts/
@@ -18,9 +19,14 @@ cmake_install.cmake
 *.vcxproj.filters
 *.vcxproj.user
 /Makefile
+/libportmidi.so
+/libportmidi.a
+/libportmidi_s.a
 /libpmjni.so
+/packaging/PortMidiConfig.cmake
+/packaging/PortMidiConfigVersion.cmake
+/packaging/portmidi.pc
 /pm_common/Makefile
-/pm_common/libportmidi-static.a
 /pm_java/Makefile
 /pm_test/Makefile
 /pm_test/fastrcv
@@ -36,3 +42,5 @@ cmake_install.cmake
 /pm_test/sysex
 /pm_test/testio
 /pm_test/virttest
+/pm_test/fast
+

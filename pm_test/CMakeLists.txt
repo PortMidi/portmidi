@@ -11,7 +11,7 @@ if(WIN32)
     # /MDd is multithread debug DLL, /MTd is multithread debug
     # /MD is multithread DLL, /MT is multithread. Change to static:
     include(../pm_win/static.cmake)
-  endif(BUILD_SHARED_LIBS)
+  endif()
 endif(WIN32)
 
 macro(add_test name)

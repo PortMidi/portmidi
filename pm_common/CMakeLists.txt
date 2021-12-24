@@ -107,14 +107,14 @@ elseif(UNIX)
 elseif(WIN32)
   set(PM_LIB_PRIVATE_SRC
       ${PMDIR}/porttime/ptwinmm.c
-      ${PMDIR}/pm_windows/pmwin.c
-      ${PMDIR}/pm_windows/pmwinmm.c)
+      ${PMDIR}/pm_win/pmwin.c
+      ${PMDIR}/pm_win/pmwinmm.c)
   target_link_libraries(portmidi PRIVATE winmm)
   if(NOT BUILD_SHARED_LIBS)
     # /MDd is multithread debug DLL, /MTd is multithread debug
     # /MD is multithread DLL, /MT is multithread. Change to static:
     include(../pm_win/static.cmake)
-  endif(BUILD_SHARED_LIBS)
+  endif()
 else()
   message(FATAL_ERROR "Operating system not supported.")
 endif()

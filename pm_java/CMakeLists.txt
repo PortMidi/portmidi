@@ -7,7 +7,7 @@ if(BUILD_PMDEFAULTS)
   # Since pmdefaults and pmdefaults.bat are in the source tree and look
   # for libpmjni in the same tree, out-of-source build will not create
   # a working pmdefaults (without more work):
-  if(NOT ${CMAKE_SOURCE_DIR} EQUAL ${CMAKE_BINARY_DIR})
+  if(NOT (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR}))
     message(WARNING "PmDefaults only works when run in the pm_java/pmdefaults directory after an in-source build. This is an out-of-source build, so [probably] libpmjni will be built out-of-source, pmdefaults.jar will be built in-source, and the pmdefaults[.bat] script remains in-source. Rebuild in-source to use PmDefaults or adjust the file locations and scripts to suit yourself.")
   endif()
 

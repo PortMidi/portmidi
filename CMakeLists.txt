@@ -102,7 +102,7 @@ INSTALL(TARGETS portmidi ${PMJNI_IF_EXISTS}
 INSTALL(FILES
   pm_common/portmidi.h
   pm_common/pmutil.h 
-  ../porttime/porttime.h
+  porttime/porttime.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # pkgconfig - generate pc file

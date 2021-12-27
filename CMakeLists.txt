@@ -92,16 +92,18 @@ if(BUILD_JAVA_NATIVE_INTERFACE)
 endif(BUILD_JAVA_NATIVE_INTERFACE)
 
 # Install the libraries and headers (Linux and Mac OS X command line)
-if(UNIX)
-  INSTALL(TARGETS portmidi ${PMJNI_IF_EXISTS}
-    EXPORT PortMidiTargets
-    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
-    INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
-  INSTALL(FILES portmidi.h pmutil.h ../porttime/porttime.h
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-endif(UNIX)
+INSTALL(TARGETS portmidi ${PMJNI_IF_EXISTS}
+  EXPORT PortMidiTargets
+  LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+  ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+  RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+  INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+
+INSTALL(FILES
+  pm_common/portmidi.h
+  pm_common/pmutil.h 
+  ../porttime/porttime.h
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # pkgconfig - generate pc file
 # See https://cmake.org/cmake/help/latest/command/configure_file.html

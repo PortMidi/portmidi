@@ -122,7 +122,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/packaging/portmidi.pc
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 
 # CMake config
-set(PORTMIDI_INSTALL_CMAKEDIR "lib/cmake/PortMidi")
+set(PORTMIDI_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/PortMidi")
 install(
   EXPORT PortMidiTargets
   FILE PortMidiTargets.cmake

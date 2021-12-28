@@ -42,7 +42,6 @@ if(BUILD_PMDEFAULTS)
         RESOURCES pmdefaults/portmusic_logo.png
         MANIFEST pmdefaults/manifest.txt
         OUTPUT_DIR pmdefaults)
-    set(PM_NEEDED_LIBS winmm.lib)
     set(JAVAVM_LIB ${JAVA_INCLUDE_PATH}/../jre/lib/i386/client/libjvm.so)
   endif()
   add_dependencies(pmdefaults pmjni)

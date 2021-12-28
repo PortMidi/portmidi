@@ -342,13 +342,13 @@ Check output of fastrcv: there should be no errors, just msg/sec.]
  line near the end of output should be "Got 11 messages from
  portmidi1 and 11 from portmidi2; expected 11."]
 
-31. To test pmdefaults (if built, requires Java):
-    ./multivirtual [macOS and Linux only]
+31. ./multivirtual [macOS and Linux only]
     ./multivirtual
 [Second instance should report "PortMidi call failed...
    PortMidi: Cannot create virtual device: name is taken"]
 
-32. pmdefaults [must be run from pm_java/pmdefaults]
+32. pmdefaults (if built, requires Java and some CMake options)
+    [must be run from pm_java/pmdefaults]
     ./testio
 [In pmdefaults: 
     Select an input device. Input should flash the green

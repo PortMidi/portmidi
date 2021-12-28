@@ -72,6 +72,12 @@ macro(prepend_path RESULT PATH)
   endforeach(FILE)
 endmacro(prepend_path)
 
+# UNIX needs pthread library
+if(NOT WIN32)
+  set(THREADS_PREFER_PTHREAD_FLAG ON)
+  find_package(Threads REQUIRED)
+endif()
+
 # first include the appropriate system-dependent file:
 if(UNIX AND APPLE)
   find_library(COREAUDIO_LIBRARY CoreAudio REQUIRED)
@@ -84,7 +90,7 @@ if(UNIX AND APPLE)
       ${PMDIR}/pm_mac/pmmacosxcm.c
       ${PMDIR}/pm_mac/finddefault.c
       ${PMDIR}/pm_mac/readbinaryplist.c)
-  target_link_libraries(portmidi PRIVATE pthread ${COREAUDIO_LIBRARY}
+  target_link_libraries(portmidi PRIVATE Threads::Threads ${COREAUDIO_LIBRARY}
       ${COREFOUNDATION_LIBRARY} ${COREMIDI_LIBRARY} ${CORESERVICES_LIBRARY})
   # set to CMake default; is this right?:
   set_target_properties(portmidi PROPERTIES MACOSX_RPATH ON)
@@ -101,10 +107,11 @@ elseif(UNIX)
     # might be additional options.
     find_package(ALSA REQUIRED)
     list(APPEND PM_LIB_PRIVATE_SRC ${PMDIR}/pm_linux/pmlinuxalsa.c)
-    target_link_libraries(portmidi PRIVATE pthread ALSA::ALSA)
+    target_link_libraries(portmidi PRIVATE Threads::Threads ALSA::ALSA)
   else()
     message(WARNING "No PMALSA, so PortMidi will not use ALSA, "
                     "and will not find or open MIDI devices.")
+    target_link_libraries(portmidi PRIVATE Threads::Threads)
   endif()
 elseif(WIN32)
   set(PM_LIB_PRIVATE_SRC

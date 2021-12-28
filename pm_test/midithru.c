@@ -83,10 +83,12 @@ global variable current_timestamp.
 #define MIDI_EOX 0xf7
 #define STRING_MAX 80 /* used for console input */
 
-/* active is set true when midi processing should start */
+/* active is set true when midi processing should start, must be
+ * volatile to force thread to check for updates by other thread */
 int active = FALSE;
-/* process_midi_exit_flag is set when the timer thread shuts down */
-int process_midi_exit_flag;
+/* process_midi_exit_flag is set when the timer thread shuts down;
+ * must be volatile so it is re-read in the while loop that waits on it */
+volatile int process_midi_exit_flag;
 
 PmStream *midi_in;
 PmStream *midi_out;
@@ -96,7 +98,11 @@ PmStream *midi_out;
 #define OUT_QUEUE_SIZE 1024
 PmQueue *in_queue;
 PmQueue *out_queue;
-PmTimestamp current_timestamp = 0;
+/* this is volatile because it is set in the process_midi callback and
+ * the main thread reads it to sense elapsed time. Without volatile, the
+ * optimizer can put it in a register and not see the updates.
+ */
+volatile PmTimestamp current_timestamp = 0;
 int thru_sysex_in_progress = FALSE;
 int app_sysex_in_progress = FALSE;
 PmTimestamp last_timestamp = 0;

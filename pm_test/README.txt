@@ -23,7 +23,9 @@ Type input number: >>6  [pick a working input device]
 Latency in ms: >>0
 enter your choice... >>2
 Type input number: >>6  [pick a working input device]
-[play some notes, program will abort after 5 messages]
+[play some notes, program will abort after 5 messages
+(this test only applies to a Debug build, otherwise
+the assert() macro is disabled.)]
 
 4. ./testio [test input (fail w/NULL assign)]
 Latency in ms: >>0
@@ -180,7 +182,7 @@ Type input device number: >>6  [pick a working input device]
 Type output device number: >>0 [pick output device to loopback]
 Latency in milliseconds: >>0
 Type input  device number: >>0 [pick input device for loopback]
-[Program will run forever. After awhile, quit with ^C. You can read
+[Program will run forever. After awhile, program will quit. You can read
  the Cummulative bytes/sec value.]
 
 22. ./sysex [latency > 0]

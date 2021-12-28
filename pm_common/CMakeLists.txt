@@ -12,6 +12,15 @@ if(NOT BUILD_SHARED_LIBS)
   set(PM_ACTUAL_LIB_NAME ${PM_STATIC_LIB_NAME})
 endif()
 
+# set the build directory for libportmidi.a to be in portmidi, not in 
+#    portmidi/pm_common. Must be done here BEFORE add_library below.
+if(APPLE OR WIN32)
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+  # set the build directory for .dylib libraries
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
+endif(APPLE OR WIN32)
+
 # we need full paths to sources because they are shared with other targets
 # (in particular pmjni). Set PMDIR to the top-level portmidi directory:
 get_filename_component(PMDIR ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
@@ -28,15 +37,6 @@ target_include_directories(portmidi PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/pm_common>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-
-# set the build directory for libportmidi.a to be in portmidi, not in 
-#    portmidi/pm_common
-if(APPLE OR WIN32)
-  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-  # set the build directory for .dylib libraries
-  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-endif(APPLE OR WIN32)
 
 option(PM_CHECK_ERRORS
 "Insert a check for error return values at the end of each PortMidi function.

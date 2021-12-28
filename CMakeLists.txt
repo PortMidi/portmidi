@@ -8,11 +8,20 @@ cmake_minimum_required(VERSION 3.12)
 # Previously, PortMidi versions were simply SVN commit version numbers.
 # Versions are now in the form x.y.z
 # Changed 1.0 to 2.0 because API is extended with virtual ports
-project(portmidi VERSION 2.0.1
+
+set(SOVERSION "2") 
+set(VERSION "2.0.1") 
+
+project(portmidi VERSION "${VERSION}"
                  DESCRIPTION "Cross-Platform MIDI IO")
-set(SOVERSION 1)
+
+set(LIBRARY_SOVERSION "${SOVERSION}")
+set(LIBRARY_VERSION "${VERSION}")
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+
+# Always build with position-independent code (-fPIC)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9 CACHE STRING 
     "make for this OS version or higher")

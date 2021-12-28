@@ -87,6 +87,8 @@ message(STATUS "Java paths ${JAVA_INCLUDE_PATHS}")
 target_include_directories(pmjni PUBLIC ${JAVA_INCLUDE_PATHS})
 target_link_libraries(pmjni ${PM_NEEDED_LIBS})
 set_target_properties(pmjni PROPERTIES
+                            VERSION ${LIBRARY_VERSION}
+                            SOVERSION ${LIBRARY_SOVERSION}
                             LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
                             RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
                             ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"

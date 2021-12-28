@@ -20,6 +20,8 @@ set(PM_LIB_PUBLIC_SRC ${PMDIR}/pm_common/portmidi.c
                       ${PMDIR}/porttime/porttime.c)
 add_library(portmidi ${PM_LIB_PUBLIC_SRC})
 set_target_properties(portmidi PROPERTIES
+                      VERSION ${LIBRARY_VERSION}
+                      SOVERSION ${LIBRARY_SOVERSION}
                       OUTPUT_NAME "${PM_ACTUAL_LIB_NAME}"
                       WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 target_include_directories(portmidi PUBLIC

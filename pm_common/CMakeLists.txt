@@ -61,19 +61,6 @@ if(PM_CHECK_ERRORS)
   target_compile_definitions(portmidi PRIVATE PM_CHECK_ERRORS)
 endif(PM_CHECK_ERRORS)
 
-
-if(APPLE)
-#  set(PM_OSX_VERSION "10.7" CACHE STRING
-#      "selects PM_OSX_SDK and macosx-version-min C flag")
-  set(PM_OSX_SDK "/Developer/SDKs/MacOSX${PM_OSX_VERSION}.sdk")
-  set(CMAKE_OSX_SYSROOT ${PM_OSC_SDK} CACHE 
-      PATH "-isysroot parameter for compiler")
-  set(CMAKE_C_FLAGS "-mmacosx-version-min=${PM_OSC_VERSION}" CACHE 
-      STRING "needed in conjunction with CMAKE_OSX_SYSROOT" FORCE)
-  # option(OSX_RPATH "control CMake policy for finding macOS dynamic libraries"
-  #        ON)  # enabled here to match CMake default. Is this correct?
-endif()
-
 macro(prepend_path RESULT PATH)
   set(${RESULT})
   foreach(FILE ${ARGN})

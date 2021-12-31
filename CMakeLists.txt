@@ -27,6 +27,7 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9 CACHE STRING
     "make for this OS version or higher")
 
 # PM_ACTUAL_LIB_NAME is in this scope -- see pm_common/CMakeLists.txt
+# PM_NEEDED_LIBS is in this scope -- see pm_common/CMakeLists.txt
 
 include(GNUInstallDirs)
 

@@ -1,5 +1,14 @@
 # pm_common/CMakeLists.txt -- how to build portmidi library
 
+# creates the portmidi library
+# exports PM_NEEDED_LIBS to parent. It seems that PM_NEEDED_LIBS for
+#   Linux should include Thread::Thread and ALSA::ALSA, but these
+#   are not visible in other CMake files, even though the portmidi
+#   target is. Therefore, Thread::Thread is replaced by
+#   CMAKE_THREAD_LIBS_INIT and ALSA::ALSA is replaced by ALSA_LIBRARIES.
+#   Is there a better way to do this? Maybe this whole file should be
+#   at the parent level.
+
 # Support alternative name for static libraries to avoid confusion.
 # (In particular, Xcode has automatically converted portmidi.a to
 # portmidi.dylib without warning, so using portmidi-static.a eliminates
@@ -7,7 +16,7 @@
 set(PM_STATIC_LIB_NAME "portmidi" CACHE STRING 
     "For static builds, the PortMidi library name, e.g. portmidi-static.
      Default is portmidi")
-set(PM_ACTUAL_LIB_NAME "portmidi" PARENT_SCOPE) # shared with pm_tests
+set(PM_ACTUAL_LIB_NAME "portmidi")
 if(NOT BUILD_SHARED_LIBS)
   set(PM_ACTUAL_LIB_NAME ${PM_STATIC_LIB_NAME})
 endif()
@@ -80,6 +89,7 @@ endif()
 
 # first include the appropriate system-dependent file:
 if(UNIX AND APPLE)
+  set(Threads::Threads "" PARENT_SCOPE)
   find_library(COREAUDIO_LIBRARY CoreAudio REQUIRED)
   find_library(COREFOUNDATION_LIBRARY CoreFoundation REQUIRED)
   find_library(COREMIDI_LIBRARY CoreMidi REQUIRED)
@@ -90,6 +100,9 @@ if(UNIX AND APPLE)
       ${PMDIR}/pm_mac/pmmacosxcm.c
       ${PMDIR}/pm_mac/finddefault.c
       ${PMDIR}/pm_mac/readbinaryplist.c)
+  set(PM_NEEDED_LIBS ${CMAKE_THREAD_LIBS_INIT} ${COREAUDIO_LIBRARY}
+      ${COREFOUNDATION_LIBRARY} ${COREMIDI_LIBRARY} ${CORESERVICES_LIBRARY}
+      PARENT_SCOPE)
   target_link_libraries(portmidi PRIVATE Threads::Threads ${COREAUDIO_LIBRARY}
       ${COREFOUNDATION_LIBRARY} ${COREMIDI_LIBRARY} ${CORESERVICES_LIBRARY})
   # set to CMake default; is this right?:
@@ -107,10 +120,12 @@ elseif(UNIX)
     # might be additional options.
     find_package(ALSA REQUIRED)
     list(APPEND PM_LIB_PRIVATE_SRC ${PMDIR}/pm_linux/pmlinuxalsa.c)
+    set(PM_NEEDED_LIBS ${CMAKE_THREAD_LIBS_INIT} ${ALSA_LIBRARIES} PARENT_SCOPE)
     target_link_libraries(portmidi PRIVATE Threads::Threads ALSA::ALSA)
   else()
     message(WARNING "No PMALSA, so PortMidi will not use ALSA, "
                     "and will not find or open MIDI devices.")
+    set(PM_NEEDED_LIBS ${CMAKE_THREAD_LIBS_INIT} PARENT_SCOPE)
     target_link_libraries(portmidi PRIVATE Threads::Threads)
   endif()
 elseif(WIN32)
@@ -118,7 +133,8 @@ elseif(WIN32)
       ${PMDIR}/porttime/ptwinmm.c
       ${PMDIR}/pm_win/pmwin.c
       ${PMDIR}/pm_win/pmwinmm.c)
-  target_link_libraries(portmidi PRIVATE winmm)
+    set(PM_NEEDED_LIBS winmm PARENT_SCOPE)
+    target_link_libraries(portmidi PRIVATE winmm)
   if(NOT BUILD_SHARED_LIBS)
     # /MDd is multithread debug DLL, /MTd is multithread debug
     # /MD is multithread DLL, /MT is multithread. Change to static:
@@ -132,3 +148,4 @@ set(PM_LIB_PUBLIC_SRC ${PM_LIB_PUBLIC_SRC} PARENT_SCOPE) # export to parent
 set(PM_LIB_PRIVATE_SRC ${PM_LIB_PRIVATE_SRC} PARENT_SCOPE) # export to parent
 
 target_sources(portmidi PRIVATE ${PM_LIB_PRIVATE_SRC})
+

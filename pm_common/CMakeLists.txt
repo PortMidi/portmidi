@@ -109,6 +109,7 @@ elseif(UNIX)
     list(APPEND PM_LIB_PRIVATE_SRC ${PMDIR}/pm_linux/pmlinuxalsa.c)
     set(PM_NEEDED_LIBS ${CMAKE_THREAD_LIBS_INIT} ${ALSA_LIBRARIES} PARENT_SCOPE)
     target_link_libraries(portmidi PRIVATE Threads::Threads ALSA::ALSA)
+    set(PKGCONFIG_REQUIRES_PRIVATE "alsa" PARENT_SCOPE)
   else()
     message(WARNING "No PMALSA, so PortMidi will not use ALSA, "
                     "and will not find or open MIDI devices.")

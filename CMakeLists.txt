@@ -9,8 +9,8 @@ cmake_minimum_required(VERSION 3.12)
 # Versions are now in the form x.y.z
 # Changed 1.0 to 2.0 because API is extended with virtual ports
 
-set(SOVERSION "2") 
-set(VERSION "2.0.1") 
+set(SOVERSION "2")
+set(VERSION "2.0.2")
 
 project(portmidi VERSION "${VERSION}"
                  DESCRIPTION "Cross-Platform MIDI IO")

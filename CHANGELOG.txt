@@ -1,5 +1,10 @@
 /* CHANGELOG FOR PORTMIDI
  *
+ * 03Jan22 v2.0.2 Roger Dannenberg
+ * - many changes for CMake including install support
+ * - bare-bones Java and PmDefaults support. It runs, but no
+ *   installation.
+ * 
  * 16Sep21 Roger Dannenberg
  * - Added CreateVirtualInput and CreateVirtualOutput functions (macOS
  *   & Linux) only.

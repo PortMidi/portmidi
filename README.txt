@@ -79,3 +79,10 @@ abruptly terminate the program.
 
 The Windows version (and perhaps others) also offers a DEBUG
 compile-time option. See README_WIN.txt.
+
+RELEASE
+
+To make a new release, update VERSION variable in CMakeLists.txt.
+
+Update CHANGELOG.txt. What's new?
+

@@ -2,7 +2,7 @@
 # Roger B. Dannenberg (and others)
 # Sep 2009 - 2021
 
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.20)
 # (ALSA::ALSA new in 3.12 and used in pm_common/CMakeLists.txt)
 # Some Java stuff failed on 3.17 but works with 3.20+
 

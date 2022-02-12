@@ -123,7 +123,7 @@ elseif(WIN32)
       ${PMDIR}/pm_win/pmwinmm.c)
     set(PM_NEEDED_LIBS winmm PARENT_SCOPE)
     target_link_libraries(portmidi PRIVATE winmm)
-  if(NOT BUILD_SHARED_LIBS)
+  if(NOT BUILD_SHARED_LIBS AND PM_USE_STATIC_RUNTIME)
     # /MDd is multithread debug DLL, /MTd is multithread debug
     # /MD is multithread DLL, /MT is multithread. Change to static:
     include(../pm_win/static.cmake)

@@ -21,6 +21,8 @@ set(LIBRARY_VERSION "${VERSION}")
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
+option(PM_USE_STATIC_RUNTIME "Use MSVC static runtime" ON)
+
 # Always build with position-independent code (-fPIC)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 

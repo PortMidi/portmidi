@@ -162,13 +162,21 @@ PmError pm_create_virtual(PmInternal *midi, int is_input, const char *interf,
 /* pm_add_device -- describe interface/device pair to library 
  *
  * This is called at intialization time, once for each 
- * interface (e.g. DirectSound) and device (e.g. SoundBlaster 1)
- * interf assumed to be static memory, so it is NOT COPIED and 
+ * interface (e.g. DirectSound) and device (e.g. SoundBlaster 1).
+ * This is also called when user creates a virtual device.
+ * 
+ * Normally, increasing integer indices are returned. If the device
+ * is virtual, a linear search is performed to ensure that the name
+ * is unique. If the name is already taken, the call will fail and
+ * no device is added.
+ *
+ * interf is assumed to be static memory, so it is NOT COPIED and 
  * NOT FREED.
  * name is owned by caller, COPIED if needed, and FREED by PortMidi.
  * Caller is resposible for freeing name when pm_add_device returns.
  *
- * returns pmInvalidDeviceId if device memory is exceeded
+ * returns pmInvalidDeviceId if device memory is exceeded or a virtual
+ * device would take the name of an existing device.
  * otherwise returns index (portmidi device_id) of the added device
  */
 PmError pm_add_device(char *interf, const char *name, int is_input, 
@@ -177,7 +185,11 @@ PmError pm_add_device(char *interf, const char *name, int is_input,
            interf, name, is_input, descriptor, dictionary); */
     int device_id;
     PmDeviceInfo *d;
-    for (device_id = 0; device_id < pm_descriptor_len; device_id++) {
+    /* if virtual, search for duplicate name or unused ID; otherwise,
+     * just add a new device at the next integer available:
+     */
+    for (device_id = (is_virtual ? 0 : pm_descriptor_len); 
+         device_id < pm_descriptor_len; device_id++) {
         d = &pm_descriptors[device_id].pub;
         d->structVersion = 200;
         if (strcmp(d->interf, interf) == 0 && strcmp(d->name, name) == 0) {
@@ -186,9 +198,8 @@ PmError pm_add_device(char *interf, const char *name, int is_input,
             if (pm_descriptors[device_id].deleted && is_input == d->input) {
                 /* here, we know d->is_virtual because only virtual devices
                  * can be deleted, and we know is_virtual because we are
-                 * beyond initialization (otherwise we could not have
-                 * created/deleted a virtual device) and after intialization,
-                 * pm_add_device() is only called with is_virtual == TRUE */
+                 * in this loop. 
+                 */
                 pm_free((void *) d->name);  /* reuse this device entry */
                 d->name = NULL;
                 break;
@@ -196,14 +207,13 @@ PmError pm_add_device(char *interf, const char *name, int is_input,
              * the same direction (input or output) as the existing device.
              * Note that virtual inputs appear to others as outputs and
              * vice versa.
-             * The direction of the new device to others is "output" if
-             *    (is_virtual == is_input), i.e., virtual inputs and
-             * non-virtual outputs appear to others as outputs. The existing
-             * device appears to others as "output" if
+             * The direction of the new virtual device to others is "output" 
+             * if is_input, i.e., virtual inputs appear to others as outputs. 
+             * The existing device appears to others as "output" if
              *     (d->is_virtual == d->input) by the same logic.
+             * The compare will detect if device directions are the same:
              */
-            } else if ((is_virtual == is_input) ==
-                       (d->is_virtual == d->input)) {
+            } else if (is_input == (d->is_virtual == d->input)) {
                 return pmNameConflict;
             }
         }

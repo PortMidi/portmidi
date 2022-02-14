@@ -6,10 +6,11 @@ cmake_minimum_required(VERSION 3.21)
 # (ALSA::ALSA new in 3.12 and used in pm_common/CMakeLists.txt)
 # Some Java stuff failed on 3.17 but works with 3.20+
 
+cmake_policy(SET CMP0091 NEW) # enables MSVC_RUNTIME_LIBRARY target property
+
 # Previously, PortMidi versions were simply SVN commit version numbers.
 # Versions are now in the form x.y.z
-# Changed 1.0 to 2.0 because API is extended with virtual ports
-
+# Changed 1.0 to 2.0 because API is extended with virtual ports:
 set(SOVERSION "2")
 set(VERSION "2.0.2")
 
@@ -21,7 +22,17 @@ set(LIBRARY_VERSION "${VERSION}")
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
-option(PM_USE_STATIC_RUNTIME "Use MSVC static runtime" ON)
+option(PM_USE_STATIC_RUNTIME 
+       "Use MSVC static runtime. Only applies when BUILD_SHARED_LIBS is OFF"
+       ON)
+
+# MSVCRT_DLL is used to construct the MSVC_RUNTIME_LIBRARY property
+#  (see pm_common/CMakeLists.txt and pm_test/CMakeLists.txt)
+if(PM_USE_STATIC_RUNTIME AND NOT BUILD_SHARED_LIBS)
+  set(MSVCRT_DLL "")
+else()
+  set(MSVCRT_DLL "DLL")
+endif()
 
 # Always build with position-independent code (-fPIC)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -38,12 +49,13 @@ include(GNUInstallDirs)
 # credit: http://cliutils.gitlab.io/modern-cmake/chapters/features.html
 set(DEFAULT_BUILD_TYPE "Release")
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-  message(STATUS "Setting build type to '${DEFAULT_BUILD_TYPE}' as none was specified.")
+  message(STATUS 
+      "Setting build type to '${DEFAULT_BUILD_TYPE}' as none was specified.")
   set(CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE
       STRING "Choose the type of build." FORCE)
   # Set the possible values of build type for cmake-gui
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
-    "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+               "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
 # where to put libraries? Everything goes here in this directory

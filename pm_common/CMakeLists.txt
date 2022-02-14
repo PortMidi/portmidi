@@ -37,10 +37,14 @@ set(PM_LIB_PUBLIC_SRC ${PMDIR}/pm_common/portmidi.c
                       ${PMDIR}/pm_common/pmutil.c
                       ${PMDIR}/porttime/porttime.c)
 add_library(portmidi ${PM_LIB_PUBLIC_SRC})
+
+# MSVCRT_DLL is "DLL" for shared runtime library, and "" for static:
 set_target_properties(portmidi PROPERTIES
                       VERSION ${LIBRARY_VERSION}
                       SOVERSION ${LIBRARY_SOVERSION}
                       OUTPUT_NAME "${PM_ACTUAL_LIB_NAME}"
+                      MSVC_RUNTIME_LIBRARY 
+                      "MultiThreaded$<$<CONFIG:Debug>:Debug>${MSVCRT_DLL}"
                       WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 target_include_directories(portmidi PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/pm_common>
@@ -123,11 +127,11 @@ elseif(WIN32)
       ${PMDIR}/pm_win/pmwinmm.c)
     set(PM_NEEDED_LIBS winmm PARENT_SCOPE)
     target_link_libraries(portmidi PRIVATE winmm)
-  if(NOT BUILD_SHARED_LIBS AND PM_USE_STATIC_RUNTIME)
+#  if(NOT BUILD_SHARED_LIBS AND PM_USE_STATIC_RUNTIME)
     # /MDd is multithread debug DLL, /MTd is multithread debug
     # /MD is multithread DLL, /MT is multithread. Change to static:
-    include(../pm_win/static.cmake)
-  endif()
+#    include(../pm_win/static.cmake)
+#  endif()
 else()
   message(FATAL_ERROR "Operating system not supported.")
 endif()

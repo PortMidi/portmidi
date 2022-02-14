@@ -20,28 +20,14 @@ if(BUILD_PMDEFAULTS)
 
   project(pmdefaults NONE)
   include(UseJava)
-  if(UNIX)
-    # There seems to be a bug in CMake - Linux complains if NAMESPACE is
-    # missing, but Windows does not make a working VS solution if NAMESPACE
-    # is present, so this "add_jar" call is almost duplicated: here for
-    # Linux/macOS and below for Windows...
-    add_jar(pmdefaults
+  add_jar(pmdefaults
           SOURCES pmdefaults/PmDefaults.java pmdefaults/PmDefaultsFrame.java
                   jportmidi/JPortMidi.java jportmidi/JPortMidiApi.java
                   jportmidi/JPortMidiException.java
           RESOURCES NAMESPACE "." pmdefaults/portmusic_logo.png
           MANIFEST pmdefaults/manifest.txt
           OUTPUT_DIR pmdefaults)
-  elseif(WIN32)
-    add_jar(pmdefaults
-        SOURCES pmdefaults/PmDefaults.java pmdefaults/PmDefaultsFrame.java
-                jportmidi/JPortMidi.java jportmidi/JPortMidiApi.java
-                jportmidi/JPortMidiException.java
-        # NAMESPACE did not seem to work on Windows - omitting it may
-        # cause out-of-source-tree builds to fail:
-        RESOURCES pmdefaults/portmusic_logo.png
-        MANIFEST pmdefaults/manifest.txt
-        OUTPUT_DIR pmdefaults)
+  if(WIN32)
     set(JAVAVM_LIB ${JAVA_INCLUDE_PATH}/../jre/lib/i386/client/libjvm.so)
   endif()
   add_dependencies(pmdefaults pmjni)

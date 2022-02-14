@@ -6,17 +6,19 @@ if(APPLE)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
 endif(APPLE)
 
-if(WIN32)
-  if(NOT BUILD_SHARED_LIBS)
+# if(WIN32)
+#   if(NOT BUILD_SHARED_LIBS)
     # /MDd is multithread debug DLL, /MTd is multithread debug
     # /MD is multithread DLL, /MT is multithread. Change to static:
-    include(../pm_win/static.cmake)
-  endif()
-endif(WIN32)
+#     include(../pm_win/static.cmake)
+#   endif()
+# endif(WIN32)
 
 macro(add_test name)
   add_executable(${name} ${name}.c)
   target_link_libraries(${name} PRIVATE portmidi)
+  set_property(TARGET ${name} PROPERTY MSVC_RUNTIME_LIBRARY
+               "MultiThreaded$<$<CONFIG:Debug>:Debug>${MSVCRT_DLL}")
 endmacro(add_test)
 
 add_test(testio)

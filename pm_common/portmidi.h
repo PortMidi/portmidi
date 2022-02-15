@@ -132,6 +132,23 @@ typedef enum {
     Pm_Initialize() is the library initialization function - call this before
     using the library.
 
+    *NOTE:* PortMidi scans for available devices when #Pm_Initialize
+    is called.  To observe subsequent changes in the available
+    devices, you must shut down PortMidi by calling #Pm_Terminate and
+    then restart by calling #Pm_Initialize again. *IMPORTANT*: On
+    MacOS, #Pm_Initialize *must* always be called on the same
+    thread. Otherwise, changes in the available MIDI devices will
+    *not* be seen by PortMidi. As an example, if you start PortMidi in
+    a thread for processing MIDI, do not try to rescan devices by
+    calling #Pm_Initialize in a GUI thread. Instead, start PortMidi
+    the first time and every time in the GUI thread.  Alternatively,
+    let the GUI request a restart in the MIDI thread.  (These
+    restrictions only apply to macOS.) Speaking of threads, on all
+    platforms, you are allowed to call #Pm_Initialize in one thread,
+    yet send MIDI or poll for incoming MIDI in another
+    thread. However, PortMidi is not "thread safe," which means you
+    cannot allow threads to call PortMidi functions concurrently.
+
     @return pmNoError.
 
     PortMidi is designed to support multiple interfaces (such as ALSA,

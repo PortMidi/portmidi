@@ -1167,6 +1167,20 @@ pm_fns_node pm_macosx_out_dictionary = {
  */
 void cm_notify(const MIDINotification *msg, void *refCon)
 {
+    /*  for debugging, trace change notifications: 
+    const char *descr[] = {
+        "undefined (0)",
+      	"kMIDIMsgSetupChanged",
+        "kMIDIMsgObjectAdded",
+        "kMIDIMsgObjectRemoved",
+        "kMIDIMsgPropertyChanged",
+        "kMIDIMsgThruConnectionsChanged",
+        "kMIDIMsgSerialPortOwnerChanged",
+        "kMIDIMsgIOError"};
+
+    printf("MIDI Notify, messageID %d (%s)\n", (int) msg->messageID,
+           descr[(int) msg->messageID]);
+    */
     return;
 }
 

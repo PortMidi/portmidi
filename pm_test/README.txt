@@ -362,6 +362,13 @@ Check output of fastrcv: there should be no errors, just msg/sec.]
     [In the device list, default devices are marked. They
     should match the devices selected with pmdefaults.]
     ^C to quit.
+33. pmlist
+    ./pmlist  [check the output]
+              [plug in or remove a device]
+    >> [type RETURN]
+              [check for changes in device list]
+    >>q
 
+    
 
 

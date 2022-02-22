@@ -12,7 +12,7 @@ cmake_policy(SET CMP0091 NEW) # enables MSVC_RUNTIME_LIBRARY target property
 # Versions are now in the form x.y.z
 # Changed 1.0 to 2.0 because API is extended with virtual ports:
 set(SOVERSION "2")
-set(VERSION "2.0.2")
+set(VERSION "2.0.3")
 
 project(portmidi VERSION "${VERSION}"
                  DESCRIPTION "Cross-Platform MIDI IO")

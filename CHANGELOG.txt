@@ -1,5 +1,8 @@
 /* CHANGELOG FOR PORTMIDI
  *
+ * 21Feb22 v2.0.3 Roger Dannenberg
+ * - this version allows multiple hardware devices to have the same name.
+ * 
  * 03Jan22 v2.0.2 Roger Dannenberg
  * - many changes for CMake including install support
  * - bare-bones Java and PmDefaults support. It runs, but no

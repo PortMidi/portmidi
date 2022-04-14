@@ -47,7 +47,7 @@ set_target_properties(portmidi PROPERTIES
                       "MultiThreaded$<$<CONFIG:Debug>:Debug>${MSVCRT_DLL}"
                       WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 target_include_directories(portmidi PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/pm_common>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 

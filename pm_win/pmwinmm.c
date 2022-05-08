@@ -253,7 +253,7 @@ static unsigned int winmm_check_host_error(PmInternal *midi)
 }
 
 
-static improve_winerr(int pm_hosterror, char *message)
+static void improve_winerr(int pm_hosterror, char *message)
 {
     if (pm_hosterror == MMSYSERR_NOMEM) {
         /* add explanation to Window's confusing error message */

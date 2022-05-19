@@ -83,7 +83,7 @@ if(UNIX AND APPLE)
   set(Threads::Threads "" PARENT_SCOPE)
   find_library(COREAUDIO_LIBRARY CoreAudio REQUIRED)
   find_library(COREFOUNDATION_LIBRARY CoreFoundation REQUIRED)
-  find_library(COREMIDI_LIBRARY CoreMidi REQUIRED)
+  find_library(COREMIDI_LIBRARY CoreMIDI REQUIRED)
   find_library(CORESERVICES_LIBRARY CoreServices REQUIRED)
   set(PM_LIB_PRIVATE_SRC 
       ${PMDIR}/porttime/ptmacosx_mach.c

@@ -47,7 +47,7 @@ set_target_properties(portmidi PROPERTIES
                       "MultiThreaded$<$<CONFIG:Debug>:Debug>${MSVCRT_DLL}"
                       WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 target_include_directories(portmidi PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/pm_common>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 
@@ -83,7 +83,7 @@ if(UNIX AND APPLE)
   set(Threads::Threads "" PARENT_SCOPE)
   find_library(COREAUDIO_LIBRARY CoreAudio REQUIRED)
   find_library(COREFOUNDATION_LIBRARY CoreFoundation REQUIRED)
-  find_library(COREMIDI_LIBRARY CoreMidi REQUIRED)
+  find_library(COREMIDI_LIBRARY CoreMIDI REQUIRED)
   find_library(CORESERVICES_LIBRARY CoreServices REQUIRED)
   set(PM_LIB_PRIVATE_SRC 
       ${PMDIR}/porttime/ptmacosx_mach.c

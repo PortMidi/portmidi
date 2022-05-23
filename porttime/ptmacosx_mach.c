@@ -12,6 +12,7 @@
 
 #include "porttime.h"
 #include "sys/time.h"
+#include "sys/qos.h"
 #include "pthread.h"
 
 #ifndef NSEC_PER_MSEC

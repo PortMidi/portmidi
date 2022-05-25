@@ -461,24 +461,30 @@ static void virtual_read_callback(const MIDIPacketList *newPackets,
     /* this refCon is the device ID -- if there is a valid ID and 
        the pm_descriptors table has a non-null pointer to a PmInternal,
        then then device is open and should receive this data */
-    PmDeviceID id = (PmDeviceID) refCon;
-    if (id >= 0 && id < pm_descriptor_len) {
-        if (pm_descriptors[id].pub.opened) {
-            /* check for close request (7 reset status bytes): */
-            if (newPackets->numPackets == 1 &&
-                newPackets->packet[0].length == 8 &&
+	
+	descriptor_type pm_descriptors = NULL;
+	
+	if(NULL != (pm_descriptors = (descriptor_type)refCon)) {
+    	PmDeviceID id = pm_descriptors->pm_internal->device_id;
+
+    	if (id >= 0 && id < pm_descriptor_len) {
+       	 	if (pm_descriptors->pub.opened) {
+           	 /* check for close request (7 reset status bytes): */
+           		 if (newPackets->numPackets == 1 &&
+                	newPackets->packet[0].length == 8 &&
                 /* CoreMIDI declares packets with 4-byte alignment, so we
                  * should be safe to test for 8 0xFF's as 2 32-bit values: */
-                *(SInt32 *) &newPackets->packet[0].data[0] == -1 &&
-                *(SInt32 *) &newPackets->packet[0].data[4] == -1) {
-                CM_DEBUG printf("got close request packet\n");
-                pm_descriptors[id].pub.opened = FALSE;
-                return;
-            } else {
-                read_callback(newPackets, pm_descriptors[id].pm_internal);
-            }
-        }
-    }
+               		 *(SInt32 *) &newPackets->packet[0].data[0] == -1 &&
+                	*(SInt32 *) &newPackets->packet[0].data[4] == -1) {
+                		CM_DEBUG printf("got close request packet\n");
+                		pm_descriptors->pub.opened = FALSE;
+                		return;
+            	} else {
+                	read_callback(newPackets, pm_descriptors->pm_internal);
+           	}
+        	}
+    	}
+	}
 }
 
 
@@ -676,7 +682,7 @@ static PmError midi_create_virtual(int is_input, const char *name,
     nameRef = CFStringCreateWithCString(NULL, name, kCFStringEncodingASCII);
     if (is_input) {
         macHostError = MIDIDestinationCreate(client, nameRef, 
-                               virtual_read_callback, id, &endpoint);
+                               virtual_read_callback, (void*)&pm_descriptors[id], &endpoint);
     } else {
         macHostError = MIDISourceCreate(client, nameRef, &endpoint);
     }

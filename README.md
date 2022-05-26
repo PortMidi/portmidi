@@ -21,6 +21,10 @@ see `pm_java/README.txt` for more information.
 
 ## What's New?
 
+PortMidi has some fixes for Apple M1 cpus as of May 23, 2022. This has not yet
+been formally released to allow for further testing, but please use the latest
+code if you want to run on an M1.
+
 PortMidi has some changes in 2021:
 
  - added Pm_CreateVirtualInput() and Pm_CreateVirtualOutput() functions that allow

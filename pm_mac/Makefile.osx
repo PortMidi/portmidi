@@ -4,7 +4,7 @@
 # Sep 2009
 
 # NOTE: you can use
-#     make -f pm_osx/Makefile.osx configuration=Release
+#     make -f pm_mac/Makefile.osx configuration=Release
 # to override the default Debug configuration
 configuration=Release
 

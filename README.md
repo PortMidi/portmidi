@@ -19,6 +19,9 @@ browsing, selection and preferences in your applications. Enable
 `BUILD_PMDEFAULTS` and `BUILD_JAVA_NATIVE_INTERFACE` in ccmake, and
 see `pm_java/README.txt` for more information.
 
+See also notes in `pm_mac/README_MAC.txt`, `pm_win/README_WIN.txt` and
+`pm_linux/README_LINUX.txt`.
+
 ## What's New?
 
 PortMidi has some changes in 2021:

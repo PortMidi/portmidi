@@ -1,6 +1,6 @@
 README_LINUX.txt for PortMidi
 Roger Dannenberg
-6 Dec 2012
+6 Dec 2012, revised May 2022
 
 Contents:
         To make PortMidi
@@ -12,48 +12,13 @@ Contents:
         Changelog
 
 
-To make PortMidi, you need cmake and the Java SDK.
-Go back up to the portmidi directory and type:
-
-ccmake .
-
-Type 'c' (configure) and then 'g' (generate). You may have
-to manually set JAVA_INCLUDE_PATH and JAVA_JVM_LIBRARY
-by typing 't' (toggle to advanced mode) and using the 
-editor to change the fields. You can find possible values
-for JAVA_INCLUDE_PATH by typing "locate jni.h", and for
-JAVA_JVM_LIBRARY by typing locate libjvm".
-
-Alternatively, try 
-    export JAVA_HOME=/usr/lib/jvm/java-8-oracle/
-before running ccmake ., and note that your JAVA_HOME
-may be different.
-
-You also need JAVA_INCLUDE_PATH2, but this will normally
-be set automatically after you set JAVA_INCLUDE_PATH and
-run "configure" (type "c" to ccmake). Normally,
-JAVA_INCLUDE_PATH2 is the linux subdirectory within
-JAVA_INCLUDE_PATH.
-
-Notice that the CMAKE_BUILD_TYPE can be Debug or Release.
-Stick with Release if you are not debugging.
-
-After successfully generating make files with ccmake, you
-can run make:
-
-make
-
-The Makefile will build all test programs and the portmidi
-library. For experimental software,
-especially programs running from the command line, we 
-recommend using the Debug version -- it will terminate your
-program and print a helpful message if any PortMidi 
-function returns an error code. (Released software should
-check for error codes and handle them, but for quick,
-non-critical projects, the automatic "print and die" 
-handling can save some work.)
+See ../README.md for general instructions.
 
 THE pmdefaults PROGRAM
+
+(This may be obsolete. It is older than `../README.md` which
+also discusses pmdefaults, and Java support may be removed
+unless someone claims they use it... -RBD)
 
 You should install pmdefaults. It provides a graphical interface
 for selecting default MIDI IN and OUT devices so that you don't
@@ -87,7 +52,7 @@ export LD_LIBRARY_PATH
 
 A NOTE ABOUT AMD64:
 
-When compiling portmidi under linux on an AMD64, I had to add the -fPIC
+When compiling portmidi under linux on an AMD64, I had to add the -fPIC 
 flag to the gcc flags.
 
 Reason: when trying to build John Harrison's pyPortMidi gcc bailed out
@@ -103,44 +68,10 @@ http://www.gentoo.org/proj/en/base/amd64/howtos/index.xml?part=1&chap=3
 On certain architectures (AMD64 amongst them), shared libraries *must* 
 be "PIC-enabled".
 
-USING AUTOCONF
-
-Audacity (the audio editor ) uses an autoconf-based build system, and 
-the files are also included in the PortMidi download. The associated
-files are tested only in the context of building Audacity, but if you
-really prefer autoconf to cmake or want to include portmidi in another
-autoconf-based project (like Audacity), maybe this will be useful.
-
-The files are: configure.ac, portmidi-uninstalled.pc.in, portmidi.pc.in,
-    and everything in autotools/.
-
-To build from these files, run aclocal, which will produce
-    aclocal.m4 and autom4te.cache
-
-Run autoconf, which will produce
-    configure
-
-Run automake, which will produce
-    Makefile.in
-
-Now that you have a configure and Makefile.in, 
-continue with the next section.
-
-
-USING CONFIGURE
-
-Run ./configure to produce:
-    config.status
-    Makefile
-    portmidi.pc
-    portmidi-uninstalled.pc
-
-
-Finally, run make to create
-    
-
-
 CHANGELOG
+
+27-may-2022 Roger B. Dannenberg
+   Some updates to this file.
 
 6-dec-2012 Roger B. Dannenberg
    Copied notes on Autoconf from Audacity sources

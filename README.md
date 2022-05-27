@@ -10,7 +10,18 @@ for related code and bindings (although currently, not much is here).
 ## Compiling and Using PortMidi
 
 Use CMake (or ccmake) to create a Makefile for Linux/BSD or a 
-project file for Xcode or MS Visual Studio. Use make or an IDE to compile. 
+project file for Xcode or MS Visual Studio. Use make or an IDE to compile:
+```
+cd portmidi  # start in the top-level portmidi directory
+ccmake .     # set any options interactively, type c to configure
+             # type g to generate a Makefile or IDE project
+             # type q to quit
+             # (alternatively, run the CMake GUI and use
+             #  Configure and Generate buttons to build IDE project)
+make         # compile sources and build PortMidi library
+             # (alternatively, open project file with your IDE)
+sudo make install  # if you want to install to your system
+```
 
 **PmDefaults** is a Java-based program for setting default MIDI
 devices. It is necessary if you use `Pm_DefaultInputDeviceID()` or

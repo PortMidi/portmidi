@@ -22,32 +22,32 @@ typedef struct {
     long tail;
     long len;
     long overflow;
-    int32_t msg_size; /* number of int32_t in a message including extra word */
-    int32_t peek_overflow;
-    int32_t *buffer;
-    int32_t *peek;
-    int32_t peek_flag;
+    uint32_t msg_size; /* number of int32_t in a message including extra word */
+    uint32_t peek_overflow;
+    uint32_t *buffer;
+    uint32_t *peek;
+    uint32_t peek_flag;
 } PmQueueRep;
 
 
-PMEXPORT PmQueue *Pm_QueueCreate(long num_msgs, int32_t bytes_per_msg)
+PMEXPORT PmQueue *Pm_QueueCreate(long num_msgs, uint32_t bytes_per_msg)
 {
-    int32_t int32s_per_msg = 
-            (int32_t) (((bytes_per_msg + sizeof(int32_t) - 1) &
-                       ~(sizeof(int32_t) - 1)) / sizeof(int32_t));
+    uint32_t uint32s_per_msg =
+            (uint32_t) (((bytes_per_msg + sizeof(uint32_t) - 1) &
+                       ~(sizeof(uint32_t) - 1)) / sizeof(uint32_t));
     PmQueueRep *queue = (PmQueueRep *) pm_alloc(sizeof(PmQueueRep));
     if (!queue) /* memory allocation failed */
         return NULL;
 
     /* need extra word per message for non-zero encoding */
-    queue->len = num_msgs * (int32s_per_msg + 1);
-    queue->buffer = (int32_t *) pm_alloc(queue->len * sizeof(int32_t));
-    bzero(queue->buffer, queue->len * sizeof(int32_t));
+    queue->len = num_msgs * (uint32s_per_msg + 1);
+    queue->buffer = (uint32_t *) pm_alloc(queue->len * sizeof(uint32_t));
+    bzero(queue->buffer, queue->len * sizeof(uint32_t));
     if (!queue->buffer) {
         pm_free(queue);
         return NULL;
     } else { /* allocate the "peek" buffer */
-        queue->peek = (int32_t *) pm_alloc(int32s_per_msg * sizeof(int32_t));
+        queue->peek = (uint32_t *) pm_alloc(uint32s_per_msg * sizeof(uint32_t));
         if (!queue->peek) {
             /* free everything allocated so far and return */
             pm_free(queue->buffer);
@@ -55,11 +55,11 @@ PMEXPORT PmQueue *Pm_QueueCreate(long num_msgs, int32_t bytes_per_msg)
             return NULL;
         }
     }
-    bzero(queue->buffer, queue->len * sizeof(int32_t));
+    bzero(queue->buffer, queue->len * sizeof(uint32_t));
     queue->head = 0;
     queue->tail = 0;
     /* msg_size is in words */
-    queue->msg_size = int32s_per_msg + 1; /* note extra word is counted */
+    queue->msg_size = uint32s_per_msg + 1; /* note extra word is counted */
     queue->overflow = FALSE;
     queue->peek_overflow = FALSE;
     queue->peek_flag = FALSE;
@@ -87,7 +87,7 @@ PMEXPORT PmError Pm_Dequeue(PmQueue *q, void *msg)
     long head;
     PmQueueRep *queue = (PmQueueRep *) q;
     int i;
-    int32_t *msg_as_int32 = (int32_t *) msg;
+    uint32_t *msg_as_uint32 = (uint32_t *) msg;
 
     /* arg checking */
     if (!queue)
@@ -101,7 +101,7 @@ PMEXPORT PmError Pm_Dequeue(PmQueue *q, void *msg)
         return pmBufferOverflow;
     }
     if (queue->peek_flag) {
-        memcpy(msg, queue->peek, (queue->msg_size - 1) * sizeof(int32_t));
+        memcpy(msg, queue->peek, (queue->msg_size - 1) * sizeof(uint32_t));
         queue->peek_flag = FALSE;
         return pmGotData;
     }
@@ -139,18 +139,18 @@ PMEXPORT PmError Pm_Dequeue(PmQueue *q, void *msg)
         }
     }
     memcpy(msg, (char *) &queue->buffer[head + 1], 
-           sizeof(int32_t) * (queue->msg_size - 1));
+           sizeof(uint32_t) * (queue->msg_size - 1));
     /* fix up zeros */
     i = queue->buffer[head];
     while (i < queue->msg_size) {
-        int32_t j;
+        uint32_t j;
         i--; /* msg does not have extra word so shift down */
-        j = msg_as_int32[i];
-        msg_as_int32[i] = 0;
+        j = msg_as_uint32[i];
+        msg_as_uint32[i] = 0;
         i = j;
     }
     /* signal that data has been removed by zeroing: */
-    bzero((char *) &queue->buffer[head], sizeof(int32_t) * queue->msg_size);
+    bzero((char *) &queue->buffer[head], sizeof(uint32_t) * queue->msg_size);
 
     /* update head */
     head += queue->msg_size;
@@ -181,9 +181,9 @@ PMEXPORT PmError Pm_Enqueue(PmQueue *q, void *msg)
     PmQueueRep *queue = (PmQueueRep *) q;
     long tail;
     int i;
-    int32_t *src = (int32_t *) msg;
-    int32_t *ptr;
-    int32_t *dest;
+    uint32_t *src = (uint32_t *) msg;
+    uint32_t *ptr;
+    uint32_t *dest;
     int rslt;
     if (!queue) 
         return pmBadPtr;
@@ -201,7 +201,7 @@ PMEXPORT PmError Pm_Enqueue(PmQueue *q, void *msg)
     ptr = &queue->buffer[tail];
     dest = ptr + 1;
     for (i = 1; i < queue->msg_size; i++) {
-        int32_t j = src[i - 1];
+        uint32_t j = src[i - 1];
         if (!j) {
             *ptr = i;
             ptr = dest;
@@ -248,7 +248,7 @@ PMEXPORT int Pm_QueueFull(PmQueue *q)
 PMEXPORT void *Pm_QueuePeek(PmQueue *q)
 {
     PmError rslt;
-    int32_t temp;
+    uint32_t temp;
     PmQueueRep *queue = (PmQueueRep *) q;
     /* arg checking */
     if (!queue)

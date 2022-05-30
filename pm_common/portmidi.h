@@ -858,7 +858,7 @@ typedef struct {
     message is not considered to be a "new message" and will be
     flushed as well.
 */
-PMEXPORT int Pm_Read(PortMidiStream *stream, PmEvent *buffer, int32_t length);
+PMEXPORT int Pm_Read(PortMidiStream *stream, PmEvent *buffer, uint32_t length);
 
 /** Test whether input is available.
 
@@ -904,7 +904,7 @@ PMEXPORT PmError Pm_Poll(PortMidiStream *stream);
     as soon as this call returns.
 */
 PMEXPORT PmError Pm_Write(PortMidiStream *stream, PmEvent *buffer,
-                          int32_t length);
+                          uint32_t length);
 
 /** Write a timestamped non-system-exclusive midi message.
 

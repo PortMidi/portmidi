@@ -58,7 +58,7 @@ typedef void PmQueue;
     a field.  The receiver must acknowlege receipt by zeroing the
     field. The sender will not send more until the field is zeroed.
  */
-PMEXPORT PmQueue *Pm_QueueCreate(long num_msgs, int32_t bytes_per_msg);
+PMEXPORT PmQueue *Pm_QueueCreate(long num_msgs, uint32_t bytes_per_msg);
     
 /** destroy a queue and free its storage. 
 

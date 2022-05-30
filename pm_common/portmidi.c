@@ -536,7 +536,7 @@ PMEXPORT PmError Pm_Terminate(void)
 /*
  * returns number of messages actually read, or error code
  */
-PMEXPORT int Pm_Read(PortMidiStream *stream, PmEvent *buffer, int32_t length)
+PMEXPORT int Pm_Read(PortMidiStream *stream, PmEvent *buffer, uint32_t length)
 {
     PmInternal *midi = (PmInternal *) stream;
     int n = 0;
@@ -617,7 +617,7 @@ static PmError pm_end_sysex(PmInternal *midi)
    write_short, begin_sysex, write_byte, end_sysex, and write_realtime */
 
 PMEXPORT PmError Pm_Write(PortMidiStream *stream, PmEvent *buffer,
-                          int32_t length)
+                          uint32_t length)
 {
     PmInternal *midi = (PmInternal *) stream;
     PmError err = pmNoError;
@@ -869,7 +869,7 @@ PmError pm_create_internal(PmInternal **stream, PmDeviceID device_id,
     if (is_input) {
         midi->latency = 0;  /* unused by input */
         if (buffer_size <= 0) buffer_size = 256; /* default buffer size */
-        midi->queue = Pm_QueueCreate(buffer_size, (int32_t) sizeof(PmEvent));
+        midi->queue = Pm_QueueCreate(buffer_size, (uint32_t) sizeof(PmEvent));
         if (!midi->queue) {
             /* free portMidi data */
             *stream = NULL;

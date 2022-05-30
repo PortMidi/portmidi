@@ -754,7 +754,7 @@ PMEXPORT PmError Pm_Synchronize(PortMidiStream* stream);
 /** Extract the 2nd data field (e.g., velocity) from a 32-bit midi message. */
 #define Pm_MessageData2(msg) (((msg) >> 16) & 0xFF)
 
-typedef int32_t PmMessage; /**< @brief see #PmEvent */
+typedef uint32_t PmMessage; /**< @brief see #PmEvent */
 /**
    All midi data comes in the form of PmEvent structures. A sysex
    message is encoded as a sequence of PmEvent structures, with each

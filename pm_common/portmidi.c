@@ -564,7 +564,7 @@ PMEXPORT int Pm_Read(PortMidiStream *stream, PmEvent *buffer, int32_t length)
     }
 
     while (n < length) {
-        PmError err = Pm_Dequeue(midi->queue, buffer++);
+        err = Pm_Dequeue(midi->queue, buffer++);
         if (err == pmBufferOverflow) {
             /* ignore the data we have retreived so far */
             return pm_errmsg(pmBufferOverflow);
@@ -792,7 +792,6 @@ PMEXPORT PmError Pm_WriteSysEx(PortMidiStream *stream, PmTimestamp when,
                 buffer_size = BUFLEN;
                 /* optimization: maybe we can just copy bytes */
                 if (midi->fill_base) {
-                    PmError err;
                     while (*(midi->fill_offset_ptr) < midi->fill_length) {
                         midi->fill_base[(*midi->fill_offset_ptr)++] = *msg;
                         if (*msg++ == MIDI_EOX) {

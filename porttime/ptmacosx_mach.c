@@ -21,7 +21,7 @@
 #else
   #define HAS_QOS_API() 0
 #endif
-#ifdef HAS_QOS_API
+#if HAS_QOS_API
 #include "sys/qos.h"
 #endif
 
@@ -151,7 +151,7 @@ PtError Pt_Start(int resolution, PtCallback *callback, void *userData)
         parms->callback = callback;
         parms->userData = userData;
         
-#ifdef HAS_QOS_API
+#if HAS_QOS_API
         pthread_attr_t qosAttribute;
         pthread_attr_init(&qosAttribute);
         pthread_attr_set_qos_class_np(&qosAttribute, 

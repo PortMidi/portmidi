@@ -12,7 +12,19 @@
 
 #include "porttime.h"
 #include "sys/time.h"
+/* Testing availability of sys/qos.h which is available strting from macOS10.10*/
+#ifndef __has_builtin
+  #define __has_builtin(x) 0  // Compatibility with non-clang compilers.
+#endif
+#if __has_builtin(__builtin_available)
+  #define HAS_QOS_API() __builtin_available(macOS 10.10, *)
+#else
+  #define HAS_QOS_API() 0
+#endif
+#ifdef HAS_QOS_API
 #include "sys/qos.h"
+#endif
+
 #include "pthread.h"
 
 #ifndef NSEC_PER_MSEC
@@ -20,10 +32,6 @@
 #endif
 #define THREAD_IMPORTANCE 63
 
-// do we ever NOT have Cocoa?
-#ifndef HAVE_COCOA
-#define HAVE_COCOA 1
-#endif
 
 static int time_started_flag = FALSE;
 static UInt64 start_time;
@@ -143,7 +151,7 @@ PtError Pt_Start(int resolution, PtCallback *callback, void *userData)
         parms->callback = callback;
         parms->userData = userData;
         
-#ifdef HAVE_COCOA
+#ifdef HAS_QOS_API
         pthread_attr_t qosAttribute;
         pthread_attr_init(&qosAttribute);
         pthread_attr_set_qos_class_np(&qosAttribute, 

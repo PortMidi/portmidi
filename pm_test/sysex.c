@@ -124,11 +124,29 @@ void loopback_test()
             printf("Before sending anything, a MIDI message was found in\n");
             printf("the input buffer. Please try again.\n");
             break;
-		}
+        }
 
-        /* send the message */
-        printf("Sending %d byte sysex message.\n", len + 2);
-        Pm_WriteSysEx(midi_out, 0, msg);
+        /* send the message two ways: 1) Pm_WriteSysEx, 2) Pm_Write */
+        if (total_bytes & 1) {
+            printf("Sending %d byte sysex msg via Pm_WriteSysEx.\n", len + 2);
+            Pm_WriteSysEx(midi_out, 0, msg);
+        } else {
+            PmEvent event = {0, 0};
+            int bits = 0;
+            printf("Sending %d byte sysex msg via Pm_Write(s).\n", len + 2);
+            for (i = 0; i < len + 2; i++) {
+                event.message |= (msg[i] << bits);
+                bits += 8;
+                if (bits == 32) {  /* full message - send it */
+                    Pm_Write(midi_out, &event, 1);
+                    bits = 0;
+                    event.message = 0;
+                }
+            }
+            if (bits > 0) {  /* last message is partially full */
+                Pm_Write(midi_out, &event, 1);
+            }
+        }
 
         /* receive the message and compare to msg[] */
         data = 0;

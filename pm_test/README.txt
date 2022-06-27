@@ -182,8 +182,8 @@ Type input device number: >>6  [pick a working input device]
 Type output device number: >>0 [pick output device to loopback]
 Latency in milliseconds: >>0
 Type input  device number: >>0 [pick input device for loopback]
-[Program will run forever. After awhile, program will quit. You can read
- the Cummulative bytes/sec value.]
+[Program will send 100,000 bytes. After awhile, program will quit.
+ You can read the Cummulative bytes/sec value.]
 
 22. ./sysex [latency > 0]
 [This requires either a hardware loopback (MIDI cable from OUT to IN
@@ -193,8 +193,8 @@ Type input  device number: >>0 [pick input device for loopback]
 Type output device number: >>0 [pick output device to loopback]
 Latency in milliseconds: >>100
 Type input  device number: >>0 [pick input device for loopback]
-[Program will run forever. After awhile, quit with ^C. You can read
- the Cummulative bytes/sec value; it is affected by latency.]
+[Program will send 100,000 bytes. After awhile, program will quit. You
+ can read the Cummulative bytes/sec value; it is affected by latency.]
 
 23. ./fast [no latency]
     ./fastrcv [in another shell]

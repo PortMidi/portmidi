@@ -676,7 +676,8 @@ static PmError midi_create_virtual(int is_input, const char *name,
     nameRef = CFStringCreateWithCString(NULL, name, kCFStringEncodingASCII);
     if (is_input) {
         macHostError = MIDIDestinationCreate(client, nameRef, 
-                               virtual_read_callback, id, &endpoint);
+                               virtual_read_callback, (void *) (intptr_t) id,
+                               &endpoint);
     } else {
         macHostError = MIDISourceCreate(client, nameRef, &endpoint);
     }

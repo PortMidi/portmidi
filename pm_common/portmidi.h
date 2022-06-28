@@ -754,12 +754,17 @@ PMEXPORT PmError Pm_Synchronize(PortMidiStream* stream);
 /** Extract the 2nd data field (e.g., velocity) from a 32-bit midi message. */
 #define Pm_MessageData2(msg) (((msg) >> 16) & 0xFF)
 
-typedef int32_t PmMessage; /**< @brief see #PmEvent */
+typedef uint32_t PmMessage; /**< @brief see #PmEvent */
 /**
-   All midi data comes in the form of PmEvent structures. A sysex
+   All MIDI data comes in the form of PmEvent structures. A sysex
    message is encoded as a sequence of PmEvent structures, with each
    structure carrying 4 bytes of the message, i.e. only the first
    PmEvent carries the status byte.
+
+   All other MIDI messages take 1 to 3 bytes and are encoded in a whole
+   PmMessage with status in the low-order byte and remaining bytes 
+   unused, i.e., a 3-byte note-on message will occupy 3 low-order bytes
+   of PmMessage, leaving the high-order byte unused.
 
    Note that MIDI allows nested messages: the so-called "real-time" MIDI 
    messages can be inserted into the MIDI byte stream at any location, 
@@ -888,12 +893,19 @@ PMEXPORT PmError Pm_Poll(PortMidiStream *stream);
 
     @return TRUE, FALSE, or an error value.
 
-
     \b buffer may contain:
         - short messages 
         - sysex messages that are converted into a sequence of PmEvent
           structures, e.g. sending data from a file or forwarding them
-          from midi input.
+          from midi input, with 4 SysEx bytes per PmEvent message,
+          low-order byte first, until the last message, which may
+          contain from 1 to 4 bytes ending in MIDI EOX (0xF7).
+        - PortMidi allows 1-byte real-time messages to be embedded
+          within SysEx messages, but only on 4-byte boundaries so
+          that SysEx data always uses a full 4 bytes (except possibly
+          at the end). Each real-time message always occupies a full
+          PmEvent (3 of the 4 bytes in the PmEvent's message are
+          ignored) even when embedded in a SysEx message.
 
     Use Pm_WriteSysEx() to write a sysex message stored as a contiguous 
     array of bytes.

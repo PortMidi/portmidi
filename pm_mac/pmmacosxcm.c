@@ -461,7 +461,7 @@ static void virtual_read_callback(const MIDIPacketList *newPackets,
     /* this refCon is the device ID -- if there is a valid ID and 
        the pm_descriptors table has a non-null pointer to a PmInternal,
        then then device is open and should receive this data */
-    PmDeviceID id = (PmDeviceID) refCon;
+    PmDeviceID id = (PmDeviceID) (size_t) refCon;
     if (id >= 0 && id < pm_descriptor_len) {
         if (pm_descriptors[id].pub.opened) {
             /* check for close request (7 reset status bytes): */

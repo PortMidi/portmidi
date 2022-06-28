@@ -86,7 +86,7 @@ memory requested or calls longjmp, so callers don't have to check.
 #define YES 1
 #define BOOL int
 
-#define MAXPATHLEN 256
+#define MAX_PATH_LEN 256
 
 /* there are 2 levels of error logging/printing:
  *   BPLIST_LOG and BPLIST_LOG_VERBOSE
@@ -394,7 +394,7 @@ value_ptr bplist_read_file(char *filename)
 value_ptr bplist_read_pref(char *filename, OSType folder_type)
 {
     FSRef prefdir;
-    char cstr[MAXPATHLEN];
+    char cstr[MAX_PATH_LEN];
 
     OSErr err = FSFindFolder(kOnAppropriateDisk, folder_type,
                              FALSE, &prefdir);
@@ -402,13 +402,13 @@ value_ptr bplist_read_pref(char *filename, OSType folder_type)
         bplist_log("Error finding preferences folder: %d\n", err);
         return NULL;
     }
-    err = FSRefMakePath(&prefdir, (UInt8 *) cstr, (UInt32) (MAXPATHLEN - 1));
+    err = FSRefMakePath(&prefdir, (UInt8 *) cstr, (UInt32) (MAX_PATH_LEN - 1));
     if (err) {
         bplist_log("Error making path name for preferences folder: %d\n", err);
         return NULL;
     }
-    strlcat(cstr, "/", MAXPATHLEN);
-    strlcat(cstr, filename, MAXPATHLEN);
+    strlcat(cstr, "/", MAX_PATH_LEN);
+    strlcat(cstr, filename, MAX_PATH_LEN);
     return bplist_read_file(cstr);
 }
 

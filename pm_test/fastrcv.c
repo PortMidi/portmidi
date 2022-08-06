@@ -84,6 +84,16 @@ void fastrcv_test()
     PmStream * midi;
     PmError status, length;
     PmEvent buffer[1];
+    PmTimestamp start;
+    /* every 10ms read all messages, keep counts */
+    /* every 1000ms, print report */
+    int msgcnt = 0;
+    /* expect repeating sequence of 60 through 71, alternating on/off */
+    int expected_pitch = 60;
+    int expected_on = TRUE;
+    int report_time;
+    PmTimestamp last_timestamp = -1;
+    PmTimestamp last_delta = -1;
 
     /* It is recommended to start timer before PortMidi */
     TIME_START;
@@ -101,20 +111,12 @@ void fastrcv_test()
     printf("Midi Input opened.\n");
 
     /* wait a sec after printing previous line */
-    PmTimestamp start = Pt_Time() + 1000;
+    start = Pt_Time() + 1000;
     while (start > Pt_Time()) {
         Sleep(10);
     }
 
-    /* every 10ms read all messages, keep counts */
-    /* every 1000ms, print report */
-    int msgcnt = 0;
-    /* expect repeating sequence of 60 through 71, alternating on/off */
-    int expected_pitch = 60;
-    int expected_on = TRUE;
-    int report_time = Pt_Time() + 1000;  /* report every 1s */
-    PmTimestamp last_timestamp = -1;
-    PmTimestamp last_delta = -1;
+    report_time = Pt_Time() + 1000;  /* report every 1s */
     while (TRUE) {
         PmTimestamp now = Pt_Time();
         status = Pm_Poll(midi);

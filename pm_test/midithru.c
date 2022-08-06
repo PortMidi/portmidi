@@ -316,8 +316,9 @@ void initialize(int input, int output, int virtual)
                       NULL /* time info */,
                       0 /* Latency */);
     } else { /* send to virtual port */
+        int id;
         printf("Opening virtual output device \"midithru\"\n");
-        int id = Pm_CreateVirtualOutput("midithru", NULL, NULL);
+        id = Pm_CreateVirtualOutput("midithru", NULL, NULL);
         if (id < 0) checkerror(id);  /* error reporting */
         checkerror(Pm_OpenOutput(&midi_out, id, NULL, OUT_QUEUE_SIZE,
                                  &midithru_time_proc, NULL, 0));
@@ -342,8 +343,9 @@ void initialize(int input, int output, int virtual)
                      &midithru_time_proc,
                      NULL /* time info */);
     } else { /* receive from virtual port */
+        int id;
         printf("Opening virtual input device \"midithru\"\n");
-        int id = Pm_CreateVirtualInput("midithru", NULL, NULL);
+        id = Pm_CreateVirtualInput("midithru", NULL, NULL);
         if (id < 0) checkerror(id);  /* error reporting */
         checkerror(Pm_OpenInput(&midi_in, id, NULL, 0,
                                 &midithru_time_proc, NULL));

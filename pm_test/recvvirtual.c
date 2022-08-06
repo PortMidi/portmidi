@@ -45,13 +45,15 @@ void main_test_input(int num)
     PmStream *midi;
     PmError status, length;
     PmEvent buffer[1];
+    int id;
+    int i = 0; /* count messages as they arrive */
     /* It is recommended to start timer before Midi; otherwise, PortMidi may
        start the timer with its (default) parameters
      */
     TIME_START;
 
     /* create a virtual input device */
-    int id = checkerror(Pm_CreateVirtualInput("portmidi", NULL, DRIVER_INFO));
+    id = checkerror(Pm_CreateVirtualInput("portmidi", NULL, DRIVER_INFO));
     checkerror(Pm_OpenInput(&midi, id, NULL, 0, NULL, NULL));
 
     printf("Midi Input opened. Reading %d Midi messages...\n", num);
@@ -62,7 +64,6 @@ void main_test_input(int num)
         Pm_Read(midi, buffer, 1);
     }
     /* now start paying attention to messages */
-    int i = 0; /* count messages as they arrive */
     while (i < num) {
         status = Pm_Poll(midi);
         if (status == TRUE) {

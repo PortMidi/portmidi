@@ -62,6 +62,7 @@ void main_test_output(int num)
     PmEvent buffer[1];
     PmTimestamp timestamp;
     int pitch = 60;
+    int id;
 
     /* It is recommended to start timer before Midi; otherwise, PortMidi may
        start the timer with its (default) parameters
@@ -69,7 +70,7 @@ void main_test_output(int num)
     TIME_START;
 
     /* create a virtual output device */
-    int id = checkerror(Pm_CreateVirtualOutput("portmidi", NULL, DEVICE_INFO));
+    id = checkerror(Pm_CreateVirtualOutput("portmidi", NULL, DEVICE_INFO));
     checkerror(Pm_OpenOutput(&midi, id, DRIVER_INFO, OUTPUT_BUFFER_SIZE,
                              TIME_PROC, TIME_INFO, latency));
 

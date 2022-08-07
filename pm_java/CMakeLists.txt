@@ -53,7 +53,11 @@ if(UNIX)
   set(JAVA_INCLUDE_PATH  ${JAVA_INCLUDE_PATH-UNKNOWN}
       CACHE STRING "where to find Java SDK include directory")
   # libjvm.so is found relative to JAVA_INCLUDE_PATH:
-  set(JAVA_INCLUDE_PATHS ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH}/linux)
+  if (HAIKU)
+    set(JAVA_INCLUDE_PATHS ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH}/haiku)
+  else()
+    set(JAVA_INCLUDE_PATHS ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH}/linux)
+  endif()
 elseif(WIN32)
   include(FindJNI)
   # note: should use JAVA_JVM_LIB_PATH, but it is not set properly

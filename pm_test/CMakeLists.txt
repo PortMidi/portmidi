@@ -14,6 +14,10 @@ endif(APPLE)
 #   endif()
 # endif(WIN32)
 
+if(HAIKU)
+    add_compile_options(-fPIC) # Haiku x86_64 needs this explicitly
+endif()
+
 macro(add_test name)
   add_executable(${name} ${name}.c)
   target_link_libraries(${name} PRIVATE portmidi)

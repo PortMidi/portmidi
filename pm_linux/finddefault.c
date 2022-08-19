@@ -56,8 +56,8 @@ PmDeviceID find_default_device(char *path, int input, PmDeviceID id)
     if (*path == '/') path++; // skip initial slash in path
     path_ptr = strrchr(path, '/'); 
     if (path_ptr) { // copy up to slash after full_name
-        path_ptr++;
         int offset = strlen(full_name);
+        path_ptr++;
         memcpy(full_name + offset, path, path_ptr - path);
         full_name[offset + path_ptr - path] = 0; // end of string
     } else {

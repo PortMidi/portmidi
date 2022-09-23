@@ -9,10 +9,10 @@
 #import <mach/mach_time.h>
 #import <mach/clock.h>
 #include <unistd.h>
+#include <AvailabilityMacros.h>
 
 #include "porttime.h"
 #include "sys/time.h"
-#include "sys/qos.h"
 #include "pthread.h"
 
 #ifndef NSEC_PER_MSEC
@@ -20,9 +20,12 @@
 #endif
 #define THREAD_IMPORTANCE 63
 
-// do we ever NOT have Cocoa?
-#ifndef HAVE_COCOA
-#define HAVE_COCOA 1
+// QOS headers are available as of macOS 10.10
+#if MAC_OS_X_VERSION_MAX_ALLOWED >= 101000
+#include "sys/qos.h"
+#define HAVE_APPLE_QOS 1
+#else
+#undef HAVE_APPLE_QOS
 #endif
 
 static int time_started_flag = FALSE;
@@ -143,7 +146,7 @@ PtError Pt_Start(int resolution, PtCallback *callback, void *userData)
         parms->callback = callback;
         parms->userData = userData;
         
-#ifdef HAVE_COCOA
+#ifdef HAVE_APPLE_QOS
         pthread_attr_t qosAttribute;
         pthread_attr_init(&qosAttribute);
         pthread_attr_set_qos_class_np(&qosAttribute, 

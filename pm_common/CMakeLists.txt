@@ -103,8 +103,8 @@ elseif(HAIKU)
       ${PMDIR}/porttime/pthaiku.cpp
       ${PMDIR}/pm_haiku/pmhaiku.cpp
       ${PMDIR}/pm_linux/finddefault.c)
-  set(PM_NEEDED_LIBS be midi2 PARENT_SCOPE)
-  target_link_libraries(portmidi PRIVATE be midi2)
+  set(PM_NEEDED_LIBS be midi midi2 PARENT_SCOPE)
+  target_link_libraries(portmidi PRIVATE be midi midi2)
 elseif(UNIX)
   target_compile_definitions(portmidi PRIVATE ${LINUX_FLAGS})
   set(PM_LIB_PRIVATE_SRC

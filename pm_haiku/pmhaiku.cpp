@@ -7,6 +7,7 @@
 #include <MidiEndpoint.h>
 #include <MidiProducer.h>
 #include <MidiRoster.h>
+#include <MidiSynth.h>
 #include "portmidi.h"
 #include "pmutil.h"
 #include "pminternal.h"
@@ -60,6 +61,11 @@ namespace {
 
     struct PmOutputInfo {
         BMidiLocalProducer *producer;
+        std::vector<unsigned char> sysexBuffer;
+    };
+
+    struct PmSynthOutputInfo {
+        BMidiSynth midiSynth;
         std::vector<unsigned char> sysexBuffer;
     };
 
@@ -242,6 +248,100 @@ namespace {
     }
 
 
+    PmError synth_open(PmInternal *midi, void *driverInfo)
+    {
+        PmSynthOutputInfo *info = new PmSynthOutputInfo;
+        info->midiSynth.EnableInput(true, true);
+        midi->api_info = info;
+        return pmNoError;
+    }
+
+
+    PmError synth_abort(PmInternal *midi)
+    {
+        return pmNoError;
+    }
+
+
+    PmError synth_close(PmInternal *midi)
+    {
+        PmSynthOutputInfo *info = (PmSynthOutputInfo*)midi->api_info;
+        delete info;
+        midi->api_info = NULL;
+        return pmNoError;
+    }
+
+
+    PmError write_short_synth(PmInternal *midi, PmEvent *buffer)
+    {
+        PmSynthOutputInfo *info = (PmSynthOutputInfo*)midi->api_info;
+        uchar data[3];
+        data[0] = Pm_MessageStatus(buffer->message);
+        data[1] = Pm_MessageData1(buffer->message);
+        data[2] = Pm_MessageData2(buffer->message);
+
+        switch(data[0] & 0xf0) {
+        case B_NOTE_OFF:
+            info->midiSynth.NoteOff((data[0] & 0x0f) + 1, data[1], data[2], buffer->timestamp);
+            break;
+        case B_NOTE_ON:
+            info->midiSynth.NoteOn((data[0] & 0x0f) + 1, data[1], data[2], buffer->timestamp);
+            break;
+        case B_KEY_PRESSURE:
+            info->midiSynth.KeyPressure((data[0] & 0x0f + 1), data[1], data[2], buffer->timestamp);
+            break;
+        case B_CONTROL_CHANGE:
+            info->midiSynth.ControlChange((data[0] & 0x0f) + 1, data[1], data[2], buffer->timestamp);
+            break;
+        case B_PROGRAM_CHANGE:
+            info->midiSynth.ProgramChange((data[0] & 0x0f) + 1, data[1], buffer->timestamp);
+            break;
+        case B_CHANNEL_PRESSURE:
+            info->midiSynth.ChannelPressure((data[0] & 0x0f) + 1, data[1], buffer->timestamp);
+            break;
+        case B_PITCH_BEND:
+            info->midiSynth.PitchBend((data[0] & 0x0f) + 1, data[1], data[2], buffer->timestamp);
+            break;
+        }
+
+        // TODO: handle latency != 0
+        return pmNoError;
+    }
+
+
+    PmError begin_sysex_synth(PmInternal *midi, PmTimestamp timestamp)
+    {
+        PmSynthOutputInfo *info = (PmSynthOutputInfo*)midi->api_info;
+        info->sysexBuffer.clear();
+        return pmNoError;
+    }
+
+
+    PmError end_sysex_synth(PmInternal *midi, PmTimestamp timestamp)
+    {
+        PmSynthOutputInfo *info = (PmSynthOutputInfo*)midi->api_info;
+        info->midiSynth.SystemExclusive(&info->sysexBuffer[0], info->sysexBuffer.size(), timestamp);
+        info->sysexBuffer.clear();
+        return pmNoError;
+    }
+
+
+    PmError write_byte_synth(PmInternal *midi, unsigned char byte, PmTimestamp timestamp)
+    {
+        PmSynthOutputInfo *info = (PmSynthOutputInfo*)midi->api_info;
+        info->sysexBuffer.push_back(byte);
+        return pmNoError;
+    }
+
+
+    PmError write_realtime_synth(PmInternal *midi, PmEvent *buffer)
+    {
+        PmSynthOutputInfo *info = (PmSynthOutputInfo*)midi->api_info;
+        info->midiSynth.SystemRealTime(Pm_MessageStatus(buffer->message), buffer->timestamp);
+        return pmNoError;
+    }
+
+
     PmError write_flush(PmInternal *midi, PmTimestamp timestamp)
     {
         return pmNoError;
@@ -280,6 +380,22 @@ namespace {
         out_open,
         out_abort,
         out_close,
+        none_poll,
+        check_host_error
+    };
+
+
+    pm_fns_node pm_synth_dictionary = {
+        write_short_synth,
+        begin_sysex_synth,
+        end_sysex_synth,
+        write_byte_synth,
+        write_realtime_synth,
+        write_flush,
+        synchronize,
+        synth_open,
+        synth_abort,
+        synth_close,
         none_poll,
         check_host_error
     };
@@ -329,6 +445,8 @@ extern "C" {
     void pm_init()
     {
         pm_add_interf(const_cast<char*>("Haiku MIDI kit"), create_virtual, delete_virtual);
+
+        pm_add_device(const_cast<char*>("Haiku MIDI kit"), "Soft Synth", FALSE, FALSE, NULL, &pm_synth_dictionary);
 
         int32 id = 0;
         BMidiEndpoint *endpoint;

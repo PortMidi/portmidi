@@ -98,6 +98,13 @@ if(UNIX AND APPLE)
       ${COREFOUNDATION_LIBRARY} ${COREMIDI_LIBRARY} ${CORESERVICES_LIBRARY})
   # set to CMake default; is this right?:
   set_target_properties(portmidi PROPERTIES MACOSX_RPATH ON)
+elseif(HAIKU)
+  set(PM_LIB_PRIVATE_SRC
+      ${PMDIR}/porttime/pthaiku.cpp
+      ${PMDIR}/pm_haiku/pmhaiku.cpp
+      ${PMDIR}/pm_linux/finddefault.c)
+  set(PM_NEEDED_LIBS be midi midi2 PARENT_SCOPE)
+  target_link_libraries(portmidi PRIVATE be midi midi2)
 elseif(UNIX)
   target_compile_definitions(portmidi PRIVATE ${LINUX_FLAGS})
   set(PM_LIB_PRIVATE_SRC

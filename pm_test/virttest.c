@@ -167,7 +167,8 @@ void check_ports(int cnt, int in_id, char in_stat,
 
 void devices_list()
 {
-    for (int i = 0; i < Pm_CountDevices(); i++) {
+    int i;
+    for (i = 0; i < Pm_CountDevices(); i++) {
         const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
         if (info) {
             printf("%d: %s %s %s %s\n", i, info->name,
@@ -189,12 +190,13 @@ void test2()
     PmTimestamp timestamp;
     int pitch = 60;
     int device_count = 0;
+    int i;
 
     printf("This must be virttest instance #2\n");
 
     /* find and open portmidi in and out */
     device_count = Pm_CountDevices();
-    for (int i = 0; i < device_count; i++) {
+    for (i = 0; i < device_count; i++) {
         const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
         if (info && strcmp(info->name, "portmidi") == 0) {
             if (info->input) {
@@ -326,8 +328,8 @@ void test()
 
 int main(int argc, char *argv[])
 {
-    show_usage();
     int i;
+    show_usage();
     for (i = 0; i < 3; i++) {
         test();
     }    

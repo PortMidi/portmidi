@@ -156,6 +156,8 @@ void main_test_output(int isochronous_test)
     Pm_Write(midi, buffer, 1);
 
     if (isochronous_test) { // play 4 notes per sec for 20s 
+        int count;
+        PmTimestamp start;
         if (latency < 100) {
             printf("Warning: latency < 100, but this test sends messages"
                    " at times that are jittered by up to 100ms, so you"
@@ -163,15 +165,15 @@ void main_test_output(int isochronous_test)
         }
         printf("Starting in 1s..."); fflush(stdout);
         Pt_Sleep(1000);
-        int count;
-        PmTimestamp start = Pt_Time();
+        start = Pt_Time();
         for (count = 0; count < 80; count++) {
+            PmTimestamp next_time;
             buffer[0].timestamp = start + count * 250;
             buffer[0].message = Pm_Message(0x90, 69, 100);
             buffer[1].timestamp = start + count * 250 + 200;
             buffer[1].message = Pm_Message(0x90, 69, 0);
             Pm_Write(midi, buffer, 2);
-            PmTimestamp next_time = start + (count + 1) * 250;
+            next_time = start + (count + 1) * 250;
             // sleep for a random time up to 100ms to add jitter to
             // the times at which we send messages. PortMidi timing
             // should remove the jitter if latency > 100

@@ -841,6 +841,7 @@ PmError pm_create_internal(PmInternal **stream, PmDeviceID device_id,
                            int is_input, int latency, PmTimeProcPtr time_proc,
                            void *time_info, int buffer_size)
 {
+    PmInternal *midi;
     if (device_id < 0 || device_id >= pm_descriptor_len) {
        return pmInvalidDeviceId;
     }
@@ -848,7 +849,7 @@ PmError pm_create_internal(PmInternal **stream, PmDeviceID device_id,
         latency = 0;
     }
     /* create portMidi internal data */
-    PmInternal *midi = (PmInternal *) pm_alloc(sizeof(PmInternal)); 
+    midi = (PmInternal *) pm_alloc(sizeof(PmInternal)); 
     *stream = midi;
     if (!midi) {
         return pmInsufficientMemory;

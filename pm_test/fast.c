@@ -75,15 +75,20 @@ void fast_test()
     char line[STRING_MAX];
     int pause = FALSE;  /* pause if this is a virtual output port */
     PmError err = pmNoError;
+    /* output buffer size should be a little more than
+       msgrate * latency / 1000. PortMidi will guarantee
+       a minimum of latency / 2 */
+    int buffer_size = msgrate * latency / 900;
+    PmTimestamp start, now;
+    int msgcnt = 0;
+    int polling_count = 0;
+    int pitch = 60;
+    int printtime = 1000;
 
     /* It is recommended to start timer before PortMidi */
     TIME_START;
 
     /* open output device */
-    /* output buffer size should be a little more than
-       msgrate * latency / 1000. PortMidi will guarantee
-       a minimum of latency / 2 */
-    int buffer_size = msgrate * latency / 900;
     if (deviceno == Pm_CountDevices()) {
         deviceno = Pm_CreateVirtualOutput("fast", NULL, DEVICE_INFO);
         if (deviceno >= 0) {
@@ -110,7 +115,7 @@ void fast_test()
         while (getchar() != '\n') ;
     }
     /* wait a sec after printing previous line */
-    PmTimestamp start = get_time(NULL) + 1000;
+    start = get_time(NULL) + 1000;
     while (start > get_time(NULL)) {
         Sleep(10);
     }
@@ -118,11 +123,7 @@ void fast_test()
     fflush(stdout); /* make sure message goes to console */
 
     /* every 10ms send on/off pairs at timestamps set to current time */
-    PmTimestamp now = get_time(NULL);
-    int msgcnt = 0;
-    int polling_count = 0;
-    int pitch = 60;
-    int printtime = 1000;
+    now = get_time(NULL);
     /* if expired_timestamps, we want to send timestamps that have
      * expired. They should be sent immediately, but there's a suggestion
      * that negative delay might cause problems in the ALSA implementation

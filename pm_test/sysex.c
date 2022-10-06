@@ -21,6 +21,11 @@
 #define Sleep(n) usleep(n * 1000)
 #endif
 
+// enable some extra printing
+#ifndef VERBOSE
+#define VERBOSE 0
+#endif
+
 #define MIDI_SYSEX 0xf0
 #define MIDI_EOX 0xf7
 
@@ -153,6 +158,9 @@ void loopback_test()
         shift = 0;
         i = 0;
         start_time = Pt_Time();
+        if (VERBOSE) {
+            printf("start_time %d\n", start_time);
+        }
         error_position = -1;
         /* allow up to 2 seconds for transmission */
         while (data != MIDI_EOX && start_time + 2000 > Pt_Time()) {
@@ -161,10 +169,10 @@ void loopback_test()
                 Sleep(1); /* be nice: give some CPU time to the system */
                 continue; /* continue polling for input */
             }
-            
-            /* printf("read %lx ", event.message);
-               fflush(stdout); */
-            
+            if (VERBOSE) {
+                printf("read %08x ", event.message);
+                fflush(stdout);
+            }
             /* compare 4 bytes of data until you reach an eox */
             for (shift = 0; shift < 32 && (data != MIDI_EOX); shift += 8) {
                 data = (event.message >> shift) & 0xFF;
@@ -177,11 +185,11 @@ void loopback_test()
             }
         }
         if (error_position >= 0) {
-            printf("Error at byte %d: sent %x recd %x.\n", error_position, 
-                   expected, actual);
+            printf("Error at time %d byte %d: sent %x recd %x.\n", Pt_Time(),
+                   error_position, expected, actual);
             break;
         } else if (i != len + 2) {
-            printf("Error: byte %d not received.\n", i);
+            printf("Error at time %d: byte %d not received.\n", Pt_Time(), i);
             break;
         } else {
             int seconds = (Pt_Time() - begin_time) / 1000;

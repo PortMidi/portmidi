@@ -91,15 +91,19 @@
 /* maximum overall data rate (OS X limits MIDI rate in case there
  * is a cycle among IAC ports.
  */
-#define MAX_BYTES_PER_S 14000
+
+#define MAX_BYTES_PER_S 5400
 
 /* Apple reports that packets are dropped when the MIDI bytes/sec
    exceeds 15000. This is computed by "tracking the number of MIDI
    bytes scheduled into 1-second buckets over the last six seconds and
-   averaging these counts." This is confirmed in recent measurements
-   (2021) with pm_test/fast.c and pm_test/fastrcv.c test programs show
-   problems begin above 4900 (3 bytes each) messages/second. We use
-   14000 rather than 15000 to avoid getting too close to the limit.
+   averaging these counts." This was confirmed in measurements
+   (2021) with pm_test/fast.c and pm_test/fastrcv.c Now, in 2022, with
+   macOS 12, pm_test/fast{rcv}.c show problems begin at 6000 bytes/sec.
+   Previously, we set MAX_BYTES_PER_S to 14000. This is reduced to
+   5400 based on testing (which shows 5700 is too high) to fix the
+   packet loss problem that showed up with macOS 12 (even 5700 is
+   too high).
  
    Experiments show this restriction applies to IAC bus MIDI, but not
    to hardware interfaces. (I measured 0.5 Mbps each way over USB to a
@@ -115,8 +119,8 @@
    timestamps to limit data rates.  This adds a slight time
    distortion, e.g. an 11 note chord with all notes on the same
    timestamp will be altered so that the last message is delayed by 30
-   bytes/14000 bps = 2.1ms. Note that this is about 5x MIDI speed, but
-   at least 4x slower than USB MIDI.
+   bytes/10000 bps = 3.0 ms. Note that this is about 3x MIDI speed, but
+   at least 6x slower than USB MIDI.
  
    Altering timestamps creates another problem, which is that a sender
    that exceeds the maximum rate can queue up an unbounded number of
@@ -144,7 +148,7 @@
      a lot, so the time will be updated frequently when it matters.)
 
      This possible adjustment to timestamps can distort accurate
-     timestamps by up to 214 us per 3-byte MIDI message.
+     timestamps by up to 300 us per 3-byte MIDI message.
  
    Nothing blocks the sender from queueing up an arbitrary number of
    messages. Timestamps should be used for accurate timing by sending

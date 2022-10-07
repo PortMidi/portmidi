@@ -102,14 +102,13 @@
    macOS 12, pm_test/fast{rcv}.c show problems begin at 6000 bytes/sec.
    Previously, we set MAX_BYTES_PER_S to 14000. This is reduced to
    5400 based on testing (which shows 5700 is too high) to fix the
-   packet loss problem that showed up with macOS 12 (even 5700 is
-   too high).
+   packet loss problem that showed up with macOS 12.
  
    Experiments show this restriction applies to IAC bus MIDI, but not
    to hardware interfaces. (I measured 0.5 Mbps each way over USB to a
    Teensy 3.2 microcontroller implementing a USB MIDI loopback. Maybe
    it would get 1 Mbps one-way, which would make the CoreMIDI
-   restriction 8x slower than USB. Maybe other USB MIDI
+   restriction 18x slower than USB. Maybe other USB MIDI
    implementations are faster -- USB top speed for other protocols is
    certainly higher than 1 Mbps!)
 
@@ -118,37 +117,40 @@
    regardless of when writes occur. The solution is to alter
    timestamps to limit data rates.  This adds a slight time
    distortion, e.g. an 11 note chord with all notes on the same
-   timestamp will be altered so that the last message is delayed by 30
-   bytes/10000 bps = 3.0 ms. Note that this is about 3x MIDI speed, but
-   at least 6x slower than USB MIDI.
+   timestamp will be altered so that the last message is delayed by
+   11 messages x 3 bytes/message / 5400 bytes/second = 6.1 ms.
+   Note that this is about 2x MIDI speed, but at least 18x slower 
+   than USB MIDI.
  
    Altering timestamps creates another problem, which is that a sender
    that exceeds the maximum rate can queue up an unbounded number of
    messages. With non-USB MIDI devices, you could be writing 5x faster
    to CoreMIDI than the hardware interface can send, causing an
-   unbounded backlog. There seems to be no general solution, so
-   PortMidi does not guarantee delivery if, over the long run, you
-   write faster than the hardware can send.
+   unbounded backlog, not to mention that the output stream will be a
+   steady byte stream (e.g., one 3-byte MIDI message every 0.55 ms),
+   losing any original timing or rhythm. PortMidi does not guarantee
+   delivery if, over the long run, you write faster than the hardware
+   can send.
    
    The LIMIT_RATE symbol, if defined (which is the default), enables
    code to modify timestamps for output to an IAC device as follows:
 
-     Before a packet is formed, the message timestamp is set to the
-     maximum of the PortMidi timestamp (converted to CoreMIDI time)
-     and min_next_time. After each send, min_next_time is updated to
-     the packet time + packet length * delay_per_byte, which limits
-     the scheduled bytes-per-second. Also, after each packet list
-     flush, min_next_time is updated to the maximum of min_next_time
-     and the real time, which prevents many bytes to be scheduled in
-     the past. (We could more directly just say packets are never
-     scheduled in the past, but we prefer to get the current time -- a
-     system call -- only when we perform the more expensive operation
-     of flushing packets, so that's when we update min_next_time to
-     the current real time. If we are sending a lot, we have to flush
-     a lot, so the time will be updated frequently when it matters.)
+   Before a packet is formed, the message timestamp is set to the
+   maximum of the PortMidi timestamp (converted to CoreMIDI time)
+   and min_next_time. After each send, min_next_time is updated to
+   the packet time + packet length * delay_per_byte, which limits
+   the scheduled bytes-per-second. Also, after each packet list
+   flush, min_next_time is updated to the maximum of min_next_time
+   and the real time, which prevents many bytes to be scheduled in
+   the past. (We could more directly just say packets are never
+   scheduled in the past, but we prefer to get the current time -- a
+   system call -- only when we perform the more expensive operation
+   of flushing packets, so that's when we update min_next_time to
+   the current real time. If we are sending a lot, we have to flush
+   a lot, so the time will be updated frequently when it matters.)
 
-     This possible adjustment to timestamps can distort accurate
-     timestamps by up to 300 us per 3-byte MIDI message.
+   This possible adjustment to timestamps can distort accurate
+   timestamps by up to 0.556 us per 3-byte MIDI message.
  
    Nothing blocks the sender from queueing up an arbitrary number of
    messages. Timestamps should be used for accurate timing by sending

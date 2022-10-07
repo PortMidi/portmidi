@@ -31,7 +31,9 @@ the assert() macro is disabled.)]
 Latency in ms: >>0
 enter your choice... >>3
 Type input number: >>6  [pick a working input device]
-[play some notes, program will Segmentation fault after 5 messages]
+[play some notes, program will Segmentation fault after 5 messages
+(this test may not Segfault in the Release build; if not
+try testing with a Debug build.)]
 
 5. ./testio [test output, no latency]
 Latency in ms: >>0
@@ -210,7 +212,7 @@ Type input  device number: >>0 [pick input device for loopback]
     Output device number: >>0 [pick a non-hardware device if possible]
     sending output...
 [see message counts and times; on Linux you should get about 10000 
- messages/s; on macOS you should get about 4666 messages/s; Windows 
+ messages/s; on macOS you should get about 1800 messages/s; Windows 
  does not have software ports, so data rate might be limited by the 
  loopback device you use.]
 
@@ -230,7 +232,7 @@ Check output of fastrcv: there should be no errors, just msg/sec.]
     Output device number: >>0 [pick a non-hardware device if possible]
     sending output... 
 [see message counts and times; on Linux you should get about 10000 
- messages/s; on macOS you should get about 4666 messages/s; Windows 
+ messages/s; on macOS you should get about 1800 messages/s; Windows 
  does not have software ports, so data rate might be limited by the 
  loopback device you use.]
 
@@ -318,7 +320,7 @@ Check output of fastrcv: there should be no errors, just msg/sec.]
 [see message counts and times as above, on Mac, output from fast to
  midithru AND output from midithru to fastrcv are rate limited, so
  as in other tests, it will take more than 10s to receive all the
- messages and the receiving message rate will be about 4666 messages/second]
+ messages and the receiving message rate will be about 1800 messages/second]
 
 30. ./multivirtual [macOS and Linux only]
     ./testio

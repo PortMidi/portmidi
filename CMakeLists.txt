@@ -132,6 +132,16 @@ INSTALL(FILES
 
 # pkgconfig - generate pc file
 # See https://cmake.org/cmake/help/latest/command/configure_file.html
+if(IS_ABSOLUTE "${CMAKE_INSTALL_INCLUDEDIR}")
+    set(PKGCONFIG_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}")
+else()
+    set(PKGCONFIG_INCLUDEDIR "\${prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
+endif()
+if(IS_ABSOLUTE "${CMAKE_INSTALL_LIBDIR}")
+    set(PKGCONFIG_LIBDIR "${CMAKE_INSTALL_LIBDIR}")
+else()
+    set(PKGCONFIG_LIBDIR "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
+endif()
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/packaging/portmidi.pc.in
     ${CMAKE_CURRENT_BINARY_DIR}/packaging/portmidi.pc @ONLY)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/packaging/portmidi.pc

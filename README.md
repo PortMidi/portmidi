@@ -12,6 +12,7 @@ for related code and bindings (although currently, not much is here).
 Use CMake (or ccmake) to create a Makefile for Linux/BSD or a 
 project file for Xcode or MS Visual Studio. Use make or an IDE to compile:
 ```
+sudo apt install libasound2-dev  # on Linux, you need ALSA
 cd portmidi  # start in the top-level portmidi directory
 ccmake .     # set any options interactively, type c to configure
              # type g to generate a Makefile or IDE project

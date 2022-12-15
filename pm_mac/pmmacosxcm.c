@@ -731,7 +731,7 @@ static PmError midi_abort(PmInternal *midi)
 
 static PmError midi_write_flush(PmInternal *midi, PmTimestamp timestamp)
 {
-    OSStatus macHostError;
+    OSStatus macHostError = errSecSuccess;
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
     MIDIEndpointRef endpoint = (MIDIEndpointRef) (intptr_t)
                                pm_descriptors[midi->device_id].descriptor;

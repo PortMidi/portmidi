@@ -975,11 +975,11 @@ PmTimestamp timestamp_cm_to_pm(MIDITimeStamp timestamp)
 //////////////////////////////////////
 // Obtain the name of an endpoint without regard for whether it has connections.
 // The result should be released by the caller.
-CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal, int *isIAC)
+CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal, int *lisIAC)
 {
     CFMutableStringRef result = CFStringCreateMutable(NULL, 0);
     CFStringRef str;
-    *isIAC = FALSE;
+    *lisIAC = FALSE;
   
     // begin with the endpoint's name
     str = NULL;
@@ -1002,7 +1002,7 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal, int *isIAC)
             CFStringGetCString(str, s, 31, kCFStringEncodingUTF8);
             s[31] = 0;  /* make sure it is terminated just to be safe */
             CM_DEBUG printf("driver %s\n", s);
-            *isIAC = (strcmp(s, "com.apple.AppleMIDIIACDriver") == 0);
+            *lisIAC = (strcmp(s, "com.apple.AppleMIDIIACDriver") == 0);
         }
     }
 
@@ -1059,7 +1059,7 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal, int *isIAC)
 
 // Obtain the name of an endpoint, following connections.
 // The result should be released by the caller.
-static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint, int *isIAC)
+static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint, int *lisIAC)
 {
     CFMutableStringRef result = CFStringCreateMutable(NULL, 0);
     CFStringRef str;
@@ -1090,7 +1090,7 @@ static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint, int *isIAC)
                         connObjectType == kMIDIObjectType_ExternalDestination) {
                         // Connected to an external device's endpoint (>=10.3)
                         str = EndpointName((MIDIEndpointRef)(connObject), true,
-                                           isIAC);
+                                           lisIAC);
                     } else {
                         // Connected to an external device (10.2) 
                         // (or something else, catch-all)
@@ -1117,14 +1117,14 @@ static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint, int *isIAC)
 
     // Here, either the endpoint had no connections, or we failed to
     // obtain names for any of them.
-    return EndpointName(endpoint, false, isIAC);
+    return EndpointName(endpoint, false, lisIAC);
 }
 
 
-char *cm_get_full_endpoint_name(MIDIEndpointRef endpoint, int *isIAC)
+char *cm_get_full_endpoint_name(MIDIEndpointRef endpoint, int *lisIAC)
 {
     /* Thanks to Dan Wilcox for fixes for Unicode handling */
-    CFStringRef fullName = ConnectedEndpointName(endpoint, isIAC);
+    CFStringRef fullName = ConnectedEndpointName(endpoint, lisIAC);
     CFIndex utf16_len = CFStringGetLength(fullName) + 1;
     CFIndex max_byte_len = CFStringGetMaximumSizeForEncoding(
                                    utf16_len, kCFStringEncodingUTF8) + 1;
@@ -1226,7 +1226,7 @@ PmError pm_macosxcm_init(void)
         macHostError = MIDIClientCreate(CFSTR("PortMidi"), &cm_notify, NULL,
                                         &client);
     } else {  /* see notes above on device scanning */
-        for (int i = 0; i < 100; i++) {
+        for (i = 0; i < 100; i++) {
             // look for any changes before scanning for devices
             CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0, true);
             if (i % 5 == 0) Pt_Sleep(1);  /* insert 20 delays */

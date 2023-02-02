@@ -15,6 +15,7 @@
 #include "pmwinmm.h"
 #include <string.h>
 #include "porttime.h"
+#include <wchar.h>
 
 /* asserts used to verify portMidi code logic is sound; later may want
     something more graceful */
@@ -139,10 +140,28 @@ typedef struct winmm_info_struct {
 general MIDI device queries
 =============================================================================
 */
+
+/* add a device after converting device (product) name to UTF-8 */
+static pm_add_device_w(char *api, WCHAR *device_name, int is_input,
+                       int is_virtual, void *descriptor, pm_fns_type dictionary)
+{
+    size_t w_len = wcslen(device_name);
+    char utf8name[4 * MAXPNAMELEN];
+    WideCharToMultiByte(CP_UTF8, 0, device_name, -1, 
+                        utf8name, 4 * MAXPNAMELEN - 1, NULL, NULL);
+    /* ignore errors here -- if pm_descriptor_max is exceeded, 
+       some devices will not be accessible. */
+#pragma warning(suppress: 4047)  // coerce non-pointer to pointer is OK
+    pm_add_device(api, utf8name, is_input, is_virtual, descriptor, dictionary);
+}
+
+
 static void pm_winmm_general_inputs()
 {
     UINT i;
     WORD wRtn;
+    char *cPname = NULL;
+    size_t wcsCharsLength;
     midi_num_inputs = midiInGetNumDevs();
     midi_in_caps = (MIDIINCAPS *) pm_alloc(sizeof(MIDIINCAPS) * 
                                            midi_num_inputs);
@@ -158,11 +177,8 @@ static void pm_winmm_general_inputs()
         wRtn = midiInGetDevCaps(i, (LPMIDIINCAPS) & midi_in_caps[i],
                                 sizeof(MIDIINCAPS));
         if (wRtn == MMSYSERR_NOERROR) {
-            /* ignore errors here -- if pm_descriptor_max is exceeded, some
-               devices will not be accessible. */
-#pragma warning(suppress: 4047)  // coerce non-pointer to pointer is OK
-            pm_add_device("MMSystem", midi_in_caps[i].szPname, TRUE, FALSE,
-                          (void *) (intptr_t) i, &pm_winmm_in_dictionary);
+            pm_add_device_w("MMSystem", midi_in_caps[i].szPname, TRUE, FALSE,
+                              (void *) (intptr_t) i, &pm_winmm_in_dictionary);
         }
     }
 }
@@ -171,17 +187,19 @@ static void pm_winmm_general_inputs()
 static void pm_winmm_mapper_input()
 {
     WORD wRtn;
+    char *cPname = NULL;
+    size_t wcsCharsLength;
     /* Note: if MIDIMAPPER opened as input (documentation implies you
         can, but current system fails to retrieve input mapper
-        capabilities) then you still should retrieve some formof
+        capabilities) then you still should retrieve some form of
         setup info. */
     wRtn = midiInGetDevCaps((UINT) MIDIMAPPER,
                             (LPMIDIINCAPS) & midi_in_mapper_caps, 
                             sizeof(MIDIINCAPS));
     if (wRtn == MMSYSERR_NOERROR) {
-#pragma warning(suppress: 4047)  // coerce non-pointer to pointer is OK
-        pm_add_device("MMSystem", midi_in_mapper_caps.szPname, TRUE, FALSE,
-                      (void *) (intptr_t) MIDIMAPPER, &pm_winmm_in_dictionary);
+        pm_add_device_w("MMSystem", midi_in_mapper_caps.szPname, TRUE, FALSE,
+                        (void *) (intptr_t) MIDIMAPPER, 
+                        &pm_winmm_in_dictionary);
     }
 }
 
@@ -190,6 +208,8 @@ static void pm_winmm_general_outputs()
 {
     UINT i;
     DWORD wRtn;
+    char *cPname = NULL;
+    size_t wcsCharsLength;
     midi_num_outputs = midiOutGetNumDevs();
     midi_out_caps = pm_alloc(sizeof(MIDIOUTCAPS) * midi_num_outputs);
 
@@ -202,9 +222,8 @@ static void pm_winmm_general_outputs()
         wRtn = midiOutGetDevCaps(i, (LPMIDIOUTCAPS) & midi_out_caps[i],
                                  sizeof(MIDIOUTCAPS));
         if (wRtn == MMSYSERR_NOERROR) {
-#pragma warning(suppress: 4047)  // coerce non-pointer to pointer is OK
-            pm_add_device("MMSystem", midi_out_caps[i].szPname, FALSE, FALSE,
-                          (void *) (intptr_t) i, &pm_winmm_out_dictionary);
+            pm_add_device_w("MMSystem", midi_out_caps[i].szPname, FALSE, FALSE,
+                            (void *) (intptr_t) i, &pm_winmm_out_dictionary);
         }
     }
 }
@@ -213,15 +232,17 @@ static void pm_winmm_general_outputs()
 static void pm_winmm_mapper_output()
 {
     WORD wRtn;
+    char* cPname = NULL;
+    size_t wcsCharsLength;
     /* Note: if MIDIMAPPER opened as output (pseudo MIDI device
         maps device independent messages into device dependant ones,
         via NT midimapper program) you still should get some setup info */
     wRtn = midiOutGetDevCaps((UINT) MIDIMAPPER, (LPMIDIOUTCAPS)
                              & midi_out_mapper_caps, sizeof(MIDIOUTCAPS));
     if (wRtn == MMSYSERR_NOERROR) {
-#pragma warning(suppress: 4047)  // coerce non-pointer to pointer is OK
-        pm_add_device("MMSystem", midi_out_mapper_caps.szPname, FALSE, FALSE,
-                      (void *) (intptr_t) MIDIMAPPER, &pm_winmm_out_dictionary);
+        pm_add_device_w("MMSystem", midi_out_mapper_caps.szPname, FALSE, FALSE,
+                        (void *) (intptr_t) MIDIMAPPER, 
+                        &pm_winmm_out_dictionary);
     }
 }
 
@@ -867,6 +888,7 @@ static PmError winmm_write_flush(PmInternal *midi, PmTimestamp timestamp)
         info->hdr = NULL;
         if (pm_hosterror) {
             int err;
+            info->hdr->dwFlags = 0; /* release the buffer */
             err = midiOutGetErrorText(pm_hosterror, (char *) pm_hosterror_text,
                                       PM_HOST_ERROR_MSG_LEN);
             assert(err == MMSYSERR_NOERROR);
@@ -887,9 +909,7 @@ static PmError winmm_write_short(PmInternal *midi, PmEvent *event)
         pm_hosterror = midiOutShortMsg(info->handle.out, event->message);
         if (pm_hosterror) {
             int err;
-            if (info->hdr) {  /* device disconnect may delete hdr */
-                info->hdr->dwFlags = 0; /* release the buffer */
-            }
+            info->hdr->dwFlags = 0; /* release the buffer */
             err = midiOutGetErrorText(pm_hosterror, (char *) pm_hosterror_text,
                                       PM_HOST_ERROR_MSG_LEN);
             assert(err == MMSYSERR_NOERROR);

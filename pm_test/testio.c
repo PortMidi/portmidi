@@ -183,11 +183,20 @@ void main_test_output(int isochronous_test)
         }
         printf("Done sending 80 notes at 4 notes per second.\n");
     } else {
+        PmError err = 0;
         printf("ready to note-on... (type ENTER):");
         WAIT_FOR_ENTER
         buffer[0].timestamp = Pt_Time();
         buffer[0].message = Pm_Message(0x90, 60, 100);
-        Pm_Write(midi, buffer, 1);
+        if ((err = Pm_Write(midi, buffer, 1))) {
+            printf("Pm_Write returns error: %d (%s)\n", 
+                   err, Pm_GetErrorText(err));
+            if (err == pmHostError) {
+                char errmsg[128];
+                Pm_GetHostErrorText(errmsg, 127);
+                printf("    Host error: %s\n", errmsg);
+            }
+        }
         printf("ready to note-off... (type ENTER):");
         WAIT_FOR_ENTER
         buffer[0].timestamp = Pt_Time();

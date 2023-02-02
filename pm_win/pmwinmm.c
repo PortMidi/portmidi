@@ -867,7 +867,6 @@ static PmError winmm_write_flush(PmInternal *midi, PmTimestamp timestamp)
         info->hdr = NULL;
         if (pm_hosterror) {
             int err;
-            info->hdr->dwFlags = 0; /* release the buffer */
             err = midiOutGetErrorText(pm_hosterror, (char *) pm_hosterror_text,
                                       PM_HOST_ERROR_MSG_LEN);
             assert(err == MMSYSERR_NOERROR);
@@ -888,7 +887,9 @@ static PmError winmm_write_short(PmInternal *midi, PmEvent *event)
         pm_hosterror = midiOutShortMsg(info->handle.out, event->message);
         if (pm_hosterror) {
             int err;
-            info->hdr->dwFlags = 0; /* release the buffer */
+            if (info->hdr) {  /* device disconnect may delete hdr */
+                info->hdr->dwFlags = 0; /* release the buffer */
+            }
             err = midiOutGetErrorText(pm_hosterror, (char *) pm_hosterror_text,
                                       PM_HOST_ERROR_MSG_LEN);
             assert(err == MMSYSERR_NOERROR);

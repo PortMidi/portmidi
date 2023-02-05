@@ -454,6 +454,9 @@ PMEXPORT const char *Pm_GetErrorText(PmError errnum)
     case pmNameConflict:
         msg = "PortMidi: Cannot create virtual device: name is taken";
         break;
+    case pmDeviceRemoved:
+        msg = "PortMidi: Output attempted after (USB) device removed";
+        break;
     default:
         msg = "PortMidi: Illegal error number";
         break;
@@ -626,15 +629,17 @@ PMEXPORT PmError Pm_Write(PortMidiStream *stream, PmEvent *buffer,
     
     pm_hosterror = FALSE;
     /* arg checking */
-    if(midi == NULL)
+    if (midi == NULL) {
         err = pmBadPtr;
-    else if(!pm_descriptors[midi->device_id].pub.opened)
-        err = pmBadPtr;
-    else if(!pm_descriptors[midi->device_id].pub.output)
-        err = pmBadPtr;
-    else
-        err = pmNoError;
-    
+    } else {
+        descriptor_type desc = &pm_descriptors[midi->device_id]; 
+        if (!desc || !desc->pub.opened ||
+            !desc->pub.output || !desc->pm_internal) {
+            err = pmBadPtr;
+        } else if (desc->pm_internal->is_removed) {
+            err = pmDeviceRemoved;
+        }
+    }
     if (err != pmNoError) goto pm_write_error;
     
     if (midi->latency == 0) {
@@ -856,6 +861,7 @@ PmError pm_create_internal(PmInternal **stream, PmDeviceID device_id,
     }
     midi->device_id = device_id;
     midi->is_input = is_input;
+    midi->is_removed = FALSE;
     midi->time_proc = time_proc;
     /* if latency != 0, we need a time reference for output.
        we always need a time reference for input.

@@ -105,7 +105,7 @@ typedef uint32_t (*time_get_proc_type)(void *time_info);
 typedef struct pm_internal_struct {
     int device_id; /* which device is open (index to pm_descriptors) */
     short is_input; /* MIDI IN (true) or MIDI OUT (false) */
-    
+    short is_removed;  /* MIDI device was removed */
     PmTimeProcPtr time_proc; /* where to get the time */
     void *time_info; /* pass this to get_time() */
     int32_t buffer_len; /* how big is the buffer or queue? */

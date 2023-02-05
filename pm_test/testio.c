@@ -201,7 +201,15 @@ void main_test_output(int isochronous_test)
         WAIT_FOR_ENTER
         buffer[0].timestamp = Pt_Time();
         buffer[0].message = Pm_Message(0x90, 60, 0);
-        Pm_Write(midi, buffer, 1);
+        if ((err = Pm_Write(midi, buffer, 1))) {
+            printf("Pm_Write returns error: %d (%s)\n",
+                err, Pm_GetErrorText(err));
+            if (err == pmHostError) {
+                char errmsg[128];
+                Pm_GetHostErrorText(errmsg, 127);
+                printf("    Host error: %s\n", errmsg);
+            }
+        }
 
         /* output short note on/off w/latency offset; hold until user prompts */
         printf("ready to note-on (short form)... (type ENTER):");

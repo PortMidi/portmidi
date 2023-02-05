@@ -122,7 +122,8 @@ typedef enum {
     pmBufferMaxSize, /**< Buffer is already as large as it can be. */
     pmNotImplemented, /**< The function is not implemented, nothing was done. */
     pmInterfaceNotSupported, /**< The requested interface is not supported. */
-    pmNameConflict /**< Cannot create virtual device because name is taken. */
+    pmNameConflict, /**< Cannot create virtual device because name is taken. */
+    pmDeviceRemoved  /**< Output attempted after (USB) device was removed. */
     /* NOTE: If you add a new error type, you must update Pm_GetErrorText(). */
 } PmError; /**< @brief @enum PmError PortMidi error code; a common return type. 
             * No error is indicated by zero; errors are indicated by < 0.

@@ -147,8 +147,8 @@ general MIDI device queries
 */
 
 /* add a device after converting device (product) name to UTF-8 */
-static pm_add_device_w(char *api, WCHAR *device_name, int is_input,
-                       int is_virtual, void *descriptor, pm_fns_type dictionary)
+static void pm_add_device_w(char *api, WCHAR *device_name, int is_input,
+                            int is_virtual, void *descriptor, pm_fns_type dictionary)
 {
     char utf8name[4 * MAXPNAMELEN];
     WideCharToMultiByte(CP_UTF8, 0, device_name, -1, 
@@ -267,20 +267,6 @@ static int str_copy_len(char *dst, char *src, int len)
 static unsigned int winmm_check_host_error(PmInternal *midi)
 {
     return FALSE;
-}
-
-
-static void improve_winerr(int pm_hosterror, char *message)
-{
-    if (pm_hosterror == MMSYSERR_NOMEM) {
-        /* add explanation to Window's confusing error message */
-        /* if there's room: */
-        if (PM_HOST_ERROR_MSG_LEN - strlen(pm_hosterror_text) > 60) {
-#pragma warning(suppress: 4996)  // don't use suggested strcat_s
-            strcat(pm_hosterror_text, " Probably this MIDI device is open "
-                                      "in another application.");
-        }
-    }
 }
 
 
@@ -444,7 +430,15 @@ static void report_hosterror(LPWCH error_msg)
 {
     WideCharToMultiByte(CP_UTF8, 0, error_msg, -1, pm_hosterror_text,
                         sizeof(pm_hosterror_text), NULL, NULL);
-    improve_winerr(pm_hosterror, (char*)pm_hosterror_text);
+    if (pm_hosterror == MMSYSERR_NOMEM) {
+        /* add explanation to Window's confusing error message */
+        /* if there's room: */
+        if (PM_HOST_ERROR_MSG_LEN - strlen(pm_hosterror_text) > 60) {
+#pragma warning(suppress: 4996)  // don't use suggested strcat_s
+            strcat(pm_hosterror_text, " Probably this MIDI device is open "
+                   "in another application.");
+        }
+    }
     pm_hosterror = TRUE;
 }
 
@@ -490,11 +484,11 @@ static PmError winmm_in_open(PmInternal *midi, void *driverInfo)
     InitializeCriticalSectionAndSpinCount(&info->lock, 4000);
     /* open device */
     pm_hosterror = midiInOpen(
-	    &(info->handle.in),  /* input device handle */
-	    dwDevice,  /* device ID */
-	    (DWORD_PTR) winmm_in_callback,  /* callback address */
-	    (DWORD_PTR) midi,  /* callback instance data */
-	    CALLBACK_FUNCTION); /* callback is a procedure */
+	                &(info->handle.in),  /* input device handle */
+	                dwDevice,  /* device ID */
+	                (DWORD_PTR) winmm_in_callback,  /* callback address */
+	                (DWORD_PTR) midi,  /* callback instance data */
+	                CALLBACK_FUNCTION); /* callback is a procedure */
     if (pm_hosterror) goto free_descriptor;
 
     if (num_input_buffers < MIN_INPUT_BUFFERS)
@@ -543,10 +537,10 @@ static PmError winmm_in_close(PmInternal *midi)
     winmm_info_type info = (winmm_info_type) midi->api_info;
     if (!info) return pmBadPtr;
     /* device to close */
-    if (pm_hosterror = midiInStop(info->handle.in)) {
+    if ((pm_hosterror = midiInStop(info->handle.in))) {
         midiInReset(info->handle.in); /* try to reset and close port */
         midiInClose(info->handle.in);
-    } else if (pm_hosterror = midiInReset(info->handle.in)) {
+    } else if ((pm_hosterror = midiInReset(info->handle.in))) {
         midiInClose(info->handle.in); /* best effort to close midi port */
     } else {
         pm_hosterror = midiInClose(info->handle.in);
@@ -570,7 +564,6 @@ static void FAR PASCAL winmm_in_callback(
     DWORD_PTR dwParam1,    /* MIDI data */
     DWORD_PTR dwParam2)    /* device timestamp (wrt most recent midiInStart) */
 {
-    static int entry = 0;
     PmInternal *midi = (PmInternal *) dwInstance;
     winmm_info_type info = (winmm_info_type) midi->api_info;
 
@@ -764,7 +757,6 @@ static PmError winmm_out_open(PmInternal *midi, void *driverInfo)
         if (output_buffer_len < MIN_SIMPLE_SYSEX_LEN)
             output_buffer_len = MIN_SIMPLE_SYSEX_LEN;
     } else {
-        long dur = 0;
         num_buffers = max(midi->buffer_len, midi->latency / 2);
         if (num_buffers < MIN_STREAM_BUFFERS)
             num_buffers = MIN_STREAM_BUFFERS;

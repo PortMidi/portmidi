@@ -229,7 +229,7 @@ char* cm_get_full_endpoint_name(MIDIEndpointRef endpoint, int *iac_flag);
 static PmError check_hosterror(OSStatus err, const char *msg)
 {
     if (err != noErr) {
-        sprintf(pm_hosterror_text, "Host error %ld: %s", (long) err, msg);
+        snprintf(pm_hosterror_text, PM_HOST_ERROR_MSG_LEN, "Host error %ld: %s", (long) err, msg);
         pm_hosterror = TRUE;
         return pmHostError;
     }

@@ -20,15 +20,15 @@ int verbose = FALSE;
 /* crash the program to test whether midi ports are closed */
 /**/
 void doSomethingReallyStupid() {
-	int * tmp = NULL;
-	*tmp = 5;
+    int * tmp = NULL;
+    *tmp = 5;
 }
 
 
 /* exit the program without any explicit cleanup */
 /**/
 void doSomethingStupid() {
-	assert(0);
+    assert(0);
 }
 
 

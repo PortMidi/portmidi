@@ -678,11 +678,10 @@ static PmError midi_create_virtual(int is_input, const char *name,
         return id;
     }
 
-    nameRef = CFStringCreateWithCString(NULL, name, kCFStringEncodingASCII);
+    nameRef = CFStringCreateWithCString(NULL, name, kCFStringEncodingUTF8);
     if (is_input) {
         macHostError = MIDIDestinationCreate(client, nameRef, 
-                               virtual_read_callback, (void *) (intptr_t) id,
-                               &endpoint);
+                virtual_read_callback, (void *) (intptr_t) id, &endpoint);
     } else {
         macHostError = MIDISourceCreate(client, nameRef, &endpoint);
     }
@@ -692,9 +691,27 @@ static PmError midi_create_virtual(int is_input, const char *name,
         /* undo the device we just allocated */
         pm_undo_add_device(id);
         return check_hosterror(macHostError, (is_input ?
-                       "MIDIDestinationCreate() in midi_create_virtual()" :
-                       "MIDISourceCreate() in midi_create_virtual()"));
+                "MIDIDestinationCreateWithProtocol() in midi_create_virtual()" :
+                "MIDISourceCreateWithProtocol() in midi_create_virtual()"));
     }
+
+    /* Do we have a manufacturer name? If not, set to "PortMidi" */
+    char *mfr_name = "PortMidi";
+    PmSysDepInfo *info = (PmSysDepInfo *) device_info;
+    /* the version where pmKeyCoreMidiManufacturer was introduced is 210 */
+    if (info && info->structVersion >= 210) {
+        int i;
+        for (i = 0; i < info->length; i++) {  /* search for key */
+            if (info->properties[i].key == pmKeyCoreMidiManufacturer) {
+                mfr_name = info->properties[i].value;
+                break;
+            }  /* no other keys are recognized; they are ignored */
+        }
+    }
+    nameRef = CFStringCreateWithCString(NULL, mfr_name, kCFStringEncodingUTF8);
+    MIDIObjectSetStringProperty(client, kMIDIPropertyManufacturer, nameRef);
+    CFRelease(nameRef);
+
     pm_descriptors[id].descriptor = (void *) (intptr_t) endpoint;
     return id;
 }

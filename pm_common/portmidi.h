@@ -215,7 +215,7 @@ typedef int PmDeviceID;
 /** MIDI device information is returned in this structure, which is
     owned by PortMidi and read-only to applications. See Pm_GetDeviceInfo().
 */
-#define PM_DEVICEINFO_VERS 200
+#define PM_SYSDEPINFO_VERS 200
 typedef struct {
     int structVersion; /**< @brief this internal structure version */ 
     const char *interf; /**< @brief underlying MIDI API, e.g. 
@@ -226,6 +226,33 @@ typedef struct {
     int opened; /**< @brief used by generic PortMidi for error checking */
     int is_virtual; /**< @brief true iff this is/was a virtual device */
 } PmDeviceInfo;
+
+/** MIDI system-dependent device or driver info is passed in this
+    structure, which is owned by the caller.
+*/
+#define PM_SYSDEPINFO_VERS 210
+
+enum PmSysDepPropertyKey {
+    pmKeyNone = 0,  /**< a "noop" key value */
+    /** CoreMIDI Manufacturer name, value is string */
+    pmKeyCoreMidiManufacturer = 1,
+    /** Linux ALSA snd_seq_port_info_set_name and usep
+        SND_SEQ_PORT_CAP_SUBS_WRITE to allow external reconnection,
+        value is a string */
+    pmKeyAlsaPortName = 2
+    /* if system-dependent code introduces more options, register
+       the key here to avoid conflicts. */
+};
+
+typedef struct {
+    int structVersion;  /**< @brief this structure version */
+    int length;  /**< @brief number of properties in this structure */
+    struct {
+        enum PmSysDepPropertyKey key;
+        void *value;
+    } properties[];
+} PmSysDepInfo;
+
 
 /** Get devices count, ids range from 0 to Pm_CountDevices()-1. */
 PMEXPORT int Pm_CountDevices(void);
@@ -323,10 +350,11 @@ PMEXPORT const PmDeviceInfo *Pm_GetDeviceInfo(PmDeviceID id);
 
     @param inputDevice the ID of the device to be opened (see #PmDeviceID).
 
-    @param inputDriverInfo a pointer to an optional driver-specific
-    data structure containing additional information for device setup
-    or handle processing. This parameter is never required for correct
-    operation. If not used, specify NULL.
+    @param inputSysDepInfo a pointer to an optional system-dependent
+    data structure (a #PmSysDepInfo struct) containing additional
+    information for device setup or handle processing. This parameter
+    is never required for correct operation. If not used, specify
+    NULL.  Declared `void *` here for backward compatibility.
 
     @param bufferSize the number of input events to be buffered
     waiting to be read using Pm_Read(). Messages will be lost if the
@@ -357,7 +385,7 @@ PMEXPORT const PmDeviceInfo *Pm_GetDeviceInfo(PmDeviceID id);
 */
 PMEXPORT PmError Pm_OpenInput(PortMidiStream** stream,
                 PmDeviceID inputDevice,
-                void *inputDriverInfo,
+                void *inputSysDepInfo,
                 int32_t bufferSize,
                 PmTimeProcPtr time_proc,
                 void *time_info);
@@ -369,10 +397,11 @@ PMEXPORT PmError Pm_OpenInput(PortMidiStream** stream,
 
     @param outputDevice the ID of the device to be opened (see #PmDeviceID).
 
-    @param outputDriverInfo a pointer to an optional driver-specific
-    data structure containing additional information for device setup
-    or handle processing. This parameter is never required for correct
-    operation. If not used, specify NULL.
+    @param inputSysDepInfo a pointer to an optional system-specific
+    data structure (a #PmSysDepInfo struct) containing additional
+    information for device setup or handle processing. This parameter
+    is never required for correct operation. If not used, specify
+    NULL. Declared `void *` here for backward compatibility.
 
     @param bufferSize the number of output events to be buffered
     waiting for output. In some cases -- see below -- PortMidi does
@@ -458,7 +487,7 @@ PMEXPORT PmError Pm_OpenInput(PortMidiStream** stream,
 */
 PMEXPORT PmError Pm_OpenOutput(PortMidiStream** stream,
                 PmDeviceID outputDevice,
-                void *outputDriverInfo,
+                void *outputSysDepInfo,
                 int32_t bufferSize,
                 PmTimeProcPtr time_proc,
                 void *time_info,
@@ -474,9 +503,10 @@ PMEXPORT PmError Pm_OpenOutput(PortMidiStream** stream,
     "ALSA". Currently, these are the only ones implemented, but future
     implementations could support DirectMusic, Jack, sndio, or others.
 
-    @param deviceInfo contains interface-dependent additional
-    information, e.g., hints or options. There are none at present, and
-    NULL is the recommended value.
+    @param sysDepInfo contains interface-dependent additional
+    information (a #PmSysDepInfo struct), e.g., hints or options. This
+    parameter is never required for correct operation. If not used,
+    specify NULL. Declared `void *` here for backward compatibility.
 
     @return a device ID or #pmNameConflict (\p name is invalid or
     already exists) or #pmInterfaceNotSupported (\p interf is does not
@@ -491,7 +521,7 @@ PMEXPORT PmError Pm_OpenOutput(PortMidiStream** stream,
 */
 PMEXPORT PmError Pm_CreateVirtualInput(const char *name,
                                        const char *interf,
-                                       void *deviceInfo);
+                                       void *sysDepInfo);
 
 /** Create a virtual output device.
 
@@ -503,9 +533,10 @@ PMEXPORT PmError Pm_CreateVirtualInput(const char *name,
     "ALSA". Currently, these are the only ones implemented, but future
     implementations could support DirectMusic, Jack, sndio, or others.
 
-    @param deviceInfo contains interface-dependent additional
-    information, e.g., hints or options. There are none at present, and
-    NULL is the recommended value.
+    @param sysDepInfo contains interface-dependent additional
+    information (a #PmSysDepInfo struct), e.g., hints or options. This
+    parameter is never required for correct operation. If not used,
+    specify NULL. Declared `void *` here for backward compatibility.
 
     @return a device ID or #pmInvalidDeviceId (\p name is invalid or
     already exists) or #pmInterfaceNotSupported (\p interf is does not
@@ -520,7 +551,7 @@ PMEXPORT PmError Pm_CreateVirtualInput(const char *name,
 */
 PMEXPORT PmError Pm_CreateVirtualOutput(const char *name,
                                         const char *interf,
-                                        void *deviceInfo);
+                                        void *sysDepInfo);
 
 /** Remove a virtual device.
 

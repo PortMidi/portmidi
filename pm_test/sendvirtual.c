@@ -11,13 +11,25 @@
 #include "assert.h"
 
 #define OUTPUT_BUFFER_SIZE 0
-#define DEVICE_INFO NULL
-#define DRIVER_INFO NULL
+#define SYSDEPINFO NULL
 #define TIME_PROC ((PmTimeProcPtr) Pt_Time)
 #define TIME_INFO NULL
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
 
 int latency = 0;
+PmSysDepInfo *sysdepinfo = NULL;
+
+static void set_sysdepinfo(char *mfr_name)
+{
+    // allocate some space we will alias with open-ended PmDriverInfo:
+    static char dimem[sizeof(PmSysDepInfo) + sizeof(void *) * 2];
+    sysdepinfo = (PmSysDepInfo *) dimem;
+    // build the driver info structure:
+    sysdepinfo->structVersion = PM_SYSDEPINFO_VERS;
+    sysdepinfo->length = 1;
+    sysdepinfo->properties[0].key = pmKeyCoreMidiManufacturer;
+    sysdepinfo->properties[0].value = mfr_name;
+}
 
 static void prompt_and_exit(void)
 {
@@ -70,8 +82,8 @@ void main_test_output(int num)
     TIME_START;
 
     /* create a virtual output device */
-    id = checkerror(Pm_CreateVirtualOutput("portmidi", NULL, DEVICE_INFO));
-    checkerror(Pm_OpenOutput(&midi, id, DRIVER_INFO, OUTPUT_BUFFER_SIZE,
+    id = checkerror(Pm_CreateVirtualOutput("portmidi", NULL, sysdepinfo));
+    checkerror(Pm_OpenOutput(&midi, id, SYSDEPINFO, OUTPUT_BUFFER_SIZE,
                              TIME_PROC, TIME_INFO, latency));
 
     printf("Midi Output Virtual Device \"portmidi\" created.\n");
@@ -109,9 +121,10 @@ void main_test_output(int num)
 
 void show_usage()
 {
-    printf("Usage: sendvirtual [-h] [-l latency-in-ms] [n]\n"
+    printf("Usage: sendvirtual [-h] [-l latency-in-ms] [-m manufacturer] [n]\n"
            "    -h for this message,\n"
            "    -l ms designates latency for precise timing (default 0),\n"
+           "    -m name designates a manufacturer name (macOS only),\n"
            "    n is number of message to send.\n"
            "sends change program to 1, then one note per second with 0.5s on,\n"
            "0.5s off, for n/2 seconds. Latency >0 uses the device driver for \n"
@@ -131,6 +144,10 @@ int main(int argc, char *argv[])
             i = i + 1;
             latency = atoi(argv[i]);
             printf("Latency will be %d\n", latency);
+        } else if (strcmp(argv[i], "-m") == 0 && (i + 1 < argc)) {
+            i = i + 1;
+            set_sysdepinfo(argv[i]);
+            printf("Manufacturer name will be %s\n", argv[i]);
         } else {
             num = atoi(argv[1]);
             if (num <= 0) {

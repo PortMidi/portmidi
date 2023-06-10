@@ -6,12 +6,26 @@
 #include "assert.h"
 
 #define INPUT_BUFFER_SIZE 100
-#define DRIVER_INFO NULL
+#define SYSDEPINFO NULL
 #define TIME_PROC ((PmTimeProcPtr) Pt_Time)
 #define TIME_INFO NULL
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
 
 #define STRING_MAX 80 /* used for console input */
+
+PmSysDepInfo *sysdepinfo = NULL;
+
+static void set_sysdepinfo(char *mfr_name)
+{
+    // allocate some space we will alias with open-ended PmDriverInfo:
+    static char dimem[sizeof(PmSysDepInfo) + sizeof(void *) * 2];
+    sysdepinfo = (PmSysDepInfo *) dimem;
+    // build the driver info structure:
+    sysdepinfo->structVersion = PM_SYSDEPINFO_VERS;
+    sysdepinfo->length = 1;
+    sysdepinfo->properties[0].key = pmKeyCoreMidiManufacturer;
+    sysdepinfo->properties[0].value = mfr_name;
+}
 
 static void prompt_and_exit(void)
 {
@@ -53,8 +67,8 @@ void main_test_input(int num)
     TIME_START;
 
     /* create a virtual input device */
-    id = checkerror(Pm_CreateVirtualInput("portmidi", NULL, DRIVER_INFO));
-    checkerror(Pm_OpenInput(&midi, id, NULL, 0, NULL, NULL));
+    id = checkerror(Pm_CreateVirtualInput("portmidi", NULL, sysdepinfo));
+    checkerror(Pm_OpenInput(&midi, id, SYSDEPINFO, 0, NULL, NULL));
 
     printf("Midi Input opened. Reading %d Midi messages...\n", num);
     Pm_SetFilter(midi, PM_FILT_ACTIVE | PM_FILT_CLOCK | PM_FILT_SYSEX);
@@ -93,7 +107,9 @@ void main_test_input(int num)
 
 void show_usage()
 {
-    printf("Usage: recvvirtual [-h] [n]\n    use -h for this message,\n"
+    printf("Usage: recvvirtual [-h] [-m manufacturer] [n]\n"
+           "    -h for this message,\n"
+           "    -m name designates a manufacturer name (macOS only),\n"
            "    n is number of message to wait for.\n");
     exit(0);
 }
@@ -103,7 +119,25 @@ int main(int argc, char *argv[])
 {
     char line[STRING_MAX];
     int num = 10;
-    
+    int i;
+    for (i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "-h") == 0) {
+            show_usage();
+        } else if (strcmp(argv[i], "-m") == 0 && (i + 1 < argc)) {
+            i = i + 1;
+            set_sysdepinfo(argv[i]);
+            printf("Manufacturer name will be %s\n", argv[i]);
+        } else {
+            num = atoi(argv[1]);
+            if (num <= 0) {
+                show_usage();
+            }
+            printf("Sending %d messages.\n", num);
+        }
+    }
+        
+
+
     if (argc > 2) {
         show_usage();
     } else if (argc == 2) {

@@ -88,9 +88,7 @@ if(UNIX AND APPLE)
   set(PM_LIB_PRIVATE_SRC 
       ${PMDIR}/porttime/ptmacosx_mach.c
       ${PMDIR}/pm_mac/pmmac.c
-      ${PMDIR}/pm_mac/pmmacosxcm.c
-      ${PMDIR}/pm_mac/finddefault.c
-      ${PMDIR}/pm_mac/readbinaryplist.c)
+      ${PMDIR}/pm_mac/pmmacosxcm.c)
   set(PM_NEEDED_LIBS ${CMAKE_THREAD_LIBS_INIT} ${COREAUDIO_LIBRARY}
       ${COREFOUNDATION_LIBRARY} ${COREMIDI_LIBRARY} ${CORESERVICES_LIBRARY}
       PARENT_SCOPE)
@@ -101,8 +99,7 @@ if(UNIX AND APPLE)
 elseif(HAIKU)
   set(PM_LIB_PRIVATE_SRC
       ${PMDIR}/porttime/pthaiku.cpp
-      ${PMDIR}/pm_haiku/pmhaiku.cpp
-      ${PMDIR}/pm_linux/finddefault.c)
+      ${PMDIR}/pm_haiku/pmhaiku.cpp)
   set(PM_NEEDED_LIBS be midi midi2 PARENT_SCOPE)
   target_link_libraries(portmidi PRIVATE be midi midi2)
 elseif(UNIX)
@@ -110,8 +107,7 @@ elseif(UNIX)
   set(PM_LIB_PRIVATE_SRC
       ${PMDIR}/porttime/ptlinux.c
       ${PMDIR}/pm_linux/pmlinux.c
-      ${PMDIR}/pm_linux/pmlinuxnull.c
-      ${PMDIR}/pm_linux/finddefault.c)
+      ${PMDIR}/pm_linux/pmlinuxnull.c)
   if(${LINUX_DEFINES} MATCHES ".*PMALSA.*")
     # Note that ALSA is not required if PMNULL is defined -- PortMidi will then
     # compile without ALSA and report no MIDI devices. Later, PMSNDIO or PMJACK

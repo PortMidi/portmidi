@@ -120,7 +120,6 @@ void main_test(int num)
     int id2_in;
     int32_t next_time;
     PmEvent buffer[1];
-    PmTimestamp timestamp;
     int pitch = 60;
     int expected_count = num + 1;  /* add 1 for MIDI Program message */
 

@@ -1,5 +1,8 @@
 @echo off
 
+rem This is an out-of-date script for Windows to build a Java application
+rem (PmDefaults) with PortMidi external library.
+
 rem Compile the java PortMidi interface classes.
 javac jportmidi/*.java
 

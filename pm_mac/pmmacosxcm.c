@@ -75,7 +75,6 @@
 #include "pmutil.h"
 #include "pminternal.h"
 #include "porttime.h"
-#include "pmmac.h"
 #include "pmmacosxcm.h"
 
 #include <stdio.h>
@@ -1261,10 +1260,6 @@ PmError pm_macosxcm_init(void)
         if (endpoint == NULL_REF) {
             continue;
         }
-        /* set the first input we see to the default */
-        if (pm_default_input_device_id == -1)
-            pm_default_input_device_id = pm_descriptor_len;
-        
         /* Register this device with PortMidi */
         pm_add_device("CoreMIDI", 
                 cm_get_full_endpoint_name(endpoint, &iac_flag), TRUE, FALSE,
@@ -1279,10 +1274,6 @@ PmError pm_macosxcm_init(void)
         if (endpoint == NULL_REF) {
             continue;
         }
-        /* set the first output we see to the default */
-        if (pm_default_output_device_id == -1)
-            pm_default_output_device_id = pm_descriptor_len;
-
         /* Register this device with PortMidi */
         id = pm_add_device("CoreMIDI", 
                 cm_get_full_endpoint_name(endpoint, &iac_flag), FALSE, FALSE,

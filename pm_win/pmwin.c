@@ -72,46 +72,6 @@ static PmDeviceID pm_get_default_device_id(int is_input, char *key) {
             break;
         }
     }
-    /* Look in registry for a default device name pattern. */
-    if (RegOpenKeyEx(HKEY_CURRENT_USER, "Software", 0, KEY_READ, &hkey) != 
-        ERROR_SUCCESS) {
-        return id;
-    }
-    if (RegOpenKeyEx(hkey, "JavaSoft", 0, KEY_READ, &hkey) !=
-        ERROR_SUCCESS) {
-        return id;
-    }
-    if (RegOpenKeyEx(hkey, "Prefs", 0, KEY_READ, &hkey) !=
-        ERROR_SUCCESS) {
-        return id;
-    }
-    if (RegOpenKeyEx(hkey, "/Port/Midi", 0, KEY_READ, &hkey) !=
-        ERROR_SUCCESS) {
-        return id;
-    }
-    if (RegQueryValueEx(hkey, key, NULL, &dwType, (BYTE *) pattern, 
-                        (DWORD *) &pattern_max) != 
-	ERROR_SUCCESS) {
-        return id;
-    }
-
-    /* decode pattern: upper case encoded with "/" prefix */
-    i = j = 0;
-    while (pattern[i]) {
-        if (pattern[i] == '/' && pattern[i + 1]) {
-            pattern[j++] = toupper(pattern[++i]);
-	} else {
-            pattern[j++] = tolower(pattern[i]);
-	}
-        i++;
-    }
-    pattern[j] = 0; /* end of string */
-
-    /* now pattern is the string from the registry; search for match */
-    i = pm_find_default_device(pattern, is_input);
-    if (i != pmNoDevice) {
-        id = i;
-    }
     return id;
 }
 

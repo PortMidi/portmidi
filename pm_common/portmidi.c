@@ -34,6 +34,13 @@
 
 #define is_empty(midi) ((midi)->tail == (midi)->head)
 
+/* these are not static so that (possibly) some system-dependent code
+ * could override the portmidi.c default which is to use the first
+ * device added using pm_add_device()
+ */
+PmDeviceID pm_default_input_device_id = -1;
+PmDeviceID pm_default_output_device_id = -1;
+
 /* this is not static so that pm_init can set it directly
  *   (see pmmac.c:pm_init())
  */
@@ -258,6 +265,13 @@ PmError pm_add_device(char *interf, const char *name, int is_input,
     pm_descriptors[device_id].pm_internal = NULL;
 
     pm_descriptors[device_id].dictionary = dictionary;
+
+    /* set the defaults to the first input and output we see */
+    if (is_input && pm_default_input_device_id == -1) {
+        pm_default_input_device_id = device_id;
+    } else if (!is_input && pm_default_output_device_id == -1) {
+        pm_default_output_device_id = device_id;
+    }
     
     return device_id;
 }
@@ -288,7 +302,7 @@ void pm_undo_add_device(int id)
 /* utility to look up device, given a pattern, 
    note: pattern is modified
  */
-int pm_find_default_device(char *pattern, int is_input)
+int Pm_FindDevice(char *pattern, int is_input)
 {
     int id = pmNoDevice;
     int i;

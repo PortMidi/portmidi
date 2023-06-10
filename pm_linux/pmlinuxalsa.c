@@ -19,7 +19,6 @@
 #include "pmlinuxalsa.h"
 #include "string.h"
 #include "porttime.h"
-#include "pmlinux.h"
 
 #include <alsa/asoundlib.h>
 

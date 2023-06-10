@@ -24,6 +24,8 @@ extern "C" {
 #endif
 
 extern int pm_initialized; /* see note in portmidi.c */
+extern PmDeviceID pm_default_input_device_id;
+extern PmDeviceID pm_default_output_device_id;
 
 /* these are defined in system-specific file */
 void *pm_alloc(size_t s);
@@ -177,8 +179,6 @@ void pm_read_short(PmInternal *midi, PmEvent *event);
 #define MIDI_REALTIME_MASK 0xf8
 #define is_real_time(msg) \
     ((Pm_MessageStatus(msg) & MIDI_REALTIME_MASK) == MIDI_REALTIME_MASK)
-
-int pm_find_default_device(char *pattern, int is_input);
 
 #ifdef __cplusplus
 }

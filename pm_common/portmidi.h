@@ -237,32 +237,20 @@ PMEXPORT int Pm_CountDevices(void);
     The use of these functions is not recommended. There is no natural
     "default device" on any system, so defaults must be set by users.
     (Currently, PortMidi just returns the first device it finds as
-    "default".)  The (unsolved) problem is how to implement simple
-    preferences for a cross-platform library. (More notes follow, but
-    you can stop reading here.)
+    "default", so if there *is* a default, implementors should use
+    pm_add_device to add system default input and output devices
+    first.)
 
-    To implement preferences, you need (1) a standard place to put
-    them, (2) a representation for the preferences, (3) a graphical
-    interface to test and set preferences, (4) a "natural" way to
-    invoke the preference-setting program. To solve (3), PortMidi
-    originally chose to use Java and Swing to implement a
-    cross-platform GUI program called "pmdefaults." Java's Preferences
-    class already provide a location (problem 1) and representation
-    (problem 2). However, this solution was complex, requiring
-    PortMidi to parse binary Java preference files and requiring users
-    to install and invoke Java programs. It did not seem possible to
-    integrate pmdefaults into the system preference subsystems on
-    macOS, Windows, and Linux, so the user had to install and run
-    pmdefaults as an application. Moreover, Java is falling out of
-    favor.
-
-    A simpler solution is pass the burden to applications. It is easy
-    to scan devices with PortMidi and build a device menu, and to save
-    menu selections in application preferences for next time. This is
-    my recommendation for any GUI program. For simple command-line
-    applications and utilities, see pm_test where all the test
-    programs now accept device numbers on the command line and/or
+    The recommended solution is pass the burden to applications. It is
+    easy to scan devices with PortMidi and build a device menu, and to
+    save menu selections in application preferences for next
+    time. This is my recommendation for any GUI program. For simple
+    command-line applications and utilities, see pm_test where all the
+    test programs now accept device numbers on the command line and/or
     prompt for their entry.
+
+    On linux, you can create virtual ports and use an external program
+    to set up inter-application and device connections.
 
     Some advice for preferences: MIDI devices used to be built-in or
     plug-in cards, so the numbers rarely changed. Now MIDI devices are
@@ -276,57 +264,31 @@ PMEXPORT int Pm_CountDevices(void);
     in, preferences should record *names* of devices rather than
     device numbers. It is simple enough to use string matching to find
     a prefered device, so PortMidi does not provide any built-in
-    lookup function. See below for details of the Java preferences API.
-
-    In the future, I would like to remove the legacy code that parses
-    Java preference data (macOS plist, linux prefs.xml, Windows
-    registry entries) and replace it with something more useful. Maybe
-    something really simple: $HOME/.portmidi? Or maybe a new
-    pmdefaults written with PyGame? Or use QT? If applications write
-    their own preferences, maybe a minimal command line preference
-    setter is all that's needed? Or maybe command line application
-    users are happy without a preference system? Comments and
-    proposals are welcome.
-
-    For completeness, here is a description of the original use of
-    Java for preference setting: The default device can be specified
-    using a small application named pmdefaults that is part of the
-    PortMidi distribution. This program in turn uses the Java
-    Preferences object created by
-    java.util.prefs.Preferences.userRoot().node("/PortMidi"); the
-    preference is set by calling
-    prefs.put("PM_RECOMMENDED_OUTPUT_DEVICE", prefName); or
-    prefs.put("PM_RECOMMENDED_INPUT_DEVICE", prefName);
-    
-    In the statements above, prefName is a string describing the
-    MIDI device in the form "interf, name" where interf identifies
-    the underlying software system or API used by PortMdi to access
-    devices and name is the name of the device. These correspond to 
-    the interf and name fields of a PmDeviceInfo. (Currently supported
-    interfaces are "MMSystem" for Win32, "ALSA" for Linux, and 
-    "CoreMIDI" for OS X, so in fact, there is no choice of interface.)
-    In "interf, name", the strings are actually substrings of 
-    the full interface and name strings. For example, the preference 
-    "Core, Sport" will match a device with interface "CoreMIDI"
-    and name "In USB MidiSport 1x1". It will also match "CoreMIDI"
-    and "In USB MidiSport 2x2". The devices are enumerated in device
-    ID order, so the lowest device ID that matches the pattern becomes
-    the default device. Finally, if the comma-space (", ") separator
-    between interface and name parts of the preference is not found,
-    the entire preference string is interpreted as a name, and the
-    interface part is the empty string, which matches anything.
-
-    On the MAC, preferences are stored in
-    /Users/$NAME/Library/Preferences/com.apple.java.util.prefs.plist
-    which is a binary file. In addition to the pmdefaults program,
-    there are utilities that can read and edit this preference file.
-    On Windows, the Registry is used. On Linux, preferences are in an
-    XML file.
+    lookup function.
 */
 PMEXPORT PmDeviceID Pm_GetDefaultInputDeviceID(void);
 
 /** @brief see PmDeviceID Pm_GetDefaultInputDeviceID() */
 PMEXPORT PmDeviceID Pm_GetDefaultOutputDeviceID(void);
+
+/** Find a device that matches a pattern. 
+
+    @param pattern a substring of the device name, or if the pattern
+    contains the two-character separator ", ", then the first part of
+    the pattern represents a device interface substring and the second
+    part after the separator represents a device name substring. 
+
+    @param is_input restricts the search to an input when true, or an
+    output when false.
+
+    @return the number of the first device whose device interface
+    contains the interface pattern (if any), whose device name
+    contains the name pattern, and whose direction (input or output)
+    matches the #is_input parameter. If no match is found, #pmNoDevice
+    (-1) is returned.
+*/
+PMEXPORT PmDeviceID Pm_FindDevice(char *pattern, int is_input);
+
 
 /** Represents a millisecond clock with arbitrary start time. 
     This type is used for all MIDI timestamps and clocks.

@@ -15,17 +15,29 @@
 
 PmSysDepInfo *sysdepinfo = NULL;
 
-static void set_sysdepinfo(char *mfr_name)
+static void set_sysdepinfo(char m_or_p, char *name)
 {
-    // allocate some space we will alias with open-ended PmDriverInfo:
-    static char dimem[sizeof(PmSysDepInfo) + sizeof(void *) * 2];
-    sysdepinfo = (PmSysDepInfo *) dimem;
-    // build the driver info structure:
-    sysdepinfo->structVersion = PM_SYSDEPINFO_VERS;
-    sysdepinfo->length = 1;
-    sysdepinfo->properties[0].key = pmKeyCoreMidiManufacturer;
-    sysdepinfo->properties[0].value = mfr_name;
+    if (!sysdepinfo) {
+        // allocate some space we will alias with open-ended PmDriverInfo:
+        // there is space for 2 parameters:
+        static char dimem[sizeof(PmSysDepInfo) + sizeof(void *) * 4];
+        sysdepinfo = (PmSysDepInfo *) dimem;
+        // build the driver info structure:
+        sysdepinfo->structVersion = PM_SYSDEPINFO_VERS;
+        sysdepinfo->length = 0;
+    }
+    if (sysdepinfo->length > 1) {
+        printf("Error: sysdepinfo was allocated to hold 2 parameters\n");
+        exit(1);
+    }
+    int i = sysdepinfo->length++;
+    enum PmSysDepPropertyKey k = pmKeyNone;
+    if (m_or_p == 'm') k = pmKeyCoreMidiManufacturer;
+    else if (m_or_p == 'p') k = pmKeyAlsaPortName;
+    sysdepinfo->properties[i].key = k;
+    sysdepinfo->properties[i].value = name;
 }
+
 
 static void prompt_and_exit(void)
 {
@@ -107,9 +119,10 @@ void main_test_input(int num)
 
 void show_usage()
 {
-    printf("Usage: recvvirtual [-h] [-m manufacturer] [n]\n"
+    printf("Usage: recvvirtual [-h] [-m manufacturer] [-p portname] [n]\n"
            "    -h for this message,\n"
            "    -m name designates a manufacturer name (macOS only),\n"
+           "    -p namem designates port name (linux only),\n"
            "    n is number of message to wait for.\n");
     exit(0);
 }
@@ -120,34 +133,27 @@ int main(int argc, char *argv[])
     char line[STRING_MAX];
     int num = 10;
     int i;
+    if (argc <= 1) {
+        show_usage();
+    }
     for (i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-h") == 0) {
             show_usage();
         } else if (strcmp(argv[i], "-m") == 0 && (i + 1 < argc)) {
             i = i + 1;
-            set_sysdepinfo(argv[i]);
+            set_sysdepinfo('m', argv[i]);
             printf("Manufacturer name will be %s\n", argv[i]);
+        } else if (strcmp(argv[i], "-p") == 0 && (i + 1 < argc)) {
+            i = i + 1;
+            set_sysdepinfo('p', argv[i]);
+            printf("Port name will be %s\n", argv[i]);
         } else {
-            num = atoi(argv[1]);
+            num = atoi(argv[i]);
             if (num <= 0) {
+                printf("Zero value or non-number for n\n");
                 show_usage();
             }
-            printf("Sending %d messages.\n", num);
-        }
-    }
-        
-
-
-    if (argc > 2) {
-        show_usage();
-    } else if (argc == 2) {
-        if (strcmp(argv[1], "-h") == 0) {
-            show_usage();
-        } else {
-            num = atoi(argv[1]);
-            if (num <= 0) {
-                show_usage();
-            }
+            printf("Waiting for %d messages.\n", num);
         }
     }
 

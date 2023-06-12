@@ -16,6 +16,7 @@
 
 int32_t latency = 0;
 int verbose = FALSE;
+PmSysDepInfo *sysdepinfo = NULL;
 
 /* crash the program to test whether midi ports are closed */
 /**/
@@ -46,6 +47,30 @@ int get_number(const char *prompt)
 }
 
 
+static void set_sysdepinfo(char m_or_p, char *name)
+{
+    if (!sysdepinfo) {
+        // allocate some space we will alias with open-ended PmDriverInfo:
+        // there is space for 2 parameters:
+        static char dimem[sizeof(PmSysDepInfo) + sizeof(void *) * 4];
+        sysdepinfo = (PmSysDepInfo *) dimem;
+        // build the driver info structure:
+        sysdepinfo->structVersion = PM_SYSDEPINFO_VERS;
+        sysdepinfo->length = 0;
+    }
+    if (sysdepinfo->length > 1) {
+        printf("Error: sysdepinfo was allocated to hold 2 parameters\n");
+        exit(1);
+    }
+    int i = sysdepinfo->length++;
+    enum PmSysDepPropertyKey k = pmKeyNone;
+    if (m_or_p == 'm') k = pmKeyCoreMidiManufacturer;
+    else if (m_or_p == 'p') k = pmKeyAlsaPortName;
+    sysdepinfo->properties[i].key = k;
+    sysdepinfo->properties[i].value = name;
+}
+
+
 /*
  * the somethingStupid parameter can be set to simulate a program crash.
  * We want PortMidi to close Midi ports automatically in the event of a
@@ -65,7 +90,7 @@ void main_test_input(unsigned int somethingStupid) {
     /* open input device */
     Pm_OpenInput(&midi, 
                  i,
-                 DRIVER_INFO, 
+                 sysdepinfo,
                  INPUT_BUFFER_SIZE, 
                  TIME_PROC, 
                  TIME_INFO);
@@ -133,7 +158,7 @@ void main_test_output(int isochronous_test)
        we will crash, so this test will tell us something. */
     Pm_OpenOutput(&midi, 
                   i, 
-                  DRIVER_INFO,
+                  sysdepinfo,
                   OUTPUT_BUFFER_SIZE, 
                   (latency == 0 ? NULL : TIME_PROC),
                   (latency == 0 ? NULL : TIME_INFO), 
@@ -276,7 +301,7 @@ void main_test_both()
 
     Pm_OpenOutput(&midiOut, 
                   out, 
-                  DRIVER_INFO,
+                  sysdepinfo,
                   OUTPUT_BUFFER_SIZE, 
                   TIME_PROC,
                   TIME_INFO, 
@@ -285,7 +310,7 @@ void main_test_both()
     /* open input device */
     Pm_OpenInput(&midi, 
                  in,
-                 DRIVER_INFO, 
+                 sysdepinfo,
                  INPUT_BUFFER_SIZE, 
                  TIME_PROC, 
                  TIME_INFO);
@@ -348,7 +373,7 @@ void main_test_stream() {
     /* open output device */
     Pm_OpenOutput(&midi, 
                   i, 
-                  DRIVER_INFO,
+                  sysdepinfo,
                   OUTPUT_BUFFER_SIZE, 
                   TIME_PROC,
                   TIME_INFO, 
@@ -424,9 +449,10 @@ void main_test_stream() {
 
 void show_usage()
 {
-    printf("Usage: test [-h] [-l latency-in-ms] [-v]\n"
+    printf("Usage: test [-h] [-l latency-in-ms] [-p portname] [-v]\n"
            "    -h for this help message (only)\n"
            "    -l for latency\n"
+           "    -p for portname and subscription enable (linux only)\n"
            "    -v for verbose (enables more output)\n");
 }
 
@@ -449,6 +475,10 @@ int main(int argc, char *argv[])
     for (i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-h") == 0) {
             exit(0);
+        } else if (strcmp(argv[i], "-p") == 0 && (i + 1 < argc)) {
+            i = i + 1;
+            set_sysdepinfo('p', argv[i]);
+            printf("Port name will be %s\n", argv[i]);
         } else if (strcmp(argv[i], "-l") == 0 && (i + 1 < argc)) {
             i = i + 1;
             latency = atoi(argv[i]);

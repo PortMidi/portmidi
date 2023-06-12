@@ -198,7 +198,7 @@ PmError pm_add_device(char *interf, const char *name, int is_input,
     for (device_id = (is_virtual ? 0 : pm_descriptor_len); 
          device_id < pm_descriptor_len; device_id++) {
         d = &pm_descriptors[device_id].pub;
-        d->structVersion = 200;
+        d->structVersion = PM_DEVICEINFO_VERS;
         if (strcmp(d->interf, interf) == 0 && strcmp(d->name, name) == 0) {
             /* only reuse a name if it is a deleted virtual device with
              * a matching direction (input or output) */

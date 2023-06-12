@@ -19,17 +19,29 @@
 int latency = 0;
 PmSysDepInfo *sysdepinfo = NULL;
 
-static void set_sysdepinfo(char *mfr_name)
+static void set_sysdepinfo(char m_or_p, char *name)
 {
-    // allocate some space we will alias with open-ended PmDriverInfo:
-    static char dimem[sizeof(PmSysDepInfo) + sizeof(void *) * 2];
-    sysdepinfo = (PmSysDepInfo *) dimem;
-    // build the driver info structure:
-    sysdepinfo->structVersion = PM_SYSDEPINFO_VERS;
-    sysdepinfo->length = 1;
-    sysdepinfo->properties[0].key = pmKeyCoreMidiManufacturer;
-    sysdepinfo->properties[0].value = mfr_name;
+    if (!sysdepinfo) {
+        // allocate some space we will alias with open-ended PmDriverInfo:
+        // there is space for 2 parameters:
+        static char dimem[sizeof(PmSysDepInfo) + sizeof(void *) * 4];
+        sysdepinfo = (PmSysDepInfo *) dimem;
+        // build the driver info structure:
+        sysdepinfo->structVersion = PM_SYSDEPINFO_VERS;
+        sysdepinfo->length = 0;
+    }
+    if (sysdepinfo->length > 1) {
+        printf("Error: sysdepinfo was allocated to hold 2 parameters\n");
+        exit(1);
+    }
+    int i = sysdepinfo->length++;
+    enum PmSysDepPropertyKey k = pmKeyNone;
+    if (m_or_p == 'm') k = pmKeyCoreMidiManufacturer;
+    else if (m_or_p == 'p') k = pmKeyAlsaPortName;
+    sysdepinfo->properties[i].key = k;
+    sysdepinfo->properties[i].value = name;
 }
+
 
 static void prompt_and_exit(void)
 {
@@ -121,10 +133,11 @@ void main_test_output(int num)
 
 void show_usage()
 {
-    printf("Usage: sendvirtual [-h] [-l latency-in-ms] [-m manufacturer] [n]\n"
+    printf("Usage: sendvirtual [-h] [-l latency-in-ms] [-m manufacturer] [-p portname] [n]\n"
            "    -h for this message,\n"
            "    -l ms designates latency for precise timing (default 0),\n"
            "    -m name designates a manufacturer name (macOS only),\n"
+           "    -p name designates a port name (linux only),\n"
            "    n is number of message to send.\n"
            "sends change program to 1, then one note per second with 0.5s on,\n"
            "0.5s off, for n/2 seconds. Latency >0 uses the device driver for \n"
@@ -137,6 +150,9 @@ int main(int argc, char *argv[])
 {
     int num = 10;
     int i;
+    if (argc <= 1) {
+        show_usage();
+    }
     for (i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-h") == 0) {
             show_usage();
@@ -146,11 +162,16 @@ int main(int argc, char *argv[])
             printf("Latency will be %d\n", latency);
         } else if (strcmp(argv[i], "-m") == 0 && (i + 1 < argc)) {
             i = i + 1;
-            set_sysdepinfo(argv[i]);
+            set_sysdepinfo('m', argv[i]);
             printf("Manufacturer name will be %s\n", argv[i]);
+        } else if (strcmp(argv[i], "-p") == 0 && (i + 1 < argc)) {
+            i = i + 1;
+            set_sysdepinfo('p', argv[i]);
+            printf("Port name will be %s\n", argv[i]);
         } else {
-            num = atoi(argv[1]);
+            num = atoi(argv[i]);
             if (num <= 0) {
+                printf("Zero value or non-number for n\n");
                 show_usage();
             }
             printf("Sending %d messages.\n", num);

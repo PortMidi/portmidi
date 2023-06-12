@@ -215,7 +215,7 @@ typedef int PmDeviceID;
 /** MIDI device information is returned in this structure, which is
     owned by PortMidi and read-only to applications. See Pm_GetDeviceInfo().
 */
-#define PM_SYSDEPINFO_VERS 200
+#define PM_DEVICEINFO_VERS 200
 typedef struct {
     int structVersion; /**< @brief this internal structure version */ 
     const char *interf; /**< @brief underlying MIDI API, e.g. 
@@ -236,7 +236,7 @@ enum PmSysDepPropertyKey {
     pmKeyNone = 0,  /**< a "noop" key value */
     /** CoreMIDI Manufacturer name, value is string */
     pmKeyCoreMidiManufacturer = 1,
-    /** Linux ALSA snd_seq_port_info_set_name and usep
+    /** Linux ALSA snd_seq_port_info_set_name and use
         SND_SEQ_PORT_CAP_SUBS_WRITE to allow external reconnection,
         value is a string */
     pmKeyAlsaPortName = 2

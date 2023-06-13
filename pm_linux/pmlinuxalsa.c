@@ -194,17 +194,18 @@ static PmError alsa_out_open(PmInternal *midi, void *driverInfo)
         snd_seq_port_info_set_type(pinfo, SND_SEQ_PORT_TYPE_MIDI_GENERIC | 
                                           SND_SEQ_PORT_TYPE_APPLICATION);
         snd_seq_port_info_set_port_specified(pinfo, 1);
+
+	if (port_name) {
+	  snd_seq_port_info_set_name(pinfo, port_name);
+	  VERBOSE printf("pm_out_open, pinfo %p, port_name %s\n",
+			 pinfo, port_name);
+	}
+
         err = snd_seq_create_port(seq, pinfo);
         if (err < 0) goto free_ainfo;
     } else if (snd_seq_get_port_info(seq, ainfo->port, pinfo)) {
         pinfo = NULL;
         goto free_ainfo;
-    }
-
-    if (port_name) {
-        snd_seq_port_info_set_name(pinfo, port_name);
-        printf("pm_out_open, pinfo %p, port_name %s\n",
-               pinfo, port_name);
     }
     
     err = snd_midi_event_new(PM_DEFAULT_SYSEX_BUFFER_SIZE, &ainfo->parser);
@@ -406,6 +407,11 @@ static PmError alsa_in_open(PmInternal *midi, void *driverInfo)
         snd_seq_port_info_set_type(pinfo, SND_SEQ_PORT_TYPE_MIDI_GENERIC | 
                                           SND_SEQ_PORT_TYPE_APPLICATION);
         snd_seq_port_info_set_port_specified(pinfo, 1);
+	
+	if (port_name) {
+	  snd_seq_port_info_set_name(pinfo, port_name);
+	}
+	
         err = snd_seq_create_port(seq, pinfo);
         if (err < 0) goto free_queue;
 
@@ -428,9 +434,6 @@ static PmError alsa_in_open(PmInternal *midi, void *driverInfo)
         snd_seq_port_subscribe_set_time_real(sub, 0);
         err = snd_seq_subscribe_port(seq, sub);
         if (err < 0) goto free_this_port;  /* clean up and return on error */
-    }
-    if (port_name) {
-        snd_seq_port_info_set_name(pinfo, port_name);
     }
     return pmNoError;
  free_this_port:

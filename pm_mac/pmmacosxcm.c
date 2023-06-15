@@ -709,7 +709,7 @@ static PmError midi_create_virtual(int is_input, const char *name,
         }
     }
     nameRef = CFStringCreateWithCString(NULL, mfr_name, kCFStringEncodingUTF8);
-    MIDIObjectSetStringProperty(client, kMIDIPropertyManufacturer, nameRef);
+    MIDIObjectSetStringProperty(endpoint, kMIDIPropertyManufacturer, nameRef);
     CFRelease(nameRef);
 
     pm_descriptors[id].descriptor = (void *) (intptr_t) endpoint;

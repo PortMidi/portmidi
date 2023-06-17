@@ -13,6 +13,8 @@
 
 #define STRING_MAX 80 /* used for console input */
 
+char *portname = "portmidi";
+
 PmSysDepInfo *sysdepinfo = NULL;
 
 static void set_sysdepinfo(char m_or_p, char *name)
@@ -79,7 +81,7 @@ void main_test_input(int num)
     TIME_START;
 
     /* create a virtual input device */
-    id = checkerror(Pm_CreateVirtualInput("portmidi", NULL, sysdepinfo));
+    id = checkerror(Pm_CreateVirtualInput(portname, NULL, sysdepinfo));
     checkerror(Pm_OpenInput(&midi, id, SYSDEPINFO, 0, NULL, NULL));
 
     printf("Midi Input opened. Reading %d Midi messages...\n", num);
@@ -145,8 +147,9 @@ int main(int argc, char *argv[])
             printf("Manufacturer name will be %s\n", argv[i]);
         } else if (strcmp(argv[i], "-p") == 0 && (i + 1 < argc)) {
             i = i + 1;
-            set_sysdepinfo('p', argv[i]);
-            printf("Port name will be %s\n", argv[i]);
+            portname = argv[i];
+            set_sysdepinfo('p', portname);
+            printf("Port name will be %s\n", portname);
         } else {
             num = atoi(argv[i]);
             if (num <= 0) {

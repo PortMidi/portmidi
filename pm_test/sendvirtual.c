@@ -18,6 +18,7 @@
 
 int latency = 0;
 PmSysDepInfo *sysdepinfo = NULL;
+char *portname = "portmidi";
 
 static void set_sysdepinfo(char m_or_p, char *name)
 {
@@ -94,11 +95,11 @@ void main_test_output(int num)
     TIME_START;
 
     /* create a virtual output device */
-    id = checkerror(Pm_CreateVirtualOutput("portmidi", NULL, sysdepinfo));
+    id = checkerror(Pm_CreateVirtualOutput(portname, NULL, sysdepinfo));
     checkerror(Pm_OpenOutput(&midi, id, SYSDEPINFO, OUTPUT_BUFFER_SIZE,
                              TIME_PROC, TIME_INFO, latency));
 
-    printf("Midi Output Virtual Device \"portmidi\" created.\n");
+    printf("Midi Output Virtual Device \"%s\" created.\n", portname);
     printf("Type ENTER to send messages: ");
     while (getchar() != '\n') ;
 
@@ -166,8 +167,9 @@ int main(int argc, char *argv[])
             printf("Manufacturer name will be %s\n", argv[i]);
         } else if (strcmp(argv[i], "-p") == 0 && (i + 1 < argc)) {
             i = i + 1;
-            set_sysdepinfo('p', argv[i]);
-            printf("Port name will be %s\n", argv[i]);
+            portname = argv[i];
+            set_sysdepinfo('p', portname);
+            printf("Port name will be %s\n", portname);
         } else {
             num = atoi(argv[i]);
             if (num <= 0) {

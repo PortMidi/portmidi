@@ -6,7 +6,6 @@
 #include "assert.h"
 
 #define INPUT_BUFFER_SIZE 100
-#define SYSDEPINFO NULL
 #define TIME_PROC ((PmTimeProcPtr) Pt_Time)
 #define TIME_INFO NULL
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
@@ -16,13 +15,14 @@
 char *portname = "portmidi";
 
 PmSysDepInfo *sysdepinfo = NULL;
+char *port_name = "portmidi";
 
-static void set_sysdepinfo(char m_or_p, char *name)
+static void set_sysdepinfo(char m_or_p, const char *name)
 {
     if (!sysdepinfo) {
         // allocate some space we will alias with open-ended PmDriverInfo:
-        // there is space for 2 parameters:
-        static char dimem[sizeof(PmSysDepInfo) + sizeof(void *) * 4];
+        // there is space for 4 parameters:
+        static char dimem[sizeof(PmSysDepInfo) + sizeof(void *) * 8];
         sysdepinfo = (PmSysDepInfo *) dimem;
         // build the driver info structure:
         sysdepinfo->structVersion = PM_SYSDEPINFO_VERS;
@@ -36,6 +36,7 @@ static void set_sysdepinfo(char m_or_p, char *name)
     enum PmSysDepPropertyKey k = pmKeyNone;
     if (m_or_p == 'm') k = pmKeyCoreMidiManufacturer;
     else if (m_or_p == 'p') k = pmKeyAlsaPortName;
+    else if (m_or_p == 'c') k = pmKeyAlsaClientName;
     sysdepinfo->properties[i].key = k;
     sysdepinfo->properties[i].value = name;
 }
@@ -81,8 +82,8 @@ void main_test_input(int num)
     TIME_START;
 
     /* create a virtual input device */
-    id = checkerror(Pm_CreateVirtualInput(portname, NULL, sysdepinfo));
-    checkerror(Pm_OpenInput(&midi, id, SYSDEPINFO, 0, NULL, NULL));
+    id = checkerror(Pm_CreateVirtualInput(port_name, NULL, sysdepinfo));
+    checkerror(Pm_OpenInput(&midi, id, sysdepinfo, 0, NULL, NULL));
 
     printf("Midi Input opened. Reading %d Midi messages...\n", num);
     Pm_SetFilter(midi, PM_FILT_ACTIVE | PM_FILT_CLOCK | PM_FILT_SYSEX);
@@ -121,10 +122,12 @@ void main_test_input(int num)
 
 void show_usage()
 {
-    printf("Usage: recvvirtual [-h] [-m manufacturer] [-p portname] [n]\n"
+    printf("Usage: recvvirtual [-h] [-m manufacturer] [-c clientname] "
+           "[-p portname] [n]\n"
            "    -h for this message,\n"
            "    -m name designates a manufacturer name (macOS only),\n"
-           "    -p namem designates port name (linux only),\n"
+           "    -c name designates a client name (linux only),\n"
+           "    -p name designates a port name (linux only),\n"
            "    n is number of message to wait for.\n");
     exit(0);
 }
@@ -147,9 +150,13 @@ int main(int argc, char *argv[])
             printf("Manufacturer name will be %s\n", argv[i]);
         } else if (strcmp(argv[i], "-p") == 0 && (i + 1 < argc)) {
             i = i + 1;
-            portname = argv[i];
-            set_sysdepinfo('p', portname);
-            printf("Port name will be %s\n", portname);
+            port_name = argv[i];
+            set_sysdepinfo('p', port_name);
+            printf("Port name will be %s\n", port_name);
+        } else if (strcmp(argv[i], "-c") == 0 && (i + 1 < argc)) {
+            i = i + 1;
+            set_sysdepinfo('c', argv[i]);
+            printf("Client name will be %s\n", argv[i]);
         } else {
             num = atoi(argv[i]);
             if (num <= 0) {

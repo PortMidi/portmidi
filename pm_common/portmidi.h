@@ -236,20 +236,34 @@ enum PmSysDepPropertyKey {
     pmKeyNone = 0,  /**< a "noop" key value */
     /** CoreMIDI Manufacturer name, value is string */
     pmKeyCoreMidiManufacturer = 1,
-    /** Linux ALSA snd_seq_port_info_set_name and use
-        SND_SEQ_PORT_CAP_SUBS_WRITE to allow external reconnection,
-        value is a string */
-    pmKeyAlsaPortName = 2
+    /** Linux ALSA snd_seq_port_info_set_name, value is a string. Can be 
+        passed in PmSysDepInfo to Pm_OpenInput or Pm_OpenOutput when opening
+        a device. The created port will be named accordingly and will be 
+        visible for externally made connections (subscriptions). (Linux ALSA
+        ports are always enabled for this, but only get application-specific
+        names if you give it one.) This key/value is ignored when opening
+        virtual ports, which are named when they are created.) */
+    pmKeyAlsaPortName = 2,
+    /** Linux ALSA snd_seq_set_client_name, value is a string.
+        Can be passed in PmSysDepInfo to Pm_OpenInput or Pm_OpenOutput.
+        Pm_CreateVirtualInput or Pm_CreateVirtualOutput. Will override
+        any previously set client name and applies to all ports. */
+    pmKeyAlsaClientName = 3
     /* if system-dependent code introduces more options, register
        the key here to avoid conflicts. */
 };
 
+/** System-dependent information can be passed when creating and opening
+    ports using this data structure, which stores alternating keys and
+    values (addresses). See `pm_test/sendvirtual.c`, `pm_test/recvvirtual.c`,
+    and `pm_test/testio.c` for examples.
+ */
 typedef struct {
     int structVersion;  /**< @brief this structure version */
     int length;  /**< @brief number of properties in this structure */
     struct {
         enum PmSysDepPropertyKey key;
-        void *value;
+        const void *value;
     } properties[];
 } PmSysDepInfo;
 
@@ -354,7 +368,9 @@ PMEXPORT const PmDeviceInfo *Pm_GetDeviceInfo(PmDeviceID id);
     data structure (a #PmSysDepInfo struct) containing additional
     information for device setup or handle processing. This parameter
     is never required for correct operation. If not used, specify
-    NULL.  Declared `void *` here for backward compatibility.
+    NULL.  Declared `void *` here for backward compatibility. Note that
+    with Linux ALSA, you can use this parameter to specify a client name
+    and port name.
 
     @param bufferSize the number of input events to be buffered
     waiting to be read using Pm_Read(). Messages will be lost if the
@@ -401,7 +417,9 @@ PMEXPORT PmError Pm_OpenInput(PortMidiStream** stream,
     data structure (a #PmSysDepInfo struct) containing additional
     information for device setup or handle processing. This parameter
     is never required for correct operation. If not used, specify
-    NULL. Declared `void *` here for backward compatibility.
+    NULL. Declared `void *` here for backward compatibility. Note that
+    with Linux ALSA, you can use this parameter to specify a client name
+    and port name.
 
     @param bufferSize the number of output events to be buffered
     waiting for output. In some cases -- see below -- PortMidi does

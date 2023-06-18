@@ -7,7 +7,6 @@
 
 #define INPUT_BUFFER_SIZE 100
 #define OUTPUT_BUFFER_SIZE 0
-#define DRIVER_INFO NULL
 #define TIME_PROC ((int32_t (*)(void *)) Pt_Time)
 #define TIME_INFO NULL
 #define TIME_START Pt_Start(1, 0, 0) /* timer started w/millisecond accuracy */
@@ -47,12 +46,12 @@ int get_number(const char *prompt)
 }
 
 
-static void set_sysdepinfo(char m_or_p, char *name)
+static void set_sysdepinfo(char m_or_p, const char *name)
 {
     if (!sysdepinfo) {
         // allocate some space we will alias with open-ended PmDriverInfo:
-        // there is space for 2 parameters:
-        static char dimem[sizeof(PmSysDepInfo) + sizeof(void *) * 4];
+        // there is space for 4 parameters:
+        static char dimem[sizeof(PmSysDepInfo) + sizeof(void *) * 8];
         sysdepinfo = (PmSysDepInfo *) dimem;
         // build the driver info structure:
         sysdepinfo->structVersion = PM_SYSDEPINFO_VERS;
@@ -66,6 +65,7 @@ static void set_sysdepinfo(char m_or_p, char *name)
     enum PmSysDepPropertyKey k = pmKeyNone;
     if (m_or_p == 'm') k = pmKeyCoreMidiManufacturer;
     else if (m_or_p == 'p') k = pmKeyAlsaPortName;
+    else if (m_or_p == 'c') k = pmKeyAlsaClientName;
     sysdepinfo->properties[i].key = k;
     sysdepinfo->properties[i].value = name;
 }
@@ -449,10 +449,12 @@ void main_test_stream() {
 
 void show_usage()
 {
-    printf("Usage: test [-h] [-l latency-in-ms] [-p portname] [-v]\n"
+    printf("Usage: test [-h] [-l latency-in-ms] [-c clientname] "
+           "[-p portname] [-v]\n"
            "    -h for this help message (only)\n"
            "    -l for latency\n"
-           "    -p for portname and subscription enable (linux only)\n"
+           "    -c name designates a client name (linux only),\n"
+           "    -p name designates a port name (linux only),\n"
            "    -v for verbose (enables more output)\n");
 }
 
@@ -477,8 +479,13 @@ int main(int argc, char *argv[])
             exit(0);
         } else if (strcmp(argv[i], "-p") == 0 && (i + 1 < argc)) {
             i = i + 1;
-            set_sysdepinfo('p', argv[i]);
-            printf("Port name will be %s\n", argv[i]);
+            const char *port_name = argv[i];
+            set_sysdepinfo('p', port_name);
+            printf("Port name will be %s\n", port_name);
+        } else if (strcmp(argv[i], "-c") == 0 && (i + 1 < argc)) {
+            i = i + 1;
+            set_sysdepinfo('c', argv[i]);
+            printf("Client name will be %s\n", argv[i]);
         } else if (strcmp(argv[i], "-l") == 0 && (i + 1 < argc)) {
             i = i + 1;
             latency = atoi(argv[i]);

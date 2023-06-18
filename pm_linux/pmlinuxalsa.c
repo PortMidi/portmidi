@@ -153,21 +153,36 @@ static alsa_info_type alsa_info_create(int client_port, long id, int is_virtual)
 }    
 
 
-/* search system dependent extra parameters for pmKeyAlsaPortName */
-static const char *get_port_name(PmSysDepInfo *info)
+/* search system dependent extra parameters for string */
+static const char *get_sysdep_name(enum PmSysDepPropertyKey key,
+                                   PmSysDepInfo *info)
 {
-    /* the version where pmKeyAlsaPortName was introduced is 210 */
+    /* the version where all current properties were introduced is 210 */
     if (info && info->structVersion >= 210) {
         int i;
         for (i = 0; i < info->length; i++) {  /* search for key */
-            if (info->properties[i].key == pmKeyAlsaPortName) {
-                const char *port_name = info->properties[i].value;
-                return port_name;
+            if (info->properties[i].key == key) {
+                return info->properties[i].value;
             }
         }
     }
     return NULL;
 }
+
+
+static void maybe_set_client_name(PmSysDepInfo *driverInfo)
+{
+    if (!seq) {  // make sure seq is created and we have info
+        return;
+    }
+    
+    const char *client_name = get_sysdep_name(pmKeyAlsaClientName,
+                                              (PmSysDepInfo *) driverInfo);
+    if (client_name) {
+        snd_seq_set_client_name(seq, client_name);
+        printf("maybe_set_client_name set client to %s\n", client_name);
+    }
+}    
 
 
 static PmError alsa_out_open(PmInternal *midi, void *driverInfo) 
@@ -183,29 +198,23 @@ static PmError alsa_out_open(PmInternal *midi, void *driverInfo)
     if (!ainfo) return pmInsufficientMemory;
     midi->api_info = ainfo;
 
-    const char *port_name = get_port_name((PmSysDepInfo *) driverInfo);
-    
     snd_seq_port_info_alloca(&pinfo);
     if (!ainfo->is_virtual) {
         snd_seq_port_info_set_port(pinfo, id);
         snd_seq_port_info_set_capability(pinfo, SND_SEQ_PORT_CAP_WRITE |
-                                                SND_SEQ_PORT_CAP_READ  |
-                            (port_name ? SND_SEQ_PORT_CAP_SUBS_READ : 0));
+                SND_SEQ_PORT_CAP_READ  | SND_SEQ_PORT_CAP_SUBS_READ);
         snd_seq_port_info_set_type(pinfo, SND_SEQ_PORT_TYPE_MIDI_GENERIC | 
                                           SND_SEQ_PORT_TYPE_APPLICATION);
+        const char *port_name = get_sysdep_name(pmKeyAlsaPortName,
+                                                (PmSysDepInfo *) driverInfo);
+        if (port_name) {
+            snd_seq_port_info_set_name(pinfo, port_name);
+        }
         snd_seq_port_info_set_port_specified(pinfo, 1);
-
-	if (port_name) {
-	  snd_seq_port_info_set_name(pinfo, port_name);
-	  VERBOSE printf("pm_out_open, pinfo %p, port_name %s\n",
-			 pinfo, port_name);
-	}
 
         err = snd_seq_create_port(seq, pinfo);
         if (err < 0) goto free_ainfo;
-    } else if (snd_seq_get_port_info(seq, ainfo->port, pinfo)) {
-        pinfo = NULL;
-        goto free_ainfo;
+
     }
     
     err = snd_midi_event_new(PM_DEFAULT_SYSEX_BUFFER_SIZE, &ainfo->parser);
@@ -222,6 +231,9 @@ static PmError alsa_out_open(PmInternal *midi, void *driverInfo)
                                  ainfo->port);
         if (err < 0) goto unuse_queue;  /* clean up and return on error */
     }
+
+    maybe_set_client_name(driverInfo);
+
     return pmNoError;
 
  unuse_queue:
@@ -351,10 +363,7 @@ static PmError alsa_create_virtual(int is_input, const char *name,
         pm_undo_add_device(id);
         return check_hosterror(err);
     }
-    const char *port_name = get_port_name((PmSysDepInfo *) device_info);
-    if (port_name) {
-        snd_seq_port_info_set_name(pinfo, port_name);
-    }        
+
     client = snd_seq_port_info_get_client(pinfo);
     port = snd_seq_port_info_get_port(pinfo);
     pm_descriptors[id].descriptor = MAKE_DESCRIPTOR(client, port);
@@ -387,8 +396,6 @@ static PmError alsa_in_open(PmInternal *midi, void *driverInfo)
     err = alsa_use_queue();
     if (err < 0) goto free_ainfo;
 
-    const char *port_name = get_port_name((PmSysDepInfo *) driverInfo);
-    
     snd_seq_port_info_alloca(&pinfo);
     if (is_virtual) {
         ainfo->is_virtual = TRUE;
@@ -401,17 +408,18 @@ static PmError alsa_in_open(PmInternal *midi, void *driverInfo)
            number matches the portmidi device ID of the input device */
         snd_seq_port_info_set_port(pinfo, id);
         snd_seq_port_info_set_capability(pinfo, SND_SEQ_PORT_CAP_WRITE |
-                                                SND_SEQ_PORT_CAP_READ  |
-                           (port_name ? SND_SEQ_PORT_CAP_SUBS_WRITE : 0));
+                SND_SEQ_PORT_CAP_READ  | SND_SEQ_PORT_CAP_SUBS_WRITE);
 
         snd_seq_port_info_set_type(pinfo, SND_SEQ_PORT_TYPE_MIDI_GENERIC | 
                                           SND_SEQ_PORT_TYPE_APPLICATION);
         snd_seq_port_info_set_port_specified(pinfo, 1);
-	
-	if (port_name) {
-	  snd_seq_port_info_set_name(pinfo, port_name);
-	}
-	
+        
+        const char *port_name = get_sysdep_name(pmKeyAlsaPortName,
+                                                (PmSysDepInfo *) driverInfo);
+        if (port_name) {
+            snd_seq_port_info_set_name(pinfo, port_name);
+        }
+        
         err = snd_seq_create_port(seq, pinfo);
         if (err < 0) goto free_queue;
 
@@ -435,6 +443,9 @@ static PmError alsa_in_open(PmInternal *midi, void *driverInfo)
         err = snd_seq_subscribe_port(seq, sub);
         if (err < 0) goto free_this_port;  /* clean up and return on error */
     }
+
+    maybe_set_client_name(driverInfo);
+
     return pmNoError;
  free_this_port:
     snd_seq_delete_port(seq, ainfo->this_port);

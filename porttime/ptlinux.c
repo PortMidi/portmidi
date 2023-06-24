@@ -31,11 +31,14 @@ CHANGE LOG
 #include "porttime.h"
 #include "time.h"
 #include "sys/resource.h"
-#include "sys/timeb.h"
 #include "pthread.h"
 
 #define TRUE 1
 #define FALSE 0
+
+#ifndef CLOCK_MONOTONIC_RAW
+#define CLOCK_MONOTONIC_RAW CLOCK_MONOTONIC
+#endif
 
 static int time_started_flag = FALSE;
 static struct timespec time_offset = {0, 0};

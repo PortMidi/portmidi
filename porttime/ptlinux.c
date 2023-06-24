@@ -83,14 +83,14 @@ PtError Pt_Start(int resolution, PtCallback *callback, void *userData)
     clock_gettime(CLOCK_MONOTONIC_RAW, &time_offset);
     if (callback) {
         int res;
-        pt_callback_parameters *parms = (pt_callback_parameters *) 
+        pt_callback_parameters *parms = (pt_callback_parameters *)
             malloc(sizeof(pt_callback_parameters));
         if (!parms) return ptInsufficientMemory;
         parms->id = pt_callback_proc_id;
         parms->resolution = resolution;
         parms->callback = callback;
         parms->userData = userData;
-        res = pthread_create(&pt_thread_pid, NULL, 
+        res = pthread_create(&pt_thread_pid, NULL,
                              Pt_CallbackProc, parms);
         if (res != 0) return ptHostError;
         pt_thread_created = TRUE;

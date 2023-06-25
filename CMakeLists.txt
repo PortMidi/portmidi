@@ -26,6 +26,8 @@ option(PM_USE_STATIC_RUNTIME
        "Use MSVC static runtime. Only applies when BUILD_SHARED_LIBS is OFF"
        ON)
 
+option(USE_SNDIO "Use sndio" OFF)
+
 # MSVCRT_DLL is used to construct the MSVC_RUNTIME_LIBRARY property
 #  (see pm_common/CMakeLists.txt and pm_test/CMakeLists.txt)
 if(PM_USE_STATIC_RUNTIME AND NOT BUILD_SHARED_LIBS)

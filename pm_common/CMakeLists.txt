@@ -78,8 +78,22 @@ if(NOT WIN32)
   find_package(Threads REQUIRED)
 endif()
 
+# Check for sndio
+include (FindPackageHandleStandardArgs)
+find_path(SNDIO_INCLUDE_DIRS NAMES sndio.h)
+find_library(SNDIO_LIBRARY sndio)
+find_package_handle_standard_args(Sndio
+    REQUIRED_VARS SNDIO_LIBRARY SNDIO_INCLUDE_DIRS)
+
 # first include the appropriate system-dependent file:
-if(UNIX AND APPLE)
+if(SNDIO_FOUND AND USE_SNDIO)
+  set(PM_LIB_PRIVATE_SRC
+      ${PMDIR}/porttime/ptlinux.c
+      ${PMDIR}/pm_sndio/pmsndio.c)
+  set(PM_NEEDED_LIBS Threads::Threads ${SNDIO_LIBRARY} PARENT_SCOPE)
+  target_link_libraries(portmidi PRIVATE Threads::Threads ${SNDIO_LIBRARY})
+  target_include_directories(portmidi PRIVATE ${SNDIO_INCLUDE_DIRS})
+elseif(UNIX AND APPLE)
   set(Threads::Threads "" PARENT_SCOPE)
   find_library(COREAUDIO_LIBRARY CoreAudio REQUIRED)
   find_library(COREFOUNDATION_LIBRARY CoreFoundation REQUIRED)

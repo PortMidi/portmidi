@@ -81,19 +81,24 @@ endif()
 # first include the appropriate system-dependent file:
 if(UNIX AND APPLE)
   set(Threads::Threads "" PARENT_SCOPE)
-  find_library(COREAUDIO_LIBRARY CoreAudio REQUIRED)
-  find_library(COREFOUNDATION_LIBRARY CoreFoundation REQUIRED)
-  find_library(COREMIDI_LIBRARY CoreMIDI REQUIRED)
-  find_library(CORESERVICES_LIBRARY CoreServices REQUIRED)
   set(PM_LIB_PRIVATE_SRC 
       ${PMDIR}/porttime/ptmacosx_mach.c
       ${PMDIR}/pm_mac/pmmac.c
       ${PMDIR}/pm_mac/pmmacosxcm.c)
-  set(PM_NEEDED_LIBS ${CMAKE_THREAD_LIBS_INIT} ${COREAUDIO_LIBRARY}
-      ${COREFOUNDATION_LIBRARY} ${COREMIDI_LIBRARY} ${CORESERVICES_LIBRARY}
+  set(PM_NEEDED_LIBS 
+      ${CMAKE_THREAD_LIBS_INIT}
+      -Wl,-framework,CoreAudio
+      -Wl,-framework,CoreFoundation
+      -Wl,-framework,CoreMidi
+      -Wl,-framework,CoreServices
       PARENT_SCOPE)
-  target_link_libraries(portmidi PRIVATE Threads::Threads ${COREAUDIO_LIBRARY}
-      ${COREFOUNDATION_LIBRARY} ${COREMIDI_LIBRARY} ${CORESERVICES_LIBRARY})
+  target_link_libraries(portmidi PRIVATE
+      Threads::Threads
+      -Wl,-framework,CoreAudio
+      -Wl,-framework,CoreFoundation
+      -Wl,-framework,CoreMidi
+      -Wl,-framework,CoreServices
+  )
   # set to CMake default; is this right?:
   set_target_properties(portmidi PROPERTIES MACOSX_RPATH ON)
 elseif(HAIKU)

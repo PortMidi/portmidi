@@ -1,5 +1,6 @@
-#ifndef PORT_MIDI_H
-#define PORT_MIDI_H
+#ifndef PORTMIDI_PORTMIDI_H
+#define PORTMIDI_PORTMIDI_H
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -969,4 +970,4 @@ PMEXPORT PmError Pm_WriteSysEx(PortMidiStream *stream, PmTimestamp when,
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
-#endif /* PORT_MIDI_H */
+#endif /* PORTMIDI_PORTMIDI_H */

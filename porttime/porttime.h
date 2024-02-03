@@ -7,6 +7,9 @@
 
 /* Should there be a way to choose the source of time here? */
 
+#ifndef PORTMIDI_PORTTIME_H_
+#define PORTMIDI_PORTTIME_H_
+
 #ifdef WIN32
 #ifndef INT32_DEFINED
 // rather than having users install a special .h file for windows, 
@@ -96,3 +99,5 @@ PMEXPORT void Pt_Sleep(int32_t duration);
 #ifdef __cplusplus
 }
 #endif
+
+#endif // PORTMIDI_PORTTIME_H_

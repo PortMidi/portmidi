@@ -19,6 +19,9 @@
 
 /** @cond INTERNAL - add INTERNAL to Doxygen ENABLED_SECTIONS to include */
 
+#ifndef PORTMIDI_PMINTERNAL_H
+#define PORTMIDI_PMINTERNAL_H
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -185,3 +188,5 @@ void pm_read_short(PmInternal *midi, PmEvent *event);
 #endif
 
 /** @endcond */
+
+#endif // PORTMIDI_PMINTERNAL_H

@@ -1096,7 +1096,7 @@ static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint,
         if (nConnected) {
             const SInt32 *pid = (const SInt32 *)(CFDataGetBytePtr(connections));
             for (i = 0; i < nConnected; ++i, ++pid) {
-                MIDIUniqueID id = EndianS32_BtoN(*pid);
+                MIDIUniqueID id = CFSwapInt32BigToHost(*pid);
                 MIDIObjectRef connObject;
                 MIDIObjectType connObjectType;
                 err = MIDIObjectFindByUniqueID(id, &connObject, 

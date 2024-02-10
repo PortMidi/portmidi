@@ -75,6 +75,7 @@
 #include "pmutil.h"
 #include "pminternal.h"
 #include "porttime.h"
+#include "ptmacosx.h"
 #include "pmmacosxcm.h"
 
 #include <stdio.h>
@@ -228,10 +229,6 @@ typedef struct coremidi_info_struct {
 /* private function declarations */
 MIDITimeStamp timestamp_pm_to_cm(PmTimestamp timestamp);  // returns host time
 PmTimestamp timestamp_cm_to_pm(MIDITimeStamp timestamp);  // returns ms
-static UInt64 current_host_time(void);
-static UInt64 nanos_to_host_time(UInt64 nanos);
-static UInt64 host_time_to_nanos(UInt64 host_time);
-static UInt64 micros_per_host_tick(void);
 
 char* cm_get_full_endpoint_name(MIDIEndpointRef endpoint, int *iac_flag);
 
@@ -269,7 +266,7 @@ static PmTimestamp midi_synchronize(PmInternal *midi)
 {
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
     UInt64 pm_stream_time_2 = // current time in ns
-            host_time_to_nanos(current_host_time());
+            Pt_HostTimeToNanos(Pt_CurrentHostTime());
     PmTimestamp real_time;  // in ms
     UInt64 pm_stream_time;  // in ns
     /* if latency is zero and this is an output, there is no 
@@ -280,7 +277,7 @@ static PmTimestamp midi_synchronize(PmInternal *midi)
          /* read real_time between two reads of stream time */
          pm_stream_time = pm_stream_time_2;
          real_time = (*midi->time_proc)(midi->time_info);
-         pm_stream_time_2 = host_time_to_nanos(current_host_time());
+         pm_stream_time_2 = Pt_HostTimeToNanos(Pt_CurrentHostTime());
          /* repeat if more than 0.5 ms has elapsed */
     } while (pm_stream_time_2 > pm_stream_time + 500000);
     info->delta = pm_stream_time - ((UInt64) real_time * (UInt64) 1000000);
@@ -424,19 +421,19 @@ static void read_callback(const MIDIPacketList *newPackets, PmInternal *midi)
      */
     CM_DEBUG printf("read_callback packet @ %lld ns (host %lld) "
                     "status %x length %d\n",
-                    host_time_to_nanos(current_host_time()),
-                    current_host_time(),
+                    Pt_HostTimeToNanos(Pt_CurrentHostTime()),
+                    Pt_CurrentHostTime(),
                     packet->data[0], packet->length);
     for (packetIndex = 0; packetIndex < newPackets->numPackets; packetIndex++) {
         /* Set the timestamp and dispatch this message */
         CM_DEBUG printf("    packet->timeStamp %lld ns %lld host\n",
                         packet->timeStamp,
-                        host_time_to_nanos(packet->timeStamp));
+                        Pt_HostTimeToNanos(packet->timeStamp));
         if (packet->timeStamp == 0) {
             event.timestamp = now;
         } else {
             event.timestamp = (PmTimestamp) /* explicit conversion */ (
-                (host_time_to_nanos(packet->timeStamp) - info->delta) /
+                (Pt_HostTimeToNanos(packet->timeStamp) - info->delta) /
                 (UInt64) 1000000);
         }
         status = packet->data[0];
@@ -514,7 +511,7 @@ static coremidi_info_type create_macosxcm_info(int is_virtual, int is_input)
     info->last_msg_length = 0;
     info->min_next_time = 0;
     info->isIACdevice = FALSE;
-    info->us_per_host_tick = micros_per_host_tick();
+    info->us_per_host_tick = Pt_MicrosPerHostTick();
     info->host_ticks_per_byte =
             (UInt64) (1000000.0 / (info->us_per_host_tick * MAX_BYTES_PER_S));
     info->packetList = (is_input ? NULL :
@@ -763,7 +760,7 @@ static PmError midi_write_flush(PmInternal *midi, PmTimestamp timestamp)
     if (info->packet != NULL) {
         /* out of space, send the buffer and start refilling it */
         /* update min_next_time each flush to support rate limit */
-        UInt64 host_now =  current_host_time();
+        UInt64 host_now =  Pt_CurrentHostTime();
         if (host_now > info->min_next_time) 
             info->min_next_time = host_now;
         if (info->is_virtual) {
@@ -789,8 +786,8 @@ static PmError send_packet(PmInternal *midi, Byte *message,
     CM_DEBUG printf("add %d to packet %p len %d timestamp %lld @ %lld ns "
                     "(host %lld)\n",
                     message[0], info->packet, messageLength, timestamp,
-                    host_time_to_nanos(current_host_time()),
-                    current_host_time());
+                    Pt_HostTimeToNanos(Pt_CurrentHostTime()),
+                    Pt_CurrentHostTime());
     info->packet = MIDIPacketListAdd(info->packetList,
                                      sizeof(info->packetBuffer), info->packet,
                                      timestamp, messageLength, message);
@@ -851,11 +848,11 @@ static PmError midi_write_short(PmInternal *midi, PmEvent *event)
      * latency is zero. Both mean no timing and send immediately.
      */
     if (when == 0 || midi->latency == 0) {
-        timestamp = current_host_time();
+        timestamp = Pt_CurrentHostTime();
     } else {  /* translate PortMidi time + latency to CoreMIDI time */
         timestamp = ((UInt64) (when + midi->latency) * (UInt64) 1000000) +
                     info->delta;
-        timestamp = nanos_to_host_time(timestamp);
+        timestamp = Pt_NanosToHostTime(timestamp);
     }
 
     message[0] = Pm_MessageStatus(what);
@@ -897,10 +894,10 @@ static PmError midi_begin_sysex(PmInternal *midi, PmTimestamp when)
     when_ns = ((UInt64) (when + midi->latency) * (UInt64) 1000000) +
               info->delta;
     info->sysex_timestamp =
-              (MIDITimeStamp) nanos_to_host_time(when_ns);
+              (MIDITimeStamp) Pt_NanosToHostTime(when_ns);
     UInt64 now; /* only make system time call when writing a virtual port */
     if (info->is_virtual && info->sysex_timestamp <
-        (now = current_host_time())) {
+        (now = Pt_CurrentHostTime())) {
         info->sysex_timestamp = now;
     }
 
@@ -972,48 +969,6 @@ static unsigned int midi_check_host_error(PmInternal *midi)
     return FALSE;
 }
 
-UInt64 current_host_time(void)
-{
-#if TARGET_OS_OSX
-    return AudioGetCurrentHostTime();
-#else
-    return mach_absolute_time();
-#endif
-}
-
-UInt64 nanos_to_host_time(UInt64 nanos)
-{
-#if TARGET_OS_OSX
-    return AudioConvertNanosToHostTime(nanos);
-#else
-    mach_timebase_info_data_t clock_timebase;
-    mach_timebase_info(&clock_timebase);
-    return (nanos * clock_timebase.denom) / clock_timebase.numer;
-#endif
-}
-
-UInt64 host_time_to_nanos(UInt64 host_time)
-{
-#if TARGET_OS_OSX
-    return AudioConvertHostTimeToNanos(host_time);
-#else
-    mach_timebase_info_data_t clock_timebase;
-    mach_timebase_info(&clock_timebase);
-    return (host_time * clock_timebase.numer) / clock_timebase.denom;
-#endif
-}
-
-UInt64 micros_per_host_tick(void)
-{
-#if TARGET_OS_OSX
-    return 1000000.0 / AudioGetHostClockFrequency();
-#else
-    mach_timebase_info_data_t clock_timebase;
-    mach_timebase_info(&clock_timebase);
-    return clock_timebase.numer / (clock_timebase.denom * 1000.0);
-#endif
-}
-
 MIDITimeStamp timestamp_pm_to_cm(PmTimestamp timestamp)
 {
     UInt64 nanos;
@@ -1021,7 +976,7 @@ MIDITimeStamp timestamp_pm_to_cm(PmTimestamp timestamp)
         return (MIDITimeStamp)0;
     } else {
         nanos = (UInt64)timestamp * (UInt64)1000000;
-        return (MIDITimeStamp)nanos_to_host_time(nanos);
+        return (MIDITimeStamp)Pt_NanosToHostTime(nanos);
     }
 }
 
@@ -1029,7 +984,7 @@ MIDITimeStamp timestamp_pm_to_cm(PmTimestamp timestamp)
 PmTimestamp timestamp_cm_to_pm(MIDITimeStamp timestamp)
 {
     UInt64 nanos;
-    nanos = host_time_to_nanos(timestamp);
+    nanos = Pt_HostTimeToNanos(timestamp);
     return (PmTimestamp)(nanos / (UInt64)1000000);
 }
 

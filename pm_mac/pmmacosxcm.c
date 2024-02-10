@@ -85,13 +85,6 @@
 #include <CoreMIDI/MIDIServices.h>
 #include <unistd.h>
 #include <libkern/OSAtomic.h>
-#include <TargetConditionals.h>
-
-#if TARGET_OS_OSX
-#include <CoreAudio/HostTime.h>
-#else
-#include <mach/mach_time.h>
-#endif
 
 #define PACKET_BUFFER_SIZE 1024
 /* maximum overall data rate (OS X limits MIDI rate in case there

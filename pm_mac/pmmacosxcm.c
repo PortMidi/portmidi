@@ -75,14 +75,15 @@
 #include "pmutil.h"
 #include "pminternal.h"
 #include "porttime.h"
+#include "ptmacosx.h"
 #include "pmmacosxcm.h"
 
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 
 #include <CoreServices/CoreServices.h>
 #include <CoreMIDI/MIDIServices.h>
-#include <CoreAudio/HostTime.h>
 #include <unistd.h>
 #include <libkern/OSAtomic.h>
 
@@ -199,7 +200,7 @@ extern pm_fns_node pm_macosx_out_dictionary;
 
 typedef struct coremidi_info_struct {
     int is_virtual;     /* virtual device (TRUE) or actual device (FALSE)? */
-    UInt64 delta;	/* difference between stream time and real time in ns */
+    uint64_t delta;	/* difference between stream time and real time in ns */
     int sysex_mode;     /* middle of sending sysex */
     uint32_t sysex_word; /* accumulate data when receiving sysex */
     uint32_t sysex_byte_count; /* count how many received */
@@ -213,10 +214,10 @@ typedef struct coremidi_info_struct {
     /* allow for running status (is running status possible here? -rbd): -cpr */
     unsigned char last_command; 
     int32_t last_msg_length;
-    UInt64 min_next_time; /* when can the next send take place? (host time) */
+    uint64_t min_next_time; /* when can the next send take place? (host time) */
     int isIACdevice;
     Float64 us_per_host_tick; /* host clock frequency, units of min_next_time */
-    UInt64 host_ticks_per_byte; /* host clock units per byte at maximum rate */
+    uint64_t host_ticks_per_byte; /* host clock units per byte at maximum rate */
 } coremidi_info_node, *coremidi_info_type;
 
 /* private function declarations */
@@ -258,10 +259,10 @@ static int midi_length(int32_t msg)
 static PmTimestamp midi_synchronize(PmInternal *midi)
 {
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
-    UInt64 pm_stream_time_2 = // current time in ns
-            AudioConvertHostTimeToNanos(AudioGetCurrentHostTime());
+    uint64_t pm_stream_time_2 = // current time in ns
+            Pt_HostTimeToNanos(Pt_CurrentHostTime());
     PmTimestamp real_time;  // in ms
-    UInt64 pm_stream_time;  // in ns
+    uint64_t pm_stream_time;  // in ns
     /* if latency is zero and this is an output, there is no 
        time reference and midi_synchronize should never be called */
     assert(midi->time_proc);
@@ -270,11 +271,10 @@ static PmTimestamp midi_synchronize(PmInternal *midi)
          /* read real_time between two reads of stream time */
          pm_stream_time = pm_stream_time_2;
          real_time = (*midi->time_proc)(midi->time_info);
-         pm_stream_time_2 = AudioConvertHostTimeToNanos(
-                                    AudioGetCurrentHostTime());
+         pm_stream_time_2 = Pt_HostTimeToNanos(Pt_CurrentHostTime());
          /* repeat if more than 0.5 ms has elapsed */
     } while (pm_stream_time_2 > pm_stream_time + 500000);
-    info->delta = pm_stream_time - ((UInt64) real_time * (UInt64) 1000000);
+    info->delta = pm_stream_time - ((uint64_t) real_time * (uint64_t) 1000000);
     midi->sync_time = real_time;
     return real_time;
 }
@@ -415,20 +415,20 @@ static void read_callback(const MIDIPacketList *newPackets, PmInternal *midi)
      */
     CM_DEBUG printf("read_callback packet @ %lld ns (host %lld) "
                     "status %x length %d\n",
-                    AudioConvertHostTimeToNanos(AudioGetCurrentHostTime()),
-                    AudioGetCurrentHostTime(),
+                    Pt_HostTimeToNanos(Pt_CurrentHostTime()),
+                    Pt_CurrentHostTime(),
                     packet->data[0], packet->length);
     for (packetIndex = 0; packetIndex < newPackets->numPackets; packetIndex++) {
         /* Set the timestamp and dispatch this message */
         CM_DEBUG printf("    packet->timeStamp %lld ns %lld host\n",
                         packet->timeStamp,
-                        AudioConvertHostTimeToNanos(packet->timeStamp));
+                        Pt_HostTimeToNanos(packet->timeStamp));
         if (packet->timeStamp == 0) {
             event.timestamp = now;
         } else {
             event.timestamp = (PmTimestamp) /* explicit conversion */ (
-                (AudioConvertHostTimeToNanos(packet->timeStamp) - info->delta) /
-                (UInt64) 1000000);
+                (Pt_HostTimeToNanos(packet->timeStamp) - info->delta) /
+                (uint64_t) 1000000);
         }
         status = packet->data[0];
         /* process packet as sysex data if it begins with MIDI_SYSEX, or
@@ -474,8 +474,8 @@ static void virtual_read_callback(const MIDIPacketList *newPackets,
                 newPackets->packet[0].length == 8 &&
                 /* CoreMIDI declares packets with 4-byte alignment, so we
                  * should be safe to test for 8 0xFF's as 2 32-bit values: */
-                *(SInt32 *) &newPackets->packet[0].data[0] == -1 &&
-                *(SInt32 *) &newPackets->packet[0].data[4] == -1) {
+                *(int32_t *) &newPackets->packet[0].data[0] == -1 &&
+                *(int32_t *) &newPackets->packet[0].data[4] == -1) {
                 CM_DEBUG printf("got close request packet\n");
                 pm_descriptors[id].pub.opened = FALSE;
                 return;
@@ -505,9 +505,9 @@ static coremidi_info_type create_macosxcm_info(int is_virtual, int is_input)
     info->last_msg_length = 0;
     info->min_next_time = 0;
     info->isIACdevice = FALSE;
-    info->us_per_host_tick = 1000000.0 / AudioGetHostClockFrequency();
+    info->us_per_host_tick = Pt_MicrosPerHostTick();
     info->host_ticks_per_byte =
-            (UInt64) (1000000.0 / (info->us_per_host_tick * MAX_BYTES_PER_S));
+            (uint64_t) (1000000.0 / (info->us_per_host_tick * MAX_BYTES_PER_S));
     info->packetList = (is_input ? NULL :
                                    (MIDIPacketList *) info->packetBuffer);
     return info;
@@ -581,7 +581,7 @@ static PmError midi_in_close(PmInternal *midi)
         }
     } else {
         /* make "close virtual port" message */
-        SInt64 close_port_bytes = 0xFFFFFFFFFFFFFFFF;
+        int64_t close_port_bytes = 0xFFFFFFFFFFFFFFFF;
         /* memory requirements: packet count (4), timestamp (8), length (2),
          *     data (8). Total: 22, but we allocate plenty more:
          */
@@ -754,7 +754,7 @@ static PmError midi_write_flush(PmInternal *midi, PmTimestamp timestamp)
     if (info->packet != NULL) {
         /* out of space, send the buffer and start refilling it */
         /* update min_next_time each flush to support rate limit */
-        UInt64 host_now =  AudioGetCurrentHostTime();
+        uint64_t host_now =  Pt_CurrentHostTime();
         if (host_now > info->min_next_time) 
             info->min_next_time = host_now;
         if (info->is_virtual) {
@@ -780,8 +780,8 @@ static PmError send_packet(PmInternal *midi, Byte *message,
     CM_DEBUG printf("add %d to packet %p len %d timestamp %lld @ %lld ns "
                     "(host %lld)\n",
                     message[0], info->packet, messageLength, timestamp,
-                    AudioConvertHostTimeToNanos(AudioGetCurrentHostTime()),
-                    AudioGetCurrentHostTime());
+                    Pt_HostTimeToNanos(Pt_CurrentHostTime()),
+                    Pt_CurrentHostTime());
     info->packet = MIDIPacketListAdd(info->packetList,
                                      sizeof(info->packetBuffer), info->packet,
                                      timestamp, messageLength, message);
@@ -842,11 +842,11 @@ static PmError midi_write_short(PmInternal *midi, PmEvent *event)
      * latency is zero. Both mean no timing and send immediately.
      */
     if (when == 0 || midi->latency == 0) {
-        timestamp = AudioGetCurrentHostTime();
+        timestamp = Pt_CurrentHostTime();
     } else {  /* translate PortMidi time + latency to CoreMIDI time */
-        timestamp = ((UInt64) (when + midi->latency) * (UInt64) 1000000) +
+        timestamp = ((uint64_t) (when + midi->latency) * (uint64_t) 1000000) +
                     info->delta;
-        timestamp = AudioConvertNanosToHostTime(timestamp);
+        timestamp = Pt_NanosToHostTime(timestamp);
     }
 
     message[0] = Pm_MessageStatus(what);
@@ -876,7 +876,7 @@ static PmError midi_write_short(PmInternal *midi, PmEvent *event)
 
 static PmError midi_begin_sysex(PmInternal *midi, PmTimestamp when)
 {
-    UInt64 when_ns;
+    uint64_t when_ns;
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
     assert(info);
     info->sysex_byte_count = 0;
@@ -885,13 +885,13 @@ static PmError midi_begin_sysex(PmInternal *midi, PmTimestamp when)
     if (when == 0) when = midi->now;
     /* if latency == 0, midi->now is not valid. We will just set it to zero */
     if (midi->latency == 0) when = 0;
-    when_ns = ((UInt64) (when + midi->latency) * (UInt64) 1000000) +
+    when_ns = ((uint64_t) (when + midi->latency) * (uint64_t) 1000000) +
               info->delta;
     info->sysex_timestamp =
-              (MIDITimeStamp) AudioConvertNanosToHostTime(when_ns);
-    UInt64 now; /* only make system time call when writing a virtual port */
+              (MIDITimeStamp) Pt_NanosToHostTime(when_ns);
+    uint64_t now; /* only make system time call when writing a virtual port */
     if (info->is_virtual && info->sysex_timestamp <
-        (now = AudioGetCurrentHostTime())) {
+        (now = Pt_CurrentHostTime())) {
         info->sysex_timestamp = now;
     }
 
@@ -963,24 +963,23 @@ static unsigned int midi_check_host_error(PmInternal *midi)
     return FALSE;
 }
 
-
 MIDITimeStamp timestamp_pm_to_cm(PmTimestamp timestamp)
 {
-    UInt64 nanos;
+    uint64_t nanos;
     if (timestamp <= 0) {
         return (MIDITimeStamp)0;
     } else {
-        nanos = (UInt64)timestamp * (UInt64)1000000;
-        return (MIDITimeStamp)AudioConvertNanosToHostTime(nanos);
+        nanos = (uint64_t)timestamp * (uint64_t)1000000;
+        return (MIDITimeStamp)Pt_NanosToHostTime(nanos);
     }
 }
 
 
 PmTimestamp timestamp_cm_to_pm(MIDITimeStamp timestamp)
 {
-    UInt64 nanos;
-    nanos = AudioConvertHostTimeToNanos(timestamp);
-    return (PmTimestamp)(nanos / (UInt64)1000000);
+    uint64_t nanos;
+    nanos = Pt_HostTimeToNanos(timestamp);
+    return (PmTimestamp)(nanos / (uint64_t)1000000);
 }
 
 
@@ -1094,9 +1093,9 @@ static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint,
         nConnected = CFDataGetLength(connections) / 
                      (int32_t) sizeof(MIDIUniqueID);
         if (nConnected) {
-            const SInt32 *pid = (const SInt32 *)(CFDataGetBytePtr(connections));
+            const int32_t *pid = (const int32_t *)(CFDataGetBytePtr(connections));
             for (i = 0; i < nConnected; ++i, ++pid) {
-                MIDIUniqueID id = EndianS32_BtoN(*pid);
+                MIDIUniqueID id = CFSwapInt32BigToHost(*pid);
                 MIDIObjectRef connObject;
                 MIDIObjectType connObjectType;
                 err = MIDIObjectFindByUniqueID(id, &connObject, 

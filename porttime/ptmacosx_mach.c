@@ -1,8 +1,8 @@
 /* ptmacosx.c -- portable timer implementation for mac os x */
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <stdio.h>
-#include <CoreAudio/HostTime.h>
 
 #import <mach/mach.h>
 #import <mach/mach_error.h>
@@ -10,8 +10,16 @@
 #import <mach/clock.h>
 #include <unistd.h>
 #include <AvailabilityMacros.h>
+#include <TargetConditionals.h>
+
+#if TARGET_OS_OSX
+#include <CoreAudio/HostTime.h>
+#else
+#include <mach/mach_time.h>
+#endif
 
 #include "porttime.h"
+#include "ptmacosx.h"
 #include "sys/time.h"
 #include "pthread.h"
 
@@ -29,7 +37,7 @@
 #endif
 
 static int time_started_flag = FALSE;
-static UInt64 start_time;
+static uint64_t start_time;
 static pthread_t pt_thread_pid;
 
 /* note that this is static data -- we only need one copy */
@@ -115,12 +123,12 @@ static void *Pt_CallbackProc(void *p)
               parameters->id); */
     while (pt_callback_proc_id == parameters->id) {
         /* wait for a multiple of resolution ms */
-        UInt64 wait_time;
+        uint64_t wait_time;
         int delay = mytime++ * parameters->resolution - Pt_Time();
         PtTimestamp timestamp;
         if (delay < 0) delay = 0;
-        wait_time = AudioConvertNanosToHostTime((UInt64)delay * NSEC_PER_MSEC);
-        wait_time += AudioGetCurrentHostTime();
+        wait_time = Pt_NanosToHostTime((uint64_t)delay * NSEC_PER_MSEC);
+        wait_time += Pt_CurrentHostTime();
         mach_wait_until(wait_time);
         timestamp = Pt_Time();
         (*(parameters->callback))(timestamp, parameters->userData);
@@ -133,7 +141,7 @@ static void *Pt_CallbackProc(void *p)
 PtError Pt_Start(int resolution, PtCallback *callback, void *userData)
 {
     if (time_started_flag) return ptAlreadyStarted;
-    start_time = AudioGetCurrentHostTime();
+    start_time = Pt_CurrentHostTime();
     
     if (callback) {
         int res;
@@ -191,9 +199,9 @@ int Pt_Started(void)
 
 PtTimestamp Pt_Time(void)
 {
-    UInt64 clock_time, nsec_time;
-    clock_time = AudioGetCurrentHostTime() - start_time;
-    nsec_time = AudioConvertHostTimeToNanos(clock_time);
+    uint64_t clock_time, nsec_time;
+    clock_time = Pt_CurrentHostTime() - start_time;
+    nsec_time = Pt_HostTimeToNanos(clock_time);
     return (PtTimestamp)(nsec_time / NSEC_PER_MSEC);
 }
 
@@ -201,4 +209,46 @@ PtTimestamp Pt_Time(void)
 void Pt_Sleep(int32_t duration)
 {
     usleep(duration * 1000);
+}
+
+uint64_t Pt_CurrentHostTime(void)
+{
+#if TARGET_OS_OSX
+    return AudioGetCurrentHostTime();
+#else
+    return mach_absolute_time();
+#endif
+}
+
+uint64_t Pt_NanosToHostTime(uint64_t nanos)
+{
+#if TARGET_OS_OSX
+    return AudioConvertNanosToHostTime(nanos);
+#else
+    mach_timebase_info_data_t clock_timebase;
+    mach_timebase_info(&clock_timebase);
+    return (nanos * clock_timebase.denom) / clock_timebase.numer;
+#endif
+}
+
+uint64_t Pt_HostTimeToNanos(uint64_t host_time)
+{
+#if TARGET_OS_OSX
+    return AudioConvertHostTimeToNanos(host_time);
+#else
+    mach_timebase_info_data_t clock_timebase;
+    mach_timebase_info(&clock_timebase);
+    return (host_time * clock_timebase.numer) / clock_timebase.denom;
+#endif
+}
+
+uint64_t Pt_MicrosPerHostTick(void)
+{
+#if TARGET_OS_OSX
+    return 1000000.0 / AudioGetHostClockFrequency();
+#else
+    mach_timebase_info_data_t clock_timebase;
+    mach_timebase_info(&clock_timebase);
+    return clock_timebase.numer / (clock_timebase.denom * 1000.0);
+#endif
 }

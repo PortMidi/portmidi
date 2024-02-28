@@ -289,6 +289,7 @@ static void process_packet(MIDIPacket *packet, PmEvent *event,
     unsigned char *cur_packet_data = packet->data;
     while (remaining_length > 0) {
         if (cur_packet_data[0] == MIDI_SYSEX ||
+            cur_packet_data[0] == MIDI_EOX ||
             /* are we in the middle of a sysex message? */
             (info->last_command == 0 &&
              !(cur_packet_data[0] & MIDI_STATUS_MASK))) {
@@ -298,11 +299,6 @@ static void process_packet(MIDIPacket *packet, PmEvent *event,
                                              event->timestamp);
             remaining_length -= amt;
             cur_packet_data += amt;
-        } else if (cur_packet_data[0] == MIDI_EOX) {
-            /* this should never happen, because pm_read_bytes should
-             * get and read all EOX bytes*/
-            midi->sysex_in_progress = FALSE;
-            info->last_command = 0;
         } else if (cur_packet_data[0] & MIDI_STATUS_MASK) {
             /* compute the length of the next (short) msg in packet */
 	    unsigned int cur_message_length = midi_length(cur_packet_data[0]);

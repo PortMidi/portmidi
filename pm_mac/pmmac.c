@@ -17,7 +17,7 @@ non-CoreMIDI devices.
 
 void pm_init(void)
 {
-    PmError err = pm_macosxcm_init();
+    pm_macosxcm_init();
 }
 
 

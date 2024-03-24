@@ -79,11 +79,13 @@ if(NOT WIN32)
 endif()
 
 # Check for sndio
-include (FindPackageHandleStandardArgs)
-find_path(SNDIO_INCLUDE_DIRS NAMES sndio.h)
-find_library(SNDIO_LIBRARY sndio)
-find_package_handle_standard_args(Sndio
-    REQUIRED_VARS SNDIO_LIBRARY SNDIO_INCLUDE_DIRS)
+if(USE_SNDIO)
+  include (FindPackageHandleStandardArgs)
+  find_path(SNDIO_INCLUDE_DIRS NAMES sndio.h)
+  find_library(SNDIO_LIBRARY sndio)
+  find_package_handle_standard_args(Sndio
+      REQUIRED_VARS SNDIO_LIBRARY SNDIO_INCLUDE_DIRS)
+endif(USE_SNDIO)
 
 # first include the appropriate system-dependent file:
 if(SNDIO_FOUND AND USE_SNDIO)

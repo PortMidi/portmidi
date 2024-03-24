@@ -126,9 +126,10 @@ typedef struct pm_internal_struct {
         * sending data from the middle of a sysex message. If a sysex
         * message is filtered, sysex_in_progress is false, causing the
         * message to be dropped. */
-    PmMessage sysex_message; /* buffer for 4 bytes of sysex data */
-    int sysex_message_count; /* how many bytes in sysex_message so far */
-
+    PmMessage message; /* buffer for 4 bytes of sysex data */
+    int message_count; /* how many bytes in sysex_message so far */
+    int short_message_count; /* how many bytes are expected in short message */
+    unsigned char running_status; /* running status byte or zero if none */
     int32_t filters; /* flags that filter incoming message classes */
     int32_t channel_mask; /* filter incoming messages based on channel */
     PmTimestamp last_msg_time; /* timestamp of last message */
@@ -148,6 +149,8 @@ typedef struct pm_internal_struct {
     uint32_t fill_length; /* how many sysex bytes to write */
 } PmInternal;
 
+/* what is the length of this short message? */
+int pm_midi_length(PmMessage msg);
 
 /* defined by system specific implementation, e.g. pmwinmm, used by PortMidi */
 void pm_init(void); 

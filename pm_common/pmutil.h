@@ -9,6 +9,9 @@
     available for other uses.
  */
 
+#ifndef PORTMIDI_PMUTIL_H
+#define PORTMIDI_PMUTIL_H
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
@@ -177,3 +180,5 @@ PMEXPORT PmError Pm_SetOverflow(PmQueue *queue);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
+
+#endif // PORTMIDI_PMUTIL_H

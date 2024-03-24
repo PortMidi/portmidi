@@ -5,6 +5,9 @@
     boost priority of timer thread in ptlinux.c implementation
  */
 
+#ifndef PORTMIDI_PORTTIME_H
+#define PORTMIDI_PORTTIME_H
+
 /* Should there be a way to choose the source of time here? */
 
 #ifdef WIN32
@@ -96,3 +99,5 @@ PMEXPORT void Pt_Sleep(int32_t duration);
 #ifdef __cplusplus
 }
 #endif
+
+#endif // PORTMIDI_PORTTIME_H

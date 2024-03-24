@@ -65,8 +65,6 @@ endif()
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR})
 
-option(BUILD_PMDEFAULTS
-       "build the legacy Java application PmDefaults" OFF)
 option(BUILD_JAVA_NATIVE_INTERFACE
        "build the Java PortMidi interface library" OFF)
 
@@ -92,11 +90,6 @@ if(BUILD_JAVA_NATIVE_INTERFACE)
   set(PMJNI_IF_EXISTS "pmjni")  # used by INSTALL below
 else(BUILD_JAVA_NATIVE_INTERFACE)
   set(PMJNI_IF_EXISTS "")       # used by INSTALL below
-  if(BUILD_PMDEFAULTS)
-    message(FATAL_ERROR
-      "Cannot build PM_Defaults program (BUILD_PM_DEFAULTS) without option "
-      "BUILD_JAVA_NATIVE_INTERFACE")
-  endif(BUILD_PMDEFAULTS)
 endif(BUILD_JAVA_NATIVE_INTERFACE)
 
 

@@ -155,7 +155,6 @@ static void pm_add_device_w(char *api, WCHAR *device_name, int is_input,
                         utf8name, 4 * MAXPNAMELEN - 1, NULL, NULL);
     /* ignore errors here -- if pm_descriptor_max is exceeded, 
        some devices will not be accessible. */
-#pragma warning(suppress: 4047)  // coerce non-pointer to pointer is OK
     pm_add_device(api, utf8name, is_input, is_virtual, descriptor, dictionary);
 }
 
@@ -248,21 +247,6 @@ static void pm_winmm_mapper_output()
 host error handling
 ============================================================================
 */
-
-/* str_copy_len -- like strcat, but won't overrun the destination string */
-/*
- * returns length of resulting string
- */
-static int str_copy_len(char *dst, char *src, int len)
-{
-    // Note: Visual C will suggest using a non-portable strncpy_s here
-#pragma warning(suppress: 4996) // suppress warning for just this line
-    strncpy(dst, src, len);
-    /* just in case suffex is greater then len, terminate with zero */
-    dst[len - 1] = 0;
-    return (int) strlen(dst);
-}
-
 
 static unsigned int winmm_check_host_error(PmInternal *midi)
 {
@@ -434,9 +418,9 @@ static void report_hosterror(LPWCH error_msg)
         /* add explanation to Window's confusing error message */
         /* if there's room: */
         if (PM_HOST_ERROR_MSG_LEN - strlen(pm_hosterror_text) > 60) {
-#pragma warning(suppress: 4996)  // don't use suggested strcat_s
-            strcat(pm_hosterror_text, " Probably this MIDI device is open "
-                   "in another application.");
+            strcat_s(pm_hosterror_text, PM_HOST_ERROR_MSG_LEN,
+                     " Probably this MIDI device is open "
+                     "in another application.");
         }
     }
     pm_hosterror = TRUE;
@@ -618,12 +602,7 @@ static void FAR PASCAL winmm_in_callback(
             dwParam2 = (*midi->time_proc)(midi->time_info);
         /* can there be more than one message in one buffer? */
         /* assume yes and iterate through them */
-        while (remaining > 0) {
-            unsigned int amt = pm_read_bytes(midi, data + processed, 
-                                             remaining, (PmTimestamp)dwParam2);
-            remaining -= amt;
-            processed += amt;
-        }
+        pm_read_bytes(midi, data + processed, remaining, (PmTimestamp)dwParam2);
 
         /* when a device is closed, the pending MIM_LONGDATA buffers are
            returned to this callback with dwBytesRecorded == 0. In this
@@ -1007,7 +986,7 @@ static PmError winmm_write_byte(PmInternal *midi, unsigned char byte,
         info->hdr = hdr = get_free_output_buffer(midi);
         assert(hdr);
         midi->fill_base = (unsigned char *) info->hdr->lpData;
-        midi->fill_offset_ptr = &(hdr->dwBytesRecorded);
+        midi->fill_offset_ptr = (uint32_t *) &(hdr->dwBytesRecorded);
         /* when buffer fills, Pm_WriteSysEx will revert to calling
          * pmwin_write_byte, which expect to have space, so leave
          * one byte free for pmwin_write_byte. Leave another byte

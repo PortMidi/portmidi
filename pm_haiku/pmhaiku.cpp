@@ -173,26 +173,6 @@ namespace {
     }
 
 
-    // copied from the macOS implementation
-    size_t midi_length(uchar status)
-    {
-        int high, low;
-        static size_t high_lengths[] = {
-            1, 1, 1, 1, 1, 1, 1, 1,         /* 0x00 through 0x70 */
-            3, 3, 3, 3, 2, 2, 3, 1          /* 0x80 through 0xf0 */
-        };
-        static size_t low_lengths[] = {
-            1, 2, 3, 2, 1, 1, 1, 1,         /* 0xf0 through 0xf8 */
-            1, 1, 1, 1, 1, 1, 1, 1          /* 0xf9 through 0xff */
-        };
-
-        high = status >> 4;
-        low = status & 15;
-
-        return (high != 0xF) ? high_lengths[high] : low_lengths[low];
-    }
-
-
     PmError write_short(PmInternal *midi, PmEvent *buffer)
     {
         PmOutputInfo *info = (PmOutputInfo*)midi->api_info;
@@ -200,7 +180,7 @@ namespace {
         data[0] = Pm_MessageStatus(buffer->message);
         data[1] = Pm_MessageData1(buffer->message);
         data[2] = Pm_MessageData2(buffer->message);
-        size_t length = midi_length(data[0]);
+        size_t length = pm_midi_length(data[0]);
 
         info->producer->SprayData(data, length, true, buffer->timestamp * 1000);
 

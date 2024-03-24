@@ -57,14 +57,10 @@ void pm_term(void) {
 
 
 static PmDeviceID pm_get_default_device_id(int is_input, char *key) {
-    HKEY hkey;
 #define PATTERN_MAX 256
-    char pattern[PATTERN_MAX];
-    long pattern_max = PATTERN_MAX;
-    DWORD dwType;
     /* Find first input or device -- this is the default. */
     PmDeviceID id = pmNoDevice;
-    int i, j;
+    int i;
     Pm_Initialize(); /* make sure descriptors exist! */
     for (i = 0; i < pm_descriptor_len; i++) {
         if (pm_descriptors[i].pub.input == is_input) {

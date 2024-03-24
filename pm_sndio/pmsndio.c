@@ -147,6 +147,12 @@ void* input_thread(void *param)
             pm_ev_rt.timestamp = Pt_Time();
             pm_read_short(midi, &pm_ev_rt);
         } else if (c == SYSEX_END) {
+            /* note: PortMidi is designed to avoid the need for SYSEX_MAXLEN.
+               With the new implementation of pm_read_bytes, it would be
+               better to simply call pm_read_bytes() and let it parse buf,
+               which can contain any number of whole or partial messages with
+               interleaved realtime messages. I did not change the code because
+               I cannot test it. -RBD */
             if (st == SYSEX_START) {
                 sysex_data[idx++] = c;
                 pm_read_bytes(midi, sysex_data, idx, Pt_Time());

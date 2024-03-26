@@ -46,8 +46,9 @@ bindings for these and other languages:
   find.
 - [SML](https://github.com/jh-midi/portmidi-sml2)
 - [OCaml](https://ocaml.org/p/portmidi/0.1) 
-- [Haskell](https://hackage.haskell.org/package/PortMidi) 
+- [Haskell](https://hackage.haskell.org/package/PortMidi)
 - [Erlang](https://hexdocs.pm/portmidi/PortMidi.html) 
+- [Julia](https://github.com/SteffenPL/PortMidi.jl)
 - [C#](https://github.com/net-core-audio/portmidi)
 - [Rust](https://musitdev.github.io/portmidi-rs/)
 - [Go](https://github.com/rakyll/portmidi)

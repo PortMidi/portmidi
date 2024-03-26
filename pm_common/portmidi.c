@@ -268,7 +268,7 @@ PmError pm_add_device(char *interf, const char *name, int is_input,
     if (!d->name) {
         return pmInsufficientMemory;
     }
-#ifdef WIN32
+#if defined(WIN32) && !defined(_WIN32)
 #pragma warning(suppress: 4996)  // don't use suggested strncpy_s
 #endif
     strcpy(d->name, name);
@@ -505,7 +505,7 @@ PMEXPORT void Pm_GetHostErrorText(char * msg, unsigned int len)
     assert(msg);
     assert(len > 0);
     if (pm_hosterror) {
-#ifdef WIN32
+#if defined(WIN32) && !defined(_WIN32)
 #pragma warning(suppress: 4996)  // don't use suggested strncpy_s
 #endif
         strncpy(msg, (char *) pm_hosterror_text, len);
@@ -867,7 +867,7 @@ end_of_sysex:
      */
     if (shift != 0) bufx++; /* add partial message to buffer len */
     if (bufx) { /* bufx is number of PmEvents to send from buffer */
-        PmError err = Pm_Write(stream, buffer, bufx);
+        err = Pm_Write(stream, buffer, bufx);
         if (err) return err;
     }
     return pmNoError;

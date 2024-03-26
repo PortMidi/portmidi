@@ -193,7 +193,7 @@ static PmError alsa_out_open(PmInternal *midi, void *driverInfo)
                                             pm_descriptors[id].pub.is_virtual);
     snd_seq_port_info_t *pinfo;
     int err = 0;
-    int queue_used = 0;
+    int using_the_queue = 0;
 
     if (!ainfo) return pmInsufficientMemory;
     midi->api_info = ainfo;
@@ -223,7 +223,7 @@ static PmError alsa_out_open(PmInternal *midi, void *driverInfo)
     if (midi->latency > 0) { /* must delay output using a queue */
         err = alsa_use_queue();
         if (err < 0) goto free_parser;
-        queue_used++;
+        using_the_queue++;
     }
 
     if (!ainfo->is_virtual) {
@@ -237,7 +237,7 @@ static PmError alsa_out_open(PmInternal *midi, void *driverInfo)
     return pmNoError;
 
  unuse_queue:
-    if (queue_used > 0)  /* only for latency>0 case */
+    if (using_the_queue > 0)  /* only for latency>0 case */
         alsa_unuse_queue();
  free_parser:
     snd_midi_event_free(ainfo->parser);
@@ -750,9 +750,9 @@ static PmError alsa_poll(PmInternal *midi)
                 int i;
                 for (i = 0; i < pm_descriptor_len; i++) {
                     if (pm_descriptors[i].pub.input) {
-                        PmInternal *midi = pm_descriptors[i].pm_internal;
+                        PmInternal *midi_i = pm_descriptors[i].pm_internal;
                         /* careful, device may not be open! */
-                        if (midi) Pm_SetOverflow(midi->queue);
+                        if (midi_i) Pm_SetOverflow(midi_i->queue);
                     }
                 }
             }

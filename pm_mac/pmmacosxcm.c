@@ -266,7 +266,6 @@ static void read_callback(const MIDIPacketList *newPackets, PmInternal *midi)
     MIDIPacket *packet;
     unsigned int packetIndex;
     uint32_t now;
-    unsigned int status;
     /* Retrieve the context for this connection */
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
     assert(info);

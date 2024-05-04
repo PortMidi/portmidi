@@ -265,8 +265,13 @@ void main_test_output(int isochronous_test)
         Pm_Write(midi, buffer, chord_size);
 
         off_time = timestamp + 1000 + chord_size * 1000; 
-        while (Pt_Time() < off_time) 
-            Pt_Sleep(10);  /* wait */
+        while (Pt_Time() < off_time)
+            /* There was a report that Pm_Write with zero length sent last
+             * message again, so call Pm_Write here to see if note repeats
+             */
+            Pm_Write(midi, buffer, 0);
+            Pt_Sleep(20);  /* wait */
+        
         for (i = 0; i < chord_size; i++) {
             buffer[i].timestamp = timestamp + 1000 * i;
             buffer[i].message = Pm_Message(0x90, chord[i], 0);

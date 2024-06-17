@@ -91,7 +91,7 @@ removed from previous releases of PortMedia include:
 ## PortSMF
 
 A Standard MIDI File (SMF) (and more) library is in the [portsmf
-repository](https://github.com/PortMidi/portsmf).
+repository](https://github.com/rbdannenberg/portsmf).
 
 PortSMF is a library for reading/writing/editing Standard MIDI
 Files. It is actually much more, with a general representation of

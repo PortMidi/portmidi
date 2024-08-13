@@ -43,7 +43,7 @@ much coordination, so let us know if there are better or alternative
 bindings for these and other languages:
 
 - Python: Various libraries and packages exist; search and ye shall
-  find.
+  find. If you wouldn't like to do research, check out [mido](https://mido.readthedocs.io/en/stable/)
 - [SML](https://github.com/jh-midi/portmidi-sml2)
 - [OCaml](https://ocaml.org/p/portmidi/0.1) 
 - [Haskell](https://hackage.haskell.org/package/PortMidi)

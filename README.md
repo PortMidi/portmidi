@@ -9,10 +9,20 @@ for related code and bindings (although currently, not much is here).
 
 ## Compiling and Using PortMidi
 
-Use CMake (or ccmake) to create a Makefile for Linux/BSD or a 
+
+Use CMake (or ccmake) to create a Makefile for Linux/BSD or a
 project file for Xcode or MS Visual Studio. Use make or an IDE to compile:
+
+On Linux, you need ALSA.
+
+Ubuntu / Debian:
+`sudo apt install libasound2-dev`
+
+Fedora / Red Hat / CentOS:
+`sudo dnf install alsa-lib-devel`
+
+All:
 ```
-sudo apt install libasound2-dev  # on Linux, you need ALSA
 cd portmidi  # start in the top-level portmidi directory
 ccmake .     # set any options interactively, type c to configure
              # type g to generate a Makefile or IDE project
@@ -45,9 +55,9 @@ bindings for these and other languages:
 - Python: Various libraries and packages exist; search and ye shall
   find. If you wouldn't like to do research, check out [mido](https://mido.readthedocs.io/en/stable/)
 - [SML](https://github.com/jh-midi/portmidi-sml2)
-- [OCaml](https://ocaml.org/p/portmidi/0.1) 
+- [OCaml](https://ocaml.org/p/portmidi/0.1)
 - [Haskell](https://hackage.haskell.org/package/PortMidi)
-- [Erlang](https://hexdocs.pm/portmidi/PortMidi.html) 
+- [Erlang](https://hexdocs.pm/portmidi/PortMidi.html)
 - [Julia](https://github.com/SteffenPL/PortMidi.jl)
 - [C#](https://github.com/net-core-audio/portmidi)
 - [Rust](https://musitdev.github.io/portmidi-rs/)
@@ -79,6 +89,8 @@ Haiku support in a minimal implementation. See TODO's in source.
 sndio is also minimally supported, allowing basic PortMidi functions
 in OpenBSD, FreeBSD, and NetBSD by setting USE_SNDIO for CMake, but
 not delayed/timestamped output and virtual devices.
+
+See CHANGELOG.txt for more details.
 
 # Other Repositories
 

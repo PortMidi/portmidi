@@ -1008,7 +1008,7 @@ char *cm_get_full_endpoint_name(MIDIEndpointRef endpoint, int *iac_flag)
     CFIndex utf16_len = CFStringGetLength(fullName) + 1;
     CFIndex max_byte_len = CFStringGetMaximumSizeForEncoding(
                                    utf16_len, kCFStringEncodingUTF8) + 1;
-    char* pmname = (char *) pm_alloc(CFStringGetLength(fullName) + 1);
+    char* pmname = (char *) pm_alloc(max_byte_len);
 
     /* copy the string into our buffer; note that there may be some wasted
        space, but the total waste is not large */

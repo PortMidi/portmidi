@@ -1001,14 +1001,22 @@ static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint,
 }
 
 
+/* cm_get_full_endpoint_name -- returns UTF-8 namem for endpoint.
+ *     caller is owner and responsible for pm_free'ing the string
+ */
 char *cm_get_full_endpoint_name(MIDIEndpointRef endpoint, int *iac_flag)
 {
-    /* Thanks to Dan Wilcox for fixes for Unicode handling */
+    /* Thanks to Dan Wilcox for fixes for Unicode handling
+     * and kichikuou at github for fixing buffer size calculation.
+     */
     CFStringRef fullName = ConnectedEndpointName(endpoint, iac_flag);
-    CFIndex utf16_len = CFStringGetLength(fullName) + 1;
+    CFIndex len = CFStringGetLength(fullName) + 1;
+    /* (len seems to be length in Unicode characters, although docs add
+     *  the confusing explanation "in terms of UTF-16 code pairs")
+     */
     CFIndex max_byte_len = CFStringGetMaximumSizeForEncoding(
-                                   utf16_len, kCFStringEncodingUTF8) + 1;
-    char* pmname = (char *) pm_alloc(CFStringGetLength(fullName) + 1);
+                                   len, kCFStringEncodingUTF8) + 1;
+    char* pmname = (char *) pm_alloc(max_byte_len);
 
     /* copy the string into our buffer; note that there may be some wasted
        space, but the total waste is not large */
@@ -1106,7 +1114,7 @@ PmError pm_macosxcm_init(void)
                                         &client);
     } else {  /* see notes above on device scanning */
         for (int i = 0; i < 100; i++) {
-            // look for any changes before scanning for devices
+            /* look for any changes before scanning for devices: */
             CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0, true);
             if (i % 5 == 0) Pt_Sleep(1);  /* insert 20 delays */
         }
@@ -1141,9 +1149,11 @@ PmError pm_macosxcm_init(void)
             continue;
         }
         /* Register this device with PortMidi */
-        pm_add_device("CoreMIDI", 
-                cm_get_full_endpoint_name(endpoint, &iac_flag), TRUE, FALSE,
-                (void *) (intptr_t) endpoint, &pm_macosx_in_dictionary);
+        char *name = cm_get_full_endpoint_name(endpoint, &iac_flag);
+        pm_add_device("CoreMIDI", name, TRUE, FALSE,
+                      (void *) (intptr_t) endpoint, &pm_macosx_in_dictionary);
+        /* pm_add_device copies name, so it is no longer needed */
+        pm_free(name);
     }
 
     /* Iterate over the MIDI output devices */
@@ -1155,9 +1165,12 @@ PmError pm_macosxcm_init(void)
             continue;
         }
         /* Register this device with PortMidi */
-        id = pm_add_device("CoreMIDI", 
-                cm_get_full_endpoint_name(endpoint, &iac_flag), FALSE, FALSE,
+        char *name = cm_get_full_endpoint_name(endpoint, &iac_flag);
+        id = pm_add_device("CoreMIDI", name, FALSE, FALSE,
                 (void *) (intptr_t) endpoint, &pm_macosx_out_dictionary);
+        /* pm_add_device copies name, so it is no longer needed */
+        pm_free(name);
+
         /* if this is an IAC device, tuck that info away for write functions */
         if (iac_flag && id <= MAX_IAC_NUM) {
             isIAC[id] = TRUE;

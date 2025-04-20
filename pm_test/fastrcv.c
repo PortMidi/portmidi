@@ -79,7 +79,7 @@ int get_number(const char *prompt)
 }
 
 
-void fastrcv_test()
+void fastrcv_test(void)
 {
     PmStream * midi;
     PmError status, length;
@@ -177,7 +177,7 @@ void fastrcv_test()
 }
 
 
-void show_usage()
+void show_usage(void)
 {
     printf("Usage: fastrcv [-h] [-v] [-d device], where\n"
            "device is the PortMidi device number,\n"

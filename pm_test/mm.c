@@ -106,7 +106,7 @@ extern  int     abort_flag;
 private    void    mmexit(int code);
 private    void    output(PmMessage data);
 private    int     put_pitch(int p);
-private    void    showhelp();
+private    void    showhelp(void);
 private    void    showbytes(PmMessage data, int len, boolean newline);
 private    void    showstatus(boolean flag);
 private    void    doascii(char c);
@@ -549,7 +549,7 @@ private void showbytes(PmMessage data, int len, boolean newline)
 * Effect: print help text
 ****************************************************************************/
 
-private void showhelp()
+private void showhelp(void)
 {
     printf("\n");
     printf("   Item Reported  Range     Item Reported  Range\n");

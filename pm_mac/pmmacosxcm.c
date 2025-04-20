@@ -609,7 +609,7 @@ static PmError midi_abort(PmInternal *midi)
 
 static PmError midi_write_flush(PmInternal *midi, PmTimestamp timestamp)
 {
-    OSStatus macHostError = 0;
+    OSStatus macHostError = noErr;
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
     MIDIEndpointRef endpoint = (MIDIEndpointRef) (intptr_t)
                                pm_descriptors[midi->device_id].descriptor;
@@ -649,7 +649,7 @@ static PmError send_packet(PmInternal *midi, Byte *message,
     info->packet = MIDIPacketListAdd(info->packetList,
                                      sizeof(info->packetBuffer), info->packet,
                                      timestamp, messageLength, message);
-#if LIMIT_SEND_RATE
+#if defined(LIMIT_SEND_RATE) && (LIMIT_SEND_RATE != 0)
     info->byte_count += messageLength;
 #endif
     if (info->packet == NULL) {
@@ -1088,7 +1088,7 @@ PmError pm_macosxcm_init(void)
     ItemCount numInputs, numOutputs, numDevices;
     MIDIEndpointRef endpoint;
     OSStatus macHostError = noErr;
-    char *error_text;
+    const char *error_text;
 
     memset(isIAC, 0, sizeof(isIAC)); /* initialize all FALSE */
 

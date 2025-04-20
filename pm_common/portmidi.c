@@ -149,7 +149,7 @@ static int pm_interf_list_len = 0;
  * returns pmInsufficientMemor if interface memory is
  * exceeded, otherwise returns pmNoError.
  */
-PmError pm_add_interf(char *interf, pm_create_fn create_fn,
+PmError pm_add_interf(const char *interf, pm_create_fn create_fn,
                       pm_delete_fn delete_fn)
 {
     if (pm_interf_list_len >= MAX_INTERF) {
@@ -207,7 +207,7 @@ PmError pm_create_virtual(PmInternal *midi, int is_input, const char *interf,
  * device would take the name of an existing device.
  * otherwise returns index (portmidi device_id) of the added device
  */
-PmError pm_add_device(char *interf, const char *name, int is_input, 
+PmError pm_add_device(const char *interf, const char *name, int is_input, 
                 int is_virtual, void *descriptor, pm_fns_type dictionary) {
     /* printf("pm_add_device: %s %s %d %p %p\n",
            interf, name, is_input, descriptor, dictionary); */
@@ -330,7 +330,7 @@ int Pm_FindDevice(char *pattern, int is_input)
     int id = pmNoDevice;
     int i;
     /* first parse pattern into name, interf parts */
-    char *interf_pref = ""; /* initially assume it is not there */
+    const char *interf_pref = ""; /* initially assume it is not there */
     char *name_pref = strstr(pattern, ", ");
 
     if (name_pref) { /* found separator, adjust the pointer */
@@ -879,7 +879,7 @@ PmError pm_create_internal(PmInternal **stream, PmDeviceID device_id,
                            int is_input, int latency, PmTimeProcPtr time_proc,
                            void *time_info, int buffer_size)
 {
-    PmInternal *midi;
+    PmInternal *midi = NULL;
     if (device_id < 0 || device_id >= pm_descriptor_len) {
        return pmInvalidDeviceId;
     }

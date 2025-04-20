@@ -19,7 +19,7 @@ PmSysDepInfo *sysdepinfo = NULL;
 
 /* crash the program to test whether midi ports are closed */
 /**/
-void doSomethingReallyStupid() {
+void doSomethingReallyStupid(void) {
     int * tmp = NULL;
     *tmp = 5;
 }
@@ -27,7 +27,7 @@ void doSomethingReallyStupid() {
 
 /* exit the program without any explicit cleanup */
 /**/
-void doSomethingStupid() {
+void doSomethingStupid(void) {
     assert(0);
 }
 
@@ -289,7 +289,7 @@ void main_test_output(int isochronous_test)
 }
 
 
-void main_test_both()
+void main_test_both(void)
 {
     int i = 0;
     int in, out;
@@ -362,7 +362,7 @@ void main_test_both()
    things happen when messages are not always sent in advance,
    this function allows us to exercise the system and test it.
  */
-void main_test_stream() {
+void main_test_stream(void) {
     PmStream * midi;
     PmEvent buffer[16];
 
@@ -452,7 +452,7 @@ void main_test_stream() {
 }
 
 
-void show_usage()
+void show_usage(void)
 {
     printf("Usage: test [-h] [-l latency-in-ms] [-c clientname] "
            "[-p portname] [-v]\n"

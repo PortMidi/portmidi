@@ -27,7 +27,7 @@
 #error One of PMALSA or PMNULL must be defined
 #endif
 
-void pm_init()
+void pm_init(void)
 {
     /* Note: it is not an error for PMALSA to fail to initialize. 
      * It may be a design error that the client cannot query what subsystems
@@ -52,12 +52,12 @@ void pm_term(void)
     #endif
 }
 
-PmDeviceID Pm_GetDefaultInputDeviceID() { 
+PmDeviceID Pm_GetDefaultInputDeviceID(void) { 
     Pm_Initialize();
     return pm_default_input_device_id; 
 }
 
-PmDeviceID Pm_GetDefaultOutputDeviceID() { 
+PmDeviceID Pm_GetDefaultOutputDeviceID(void) { 
     Pm_Initialize();
     return pm_default_output_device_id; 
 }

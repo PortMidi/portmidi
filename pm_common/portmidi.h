@@ -904,7 +904,7 @@ PMEXPORT PmError Pm_Poll(PortMidiStream *stream);
 
     @param length the length of the \p buffer.
 
-    @return TRUE, FALSE, or an error value.
+    @return #pmNoError or an error code.
 
     \b buffer may contain:
         - short messages 

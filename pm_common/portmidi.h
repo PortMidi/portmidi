@@ -216,7 +216,6 @@ typedef int PmDeviceID;
 /** MIDI device information is returned in this structure, which is
     owned by PortMidi and read-only to applications. See Pm_GetDeviceInfo().
 */
-#define PM_DEVICEINFO_VERS 200
 typedef struct {
     int structVersion; /**< @brief this internal structure version */ 
     const char *interf; /**< @brief underlying MIDI API, e.g. 
@@ -227,12 +226,11 @@ typedef struct {
     int opened; /**< @brief used by generic PortMidi for error checking */
     int is_virtual; /**< @brief true iff this is/was a virtual device */
 } PmDeviceInfo;
+#define PM_DEVICEINFO_VERS 200
 
 /** MIDI system-dependent device or driver info is passed in this
     structure, which is owned by the caller.
 */
-#define PM_SYSDEPINFO_VERS 210
-
 enum PmSysDepPropertyKey {
     pmKeyNone = 0,  /**< a "noop" key value */
     /** CoreMIDI Manufacturer name, value is string */
@@ -253,6 +251,7 @@ enum PmSysDepPropertyKey {
     /* if system-dependent code introduces more options, register
        the key here to avoid conflicts. */
 };
+#define PM_SYSDEPINFO_VERS 210
 
 /** System-dependent information can be passed when creating and opening
     ports using this data structure, which stores alternating keys and
@@ -326,7 +325,7 @@ PMEXPORT PmDeviceID Pm_GetDefaultOutputDeviceID(void);
     @return the number of the first device whose device interface
     contains the interface pattern (if any), whose device name
     contains the name pattern, and whose direction (input or output)
-    matches the #is_input parameter. If no match is found, #pmNoDevice
+    matches the \p is_input parameter. If no match is found, #pmNoDevice
     (-1) is returned.
 */
 PMEXPORT PmDeviceID Pm_FindDevice(char *pattern, int is_input);
@@ -394,7 +393,7 @@ PMEXPORT const PmDeviceInfo *Pm_GetDeviceInfo(PmDeviceID id);
 
     @return #pmNoError and places a pointer to a valid
     #PortMidiStream in the stream argument.  If the open operation
-    fails, a nonzero error code is returned (see #PMError) and
+    fails, a nonzero error code is returned (see #PmError) and
     the value of stream is invalid.
 
     Any stream that is successfully opened should eventually be closed
@@ -414,7 +413,7 @@ PMEXPORT PmError Pm_OpenInput(PortMidiStream** stream,
 
     @param outputDevice the ID of the device to be opened (see #PmDeviceID).
 
-    @param inputSysDepInfo a pointer to an optional system-specific
+    @param outputSysDepInfo a pointer to an optional system-specific
     data structure (a #PmSysDepInfo struct) containing additional
     information for device setup or handle processing. This parameter
     is never required for correct operation. If not used, specify
@@ -644,7 +643,7 @@ PMEXPORT PmError Pm_DeleteVirtualDevice(PmDeviceID device);
                               PM_FILT_SONG_SELECT | PM_FILT_TUNE)
 
 
-/*  Set filters on an open input stream to drop selected input types.
+/** Set filters on an open input stream to drop selected input types.
     
     @param stream an open MIDI input stream.
 

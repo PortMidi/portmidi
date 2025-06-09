@@ -342,7 +342,8 @@ int Pm_FindDevice(char *pattern, int is_input)
     }
     for (i = 0; i < pm_descriptor_len; i++) {
         const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
-        if (info->input == is_input &&
+        if (info &&
+            info->input == is_input &&
             strstr(info->name, name_pref) &&
             strstr(info->interf, interf_pref)) {
             id = i;
@@ -1432,6 +1433,7 @@ unsigned int pm_read_bytes(PmInternal *midi, const unsigned char *data,
                 midi->short_message_count = pm_midi_length(midi->message);
                 /* maybe we're done already with a 1-byte message: */
                 if (midi->short_message_count == 1) {
+                    event.message = byte;
                     pm_read_short(midi, &event);
                     midi->message_count = 0;
                 }

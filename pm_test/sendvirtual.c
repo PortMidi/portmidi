@@ -132,7 +132,7 @@ void main_test_output(int num)
 }
 
 
-void show_usage()
+void show_usage(void)
 {
     printf("Usage: sendvirtual [-h] [-l latency-in-ms] [-m manufacturer] "
            "[-c clientname] [-p portname] [n]\n"

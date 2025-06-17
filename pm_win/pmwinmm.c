@@ -159,7 +159,7 @@ static void pm_add_device_w(char *api, WCHAR *device_name, int is_input,
 }
 
 
-static void pm_winmm_general_inputs()
+static void pm_winmm_general_inputs(void)
 {
     UINT i;
     WORD wRtn;
@@ -185,7 +185,7 @@ static void pm_winmm_general_inputs()
 }
 
 
-static void pm_winmm_mapper_input()
+static void pm_winmm_mapper_input(void)
 {
     WORD wRtn;
     /* Note: if MIDIMAPPER opened as input (documentation implies you
@@ -203,7 +203,7 @@ static void pm_winmm_mapper_input()
 }
 
 
-static void pm_winmm_general_outputs()
+static void pm_winmm_general_outputs(void)
 {
     UINT i;
     DWORD wRtn;
@@ -226,7 +226,7 @@ static void pm_winmm_general_outputs()
 }
 
 
-static void pm_winmm_mapper_output()
+static void pm_winmm_mapper_output(void)
 {
     WORD wRtn;
     /* Note: if MIDIMAPPER opened as output (pseudo MIDI device
@@ -387,7 +387,7 @@ static unsigned int allocate_input_buffer(HMIDIIN h, long buffer_len)
 }
 
 
-static winmm_info_type winmm_info_create()
+static winmm_info_type winmm_info_create(void)
 {
     winmm_info_type info = (winmm_info_type) pm_alloc(sizeof(winmm_info_node));
     info->handle.in = NULL;
@@ -427,7 +427,7 @@ static void report_hosterror(LPWCH error_msg)
 }
 
 
-static void report_hosterror_in()
+static void report_hosterror_in(void)
 {
     WCHAR error_msg[PM_HOST_ERROR_MSG_LEN];
     int err = midiInGetErrorText(pm_hosterror, error_msg,
@@ -437,7 +437,7 @@ static void report_hosterror_in()
 }
 
 
-static void report_hosterror_out()
+static void report_hosterror_out(void)
 {
     WCHAR error_msg[PM_HOST_ERROR_MSG_LEN];
     int err = midiOutGetErrorText(pm_hosterror, error_msg,

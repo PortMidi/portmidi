@@ -176,7 +176,7 @@ void main_test(int num)
 }
 
 
-void show_usage()
+void show_usage(void)
 {
     printf("Usage: multivirtual [-h] [-l latency-in-ms] [n]\n"
            "    -h for this message,\n"

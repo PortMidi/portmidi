@@ -120,7 +120,7 @@ void main_test_input(int num)
 }
 
 
-void show_usage()
+void show_usage(void)
 {
     printf("Usage: recvvirtual [-h] [-m manufacturer] [-c clientname] "
            "[-p portname] [n]\n"

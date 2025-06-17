@@ -181,8 +181,9 @@
 #define MIDI_CLOCK       0xf8
 #define MIDI_STATUS_MASK 0x80
 
-// "Ref"s are pointers on 32-bit machines and ints on 64 bit machines
-// NULL_REF is our representation of either 0 or NULL
+/* "Ref"s are pointers on 32-bit machines and ints on 64 bit machines
+   NULL_REF is our representation of either 0 or NULL
+*/
 #ifdef __LP64__
 #define NULL_REF 0
 #else
@@ -218,8 +219,8 @@ typedef struct coremidi_info_struct {
 } coremidi_info_node, *coremidi_info_type;
 
 /* private function declarations */
-MIDITimeStamp timestamp_pm_to_cm(PmTimestamp timestamp);  // returns host time
-PmTimestamp timestamp_cm_to_pm(MIDITimeStamp timestamp);  // returns ms
+MIDITimeStamp timestamp_pm_to_cm(PmTimestamp timestamp); /* returns host time */
+PmTimestamp timestamp_cm_to_pm(MIDITimeStamp timestamp); /* returns ms */
 
 char* cm_get_full_endpoint_name(MIDIEndpointRef endpoint, int *iac_flag);
 
@@ -237,10 +238,10 @@ static PmError check_hosterror(OSStatus err, const char *msg)
 static PmTimestamp midi_synchronize(PmInternal *midi)
 {
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
-    UInt64 pm_stream_time_2 = // current time in ns
+    UInt64 pm_stream_time_2 = /* current time in ns */
             AudioConvertHostTimeToNanos(AudioGetCurrentHostTime());
-    PmTimestamp real_time;  // in ms
-    UInt64 pm_stream_time;  // in ns
+    PmTimestamp real_time;  /* in ms */
+    UInt64 pm_stream_time;  /* in ns */
     /* if latency is zero and this is an output, there is no 
        time reference and midi_synchronize should never be called */
     assert(midi->time_proc);
@@ -649,7 +650,7 @@ static PmError send_packet(PmInternal *midi, Byte *message,
     info->packet = MIDIPacketListAdd(info->packetList,
                                      sizeof(info->packetBuffer), info->packet,
                                      timestamp, messageLength, message);
-#if defined(LIMIT_SEND_RATE) && (LIMIT_SEND_RATE != 0)
+#ifdef LIMIT_RATE
     info->byte_count += messageLength;
 #endif
     if (info->packet == NULL) {
@@ -848,11 +849,11 @@ PmTimestamp timestamp_cm_to_pm(MIDITimeStamp timestamp)
 }
 
 
-//
-// Code taken from http://developer.apple.com/qa/qa2004/qa1374.html
-//////////////////////////////////////
-// Obtain the name of an endpoint without regard for whether it has connections.
-// The result should be released by the caller.
+/* Code taken from http://developer.apple.com/qa/qa2004/qa1374.html
+ *
+ * Obtain the name of an endpoint without regard for whether it has connections.
+ * The result should be released by the caller.
+ */
 CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal,
                          int *iac_flag)
 {
@@ -860,7 +861,7 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal,
     CFStringRef str;
     *iac_flag = FALSE;
   
-    // begin with the endpoint's name
+    /* begin with the endpoint's name */
     str = NULL;
     MIDIObjectGetStringProperty(endpoint, kMIDIPropertyName, &str);
     if (str != NULL) {
@@ -870,11 +871,11 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal,
     MIDIEntityRef entity = NULL_REF;
     MIDIEndpointGetEntity(endpoint, &entity);
     if (entity == NULL_REF) {
-        // probably virtual
+        /* probably virtual */
         return result;
     }
     if (!isExternal) { /* detect IAC devices */
-        //extern const CFStringRef kMIDIPropertyDriverOwner;
+        /* extern const CFStringRef kMIDIPropertyDriverOwner; */
         MIDIObjectGetStringProperty(entity, kMIDIPropertyDriverOwner, &str);
         if (str != NULL) {
             char s[32]; /* driver name may truncate, but that's OK */
@@ -886,7 +887,7 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal,
     }
 
     if (CFStringGetLength(result) == 0) {
-        // endpoint name has zero length -- try the entity
+        /* endpoint name has zero length -- try the entity */
         str = NULL;
         MIDIObjectGetStringProperty(entity, kMIDIPropertyName, &str);
         if (str != NULL) {
@@ -894,7 +895,7 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal,
             CFRelease(str);
         }
     }
-    // now consider the device's name
+    /* now consider the device's name */
     MIDIDeviceRef device = NULL_REF;
     MIDIEntityGetDevice(entity, &device);
     if (device == NULL_REF)
@@ -907,8 +908,9 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal,
         return str;
     }
     if (str != NULL) {
-        // if an external device has only one entity, throw away
-        // the endpoint name and just use the device name
+        /* if an external device has only one entity, throw away
+           the endpoint name and just use the device name
+        */
         if (isExternal && MIDIDeviceGetNumberOfEntities(device) < 2) {
             CFRelease(result);
             return str;
@@ -917,14 +919,15 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal,
                 CFRelease(str);
                 return result;
             }
-            // does the entity name already start with the device name?
-            // (some drivers do this though they shouldn't)
-            // if so, do not prepend
+            /* does the entity name already start with the device name?
+               (some drivers do this though they shouldn't)
+               if so, do not prepend
+            */
             if (CFStringCompareWithOptions(result, /* endpoint name */
                         str, /* device name */
                         CFRangeMake(0, CFStringGetLength(str)), 0) != 
                 kCFCompareEqualTo) {
-                // prepend the device name to the entity name
+                /* prepend the device name to the entity name */
                 if (CFStringGetLength(result) > 0)
                     CFStringInsert(result, 0, CFSTR(" "));
                 CFStringInsert(result, 0, str);
@@ -936,8 +939,9 @@ CFStringRef EndpointName(MIDIEndpointRef endpoint, bool isExternal,
 }
 
 
-// Obtain the name of an endpoint, following connections.
-// The result should be released by the caller.
+/* Obtain the name of an endpoint, following connections.
+   The result should be released by the caller.
+*/
 static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint,
                                          int *iac_flag)
 {
@@ -946,15 +950,16 @@ static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint,
     OSStatus err;
     long i;
   
-    // Does the endpoint have connections?
+    /* Does the endpoint have connections? */
     CFDataRef connections = NULL;
     long nConnected = 0;
     bool anyStrings = false;
     err = MIDIObjectGetDataProperty(endpoint, kMIDIPropertyConnectionUniqueID,
                                     &connections);
     if (connections != NULL) {
-        // It has connections, follow them
-        // Concatenate the names of all connected devices
+        /* It has connections, follow them
+           Concatenate the names of all connected devices
+        */
         nConnected = CFDataGetLength(connections) / 
                      (int32_t) sizeof(MIDIUniqueID);
         if (nConnected) {
@@ -968,12 +973,13 @@ static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint,
                 if (err == noErr) {
                     if (connObjectType == kMIDIObjectType_ExternalSource  ||
                         connObjectType == kMIDIObjectType_ExternalDestination) {
-                        // Connected to an external device's endpoint (>=10.3)
+                        /* Connected to an external device's endpoint (>=10.3) */
                         str = EndpointName((MIDIEndpointRef)(connObject), true,
                                            iac_flag);
                     } else {
-                        // Connected to an external device (10.2) 
-                        // (or something else, catch-all)
+                        /* Connected to an external device (10.2) 
+                           (or something else, catch-all)
+                        */
                         str = NULL;
                         MIDIObjectGetStringProperty(connObject, 
                                                     kMIDIPropertyName, &str);
@@ -991,12 +997,13 @@ static CFStringRef ConnectedEndpointName(MIDIEndpointRef endpoint,
         CFRelease(connections);
     }
     if (anyStrings)
-        return result; // caller should release result
+        return result; /* caller should release result */
 
     CFRelease(result);
 
-    // Here, either the endpoint had no connections, or we failed to
-    // obtain names for any of them.
+    /* Here, either the endpoint had no connections, or we failed to
+       obtain names for any of them.
+    */
     return EndpointName(endpoint, false, iac_flag);
 }
 

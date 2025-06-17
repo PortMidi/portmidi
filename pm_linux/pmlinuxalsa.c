@@ -45,8 +45,8 @@
 extern pm_fns_node pm_linuxalsa_in_dictionary;
 extern pm_fns_node pm_linuxalsa_out_dictionary;
 
-static snd_seq_t *seq = NULL; // all input comes here, 
-                              // output queue allocated on seq
+static snd_seq_t *seq = NULL; /* all input comes here, 
+                                 output queue allocated on seq */
 static int queue, queue_used; /* one for all ports, reference counted */
 
 #define PORT_IS_CLOSED -999999
@@ -172,7 +172,7 @@ static const char *get_sysdep_name(enum PmSysDepPropertyKey key,
 
 static void maybe_set_client_name(PmSysDepInfo *driverInfo)
 {
-    if (!seq) {  // make sure seq is created and we have info
+    if (!seq) {  /* make sure seq is created and we have info */
         return;
     }
     
@@ -553,9 +553,10 @@ static void handle_event(snd_seq_event_t *ev)
 {
     int device_id = ev->dest.port;
     PmInternal *midi = pm_descriptors[device_id].pm_internal;
-    // There is a race condition when closing a device and
-    // continuing to poll other open devices. The closed device may
-    // have outstanding events from before the close operation.
+    /* There is a race condition when closing a device and
+       continuing to poll other open devices. The closed device may
+       have outstanding events from before the close operation.
+    */
     if (!midi) {
         return;
     }
@@ -564,8 +565,8 @@ static void handle_event(snd_seq_event_t *ev)
 
     /* time stamp should be in ticks, using our queue where 1 tick = 1ms */
     /* assert((ev->flags & SND_SEQ_TIME_STAMP_MASK) == SND_SEQ_TIME_STAMP_TICK);
-     * Currently, event timestamp is ignored. See long note below. */
-
+       Currently, event timestamp is ignored. See long note below. 
+    */
     VERBOSE {
         /* translate time to time_proc basis */
         snd_seq_queue_status_t *queue_status;

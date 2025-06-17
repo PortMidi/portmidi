@@ -181,4 +181,4 @@ PMEXPORT PmError Pm_SetOverflow(PmQueue *queue);
 }
 #endif /* __cplusplus */
 
-#endif // PORTMIDI_PMUTIL_H
+#endif /* PORTMIDI_PMUTIL_H */

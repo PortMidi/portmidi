@@ -247,7 +247,7 @@ PmError pm_add_device(const char *interf, const char *name, int is_input,
         }
     }
     if (device_id >= pm_descriptor_max) {
-        // expand pm_descriptors
+        /* expand pm_descriptors */
         descriptor_type new_descriptors = (descriptor_type) 
             pm_alloc(sizeof(descriptor_node) * (pm_descriptor_max + 32));
         if (!new_descriptors) return pmInsufficientMemory;
@@ -269,7 +269,7 @@ PmError pm_add_device(const char *interf, const char *name, int is_input,
         return pmInsufficientMemory;
     }
 #if defined(WIN32) && !defined(_WIN32)
-#pragma warning(suppress: 4996)  // don't use suggested strncpy_s
+#pragma warning(suppress: 4996)  /* don't use suggested strncpy_s */
 #endif
     strcpy(d->name, name);
     d->input = is_input;
@@ -506,7 +506,7 @@ PMEXPORT void Pm_GetHostErrorText(char * msg, unsigned int len)
     assert(len > 0);
     if (pm_hosterror) {
 #if defined(WIN32) && !defined(_WIN32)
-#pragma warning(suppress: 4996)  // don't use suggested strncpy_s
+#pragma warning(suppress: 4996)  /* don't use suggested strncpy_s */
 #endif
         strncpy(msg, (char *) pm_hosterror_text, len);
         pm_hosterror = FALSE;
@@ -879,7 +879,7 @@ PmError pm_create_internal(PmInternal **stream, PmDeviceID device_id,
                            int is_input, int latency, PmTimeProcPtr time_proc,
                            void *time_info, int buffer_size)
 {
-    PmInternal *midi = NULL;
+    PmInternal *midi;  /* initialized below */
     if (device_id < 0 || device_id >= pm_descriptor_len) {
        return pmInvalidDeviceId;
     }
@@ -964,10 +964,10 @@ PMEXPORT PmError Pm_OpenInput(PortMidiStream** stream,
     /* common initialization of PmInternal structure (midi): */
     err = pm_create_internal(&midi, inputDevice, TRUE, 0, time_proc,
                              time_info, bufferSize);
-    *stream = midi;
     if (err) {
-        goto error_return;
+        goto error_return;  /* will return with *stream == NULL */
     }
+    *stream = midi;  /* no error, so midi is valid */
 
     /* open system dependent input device */
     err = (*midi->dictionary->open)(midi, inputDriverInfo);

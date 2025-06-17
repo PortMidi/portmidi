@@ -228,6 +228,9 @@ typedef struct {
 } PmDeviceInfo;
 #define PM_DEVICEINFO_VERS 200
 
+/** Version number of PmDeviceInfo, stored in #structVersion field */
+#define PM_DEVICEINFO_VERS 200
+
 /** MIDI system-dependent device or driver info is passed in this
     structure, which is owned by the caller.
 */
@@ -266,6 +269,10 @@ typedef struct {
         const void *value;
     } properties[];
 } PmSysDepInfo;
+
+/** Version number of PmSysDepInfo, stored in #structVersion field */
+#define PM_SYSDEPINFO_VERS 210
+
 
 
 /** Get devices count, ids range from 0 to Pm_CountDevices()-1. */
@@ -903,7 +910,11 @@ PMEXPORT PmError Pm_Poll(PortMidiStream *stream);
 
     @param length the length of the \p buffer.
 
-    @return TRUE, FALSE, or an error value.
+    @return #pmNoError, #pmBadPtr (if #stream is not valid and opened),
+        #pmDeviceRemoved (if the MIDI device no longer exists),
+        #pmBadData (if #buffer data does not represent valid MIDI, e.g.,
+        nested SYSEX messages, or #pmHostError (error returned from API's
+        MIDI write operation, see #Pm_GetHostErrorText). 
 
     \b buffer may contain:
         - short messages 
@@ -938,7 +949,11 @@ PMEXPORT PmError Pm_Write(PortMidiStream *stream, PmEvent *buffer,
 
     @param msg the data for the event.
 
-    @result #pmNoError or an error code.
+    @return #pmNoError, #pmBadPtr (if #stream is not valid and opened),
+        #pmDeviceRemoved (if the MIDI device no longer exists),
+        #pmBadData (if #buffer data does not represent valid MIDI, e.g.,
+        nested SYSEX messages, or #pmHostError (error returned from API's
+        MIDI write operation, see #Pm_GetHostErrorText). 
 
     Messages are delivered in order, and timestamps must be
     non-decreasing. (But timestamps are ignored if the stream was
@@ -956,7 +971,11 @@ PMEXPORT PmError Pm_WriteShort(PortMidiStream *stream, PmTimestamp when,
 
     @param msg the sysex message, terminated with an EOX status byte.
 
-    @result #pmNoError or an error code.
+    @return #pmNoError, #pmBadPtr (if #stream is not valid and opened),
+        #pmDeviceRemoved (if the MIDI device no longer exists),
+        #pmBadData (if #buffer data does not represent valid MIDI, e.g.,
+        nested SYSEX messages, or #pmHostError (error returned from API's
+        MIDI write operation, see #Pm_GetHostErrorText). 
 
     \p msg is managed by the caller and may be destroyed when this
     call returns.

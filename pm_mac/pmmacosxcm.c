@@ -650,9 +650,6 @@ static PmError send_packet(PmInternal *midi, Byte *message,
     info->packet = MIDIPacketListAdd(info->packetList,
                                      sizeof(info->packetBuffer), info->packet,
                                      timestamp, messageLength, message);
-#ifdef LIMIT_RATE
-    info->byte_count += messageLength;
-#endif
     if (info->packet == NULL) {
         /* out of space, send the buffer and start refilling it */
         /* make midi->packet non-null to fool midi_write_flush into sending */

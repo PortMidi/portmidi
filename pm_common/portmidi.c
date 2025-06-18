@@ -1428,10 +1428,14 @@ unsigned int pm_read_bytes(PmInternal *midi, const unsigned char *data,
             if (byte == MIDI_SYSEX) {
                 midi->sysex_in_progress = TRUE;
             } else {
+                /* If Sysex is in progress, we cancel it because we encountered
+                   a status byte:
+                */
                 midi->sysex_in_progress = FALSE;
                 midi->short_message_count = pm_midi_length(midi->message);
                 /* maybe we're done already with a 1-byte message: */
                 if (midi->short_message_count == 1) {
+                    event.message = byte;
                     pm_read_short(midi, &event);
                     midi->message_count = 0;
                 }

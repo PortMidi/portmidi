@@ -125,6 +125,25 @@ INSTALL(FILES
   porttime/porttime.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
+# Documentation
+option(BUILD_DOC "Build documentation" OFF)
+if(BUILD_DOC)
+  find_package(Doxygen)
+  if (NOT DOXYGEN_FOUND)
+    message(ERROR "Doxygen is needed to build the documentation")
+  endif()
+
+  set(DOXYFILE_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
+  set(DOXYFILE_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+  configure_file(${DOXYFILE_IN} ${DOXYFILE_OUT} @ONLY)
+
+  add_custom_target(doc ALL
+    COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE_OUT}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Generating API documentation with Doxygen"
+    VERBATIM )
+endif (BUILD_DOC)
+
 # pkgconfig - generate pc file
 # See https://cmake.org/cmake/help/latest/command/configure_file.html
 if(IS_ABSOLUTE "${CMAKE_INSTALL_INCLUDEDIR}")

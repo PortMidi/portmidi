@@ -41,11 +41,13 @@ extern "C" {
 */
 
 typedef enum {
-    ptNoError = 0,         /* success */
-    ptHostError = -10000,  /* a system-specific error occurred */
-    ptAlreadyStarted,      /* cannot start timer because it is already started */
-    ptAlreadyStopped,      /* cannot stop timer because it is already stopped */
-    ptInsufficientMemory   /* memory could not be allocated */
+    ptNoError = 0,         /**< success */
+    ptHostError = -10000,  /**< a system-specific error occurred */
+    ptAlreadyStarted,      /**< cannot start timer because it is already
+                              started */
+    ptAlreadyStopped,      /**< cannot stop timer because it is already
+                              stopped */
+    ptInsufficientMemory   /**< memory could not be allocated */
 } PtError; /**< @brief @enum  PtError PortTime error code; a common return type.
             * No error is indicated by zero; errors are indicated by < 0.
             */

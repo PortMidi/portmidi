@@ -342,7 +342,8 @@ int Pm_FindDevice(char *pattern, int is_input)
     }
     for (i = 0; i < pm_descriptor_len; i++) {
         const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
-        if (info->input == is_input &&
+        if (info &&
+            info->input == is_input &&
             strstr(info->name, name_pref) &&
             strstr(info->interf, interf_pref)) {
             id = i;

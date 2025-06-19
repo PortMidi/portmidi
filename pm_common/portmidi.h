@@ -94,7 +94,7 @@ extern "C" {
     #define TRUE 1
 #endif
 
-/* default size of buffers for sysex transmission: */
+/** default size of buffers for sysex transmission: */
 #define PM_DEFAULT_SYSEX_BUFFER_SIZE 1024
 
 
@@ -105,7 +105,8 @@ typedef enum {
                    * indicate data is available.
                    */
     pmGotData = 1, /**< A "no error" return also indicating data available. */
-    pmHostError = -10000,
+    pmHostError = -10000,  /**< error was returned from the system level below
+                                PortMidi. See ##Pm_GetHostErrorText() */
     pmInvalidDeviceId, /**< Out of range or 
                         * output device when input is requested or 
                         * input device when output is requested or
@@ -113,7 +114,7 @@ typedef enum {
                         */
     pmInsufficientMemory,
     pmBufferTooSmall,
-    pmBufferOverflow,
+    pmBufferOverflow, /**< buffer overflow (see #Pm_Read) */
     pmBadPtr, /**< #PortMidiStream parameter is NULL or
                * stream is not opened or
                * stream is output when input is required or
@@ -177,8 +178,8 @@ typedef void PortMidiStream;
     errors can occur asynchronously where the client does not
     explicitly call a function, and therefore cannot receive an error
     code.  The client can test for a pending error using
-    Pm_HasHostError(). If true, the error can be accessed by calling
-    Pm_GetHostErrorText().  Pm_Poll() is similar to Pm_HasHostError(),
+    #Pm_HasHostError(). If true, the error can be accessed by calling
+    #Pm_GetHostErrorText().  Pm_Poll() is similar to Pm_HasHostError(),
     but if there is no error, it will return TRUE (1) if there is a
     pending input message.
 */
@@ -228,7 +229,8 @@ typedef struct {
 } PmDeviceInfo;
 #define PM_DEVICEINFO_VERS 200
 
-/** Version number of PmDeviceInfo, stored in #structVersion field */
+/** Version number of PmDeviceInfo, stored in #PmDeviceInfo::structVersion 
+    field */
 #define PM_DEVICEINFO_VERS 200
 
 /** MIDI system-dependent device or driver info is passed in this
@@ -262,15 +264,16 @@ enum PmSysDepPropertyKey {
     and `pm_test/testio.c` for examples.
  */
 typedef struct {
-    int structVersion;  /**< @brief this structure version */
-    int length;  /**< @brief number of properties in this structure */
+    int structVersion;  /**< this structure version */
+    int length;  /**< number of properties in this structure */
     struct {
         enum PmSysDepPropertyKey key;
         const void *value;
-    } properties[];
+    } properties[];  /**< array of key/value pairs */
 } PmSysDepInfo;
 
-/** Version number of PmSysDepInfo, stored in #structVersion field */
+/** Version number of PmSysDepInfo, stored in #PmSysDepInfo::structVersion
+    field */
 #define PM_SYSDEPINFO_VERS 210
 
 
@@ -342,6 +345,16 @@ PMEXPORT PmDeviceID Pm_FindDevice(char *pattern, int is_input);
     This type is used for all MIDI timestamps and clocks.
 */
 typedef int32_t PmTimestamp;
+
+/** @brief function pointer to retrieve the time in milliseconds.
+    This is the time used in all PortMidi timestamps. The use of
+    a function pointer allows the user to derive time from an audio
+    sample count to synchronize MIDI to audio, or from a remote
+    machine through clock synchronization protocols to synchronize
+    MIDI across multiple machine. The time is independent of the
+    internal system timestamps (e.g., MacOS CoreMIDI uses its own
+    clock and timestamp representation, and PortMidi translates
+    between different clocks, which need not be synchronized.) */
 typedef PmTimestamp (*PmTimeProcPtr)(void *time_info);
 
 /** TRUE if t1 before t2 */
@@ -380,7 +393,7 @@ PMEXPORT const PmDeviceInfo *Pm_GetDeviceInfo(PmDeviceID id);
     and port name.
 
     @param bufferSize the number of input events to be buffered
-    waiting to be read using Pm_Read(). Messages will be lost if the
+    waiting to be read using #Pm_Read(). Messages will be lost if the
     number of unread messages exceeds this value.
 
     @param time_proc (address of) a procedure that returns time in
@@ -845,8 +858,8 @@ typedef uint32_t PmMessage; /**< @brief see #PmEvent */
    non-decreasing.
  */
 typedef struct {
-    PmMessage      message;
-    PmTimestamp    timestamp;
+    PmMessage      message;    /**< up to 4 bytes of MIDI data */
+    PmTimestamp    timestamp;  /**< PortMidi time of message */
 } PmEvent;
 
 /** @} */
@@ -857,6 +870,10 @@ typedef struct {
 /** Retrieve midi data into a buffer. 
 
     @param stream the open input stream.
+
+    @param buffer input data is stored here
+
+    @param length the length of buffer (number of #PmEvent, not bytes)
 
     @return the number of events read, or, if the result is negative,
     a #PmError value will be returned.
@@ -876,7 +893,7 @@ typedef struct {
     operation.
 
     Solution: the entire buffer managed by PortMidi will be flushed
-    when an overflow occurs. The consumer (Pm_Read()) gets an error
+    when an overflow occurs. The consumer (#Pm_Read()) gets an error
     message (#pmBufferOverflow) and ordinary processing resumes as
     soon as a new message arrives. The remainder of a partial sysex
     message is not considered to be a "new message" and will be
@@ -910,9 +927,9 @@ PMEXPORT PmError Pm_Poll(PortMidiStream *stream);
 
     @param length the length of the \p buffer.
 
-    @return #pmNoError, #pmBadPtr (if #stream is not valid and opened),
+    @return #pmNoError, #pmBadPtr (if \p stream is not valid and opened),
         #pmDeviceRemoved (if the MIDI device no longer exists),
-        #pmBadData (if #buffer data does not represent valid MIDI, e.g.,
+        #pmBadData (if \p buffer data does not represent valid MIDI, e.g.,
         nested SYSEX messages, or #pmHostError (error returned from API's
         MIDI write operation, see #Pm_GetHostErrorText). 
 
@@ -949,9 +966,9 @@ PMEXPORT PmError Pm_Write(PortMidiStream *stream, PmEvent *buffer,
 
     @param msg the data for the event.
 
-    @return #pmNoError, #pmBadPtr (if #stream is not valid and opened),
+    @return #pmNoError, #pmBadPtr (if \p stream is not valid and opened),
         #pmDeviceRemoved (if the MIDI device no longer exists),
-        #pmBadData (if #buffer data does not represent valid MIDI, e.g.,
+        #pmBadData (if \p buffer data does not represent valid MIDI, e.g.,
         nested SYSEX messages, or #pmHostError (error returned from API's
         MIDI write operation, see #Pm_GetHostErrorText). 
 
@@ -971,9 +988,9 @@ PMEXPORT PmError Pm_WriteShort(PortMidiStream *stream, PmTimestamp when,
 
     @param msg the sysex message, terminated with an EOX status byte.
 
-    @return #pmNoError, #pmBadPtr (if #stream is not valid and opened),
+    @return #pmNoError, #pmBadPtr (if \p stream is not valid and opened),
         #pmDeviceRemoved (if the MIDI device no longer exists),
-        #pmBadData (if #buffer data does not represent valid MIDI, e.g.,
+        #pmBadData (if \p buffer data does not represent valid MIDI, e.g.,
         nested SYSEX messages, or #pmHostError (error returned from API's
         MIDI write operation, see #Pm_GetHostErrorText). 
 

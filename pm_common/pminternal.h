@@ -17,7 +17,8 @@
      assumptions about pm_fns_type functions are given below.
  */
 
-/** @cond INTERNAL - add INTERNAL to Doxygen ENABLED_SECTIONS to include */
+/* add INTERNAL to Doxygen ENABLED_SECTIONS to include this: */
+/** @cond INTERNAL */
 
 #ifdef __cplusplus
 extern "C" {

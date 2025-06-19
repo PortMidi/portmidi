@@ -60,3 +60,9 @@ cmake_install.cmake
 /pm_test/fast.dir/
 /pm_test/pmlist
 /pm_test/pmlist.dir/
+
+/CMakeDoxyfile.in
+
+/CMakeDoxygenDefaults.cmake
+
+/docs/

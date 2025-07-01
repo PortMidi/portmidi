@@ -78,7 +78,7 @@ option(BUILD_JAVA_NATIVE_INTERFACE
 # and PMWINMM (for windows), but these are assumed.
 #
 if(APPLE OR WIN32)
-else(APPLE_OR_WIN32)
+else(APPLE OR WIN32)
   set(LINUX_DEFINES "PMALSA" CACHE STRING "must define either PMALSA or PMNULL")
   add_compile_definitions(${LINUX_DEFINES})
 endif(APPLE OR WIN32)

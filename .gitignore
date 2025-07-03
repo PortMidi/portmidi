@@ -61,6 +61,8 @@ cmake_install.cmake
 /pm_test/pmlist
 /pm_test/pmlist.dir/
 
+/Doxyfile
+
 /CMakeDoxyfile.in
 
 /CMakeDoxygenDefaults.cmake

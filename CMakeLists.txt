@@ -194,7 +194,7 @@ install(
 # following report is probably not complete...
 MESSAGE(STATUS "PortMidi Library name: " ${PM_ACTUAL_LIB_NAME})
 MESSAGE(STATUS "Build type: " ${CMAKE_BUILD_TYPE})
-MESSAGE(STATUS "Library Type: " ${LIB_TYPE})
+MESSAGE(STATUS "Build shared library: " ${BUILD_SHARED_LIBS})
 MESSAGE(STATUS "Compiler flags: " ${CMAKE_CXX_COMPILE_FLAGS})
 get_directory_property(prop COMPILE_DEFINITIONS)
 MESSAGE(STATUS "Compile definitions: " ${prop})

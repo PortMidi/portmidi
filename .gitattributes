@@ -1,3 +1,8 @@
+# ############################# repo config ###########################
+.git*      	export-ignore
+.travis.yml	export-ignore
+
+
 # ############################# line endings ###########################
 # Set the default behavior, in case people don't have core.autocrlf set.
 * text=auto

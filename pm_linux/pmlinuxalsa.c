@@ -172,7 +172,8 @@ static const char *get_sysdep_name(enum PmSysDepPropertyKey key,
 
 static void maybe_set_client_name(PmSysDepInfo *driverInfo)
 {
-    if (!seq) {  /* make sure seq is created and we have info */
+    /* make sure seq is created and we have info */
+    if (!seq || !driverInfo) {
         return;
     }
     

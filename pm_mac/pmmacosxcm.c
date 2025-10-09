@@ -131,7 +131,7 @@
    delivery if, over the long run, you write faster than the hardware
    can send.
    
-   The LIMIT_RATE symbol, if defined (which is the default), enables
+   The LIMIT_RATE symbol, if defined 1 (which is the default), enables
    code to modify timestamps for output to an IAC device as follows:
 
    Before a packet is formed, the message timestamp is set to the
@@ -156,7 +156,9 @@
    timestamped messages a little ahead of real time, not for
    scheduling an entire MIDI sequence at once!
  */
+#ifndef LIMIT_RATE
 #define LIMIT_RATE 1
+#endif
 
 #define SYSEX_BUFFER_SIZE 128
 /* What is the maximum PortMidi device number for an IAC device? A
@@ -716,7 +718,7 @@ static PmError midi_write_short(PmInternal *midi, PmEvent *event)
     message[2] = Pm_MessageData2(what);
     messageLength = pm_midi_length((int32_t) what);
 
-#ifdef LIMIT_RATE
+#if LIMIT_RATE
     /* Make sure we go forward in time. */
     if (timestamp < info->min_next_time) {
         timestamp = info->min_next_time;
@@ -773,7 +775,7 @@ static PmError midi_end_sysex(PmInternal *midi, PmTimestamp when)
     coremidi_info_type info = (coremidi_info_type) midi->api_info;
     assert(info);
     
-#ifdef LIMIT_RATE
+#if LIMIT_RATE
     /* make sure we go foreward in time */
     if (info->sysex_timestamp < info->min_next_time)
         info->sysex_timestamp = info->min_next_time;

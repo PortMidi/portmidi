@@ -25,7 +25,7 @@
 /* I used many print statements to debug this code. I left them in the
  * source, and you can turn them on by changing false to true below:
  */
-#define VERBOSE_ON 0
+#define VERBOSE_ON 1
 #define VERBOSE if (VERBOSE_ON)
 
 #define MIDI_SYSEX      0xf0
@@ -553,15 +553,30 @@ static PmTimestamp alsa_synchronize(PmInternal *midi)
 static void handle_event(snd_seq_event_t *ev)
 {
     int device_id = ev->dest.port;
+
+    printf("(pm) handle_event: ev %p device_id %d\n",
+           ev, device_id);
+
+    assert(device_id >= 0 && device_id < pm_descriptor_len);
+    assert(pm_descriptors[device_id].pub.name);
+
+    printf("    name %s\n", pm_descriptors[device_id].pub.name);
+
     PmInternal *midi = pm_descriptors[device_id].pm_internal;
     /* There is a race condition when closing a device and
        continuing to poll other open devices. The closed device may
        have outstanding events from before the close operation.
     */
     if (!midi) {
+        printf("(pm) handle_event returns because NULL midi (pm_internal)\n");
         return;
     }
     PmEvent pm_ev;
+
+    printf("(pm) handle_event: midi (pm_internal) %p midi->time_proc %p\n",
+           midi, midi->time_proc);
+    fflush(stdout);  /* in case time_proc is NULL and we crash */
+
     PmTimestamp timestamp = midi->time_proc(midi->time_info);
 
     /* time stamp should be in ticks, using our queue where 1 tick = 1ms */

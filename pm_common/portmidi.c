@@ -9,6 +9,8 @@
 #include "pminternal.h"
 #include <assert.h>
 
+#include "stdio.h"  /* for this test version only */
+
 #define MIDI_CLOCK      0xf8
 #define MIDI_ACTIVE     0xfe
 #define MIDI_STATUS_MASK 0x80
@@ -209,14 +211,16 @@ PmError pm_create_virtual(PmInternal *midi, int is_input, const char *interf,
  */
 PmError pm_add_device(const char *interf, const char *name, int is_input, 
                 int is_virtual, void *descriptor, pm_fns_type dictionary) {
-    /* printf("pm_add_device: %s %s %d %p %p\n",
-           interf, name, is_input, descriptor, dictionary); */
+
+    printf("pm_add_device: %s %s %d %p %p\n",
+           interf, name, is_input, descriptor, dictionary);
+
     int device_id;
     PmDeviceInfo *d;
     /* if virtual, search for duplicate name or unused ID; otherwise,
      * just add a new device at the next integer available:
      */
-    for (device_id = (is_virtual ? 0 : pm_descriptor_len); 
+    for (device_id = (is_virtual ? 0 : pm_descriptor_len);
          device_id < pm_descriptor_len; device_id++) {
         d = &pm_descriptors[device_id].pub;
         d->structVersion = PM_DEVICEINFO_VERS;
@@ -262,6 +266,7 @@ PmError pm_add_device(const char *interf, const char *name, int is_input,
     if (device_id == pm_descriptor_len) {
         pm_descriptor_len++;  /* extending array of pm_descriptors */
     }
+
     d = &pm_descriptors[device_id].pub;
     d->interf = interf;
     d->name = pm_alloc(strlen(name) + 1);
@@ -286,6 +291,9 @@ PmError pm_add_device(const char *interf, const char *name, int is_input,
     
     /* points to PmInternal, allows automatic device closing */
     pm_descriptors[device_id].pm_internal = NULL;
+
+    printf("  -> device_id %d pm_internal %p name %s\n",
+           device_id, pm_descriptors[device_id].pm_internal, d->name);
 
     pm_descriptors[device_id].dictionary = dictionary;
 
@@ -314,6 +322,9 @@ void pm_undo_add_device(int id)
     pm_descriptors[id].deleted = TRUE;
     pm_descriptors[id].descriptor = NULL;
     pm_descriptors[id].pm_internal = NULL;
+
+    printf("pm_undo_add_device: id %d pm_internal %p\n", id, 
+           pm_descriptors[id].pm_internal);
 
     if (id == pm_descriptor_len - 1) {
         pm_free(pm_descriptors[id].pub.name);
@@ -938,6 +949,10 @@ PmError pm_create_internal(PmInternal **stream, PmDeviceID device_id,
     midi->fill_length = 0;
     midi->dictionary = pm_descriptors[device_id].dictionary;
     pm_descriptors[device_id].pm_internal = midi;
+
+    printf("pm_create_internal: device_id %d midi (pm_internal) %p"
+           " time_proc %p\n", device_id, midi, midi->time_proc);
+
     return pmNoError;
 }
 
@@ -975,6 +990,10 @@ PMEXPORT PmError Pm_OpenInput(PortMidiStream** stream,
     if (err) {
         *stream = NULL;
         pm_descriptors[inputDevice].pm_internal = NULL;
+
+        printf("Pm_OpenInput after error: id %d pm_internal NULL\n",
+               inputDevice);
+
         /* free portMidi data */
         Pm_QueueDestroy(midi->queue);
         pm_free(midi);
@@ -1027,6 +1046,10 @@ PMEXPORT PmError Pm_OpenOutput(PortMidiStream** stream,
     if (err) {
         *stream = NULL;
         pm_descriptors[outputDevice].pm_internal = NULL;
+
+        printf("Pm_OpenOutput after error: id %d pm_internal NULL\n",
+               outputDevice);
+
         /* free portMidi data */
         pm_free(midi); 
     } else {
@@ -1122,6 +1145,9 @@ PmError Pm_DeleteVirtualDevice(PmDeviceID id)
     pm_descriptors[id].deleted = TRUE;
     /* (pm_internal should already be NULL because !pub.opened) */
     pm_descriptors[id].pm_internal = NULL;
+
+    printf("Pm_DeleteVirtualDevice: id %d pm_internal NULL\n", id);
+
     pm_descriptors[id].descriptor = NULL;
     return err;
 }
@@ -1179,6 +1205,10 @@ PMEXPORT PmError Pm_Close(PortMidiStream *stream)
     err = (*midi->dictionary->close)(midi);
     /* even if an error occurred, continue with cleanup */
     pm_descriptors[midi->device_id].pm_internal = NULL;
+
+    printf("Pm_Close: midi %p id %d pm_internal NULL\n",
+           midi, midi->device_id);
+
     pm_descriptors[midi->device_id].pub.opened = FALSE;
     if (midi->queue) Pm_QueueDestroy(midi->queue);
     pm_free(midi); 

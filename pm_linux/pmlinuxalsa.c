@@ -573,6 +573,21 @@ static void handle_event(snd_seq_event_t *ev)
     }
     PmEvent pm_ev;
 
+    /* Copilot says: "snd_seq_event_input() will not return events for a
+     * MIDI output device." However, this does not seem to be true, e.g.,
+     * for MIDIFLEX 4 on Arch Linux, so we want to check and ignore the
+     * call if this is an output device.
+     */
+    if (!midi->is_input) {
+        printf("(pm) handle_event returns because !midi->is_input\n");
+        return;
+    }
+
+    if (!midi->time_proc) {  /* extra sanity check */
+        printf("(pm) handle_event returns because !midi->time_proc\n");
+        return;
+    }
+
     printf("(pm) handle_event: midi (pm_internal) %p midi->time_proc %p\n",
            midi, midi->time_proc);
     fflush(stdout);  /* in case time_proc is NULL and we crash */

@@ -181,7 +181,7 @@ static void maybe_set_client_name(PmSysDepInfo *driverInfo)
                                               (PmSysDepInfo *) driverInfo);
     if (client_name) {
         snd_seq_set_client_name(seq, client_name);
-        printf("maybe_set_client_name set client to %s\n", client_name);
+        VERBOSE printf("maybe_set_client_name set client to %s\n", client_name);
     }
 }    
 

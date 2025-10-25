@@ -553,6 +553,10 @@ static PmTimestamp alsa_synchronize(PmInternal *midi)
 static void handle_event(snd_seq_event_t *ev)
 {
     int device_id = ev->dest.port;
+
+    assert(device_id >= 0 && device_id < pm_descriptor_len);
+    assert(pm_descriptors[device_id].pub.name);
+
     PmInternal *midi = pm_descriptors[device_id].pm_internal;
     /* There is a race condition when closing a device and
        continuing to poll other open devices. The closed device may
@@ -562,6 +566,20 @@ static void handle_event(snd_seq_event_t *ev)
         return;
     }
     PmEvent pm_ev;
+
+    /* Copilot says: "snd_seq_event_input() will not return events for a
+     * MIDI output device." However, this does not seem to be true, e.g.,
+     * for MIDIFLEX 4 on Arch Linux, so we want to check and ignore the
+     * call if this is an output device.
+     */
+    if (!midi->is_input) {
+        return;
+    }
+
+    if (!midi->time_proc) {  /* extra sanity check */
+        return;
+    }
+
     PmTimestamp timestamp = midi->time_proc(midi->time_info);
 
     /* time stamp should be in ticks, using our queue where 1 tick = 1ms */

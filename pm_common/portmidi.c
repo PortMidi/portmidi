@@ -216,7 +216,7 @@ PmError pm_add_device(const char *interf, const char *name, int is_input,
     /* if virtual, search for duplicate name or unused ID; otherwise,
      * just add a new device at the next integer available:
      */
-    for (device_id = (is_virtual ? 0 : pm_descriptor_len); 
+    for (device_id = (is_virtual ? 0 : pm_descriptor_len);
          device_id < pm_descriptor_len; device_id++) {
         d = &pm_descriptors[device_id].pub;
         d->structVersion = PM_DEVICEINFO_VERS;

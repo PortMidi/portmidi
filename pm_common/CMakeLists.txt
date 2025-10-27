@@ -16,10 +16,11 @@
 set(PM_STATIC_LIB_NAME "portmidi" CACHE STRING 
     "For static builds, the PortMidi library name, e.g. portmidi-static.
      Default is portmidi")
-set(PM_ACTUAL_LIB_NAME "portmidi" PARENT_SCOPE)
+set(PM_ACTUAL_LIB_NAME "portmidi")
 if(NOT BUILD_SHARED_LIBS)
-  set(PM_ACTUAL_LIB_NAME ${PM_STATIC_LIB_NAME} PARENT_SCOPE)
+  set(PM_ACTUAL_LIB_NAME ${PM_STATIC_LIB_NAME})
 endif()
+set(PM_ACTUAL_LIB_NAME ${PM_ACTUAL_LIB_NAME} PARENT_SCOPE)
 
 # set the build directory for libportmidi.a to be in portmidi, not in 
 #    portmidi/pm_common. Must be done here BEFORE add_library below.

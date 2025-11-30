@@ -580,7 +580,7 @@ static void handle_event(snd_seq_event_t *ev)
         return;
     }
 
-    PmTimestamp timestamp = midi->time_proc(midi->time_info);
+    PmTimestamp timestamp = (midi->time_proc) ? midi->time_proc(midi->time_info) : 0;
 
     /* time stamp should be in ticks, using our queue where 1 tick = 1ms */
     /* assert((ev->flags & SND_SEQ_TIME_STAMP_MASK) == SND_SEQ_TIME_STAMP_TICK);

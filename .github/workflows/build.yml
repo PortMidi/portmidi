@@ -27,7 +27,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Check out Git repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v6
     - name: "[Ubuntu] Install dependencies"
       run: sudo apt install -y libasound2-dev
       if: runner.os == 'Linux'
@@ -41,7 +41,7 @@ jobs:
       run: cmake --install . ${{ matrix.cmake_config }}
       working-directory: build
     - name: Upload Build Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: ${{ matrix.name }} portmidi build
         path: ${{ matrix.install_dir }}

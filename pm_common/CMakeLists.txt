@@ -30,12 +30,12 @@ set(PM_ACTUAL_LIB_NAME ${PM_ACTUAL_LIB_NAME} PARENT_SCOPE)
 
 # set the build directory for libportmidi.a to be in portmidi, not in 
 #    portmidi/pm_common. Must be done here BEFORE add_library below.
-if(APPLE OR WIN32)
+if(APPLE OR WIN32 OR CYGWIN)
   set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
   # set the build directory for .dylib libraries
   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR})
-endif(APPLE OR WIN32)
+endif(APPLE OR WIN32 OR CYGWIN)
 
 # we need full paths to sources because they are shared with other targets
 # (in particular pmjni). Set PMDIR to the top-level portmidi directory:
@@ -130,7 +130,7 @@ elseif(HAIKU)
       ${PMDIR}/pm_haiku/pmhaiku.cpp)
   set(PM_NEEDED_LIBS be midi midi2 PARENT_SCOPE)
   target_link_libraries(portmidi PRIVATE be midi midi2)
-elseif(UNIX)
+elseif(UNIX AND NOT CYGWIN)
   target_compile_definitions(portmidi PRIVATE ${LINUX_FLAGS})
   set(PM_LIB_PRIVATE_SRC
       ${PMDIR}/porttime/ptlinux.c
@@ -151,7 +151,7 @@ elseif(UNIX)
     set(PM_NEEDED_LIBS ${CMAKE_THREAD_LIBS_INIT} PARENT_SCOPE)
     target_link_libraries(portmidi PRIVATE Threads::Threads)
   endif()
-elseif(WIN32)
+elseif(WIN32 OR CYGWIN)
   set(PM_LIB_PRIVATE_SRC
       ${PMDIR}/porttime/ptwinmm.c
       ${PMDIR}/pm_win/pmwin.c

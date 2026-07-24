@@ -412,15 +412,16 @@ static winmm_info_type winmm_info_create(void)
 
 static void report_hosterror(LPWCH error_msg)
 {
-    WideCharToMultiByte(CP_UTF8, 0, error_msg, -1, pm_hosterror_text,
-                        sizeof(pm_hosterror_text), NULL, NULL);
+    int err_len = WideCharToMultiByte(CP_UTF8, 0, error_msg, -1, pm_hosterror_text,
+                                      PM_HOST_ERROR_MSG_LEN, NULL, NULL);
     if (pm_hosterror == MMSYSERR_NOMEM) {
         /* add explanation to Window's confusing error message */
         /* if there's room: */
-        if (PM_HOST_ERROR_MSG_LEN - strlen(pm_hosterror_text) > 60) {
-            strcat_s(pm_hosterror_text, PM_HOST_ERROR_MSG_LEN,
+        if ((PM_HOST_ERROR_MSG_LEN - err_len) > 60) {
+            strncpy(pm_hosterror_text + err_len,
                      " Probably this MIDI device is open "
-                     "in another application.");
+                     "in another application.",
+                     PM_HOST_ERROR_MSG_LEN - err_len);
         }
     }
     pm_hosterror = TRUE;

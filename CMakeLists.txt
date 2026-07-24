@@ -77,11 +77,11 @@ option(BUILD_JAVA_NATIVE_INTERFACE
 # e.g., PMALSA. (In principle, we should require PMCOREMIDI (for macOS)
 # and PMWINMM (for windows), but these are assumed.
 #
-if(APPLE OR WIN32)
-else(APPLE OR WIN32)
+if(APPLE OR WIN32 OR CYGWIN)
+else(APPLE OR WIN32 OR CYGWIN)
   set(LINUX_DEFINES "PMALSA" CACHE STRING "must define either PMALSA or PMNULL")
   add_compile_definitions(${LINUX_DEFINES})
-endif(APPLE OR WIN32)
+endif(APPLE OR WIN32 OR CYGWIN)
 
 if(BUILD_JAVA_NATIVE_INTERFACE)
   message(WARNING

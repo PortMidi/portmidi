@@ -47,6 +47,26 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9 CACHE STRING
 
 include(GNUInstallDirs)
 
+# ---- macOS framework support -------------------------------------------
+# Build portmidi.framework (a macOS bundle) instead of libportmidi.dylib
+option(PM_BUILD_FRAMEWORK
+       "Build PortMidi as a macOS framework instead of a .dylib" OFF)
+if(PM_BUILD_FRAMEWORK)
+  if(NOT APPLE)
+    message(FATAL_ERROR "PM_BUILD_FRAMEWORK is only supported on macOS.")
+  endif()
+  if(NOT BUILD_SHARED_LIBS)
+    message(FATAL_ERROR "PM_BUILD_FRAMEWORK requires BUILD_SHARED_LIBS=ON.")
+  endif()
+  set(PM_FRAMEWORK_NAME "portmidi" CACHE STRING
+      "Name of the generated framework, i.e. <name>.framework")
+  set(PM_FRAMEWORK_IDENTIFIER "org.portmedia.portmidi" CACHE STRING
+      "CFBundleIdentifier of the generated framework")
+  set(PM_FRAMEWORK_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}" CACHE STRING
+      "Where to install the framework (e.g. /Library/Frameworks)")
+endif()
+# ------------------------------------------------------------------------
+
 # Build Types
 # credit: http://cliutils.gitlab.io/modern-cmake/chapters/features.html
 set(DEFAULT_BUILD_TYPE "Release")
@@ -112,18 +132,28 @@ if(BUILD_JAVA_NATIVE_INTERFACE)
 endif(BUILD_JAVA_NATIVE_INTERFACE)
 
 # Install the libraries and headers (Linux and Mac OS X command line)
-INSTALL(TARGETS portmidi ${PMJNI_IF_EXISTS}
-  EXPORT PortMidiTargets
-  LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-  ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-  RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
-  INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+if(PM_BUILD_FRAMEWORK)
+  # the framework carries its own headers in <name>.framework/Headers
+  INSTALL(TARGETS portmidi ${PMJNI_IF_EXISTS}
+    EXPORT PortMidiTargets
+    FRAMEWORK DESTINATION "${PM_FRAMEWORK_INSTALL_DIR}"
+    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
+else(PM_BUILD_FRAMEWORK)
+  INSTALL(TARGETS portmidi ${PMJNI_IF_EXISTS}
+    EXPORT PortMidiTargets
+    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
+    INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 
-INSTALL(FILES
-  pm_common/portmidi.h
-  pm_common/pmutil.h 
-  porttime/porttime.h
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+  INSTALL(FILES
+    pm_common/portmidi.h
+    pm_common/pmutil.h
+    porttime/porttime.h
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+endif(PM_BUILD_FRAMEWORK)
 
 # Documentation
 option(BUILD_DOC "Build documentation" OFF)

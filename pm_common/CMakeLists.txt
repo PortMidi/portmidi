@@ -57,6 +57,31 @@ target_include_directories(portmidi PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
+# ---- macOS framework layout --------------------------------------------
+# With FRAMEWORK TRUE, CMake produces <name>.framework instead of
+# lib<name>.dylib: the binary, the Info.plist and the public headers are
+# packed into the bundle and the install name becomes
+# @rpath/<name>.framework/Versions/A/<name>
+if(PM_BUILD_FRAMEWORK)
+  set(PM_PUBLIC_HEADERS ${PMDIR}/pm_common/portmidi.h
+                        ${PMDIR}/pm_common/pmutil.h
+                        ${PMDIR}/porttime/porttime.h)
+  set_target_properties(portmidi PROPERTIES
+      FRAMEWORK TRUE
+      FRAMEWORK_VERSION "A"
+      OUTPUT_NAME "${PM_FRAMEWORK_NAME}"
+      MACOSX_FRAMEWORK_IDENTIFIER "${PM_FRAMEWORK_IDENTIFIER}"
+      MACOSX_FRAMEWORK_BUNDLE_VERSION "${LIBRARY_VERSION}"
+      MACOSX_FRAMEWORK_SHORT_VERSION_STRING
+          "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}"
+      PUBLIC_HEADER "${PM_PUBLIC_HEADERS}"
+      MACOSX_RPATH ON)
+  # PUBLIC_HEADER only *tags* files that are already sources of the target:
+  # target_sources is necessary to really copy the files in <name>.framework/Headers
+  target_sources(portmidi PRIVATE ${PM_PUBLIC_HEADERS})
+endif(PM_BUILD_FRAMEWORK)
+# ------------------------------------------------------------------------
+
 
 option(PM_CHECK_ERRORS
 "Insert a check for error return values at the end of each PortMidi function.
